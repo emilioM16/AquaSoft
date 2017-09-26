@@ -1,0 +1,16 @@
+.fondo{
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    background-image: url('../img/fondo2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: grayscale(30%);
+}
+
+.panel-login{
+    padding: 0px;
+    margin-top: 1em;
+}
+

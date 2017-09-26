@@ -1,0 +1,291 @@
+html,
+body {
+    height: 100%;
+}
+
+.wrap {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -60px;
+    padding: 0 0 60px;
+}
+
+.wrap > .container {
+    padding: 70px 15px 20px;
+}
+
+.footer {
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+
+.jumbotron {
+    text-align: center;
+    background-color: transparent;
+}
+
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+.not-set {
+    color: #c55;
+    font-style: italic;
+}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: /*"\e113"*/ "\e151";
+}
+
+a.desc:after {
+    content: /*"\e114"*/ "\e152";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+.grid-view th {
+    white-space: nowrap;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+/* align the logout "link" (button in form) of the navbar */
+.nav li > form > button.btn-nav {
+    padding: 15px;
+    border: none;
+    color: black;
+}
+
+
+@media(max-width:767px) {
+    .nav li > form > button.logout {
+        display:block;
+        text-align: left;
+        width: 100%;
+        padding: 10px 15px;
+    }
+}
+
+@media (min-width: 768px){
+
+    .navbar-nav > li > a {
+        padding: 10px 15px;
+    }
+}
+
+.nav > li > form > button.logout:focus,
+.nav > li > form > button.logout:hover {
+    text-decoration: none;
+}
+
+.nav > li > form > button.logout:focus {
+    outline: none;
+}
+
+.img-center{
+  margin:0 auto;
+  padding-bottom: 10px;
+}
+
+.form-center{
+  float: none;
+  margin: 0 auto;
+}
+
+#boton-login{
+  width: 100%;
+}
+
+.navbar{
+    border: none;
+    background: linear-gradient(#026E9F,#11AAEE);
+    padding: 5px 0px;
+}
+
+.item-nav{
+    padding: 15px;
+    border: none;
+    color: black;
+}
+
+
+.navbar-brand {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    text-align: center;
+    margin: auto;
+    padding-top: 0px;
+}
+
+.navbar-toggle {
+    z-index:3;
+}
+.container{
+    padding-left: 0px;
+}
+
+.btn-link:hover{
+    text-decoration: none;
+}
+
+.navbar-inverse .navbar-nav > li > a{
+    color: black;
+}
+
+.navbar-brand > img{
+    display: inline-block;
+}
+
+.verticalDivider{
+    border-left: 2px solid #024F69;
+
+}
+
+.a{
+    padding: 5px;
+}
+
+
+.img-circle{
+    width:160px;
+    height: 160px;
+    border: solid #00A8FF;
+    filter: grayscale(1);
+    margin: 0px;
+}
+
+
+.img-circle:hover{
+    transition: 200ms;
+    filter: grayscale(0);
+}
+
+.imgFooter{
+    width:160px;
+    height: 160px;
+    font-size: 18px;
+    margin: 0px;  
+}
+
+.panelNotif{
+    height: 800px;
+}
+
+.panel-body{
+    padding: 0;
+}
+
+.alert{
+    margin-bottom: 0;
+    border-radius: 0;
+    font-size: 12px;
+    padding: 3px;
+}
+
+.alert:hover{
+    transition: 100ms;
+    background-color: #74C0E9;
+}
+
+.popover.bottom{
+    margin-top: 14px;
+}
+
+.popover-notif {
+    max-width: 310px;
+}
+
+.popover-body{
+    padding: 0;
+    overflow-y:scroll;
+    max-height: 400px;
+}
+
+.hrNotif{
+    margin: 0;
+}
+
+.popover{
+    position: fixed;
+    top: 1111px;
+}
+
+.popover-header{
+    text-align: center;
+}
+
+.notificationButton{
+    transition: 200ms;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.kv-popover-active{
+    animation: fadein 0.3s; 
+}
+
+
+.navbar-nav > li > .iconAnchor{
+    padding-bottom: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.icon{
+    width: 30px;
+    height: 19px;
+    bottom:3px;
+    transform: scale(1.2);
+    margin-right: 6px;
+}
+
+.icon:hover{
+    fill: white;
+}

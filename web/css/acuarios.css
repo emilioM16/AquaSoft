@@ -1,0 +1,93 @@
+#jumboIdAcuario{
+    background-image: url("../img/detalleAcuario.jpg");
+    background-size: cover;
+    height: 20px;
+    margin-bottom: 0px;
+    
+}
+
+#jumboIdAcuario>h2{
+    margin-top: -15px;
+    color: cornsilk ;
+}
+
+#panelCA{
+    height: 650px;
+}
+
+#panelCA > .panel-body{
+    padding: 0px;
+    /* width: 80%;
+    height: 700px; */
+    max-height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.table{
+    margin: 0px;
+}
+
+
+.thumbnail{
+    margin-right: 30px;
+}
+
+.content{
+    margin-top:2%;
+}
+
+/* hr {
+    border:none;
+    width: 90%;
+    height: 50px;
+    margin-top: 0;
+    border-bottom: 1px solid orange;
+    box-shadow: 0 20px 20px -20px black;
+    margin: -50px auto 10px; 
+  } */
+
+.table{
+    width: 80%;
+}
+
+#pieChart{
+    /* width: 80%;
+    float: none;
+    margin: auto; */
+    margin-top: 10px;
+}
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+    display: block;     
+    height: 0;          
+    overflow-y: hidden; 
+    overflow-x: hidden;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+    height: auto;       
+} 
+
+.gaugeChart{
+    height: 240px;
+}
+
+.gaugeChartLabel{
+    margin-top: -100%;
+}
+
+.gaugeCenter{
+    float: none;
+    margin: auto;
+}
+
+.btnControl{
+    width: 70%;
+}
+
+#btnDetail{
+    margin-top: 2%;
+}

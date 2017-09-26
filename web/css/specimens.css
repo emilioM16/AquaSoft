@@ -1,0 +1,45 @@
+.fishImg{
+    border: 3px solid #00A8FF;
+    /* width: 45%; */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 1px;
+    /* margin-left: 23%; */
+    margin-right: auto;
+}
+
+.fishImg:hover{
+    filter: drop-shadow();
+    transition: 200ms;
+}
+
+.specimensOptions{
+    width: 40%;
+}
+
+.option{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* #specimensTabs{
+    width: 50%;
+}*/
+
+#addSpecimensPanel{
+    width: 30%;
+}
+
+#specimensPanelContent{
+    padding: 15px;   
+}
+
+.input-sm{
+    width: 10%;
+}
+
+#wellTitle{
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 3%;
+}
