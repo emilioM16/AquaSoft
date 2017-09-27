@@ -4,13 +4,14 @@ namespace app\models;
 
 use Yii;
 use yii\web\IdentityInterface;
+use app\models\AuthAssignment;
 
 /**
  * This is the model class for table "USUARIO".
  *
  * @property integer $id_usuario
  * @property string $nombre
- * @property string $apellido
+ * @property string $apellidos
  * @property string $nombre_usuario
  * @property string $email
  * @property string $contrasenia
@@ -96,9 +97,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasMany(VALIDACION::className(), ['USUARIO_idUSUARIO' => 'id_usuario']);
     }
 
+
+    
     public static function findIdentity($id){
         return static::findOne(['id_usuario' => $id]);
     }
+
 
     public static function findByUsername($nombre_usuario){
         return static::findOne(['nombre_usuario'=>$nombre_usuario]);
@@ -109,6 +113,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return Yii::$app->security->validatePassword($pass,$this->contrasenia);//si la contrasenia  es correcta devuelve true
     }
 
+
     public function beforeSave($insert) { //antes de almacenar la contrasenia  la hashea
         if(isset($this->contrasenia)){
             $this->contrasenia  = Yii::$app->security->generatePasswordHash($this->contrasenia);
@@ -116,14 +121,22 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return parent::beforeSave($insert);
     }
 
+
     public function getId(){
         return $this->getPrimaryKey();
     }
+
   
     public function getAuthKey(){
 
     }
-  
+
+    public static function getRole($id){
+        // if user can have only one role
+        return current( \Yii::$app->authManager->getAssignments($id) );
+    }
+
+
     public function validateAuthKey($authKey){
 
     }

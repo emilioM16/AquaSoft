@@ -4,11 +4,12 @@ namespace app\controllers;
 
 use Yii;
 use app\models\User;
+use app\models\AuthAssignment;
 use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\base\Exception;
 /**
  * UserController implements the CRUD actions for User model.
  */
@@ -57,30 +58,35 @@ class UserController extends Controller
          ]);
      }
 
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+
     public function actionCreate()
     {
-        $model = new User();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_usuario]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        $userModel = new User();
+        $authModel = new AuthAssignment();
+        $transaction = Yii::$app->db->beginTransaction();
+        try{
+            if($userModel->load(Yii::$app->request->post()) && $userModel->save()){
+                $authModel->item_name = 'especialista';
+                $authModel->user_id = strval($userModel->id_usuario);
+                if($authModel->save()){
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $userModel->id_usuario]);
+                }else{
+                    throw new Exception('Ocurrió un error al guardar la información.');
+                }
+            }else{
+                throw new Exception('Ocurrió un error al guardar la información.');
+            }
+        }catch (Exception $e){
+            $transaction->rollback();
         }
+        return $this->render('create', [
+            'model' => $userModel,
+        ]);
     }
 
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
+
+
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);

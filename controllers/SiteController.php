@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\Login;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -71,6 +72,8 @@ class SiteController extends Controller
         $this->layout = 'login';
         $model = new Login();
         if($model->load(Yii::$app->request->post()) && $model->login()){
+            $roleData = User::getRole(Yii::$app->user->identity->id_usuario);
+            Yii::$app->session->set('user.role',$roleData->roleName);
             $this->layout = 'main';
             return $this->goHome();
         }

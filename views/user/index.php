@@ -29,7 +29,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'apellido',
             'nombre_usuario',
             'email:email',
-            'activo',
+            [
+                'attribute'=>'activo',
+                'value'=>function($model, $key, $index, $widget){
+                    if($model->activo==1){
+                        return 'Si';
+                    }else{
+                        return 'No';
+                    };
+                }
+            ],
 
             ['class' => 'yii\grid\ActionColumn',
                 'template'=>'{update}{delete}'

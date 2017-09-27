@@ -94,7 +94,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             //SOLO PARA ESPECIALISTA
             ['label'=>file_get_contents("img/fishIcon4.svg"),
                 'url'=>['specimen/'],
-                // 'visible'=>Yii::$app->user->identity->role == 1,
+                'visible'=>Yii::$app->session->get('user.role') == 'especialista' || Yii::$app->session->get('user.role') == 'administrador',
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -107,7 +107,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
             ['label'=>file_get_contents("img/fishes.svg"),
                 'url'=>['species/'],
-                // 'visible'=>Yii::$app->user->identity->role == 1,
+                'visible'=>Yii::$app->session->get('user.role') == 'especialista' || Yii::$app->session->get('user.role') == 'administrador',
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -122,7 +122,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
             ['label'=>FA::icon('users')->size(FA::SIZE_LARGE),
                 'url'=>['user/'],
-                // 'visible'=>Yii::$app->user->identity->role == 0,
+                'visible'=>Yii::$app->session->get('user.role') == 'encargado' || Yii::$app->session->get('user.role') == 'administrador',
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -132,7 +132,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
             ['label'=>FA::icon('archive')->size(FA::SIZE_LARGE),
                 'url'=>['supply/'],
-                // 'visible'=>Yii::$app->user->identity->role == 0,
+                'visible'=>Yii::$app->session->get('user.role') == 'encargado' || Yii::$app->session->get('user.role') == 'administrador',
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -187,7 +187,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             
 
 
-            ['label'=>FA::icon('user')->size(FA::SIZE_LARGE). ' Melo, Emilio',
+            ['label'=>FA::icon('user')->size(FA::SIZE_LARGE).' '.Yii::$app->user->identity->apellido.', '. Yii::$app->user->identity->nombre,
                 'url'=>null,
             ],
 

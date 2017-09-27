@@ -5,6 +5,7 @@
     width: 100%;
     background-image: url('../img/fondo2.jpg');
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
     filter: grayscale(30%);
 }
