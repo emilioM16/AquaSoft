@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\web\IdentityInterface;
 use app\models\AuthAssignment;
-
+use yii\base\Exception;
 /**
  * This is the model class for table "USUARIO".
  *
@@ -143,5 +143,27 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
   
     public static function findIdentityByAccessToken($token, $type = null){
         return static::findOne(['access_token'=>$token]);
+    }
+
+    public function saveUser(){
+        $authModel = new AuthAssignment();
+        $transaction = Yii::$app->db->beginTransaction();
+        try{
+            if($this->load(Yii::$app->request->post()) && $this->save()){
+                $authModel->item_name = 'especialista';
+                $authModel->user_id = strval($this->id_usuario);
+                if($authModel->save()){
+                    $transaction->commit();
+                    return true;
+                }else{
+                    throw new Exception('Ocurrió un error al guardar la información.');
+                }
+            }else{
+                throw new Exception('Ocurrió un error al guardar la información.');
+            }
+        }catch (Exception $e){
+            $transaction->rollback();
+        }
+        return false;
     }
 }

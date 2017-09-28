@@ -62,27 +62,14 @@ class UserController extends Controller
     public function actionCreate()
     {
         $userModel = new User();
-        $authModel = new AuthAssignment();
-        $transaction = Yii::$app->db->beginTransaction();
-        try{
-            if($userModel->load(Yii::$app->request->post()) && $userModel->save()){
-                $authModel->item_name = 'especialista';
-                $authModel->user_id = strval($userModel->id_usuario);
-                if($authModel->save()){
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $userModel->id_usuario]);
-                }else{
-                    throw new Exception('Ocurrió un error al guardar la información.');
-                }
-            }else{
-                throw new Exception('Ocurrió un error al guardar la información.');
-            }
-        }catch (Exception $e){
-            $transaction->rollback();
+        if($userModel->saveUser()){
+            return $this->redirect(['view', 'id' => $userModel->id_usuario]);      
+        }else{
+            return $this->render('create', [
+                'model' => $userModel,
+            ]);
         }
-        return $this->render('create', [
-            'model' => $userModel,
-        ]);
+
     }
 
 

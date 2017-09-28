@@ -8,6 +8,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use yii\bootstrap\Carousel;
 
 AppAsset::register($this);
 ?>
@@ -25,6 +26,18 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
     <div class="fondo">
+        <?php        
+        echo Carousel::widget([
+            'items' => [
+                // the item contains only the image
+                '<img src="/img/fondo2.jpg"/>',
+                // equivalent to the above
+            ],
+            'options'=>[
+                'showControls'=>false,
+            ]
+        ]);
+        ?>
     </div>
 
 <div class="wrap">

@@ -96,7 +96,7 @@ $config = [
     ],
     'as access'=>[ //importante para conceder acceso!
         'class'=>'mdm\admin\components\AccessControl',
-        'allowActions'=>['*']
+        // 'allowActions'=>['*']
     ],
     'params' => $params,
     'defaultRoute'=>'site/index',
