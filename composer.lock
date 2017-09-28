@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d902174594a317c215c7d741d480f1a1",
+    "content-hash": "8b60ac0f34bbb44ceeca5c83e7feefdb",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -174,6 +174,51 @@
             }
         },
         {
+            "name": "bower-asset/slick-carousel",
+            "version": "1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kenwheeler/slick.git",
+                "reference": "f9a8733207a558bcd0ace7c0746f596660f89dbf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenwheeler/slick/zipball/f9a8733207a558bcd0ace7c0746f596660f89dbf",
+                "reference": "f9a8733207a558bcd0ace7c0746f596660f89dbf",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/jquery": ">=1.7"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "slick/slick.js",
+                    "slick/slick.css",
+                    "slick/slick.less",
+                    "slick/slick.scss"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "tests",
+                    "package.json",
+                    "index.html"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "the last carousel you'll ever need",
+            "keywords": [
+                "carousel",
+                "jquery",
+                "responsive"
+            ]
+        },
+        {
             "name": "bower-asset/yii2-pjax",
             "version": "v2.0.6",
             "source": {
@@ -311,7 +356,50 @@
                 "delocker",
                 "yii2"
             ],
-            "time": "2015-10-05 23:33:01"
+            "time": "2015-10-05T23:33:01+00:00"
+        },
+        {
+            "name": "evgeniyrru/yii2-slick",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EvgeniyRRU/yii2-slick.git",
+                "reference": "65fb112e67a230805cac07f8c3f372b25502be2c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EvgeniyRRU/yii2-slick/zipball/65fb112e67a230805cac07f8c3f372b25502be2c",
+                "reference": "65fb112e67a230805cac07f8c3f372b25502be2c",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/slick-carousel": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "evgeniyrru\\yii2slick\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Evgeniy Chernyshev",
+                    "email": "EvgeniyRRU@gmail.com"
+                }
+            ],
+            "description": "Yii2 extension for Slick Carousel",
+            "keywords": [
+                "carousel",
+                "extension",
+                "widget",
+                "yii"
+            ],
+            "time": "2017-03-31T07:00:27+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -554,7 +642,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2017-09-22 15:47:48"
+            "time": "2017-09-22T15:47:48+00:00"
         },
         {
             "name": "mdmsoft/yii2-admin",

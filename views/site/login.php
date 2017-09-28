@@ -11,11 +11,11 @@ $this->title = 'Sistema gestión AquaSoft';
 
       <div class="row">
         <div class="col-lg-12">
-          <?= Html::img('@web/img/logo.png', ['class'=>'img-center img-responsive col-lg-4 form-center',]); ?>
+          <?= Html::img('@web/img/logo.png', ['class'=>'img-center img-responsive col-lg-4 col-md-4 col-sm-4 col-xs-2 form-center',]); ?>
         </div>
       </div>
 
-      <div class="panel panel-info panel-login col-lg-3 col-md-2 col-sm-3 form-center">
+      <div class="panel panel-info panel-login col-lg-3 col-md-2 col-sm-4 col-xs-2 form-center">
         <div class="panel-heading text-center">
           Iniciar sesión
         </div>
