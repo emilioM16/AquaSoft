@@ -1,0 +1,20 @@
+/* .well{
+    width: 8%;
+} */
+
+#pCalendar{
+    visibility: hidden;
+}
+
+#pButtons{
+    margin-top: 1%;
+}
+
+#checkboxDays{
+    visibility: hidden;
+}
+
+.form-group{
+    padding-right: 2%;
+}
+
