@@ -25,30 +25,30 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-    <!-- <div>
-        <?php        
-        echo Carousel::widget([
-            'id'=>'background-carousel',
-            'items' => [
-                // the item contains only the image
-                '<div class="item active" style="background-image:url(/img/fondo1.jpg)"></div>',
-                '<div class="item active" style="background-image:url(/img/fondo2.jpg)"></div>',
-                // equivalent to the above
-            ],
-            'showIndicators'=>false,
-            'options'=>[
-                'class'=>'carousel carousel-fade'
-            ],
-        ]);
-        ?>
-    </div> -->
-        
-    <div id="background-carousel" class="carousel slide carousel-fade" data-ride="carousel">
-        <div class="carousel-inner" role="listbox">
-                <div class="item active" style="background-image:url(/img/fondo1.jpg)"></div>
-                <div class="item" style="background-image:url(/img/fondo2.jpg)"></div>
-        </div>
-    </div>
+ 
+        <?php         
+        echo Carousel::widget([ 
+            'id'=>'background-carousel', 
+            'items' => [ 
+                '<div class="item active" style="background-image:url(/img/fondo1.jpg)"></div>', 
+                '<div class="item" style="background-image:url(/img/fondo2.jpg)"></div>',
+                '<div class="item" style="background-image:url(/img/fondo3.jpg)"></div>',
+                '<div class="item" style="background-image:url(/img/fondo4.jpg)"></div>',
+            ], 
+            'showIndicators'=>false, 
+            'options'=>[ 
+                'class'=>'carousel slide ',
+            ], 
+        ]); 
+        ?> 
+
+         
+    <!-- <div id="background-carousel" class="carousel slide carousel-fade" data-ride="carousel"> 
+        <div class="carousel-inner" role="listbox"> 
+                <div class="item active" style="background-image:url(/img/fondo1.jpg)"></div> 
+                <div class="item" style="background-image:url(/img/fondo2.jpg)"></div> 
+        </div> 
+    </div>  -->
 
 
 <div class="wrap">
