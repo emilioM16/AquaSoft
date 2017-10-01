@@ -7,20 +7,22 @@ use yii\web\IdentityInterface;
 use app\models\AuthAssignment;
 use yii\base\Exception;
 /**
- * This is the model class for table "USUARIO".
+ * This is the model class for table "usuarios".
  *
  * @property integer $id_usuario
  * @property string $nombre
- * @property string $apellidos
+ * @property string $apellido
  * @property string $nombre_usuario
  * @property string $email
  * @property string $contrasenia
  * @property integer $activo
- *
- * @property ACUARIOUSUARIO[] $aCUARIOUSUARIOs
- * @property ACUARIO[] $aCUARIOIdACUARIOs
- * @property TAREA[] $tAREAs
- * @property VALIDACION[] $vALIDACIONs
+
+ * @property AcuariosUsuarios[] $acuariosUsuarios
+ * @property Acuarios[] $acuarioIdacuarios
+ * @property AuthAssignment[] $authAssignments
+ * @property AuthItem[] $itemNames
+ * @property Tareas[] $tareas
+ * @property Validaciones[] $validaciones
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -68,35 +70,50 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getACUARIOUSUARIOs()
+    public function getAcuariosUsuarios()
     {
-        return $this->hasMany(ACUARIOUSUARIO::className(), ['USUARIO_idUSUARIO' => 'id_usuario']);
+        return $this->hasMany(AcuariosUsuarios::className(), ['usuario_idusuario' => 'id_usuario']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getACUARIOIdACUARIOs()
+    * @return \yii\db\ActiveQuery
+    */
+    public function getAcuarioIdacuarios()
     {
-        return $this->hasMany(ACUARIO::className(), ['idACUARIO' => 'ACUARIO_idACUARIO'])->viaTable('ACUARIO_USUARIO', ['USUARIO_idUSUARIO' => 'id_usuario']);
+        return $this->hasMany(Acuarios::className(), ['idacuario' => 'acuario_idacuario'])->viaTable('acuarios_usuarios', ['usuario_idusuario' => 'id_usuario']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTAREAs()
+    * @return \yii\db\ActiveQuery
+    */
+    public function getAuthAssignments()
     {
-        return $this->hasMany(TAREA::className(), ['USUARIO_idUSUARIO' => 'id_usuario']);
+        return $this->hasMany(AuthAssignment::className(), ['user_id' => 'id_usuario']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVALIDACIONs()
+    * @return \yii\db\ActiveQuery
+    */
+    public function getItemNames()
     {
-        return $this->hasMany(VALIDACION::className(), ['USUARIO_idUSUARIO' => 'id_usuario']);
+        return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'id_usuario']);
     }
 
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getTareas()
+    {
+        return $this->hasMany(Tareas::className(), ['usuario_idusuario' => 'id_usuario']);
+    }
+
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getValidaciones()
+    {
+        return $this->hasMany(Validaciones::className(), ['usuario_idusuario' => 'id_usuario']);
+    }
 
     
     public static function findIdentity($id){
