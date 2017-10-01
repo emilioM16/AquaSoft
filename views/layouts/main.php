@@ -73,7 +73,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
         'options' => ['class'=>'navbar-nav navbar-left'],
         'items'=>[
             ['label'=>FA::icon('cubes')->size(FA::SIZE_LARGE),
-                'url'=>['acuarium/'],
+                'url'=>['aquarium/'],
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',

@@ -23,7 +23,12 @@
         "delocker/yii2-animate.css": "dev-master",
         "mdmsoft/yii2-admin": "~2.0",
         "evgeniyrru/yii2-slick": "*",
-        "kv4nt/yii2-owl-carousel2": "*"
+        "kv4nt/yii2-owl-carousel2": "*",
+        "kartik-v/yii2-tabs-x": "*",
+        "miloschuman/yii2-highcharts-widget": "^5.0",
+        "philippfrenzel/yii2fullcalendar": "*",
+        "2amigos/yii2-date-time-picker-widget": "~1.0",
+        "kartik-v/yii2-widget-touchspin": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
