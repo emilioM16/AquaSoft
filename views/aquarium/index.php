@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'create'
                 ], 
                 [
-                    'class' => 'inModal btn btn-success',
+                    'class' => 'inModal btn btn-success addAquarium',
                     'data-pjax'=>'0',
                 ]).
         '</p>';
@@ -65,11 +65,37 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     Modal::begin([
-        'id'=>'pModal', 
+        'id'=>'addAquariumModal', 
+        'size'=>'modal-sm',
+        'closeButton'=>[],
+        'header'=> 'Agregar acuario',
+        'headerOptions'=> ['class'=>'h3  text-center'],
+        ]);
+
+        echo '<div class="contenidoModal"></div>';
+    
+    Modal::end();
+
+    Modal::begin([
+        'id'=>'viewAquariumModal', 
         'size'=>'modal-md',
         'closeButton'=>[],
-        'header'=> Yii::$app->session->get('modalTitle'),
-        'headerOptions'=> ['class'=>'h3 text-center'],
+        'header'=> 'Información del acuario',
+        'headerOptions'=> ['class'=>'h3  text-center'],
+        'footer'=>
+            Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger','data-dismiss'=>'modal'])
+        ]);
+
+        echo '<div class="contenidoModal"></div>';
+    
+    Modal::end();
+
+    Modal::begin([
+        'id'=>'updateAquariumModal', 
+        'size'=>'modal-sm',
+        'closeButton'=>[],
+        'header'=> 'Modificar acuario',
+        'headerOptions'=> ['class'=>'h3  text-center'],
         ]);
 
         echo '<div class="contenidoModal"></div>';

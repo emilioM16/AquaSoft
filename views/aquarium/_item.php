@@ -19,24 +19,26 @@ use yii\helpers\Url;
               echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
                             [
                               'view',
-                              'nombre' => $model->nombre, 
+                              'idacuario'=>$model->idacuario,
+                              // 'nombre' => $model->nombre, 
                               // 'id_condiciones_ambientales' => $model->id_condiciones_ambientales, 
                               // 'usuarios_nombre_usuario' => $model->usuarios_nombre_usuario
                             ], 
                             [
-                              'class' => 'inModal',
-                              'data-pjax' => '0'
+                              'class' => 'inModal viewAquarium',
+                              'data-pjax' => '0',
+                              'method'=>'get'
                             ]);
 
               echo Html::a('<span class="glyphicon glyphicon-pencil"></span>', 
                             [
                               'update',
-                              'nombre' => $model->nombre,
+                              'idacuario'=>$model->idacuario,
                               // 'id_condiciones_ambientales' => $model->id_condiciones_ambientales,
                               // 'usuarios_nombre_usuario' => $model->usuarios_nombre_usuario
                               ], 
                               [
-                                'class' => 'inModal',
+                                'class' => 'inModal updateAquarium',
                                 'data-pjax' => '0'
                             ]);
 

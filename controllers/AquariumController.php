@@ -50,11 +50,19 @@ class AquariumController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($idacuario)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($idacuario);
+
+        if (Yii::$app->request->isAjax){
+            return $this->renderAjax('view',[
+                'model'=>$model,
+            ]);
+        }else{
+            return $this->render('view', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -87,16 +95,22 @@ class AquariumController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($idacuario)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($idacuario);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idacuario]);
+            return $this->redirect(['index', 'id' => $model->idacuario]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->isAjax){
+                return $this->renderAjax('update',[
+                    'model'=>$model,
+                ]);
+            }else{
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         }
     }
 

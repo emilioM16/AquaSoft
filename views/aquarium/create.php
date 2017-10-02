@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="aquarium-create">
 
     <?php 
-        Yii::$app->session->set('modalTitle',$this->title);
         echo $this->render('_form', [
         'model' => $model,
         ]) 
