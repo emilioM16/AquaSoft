@@ -85,3 +85,16 @@
 #searchField{
     width: 70%;
 }
+
+.btnAquarium{
+    border-radius: 50px;
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+    margin:2px;
+}
+
+
+.btn:focus.btnAquarium ,.btn:active.btnAquarium {
+    outline: none !important;
+ }

@@ -157,6 +157,7 @@ class AquariumController extends Controller
     }
 
     public function actionValidation(){
+        
         $model = new Aquarium();
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))

@@ -26,14 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?=   
         '<p>'
-            .Html::a(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar acuario', 
-                [
-                    'create'
-                ], 
-                [
-                    'class' => 'inModal btn btn-success addAquarium',
-                    'data-pjax'=>'0',
-                ]).
+            .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar acuario', 
+            [
+            'value' => Url::to(['aquarium/create']), 
+            'title' => 'Creating New Company', 
+            'class' => 'showModalButton btn btn-success'
+            ]).
         '</p>';
     ?>
 
@@ -62,46 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
        'dataProvider' => $dataProvider,
        'itemView' => '_item',
     ]);
-
-
-    Modal::begin([
-        'id'=>'addAquariumModal', 
-        'size'=>'modal-sm',
-        'closeButton'=>[],
-        'header'=> 'Agregar acuario',
-        'headerOptions'=> ['class'=>'h3  text-center'],
-        ]);
-
-        echo '<div class="contenidoModal"></div>';
-    
-    Modal::end();
-
-    Modal::begin([
-        'id'=>'viewAquariumModal', 
-        'size'=>'modal-md',
-        'closeButton'=>[],
-        'header'=> 'Información del acuario',
-        'headerOptions'=> ['class'=>'h3  text-center'],
-        'footer'=>
-            Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger','data-dismiss'=>'modal'])
-        ]);
-
-        echo '<div class="contenidoModal"></div>';
-    
-    Modal::end();
-
-    Modal::begin([
-        'id'=>'updateAquariumModal', 
-        'size'=>'modal-sm',
-        'closeButton'=>[],
-        'header'=> 'Modificar acuario',
-        'headerOptions'=> ['class'=>'h3  text-center'],
-        ]);
-
-        echo '<div class="contenidoModal"></div>';
-    
-    Modal::end();
-
     ?> 
 <?php Pjax::end(); ?></div>
     

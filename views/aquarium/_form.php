@@ -17,7 +17,7 @@ use rmrevin\yii\fontawesome\FA;
         'enableAjaxValidation'=>true,
         'validationUrl'=> Url::toRoute('aquarium/validation'),
     ]); ?>
-
+    
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
     
     <?= $form->field($model, 'descripcion')->textarea(['maxlength' => true, 'rows'=>'4']) ?>

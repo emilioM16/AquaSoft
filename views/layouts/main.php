@@ -11,6 +11,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use rmrevin\yii\fontawesome\FA;
 use kartik\popover\PopoverX;
+use yii\bootstrap\Modal;
 
 AppAsset::register($this);
 rmrevin\yii\fontawesome\AssetBundle::register($this);
@@ -229,6 +230,18 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
     </div>
 </div>
     
+<?php
+Modal::begin([ //Modal utilizado en todo el sitio//
+    'closeButton'=>[],
+    'headerOptions' => ['id' => 'modalHeader'],
+    'id' => 'modal',
+    'size' => 'modal-md',
+]);
+    echo "<div id='modalContent'></div>";
+Modal::end();
+?>
+
+
 <?php $this->endBody() ?>
 </body>
 </html>
