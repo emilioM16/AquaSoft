@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 
-  <div id="acuarios" class="acuarios col-sm-6 col-md-4 col-lg-2">
+  <div id="acuario" class="acuarios col-sm-6 col-md-4 col-lg-2">
     <div class="thumbnail">
       <img src="/img/itemAcuario.jpg">
       <div class="caption">

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
@@ -10,7 +11,11 @@ use yii\widgets\ActiveForm;
 
 <div class="acuario-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'id' => $model->formName(),
+        'enableAjaxValidation'=>true,
+        'validationUrl'=> Url::toRoute('aquarium/validation'),
+    ]); ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
     

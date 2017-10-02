@@ -51,8 +51,8 @@ class Aquarium extends \yii\db\ActiveRecord
         return [
             'idacuario' => 'Idacuario',
             'nombre' => 'Nombre',
-            'descripcion' => 'Descripcion',
-            'espaciodisponible' => 'Espaciodisponible',
+            'descripcion' => 'Descripción',
+            'espaciodisponible' => 'Espacio disponible',
             'activo' => 'Activo',
         ];
     }

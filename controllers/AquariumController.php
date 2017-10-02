@@ -8,6 +8,7 @@ use app\models\AquariumSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
 
 /**
  * AquariumController implements the CRUD actions for Aquarium model.
@@ -66,7 +67,7 @@ class AquariumController extends Controller
         $model = new Aquarium();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idacuario]);
+            return $this->redirect(['index', 'id' => $model->idacuario]);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('create',[

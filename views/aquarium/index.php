@@ -6,8 +6,9 @@ use yii\widgets\ListView;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use rmrevin\yii\fontawesome\FA;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BusquedaUsuario */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -19,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="acuario-index">
-
     <?php Pjax::begin(['id'=>'idacuario']); ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -42,14 +42,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="acuarioSearchForm">
         <?php $form = ActiveForm::begin([
+            'layout'=>'inline',
             'method'=>'get',
             'options' =>['data-pjax'=>true],
             'action' => Url::to(['aquarium/index']), //importante, previene que se apilen los parametros en método get
             ]); ?>
-        <?= $form->field($searchModel, 'nombre') ?>
-        <div class="form-group">
-            <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
-        </div>
+        <hr>
+        <h4> Buscar acuario </h4>
+        <?= $form->field($searchModel, 
+            'nombre',
+            [
+                'inputTemplate'=>'<div id="searchField" class="input-group">{input}<span class="input-group-btn">'.Html::submitButton(FA::icon('search')->size(FA::SIZE_LARGE), ['class' => 'btn btn-primary']).'</span></div>'
+            ])->textInput(['placeholder'=>'Acuario']) ?>
         <?php ActiveForm::end(); ?>
     </div>
         
@@ -63,7 +67,9 @@ $this->params['breadcrumbs'][] = $this->title;
     Modal::begin([
         'id'=>'pModal', 
         'size'=>'modal-md',
-        'closeButton'=>[]
+        'closeButton'=>[],
+        'header'=> Yii::$app->session->get('modalTitle'),
+        'headerOptions'=> ['class'=>'h3 text-center'],
         ]);
 
         echo '<div class="contenidoModal"></div>';

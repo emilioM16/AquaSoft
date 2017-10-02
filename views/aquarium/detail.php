@@ -40,23 +40,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php
       $content1 =
       
-      '<div class="col-lg-12 ">  
+      '<div class="col-lg-12">  
 
-          <label>Registrado por: </label> <span> Melo Emilio </span>
+          <label>Nombre del acuario: </label> <span>'.$acuario->nombre.'</span>
           <br><br>
 
           <p class="text-justify">       
-            
-            <label>Descripción:</label>
+            <label>Descripción:</label>'
+              .$acuario->descripcion.
+          '</p>
+          <br>
 
-              Este acuario es de agua dulce o salada y tiene muchos peces. 
-              Este acuario es de agua dulce o salada y tiene muchos peces.
-              Este acuario es de agua dulce o salada y tiene muchos peces.
-              Este acuario es de agua dulce o salada y tiene muchos peces.
-              Este acuario es de agua dulce o salada y tiene muchos peces. 
-              Este acuario es de agua dulce o salada y tiene muchos peces. 
-              Este acuario es de agua dulce o salada y tiene muchos peces. 
-          </p>            
+          <label>Espacio disponible: </label> <span>'.$acuario->espaciodisponible.'</span>
+          <br><br>
+          
       </div>' ;
  
 
