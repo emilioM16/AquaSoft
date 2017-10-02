@@ -94,7 +94,11 @@
     margin:2px;
 }
 
-
 .btn:focus.btnAquarium ,.btn:active.btnAquarium {
     outline: none !important;
+ }
+
+ .btnModal{
+     margin: 10px;
+     margin-bottom: 0;
  }

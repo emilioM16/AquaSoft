@@ -35,7 +35,7 @@ class Aquarium extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'espaciodisponible'], 'required'],
+            [['nombre', 'espaciodisponible','activo'], 'required'],
             [['espaciodisponible', 'activo'], 'integer'],
             [['nombre'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],

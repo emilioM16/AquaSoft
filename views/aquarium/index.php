@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar acuario', 
             [
             'value' => Url::to(['aquarium/create']), 
-            'title' => 'Creating New Company', 
+            'title' => 'Agregar acuario', 
             'class' => 'showModalButton btn btn-success'
             ]).
         '</p>';

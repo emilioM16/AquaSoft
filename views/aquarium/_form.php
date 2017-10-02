@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\form\ActiveForm;
+use kartik\builder\Form;
 use yii\helpers\Url;
 use rmrevin\yii\fontawesome\FA;
 
@@ -12,25 +13,62 @@ use rmrevin\yii\fontawesome\FA;
 
 <div class="acuario-form">
 
-    <?php $form = ActiveForm::begin([
-        'id' => $model->formName(),
-        'enableAjaxValidation'=>true,
-        'validationUrl'=> Url::toRoute('aquarium/validation'),
-    ]); ?>
-    
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
-    
-    <?= $form->field($model, 'descripcion')->textarea(['maxlength' => true, 'rows'=>'4']) ?>
+    <?php 
+        $form = ActiveForm::begin([
+            'id'=>$model->formName(),
+            'type'=>ActiveForm::TYPE_VERTICAL]);
 
-    <?= $form->field($model, 'espaciodisponible')->textInput() ?>
-
-    <?= $form->field($model, 'activo')->textInput() ?>
-
-    <div class="form-group" align="center">
-        <?= Html::submitButton($model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        <?= Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger','data-dismiss'=>'modal']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+        echo Form::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'columns'=>3,
+            'attributes'=>[
+                'nombre'=>[
+                    'type'=>Form::INPUT_TEXT,
+                    'options'=>[
+                        'placeholder'=>'Ingrese el nombre',
+                        'maxlength'=>true,
+                    ]
+                ],
+                'espaciodisponible'=>[
+                    'type'=>Form::INPUT_TEXT,
+                    'options'=>[
+                        'placeholder'=>'Ingrese el espacio',
+                    ]
+                ],
+                'activo'=>[
+                    'type'=>Form::INPUT_RADIO_LIST,
+                    'items'=>[1=>'Activo',0=>'Inactivo'],
+                    'options'=>['inline'=>true]
+                ]
+            ]
+        ]);
+        echo Form::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'columns'=>1,
+            'attributes'=>[
+                'descripcion'=>[
+                    'type'=>Form::INPUT_TEXTAREA,
+                    'options'=>[
+                        'placeholder'=>'Ingrese una descripción',
+                        'maxlength'=>true,
+                    ]
+                ],
+                'actions'=>[
+                    'type'=>Form::INPUT_RAW,
+                    'value'=>'<div class="form-group" align="center">'.
+                        Html::submitButton(
+                            $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar',
+                            [
+                                'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
+                            ]).' '.
+                        Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'])
+                        .'</div>'
+                ]
+            ]
+        ]);
+    ActiveForm::end();
+    ?>
 
 </div>
