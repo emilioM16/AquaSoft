@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 01-10-2017 a las 15:52:59
+-- Tiempo de generación: 03-10-2017 a las 13:03:21
 -- Versión del servidor: 5.7.19-0ubuntu0.17.04.1
 -- Versión de PHP: 7.0.22-0ubuntu0.17.04.1
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `aquasoft`
 --
-CREATE DATABASE IF NOT EXISTS `aquasoft` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `aquasoft`;
 
 -- --------------------------------------------------------
 
@@ -28,11 +26,11 @@ USE `aquasoft`;
 -- Estructura de tabla para la tabla `acuarios`
 --
 
-DROP TABLE IF EXISTS `acuarios`;
 CREATE TABLE `acuarios` (
   `idacuario` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `descripcion` varchar(200) DEFAULT NULL,
+  `capacidad_maxima` int(11) NOT NULL,
   `espaciodisponible` int(11) NOT NULL,
   `activo` tinyint(1) DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -41,8 +39,8 @@ CREATE TABLE `acuarios` (
 -- Volcado de datos para la tabla `acuarios`
 --
 
-INSERT INTO `acuarios` (`idacuario`, `nombre`, `descripcion`, `espaciodisponible`, `activo`) VALUES
-(1, 'A01', '', 100, 1);
+INSERT INTO `acuarios` (`idacuario`, `nombre`, `descripcion`, `capacidad_maxima`, `espaciodisponible`, `activo`) VALUES
+(3, 'A03', '', 0, 150, 1);
 
 -- --------------------------------------------------------
 
@@ -50,7 +48,6 @@ INSERT INTO `acuarios` (`idacuario`, `nombre`, `descripcion`, `espaciodisponible
 -- Estructura de tabla para la tabla `acuarios_usuarios`
 --
 
-DROP TABLE IF EXISTS `acuarios_usuarios`;
 CREATE TABLE `acuarios_usuarios` (
   `acuario_idacuario` int(11) NOT NULL,
   `usuario_idusuario` int(11) NOT NULL
@@ -62,7 +59,6 @@ CREATE TABLE `acuarios_usuarios` (
 -- Estructura de tabla para la tabla `auth_assignment`
 --
 
-DROP TABLE IF EXISTS `auth_assignment`;
 CREATE TABLE `auth_assignment` (
   `item_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -86,7 +82,6 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 -- Estructura de tabla para la tabla `auth_item`
 --
 
-DROP TABLE IF EXISTS `auth_item`;
 CREATE TABLE `auth_item` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `type` smallint(6) NOT NULL,
@@ -160,6 +155,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/aquarium/detail', 2, NULL, NULL, NULL, 1506883912, 1506883912),
 ('/aquarium/index', 2, NULL, NULL, NULL, 1506883912, 1506883912),
 ('/aquarium/update', 2, NULL, NULL, NULL, 1506883912, 1506883912),
+('/aquarium/validation', 2, NULL, NULL, NULL, 1506893114, 1506893114),
 ('/aquarium/view', 2, NULL, NULL, NULL, 1506883912, 1506883912),
 ('/debug/*', 2, NULL, NULL, NULL, 1506560367, 1506560367),
 ('/debug/default/*', 2, NULL, NULL, NULL, 1506560367, 1506560367),
@@ -198,7 +194,6 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 -- Estructura de tabla para la tabla `auth_item_child`
 --
 
-DROP TABLE IF EXISTS `auth_item_child`;
 CREATE TABLE `auth_item_child` (
   `parent` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `child` varchar(64) COLLATE utf8_unicode_ci NOT NULL
@@ -267,6 +262,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('administrador', '/aquarium/detail'),
 ('administrador', '/aquarium/index'),
 ('administrador', '/aquarium/update'),
+('administrador', '/aquarium/validation'),
 ('administrador', '/aquarium/view'),
 ('administrador', '/debug/*'),
 ('administrador', '/debug/default/*'),
@@ -314,7 +310,6 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 -- Estructura de tabla para la tabla `auth_rule`
 --
 
-DROP TABLE IF EXISTS `auth_rule`;
 CREATE TABLE `auth_rule` (
   `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `data` blob,
@@ -328,7 +323,6 @@ CREATE TABLE `auth_rule` (
 -- Estructura de tabla para la tabla `condiciones_ambientales`
 --
 
-DROP TABLE IF EXISTS `condiciones_ambientales`;
 CREATE TABLE `condiciones_ambientales` (
   `idcondiciones_ambientales` int(11) NOT NULL,
   `ph` double NOT NULL,
@@ -346,7 +340,6 @@ CREATE TABLE `condiciones_ambientales` (
 -- Estructura de tabla para la tabla `ejemplares`
 --
 
-DROP TABLE IF EXISTS `ejemplares`;
 CREATE TABLE `ejemplares` (
   `especies_idespecie` int(11) NOT NULL,
   `acuarios_idacuario` int(11) NOT NULL,
@@ -359,7 +352,6 @@ CREATE TABLE `ejemplares` (
 -- Estructura de tabla para la tabla `especies`
 --
 
-DROP TABLE IF EXISTS `especies`;
 CREATE TABLE `especies` (
   `idespecie` int(11) NOT NULL,
   `nombre` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
@@ -384,7 +376,6 @@ CREATE TABLE `especies` (
 -- Estructura de tabla para la tabla `estados_planificacion`
 --
 
-DROP TABLE IF EXISTS `estados_planificacion`;
 CREATE TABLE `estados_planificacion` (
   `idestado_planificacion` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -404,7 +395,6 @@ INSERT INTO `estados_planificacion` (`idestado_planificacion`) VALUES
 -- Estructura de tabla para la tabla `insumos`
 --
 
-DROP TABLE IF EXISTS `insumos`;
 CREATE TABLE `insumos` (
   `idinsumo` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
@@ -420,7 +410,6 @@ CREATE TABLE `insumos` (
 -- Estructura de tabla para la tabla `menu`
 --
 
-DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
   `id` int(11) NOT NULL,
   `name` varchar(128) NOT NULL,
@@ -436,7 +425,6 @@ CREATE TABLE `menu` (
 -- Estructura de tabla para la tabla `migration`
 --
 
-DROP TABLE IF EXISTS `migration`;
 CREATE TABLE `migration` (
   `version` varchar(180) NOT NULL,
   `apply_time` int(11) DEFAULT NULL
@@ -458,7 +446,6 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 -- Estructura de tabla para la tabla `motivos_rechazo`
 --
 
-DROP TABLE IF EXISTS `motivos_rechazo`;
 CREATE TABLE `motivos_rechazo` (
   `idmotivo_rechazo` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -479,7 +466,6 @@ INSERT INTO `motivos_rechazo` (`idmotivo_rechazo`) VALUES
 -- Estructura de tabla para la tabla `notificaciones`
 --
 
-DROP TABLE IF EXISTS `notificaciones`;
 CREATE TABLE `notificaciones` (
   `idnotificacion` int(11) NOT NULL,
   `fechahora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -493,7 +479,6 @@ CREATE TABLE `notificaciones` (
 -- Estructura de tabla para la tabla `origen_notificacion`
 --
 
-DROP TABLE IF EXISTS `origen_notificacion`;
 CREATE TABLE `origen_notificacion` (
   `idorigen_notificacion` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -512,7 +497,6 @@ INSERT INTO `origen_notificacion` (`idorigen_notificacion`) VALUES
 -- Estructura de tabla para la tabla `planificaciones`
 --
 
-DROP TABLE IF EXISTS `planificaciones`;
 CREATE TABLE `planificaciones` (
   `idplanificacion` int(11) NOT NULL,
   `titulo` varchar(45) NOT NULL,
@@ -530,7 +514,6 @@ CREATE TABLE `planificaciones` (
 -- Estructura de tabla para la tabla `tareas`
 --
 
-DROP TABLE IF EXISTS `tareas`;
 CREATE TABLE `tareas` (
   `idtarea` int(11) NOT NULL,
   `titulo` varchar(45) NOT NULL,
@@ -549,7 +532,6 @@ CREATE TABLE `tareas` (
 -- Estructura de tabla para la tabla `tareas_insumos`
 --
 
-DROP TABLE IF EXISTS `tareas_insumos`;
 CREATE TABLE `tareas_insumos` (
   `insumos_idinsumo` int(11) NOT NULL,
   `tarea_idtarea` int(11) NOT NULL,
@@ -562,7 +544,6 @@ CREATE TABLE `tareas_insumos` (
 -- Estructura de tabla para la tabla `tipos_tarea`
 --
 
-DROP TABLE IF EXISTS `tipos_tarea`;
 CREATE TABLE `tipos_tarea` (
   `idtipo_tarea` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -584,7 +565,6 @@ INSERT INTO `tipos_tarea` (`idtipo_tarea`) VALUES
 -- Estructura de tabla para la tabla `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -603,7 +583,6 @@ CREATE TABLE `user` (
 -- Estructura de tabla para la tabla `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(45) NOT NULL,
@@ -631,7 +610,6 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `nombre_usuario`, `e
 -- Estructura de tabla para la tabla `validaciones`
 --
 
-DROP TABLE IF EXISTS `validaciones`;
 CREATE TABLE `validaciones` (
   `idvalidacion` int(11) NOT NULL,
   `fechahora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -649,7 +627,8 @@ CREATE TABLE `validaciones` (
 -- Indices de la tabla `acuarios`
 --
 ALTER TABLE `acuarios`
-  ADD PRIMARY KEY (`idacuario`);
+  ADD PRIMARY KEY (`idacuario`),
+  ADD UNIQUE KEY `nombre` (`nombre`);
 
 --
 -- Indices de la tabla `acuarios_usuarios`
@@ -815,7 +794,7 @@ ALTER TABLE `validaciones`
 -- AUTO_INCREMENT de la tabla `acuarios`
 --
 ALTER TABLE `acuarios`
-  MODIFY `idacuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idacuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `condiciones_ambientales`
 --
@@ -876,89 +855,6 @@ ALTER TABLE `validaciones`
 ALTER TABLE `acuarios_usuarios`
   ADD CONSTRAINT `fk_acuarios_usuarios_idacuario` FOREIGN KEY (`acuario_idacuario`) REFERENCES `acuarios` (`idacuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_acuarios_usuarios_idusuario` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuarios` (`id_usuario`);
-
---
--- Filtros para la tabla `auth_assignment`
---
-ALTER TABLE `auth_assignment`
-  ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_asignment_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `auth_item`
---
-ALTER TABLE `auth_item`
-  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `auth_item_child`
---
-ALTER TABLE `auth_item_child`
-  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `condiciones_ambientales`
---
-ALTER TABLE `condiciones_ambientales`
-  ADD CONSTRAINT `fk_CONDAMBIENTAL_idACUARIO` FOREIGN KEY (`acuario_idacuario`) REFERENCES `acuarios` (`idacuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_CONDAMBIENTAL_idTAREA` FOREIGN KEY (`tarea_idtarea`) REFERENCES `tareas` (`idtarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `ejemplares`
---
-ALTER TABLE `ejemplares`
-  ADD CONSTRAINT `fk_ESPECIE_idACUARIO` FOREIGN KEY (`acuarios_idacuario`) REFERENCES `acuarios` (`idacuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_ESPECIE_idESPECIE` FOREIGN KEY (`especies_idespecie`) REFERENCES `especies` (`idespecie`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `insumos`
---
-ALTER TABLE `insumos`
-  ADD CONSTRAINT `fk_INSUMO_idTIPO_TAREA` FOREIGN KEY (`tipos_tarea_idtipo_tarea`) REFERENCES `tipos_tarea` (`idtipo_tarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `menu`
---
-ALTER TABLE `menu`
-  ADD CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `menu` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `notificaciones`
---
-ALTER TABLE `notificaciones`
-  ADD CONSTRAINT `fk_NOTIFICACION_idORIGEN_NOTIFICACION` FOREIGN KEY (`origen_notificacion`) REFERENCES `origen_notificacion` (`idorigen_notificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_NOTIFICACION_idTAREA` FOREIGN KEY (`tareas_idtarea`) REFERENCES `tareas` (`idtarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `planificaciones`
---
-ALTER TABLE `planificaciones`
-  ADD CONSTRAINT `fk_PLANIFICACION_ACUARIO_USUARIO1` FOREIGN KEY (`acuarios_usuarios_acuarios_idacuario`,`acuarios_usuarios_usuarios_idusuario`) REFERENCES `acuario_usuario` (`acuario_idacuario`, `usuario_idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_PLANIFICACION_idESTADO_PLANIFICACION` FOREIGN KEY (`estados_planificacion_idestado_planificacion`) REFERENCES `estados_planificacion` (`idestado_planificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `tareas`
---
-ALTER TABLE `tareas`
-  ADD CONSTRAINT `fk_TAREA_idPLANIFICACION` FOREIGN KEY (`planificaciones_idplanificacion`) REFERENCES `planificaciones` (`idplanificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_TAREA_idTIPO_TAREA` FOREIGN KEY (`tipos_tarea_idtipo_tarea`) REFERENCES `tipos_tarea` (`idtipo_tarea`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_TAREA_idUSUARIO` FOREIGN KEY (`usuarios_idusuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `tareas_insumos`
---
-ALTER TABLE `tareas_insumos`
-  ADD CONSTRAINT `fk_TAREA_INSUMO_idINSUMO` FOREIGN KEY (`insumos_idinsumo`) REFERENCES `insumos` (`idinsumo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_TAREA_INSUMO_idTAREA` FOREIGN KEY (`tarea_idtarea`) REFERENCES `tareas` (`idtarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `validaciones`
---
-ALTER TABLE `validaciones`
-  ADD CONSTRAINT `fk_VALIDACION_idMOTIVO_RECHAZO` FOREIGN KEY (`motivos_rechazo_idmotivo_rechazo`) REFERENCES `motivos_rechazo` (`idmotivo_rechazo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_VALIDACION_idPLANIFICACION` FOREIGN KEY (`planificaciones_idplanificacion`) REFERENCES `planificaciones` (`idplanificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_VALIDACION_idUSUARIO` FOREIGN KEY (`usuarios_idusuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
