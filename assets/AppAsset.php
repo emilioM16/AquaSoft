@@ -20,12 +20,12 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/login.css',
-        'css/acuarios.css',
+        'css/aquariums.css',
         'css/planifications.css',
         'css/specimens.css',
     ];
     public $js = [
-        'js/acuario.js',
+        'js/aquariums.js',
         'js/site.js',
         'js/planifications.js',
         'js/specialists.js',
@@ -34,5 +34,6 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         '\delocker\animate\AnimateAssetBundle',
+        'app\assets\SweetAlertAsset',
     ];
 }

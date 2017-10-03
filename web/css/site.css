@@ -289,3 +289,15 @@ a.desc:after {
 .icon:hover{
     fill: white;
 }
+
+.modalTitle{
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+textarea{
+    resize: vertical;
+    max-height: 200px;
+    min-height: 100px;
+}
