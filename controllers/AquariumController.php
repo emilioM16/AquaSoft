@@ -81,10 +81,6 @@ class AquariumController extends Controller
                 return $this->renderAjax('create',[
                     'model'=>$model,
                 ]);
-            }else{
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
             }
         }
     }
@@ -120,9 +116,10 @@ class AquariumController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
-        $this->findModel($id)->delete();
+        $idacuario = Yii::$app->request->post('idacuario');
+        $this->findModel($idacuario)->delete();
 
         return $this->redirect(['index']);
     }

@@ -30,7 +30,8 @@
         "2amigos/yii2-date-time-picker-widget": "~1.0",
         "kartik-v/yii2-widget-touchspin": "*",
         "kartik-v/yii2-builder": "@dev",
-        "kartik-v/yii2-widget-activeform": "@dev"
+        "kartik-v/yii2-widget-activeform": "@dev",
+        "yii2mod/yii2-sweet-alert": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

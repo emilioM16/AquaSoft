@@ -34,5 +34,6 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         '\delocker\animate\AnimateAssetBundle',
+        'app\assets\SweetAlertAsset',
     ];
 }

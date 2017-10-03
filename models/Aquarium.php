@@ -10,14 +10,12 @@ use Yii;
  * @property integer $idacuario
  * @property string $nombre
  * @property string $descripcion
+ * @property integer $capacidad_maxima
  * @property integer $espaciodisponible
  * @property integer $activo
  *
  * @property AcuariosUsuarios[] $acuariosUsuarios
  * @property Usuarios[] $usuarioIdusuarios
- * @property CondicionesAmbientales[] $condicionesAmbientales
- * @property Ejemplares[] $ejemplares
- * @property Especies[] $especieIdespecies
  */
 class Aquarium extends \yii\db\ActiveRecord
 {
@@ -35,11 +33,11 @@ class Aquarium extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'espaciodisponible','activo'], 'required'],
-            [['espaciodisponible', 'activo'], 'integer'],
+            [['nombre', 'capacidad_maxima','activo'], 'required'],
+            [['capacidad_maxima', 'espaciodisponible', 'activo'], 'integer'],
             [['nombre'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [['nombre'], 'unique'], 
+            [['nombre'],'unique']
         ];
     }
 
@@ -51,8 +49,9 @@ class Aquarium extends \yii\db\ActiveRecord
         return [
             'idacuario' => 'Idacuario',
             'nombre' => 'Nombre',
-            'descripcion' => 'Descripción',
-            'espaciodisponible' => 'Espacio disponible',
+            'descripcion' => 'Descripcion',
+            'capacidad_maxima' => 'Capacidad Maxima',
+            'espaciodisponible' => 'Espaciodisponible',
             'activo' => 'Activo',
         ];
     }
@@ -73,27 +72,8 @@ class Aquarium extends \yii\db\ActiveRecord
         return $this->hasMany(Usuarios::className(), ['id_usuario' => 'usuario_idusuario'])->viaTable('acuarios_usuarios', ['acuario_idacuario' => 'idacuario']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCondicionesAmbientales()
-    {
-        return $this->hasMany(CondicionesAmbientales::className(), ['acuario_idacuario' => 'idacuario']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEjemplares()
-    {
-        return $this->hasMany(Ejemplares::className(), ['acuario_idacuario' => 'idacuario']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEspecieIdespecies()
-    {
-        return $this->hasMany(Especies::className(), ['idespecie' => 'especie_idespecie'])->viaTable('ejemplares', ['acuario_idacuario' => 'idacuario']);
+    public function beforeSave($insert){
+        $this->espaciodisponible = $this->capacidad_maxima;
+        return parent::beforeSave($insert);
     }
 }

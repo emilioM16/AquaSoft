@@ -17,20 +17,6 @@ use rmrevin\yii\fontawesome\FA;
         ?>
         <p>
             <?php
-              // echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
-              //               [
-              //                 'view',
-              //                 'idacuario'=>$model->idacuario,
-              //                 // 'nombre' => $model->nombre, 
-              //                 // 'id_condiciones_ambientales' => $model->id_condiciones_ambientales, 
-              //                 // 'usuarios_nombre_usuario' => $model->usuarios_nombre_usuario
-              //               ], 
-              //               [
-              //                 'class' => 'inModal viewAquarium',
-              //                 'data-pjax' => '0',
-              //                 'method'=>'get'
-              //               ]);
-
               echo  Html::button('<span class="glyphicon glyphicon-eye-open"></span>', 
                     [
                       'value' => Url::to(['aquarium/view','idacuario'=>$model->idacuario]), 
@@ -47,25 +33,34 @@ use rmrevin\yii\fontawesome\FA;
                     ]);
 
 
-              // echo Html::a('<span class="glyphicon glyphicon-trash"></span>',
-              //               [
-              //                 'delete',
-              //                 'nombre' => $model->nombre,
-              //                 // 'id_condiciones_ambientales' => $model->id_condiciones_ambientales,
-              //                 // 'usuarios_nombre_usuario' => $model->usuarios_nombre_usuario
-              //               ],
-              //               [
-              //                 'class' => 'inModal',
-              //                 'data-pjax' => '0'
-              //             ]);
 
+              // echo  Html::button('<span class="glyphicon glyphicon-trash"></span>', 
+              // [
+              //   'value' => Url::to(['aquarium/delete','idacuario'=>$model->idacuario]), 
+              //   'title' => 'Eliminar acuario', 
+              //   'class' => 'btn btn-danger btnAquarium',
+              //   'method'=>'post'
+              // ]);
 
-              echo  Html::button('<span class="glyphicon glyphicon-trash"></span>', 
-              [
-                'value' => Url::to(['aquarium/delete','idacuario'=>$model->idacuario]), 
-                'title' => 'Eliminar acuario', 
-                'class' => 'btn btn-danger showModalButton btnAquarium'
-              ]);
+              echo Html::a('<span class="glyphicon glyphicon-trash"></span>', 
+              [ 
+                'delete', 
+                // 'nombre' => $model->nombre, 
+                // 'id_condiciones_ambientales' => $model->id_condiciones_ambientales, 
+                // 'usuarios_nombre_usuario' => $model->usuarios_nombre_usuario 
+              ], 
+              [ 
+                'class' => 'btn btn-danger btnAquarium', 
+                'data-pjax' => '0',
+                'data'=>[
+                  'method'=>'POST',
+                  'params'=>[
+                    'idacuario'=>$model->idacuario,
+                  ],
+                  'confirm'=>'¿Está seguro de querer eliminar el acuario '.$model->nombre.'?',
+                ]
+                
+            ]); 
 
               echo Html::a('Detalle', 
                             [

@@ -16,6 +16,8 @@ use rmrevin\yii\fontawesome\FA;
     <?php 
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
+            'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
+            'validationUrl'=> Url::toRoute('aquarium/validation'), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
         echo Form::widget([
@@ -30,10 +32,10 @@ use rmrevin\yii\fontawesome\FA;
                         'maxlength'=>true,
                     ]
                 ],
-                'espaciodisponible'=>[
+                'capacidad_maxima'=>[
                     'type'=>Form::INPUT_TEXT,
                     'options'=>[
-                        'placeholder'=>'Ingrese el espacio',
+                        'placeholder'=>'Ingrese la capacidad',
                     ]
                 ],
                 'activo'=>[
