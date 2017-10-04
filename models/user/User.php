@@ -29,7 +29,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     public $contrasenia_repeat;
 
-    public $assignedAquariumsIds = [];
+    public $assignedAquariumsIds = []; //conjunto de acuarios que se le asignaron al especialista a través del formulario//
 
     /**
      * @inheritdoc
@@ -66,7 +66,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'contrasenia' => 'Contraseña',
             'contrasenia_repeat'=>'Repetir contraseña',
             'activo' => 'Activo',
-            'assignedAquariumsIds'=>'Asignar acuarios'
+            'assignedAquariumsIds'=>'Asignación acuarios'
         ];
     }
 

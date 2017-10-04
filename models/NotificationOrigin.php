@@ -8,6 +8,8 @@ use Yii;
  * This is the model class for table "origen_notificacion".
  *
  * @property string $idorigen_notificacion
+ *
+ * @property Notificaciones[] $notificaciones
  */
 class NotificationOrigin extends \yii\db\ActiveRecord
 {
@@ -38,5 +40,13 @@ class NotificationOrigin extends \yii\db\ActiveRecord
         return [
             'idorigen_notificacion' => 'Idorigen Notificacion',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotificaciones()
+    {
+        return $this->hasMany(Notificaciones::className(), ['origen_notificacion_idorigen_notificacion' => 'idorigen_notificacion']);
     }
 }

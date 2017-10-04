@@ -8,6 +8,8 @@ use Yii;
  * This is the model class for table "motivos_rechazo".
  *
  * @property string $idmotivo_rechazo
+ *
+ * @property Validaciones[] $validaciones
  */
 class RejectedMotives extends \yii\db\ActiveRecord
 {
@@ -38,5 +40,13 @@ class RejectedMotives extends \yii\db\ActiveRecord
         return [
             'idmotivo_rechazo' => 'Idmotivo Rechazo',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getValidaciones()
+    {
+        return $this->hasMany(Validaciones::className(), ['motivo_rechazo_idmotivo_rechazo' => 'idmotivo_rechazo']);
     }
 }

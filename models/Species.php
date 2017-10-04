@@ -22,6 +22,9 @@ use Yii;
  * @property double $minco2
  * @property double $maxco2
  * @property integer $activo
+ *
+ * @property Ejemplares[] $ejemplares
+ * @property Acuarios[] $acuarioIdacuarios
  */
 class Species extends \yii\db\ActiveRecord
 {
@@ -69,5 +72,21 @@ class Species extends \yii\db\ActiveRecord
             'maxco2' => 'Maxco2',
             'activo' => 'Activo',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEjemplares()
+    {
+        return $this->hasMany(Ejemplares::className(), ['especie_idespecie' => 'idespecie']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAcuarioIdacuarios()
+    {
+        return $this->hasMany(Acuarios::className(), ['idacuario' => 'acuario_idacuario'])->viaTable('ejemplares', ['especie_idespecie' => 'idespecie']);
     }
 }
