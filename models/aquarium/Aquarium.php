@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\aquarium;
 
 use Yii;
 
@@ -33,11 +33,12 @@ class Aquarium extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'capacidad_maxima','activo'], 'required'],
+            [['nombre', 'capacidad_maxima'], 'required', 'message'=>'Campo obligatorio.'],
+            [['activo'],'required','message'=>'Seleccione una opción.'],
             [['capacidad_maxima', 'espaciodisponible', 'activo'], 'integer'],
             [['nombre'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [['nombre'],'unique']
+            [['nombre'],'unique','message'=>'El nombre ingresado ya existe.']
         ];
     }
 
@@ -49,9 +50,9 @@ class Aquarium extends \yii\db\ActiveRecord
         return [
             'idacuario' => 'Idacuario',
             'nombre' => 'Nombre',
-            'descripcion' => 'Descripcion',
-            'capacidad_maxima' => 'Capacidad Maxima',
-            'espaciodisponible' => 'Espaciodisponible',
+            'descripcion' => 'Descripción',
+            'capacidad_maxima' => 'Capacidad máxima',
+            'espaciodisponible' => 'Espacio disponible',
             'activo' => 'Activo',
         ];
     }

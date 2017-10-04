@@ -24,15 +24,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?=   
-        '<p>'
-            .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar acuario', 
-            [
-            'value' => Url::to(['aquarium/create']), 
-            'title' => 'Agregar acuario', 
-            'class' => 'showModalButton btn btn-success'
-            ]).
-        '</p>';
+    <?php 
+        if(Yii::$app->session->get('user.role')!='especialista'){
+            
+         echo   '<p>'
+                .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar acuario', 
+                [
+                'value' => Url::to(['aquarium/create']), 
+                'title' => 'Agregar acuario', 
+                'class' => 'showModalButton btn btn-success'
+                ]).
+            '</p>';
+        }
     ?>
 
 
@@ -59,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= ListView::widget([
        'dataProvider' => $dataProvider,
        'itemView' => '_item',
+       'summary'=>'',
     ]);
     ?> 
 <?php Pjax::end(); ?></div>

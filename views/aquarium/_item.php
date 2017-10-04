@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use rmrevin\yii\fontawesome\FA;
 ?>
-
+<?php if($model->activo==1){?>
   <div id="acuario" class="acuarios col-sm-6 col-md-4 col-lg-2">
     <div class="thumbnail">
       <img src="/img/itemAcuario.jpg">
@@ -42,7 +42,7 @@ use rmrevin\yii\fontawesome\FA;
               //   'method'=>'post'
               // ]);
 
-              echo Html::a('<span class="glyphicon glyphicon-trash"></span>', 
+              echo Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', 
               [ 
                 'delete', 
                 // 'nombre' => $model->nombre, 
@@ -57,7 +57,7 @@ use rmrevin\yii\fontawesome\FA;
                   'params'=>[
                     'idacuario'=>$model->idacuario,
                   ],
-                  'confirm'=>'¿Está seguro de querer eliminar el acuario '.$model->nombre.'?',
+                  'confirm'=>'¿Está seguro de querer dar de baja el acuario '.$model->nombre.'?',
                 ]
                 
             ]); 
@@ -87,3 +87,4 @@ use rmrevin\yii\fontawesome\FA;
       </div>
     </div>
   </div>
+  <?php } ?>

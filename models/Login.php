@@ -3,7 +3,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\helpers\VarDumper;
-use app\models\User;
+use app\models\user\User;
 
 class Login extends Model{
 
