@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Exception;
+use app\models\aquarium\Aquarium;
 /**
  * UserController implements the CRUD actions for User model.
  */
@@ -65,8 +66,10 @@ class UserController extends Controller
         if($userModel->saveUser()){
             return $this->redirect(['view', 'id' => $userModel->id_usuario]);      
         }else{
+            $items = Aquarium::getActiveAquariums();
             return $this->render('create', [
                 'model' => $userModel,
+                'items'=>$items
             ]);
         }
 
