@@ -3,9 +3,9 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\User;
+use app\models\user\User;
 use app\models\AuthAssignment;
-use app\models\UserSearch;
+use app\models\user\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

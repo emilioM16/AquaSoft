@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Aquarium;
-use app\models\AquariumSearch;
+use app\models\aquarium\Aquarium;
+use app\models\aquarium\AquariumSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -119,7 +119,11 @@ class AquariumController extends Controller
     public function actionDelete()
     {
         $idacuario = Yii::$app->request->post('idacuario');
-        $this->findModel($idacuario)->delete();
+
+        $model = $this->findModel($idacuario);
+        $model->activo = 0;
+        $model->save();
+        // $this->findModel($idacuario)->delete();
 
         return $this->redirect(['index']);
     }

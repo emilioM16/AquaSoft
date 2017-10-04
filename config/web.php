@@ -14,10 +14,10 @@ $config = [
             'controllerMap'=>[
                 'assignment'=>[
                     'class'=>'mdm\admin\controllers\AssignmentController',
-                    'userClassName' => 'app\models\User',
+                    'userClassName' => 'app\models\user\User',
                     'idField'=>'id_usuario',
                     'usernameField' => 'nombre_usuario',
-                    'searchClass'=>'app\models\UserSearch',
+                    'searchClass'=>'app\models\user\UserSearch',
                 ],
             ],
         ]
@@ -44,7 +44,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\user\User',
             'loginUrl'=> ['site/login'],
             'enableAutoLogin' => true,
             'enableSession'=>true,

@@ -1,16 +1,16 @@
 <?php
 
-namespace app\models;
+namespace app\models\user;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Aquarium;
+use app\models\user\User;
 
 /**
- * AquariumSearch represents the model behind the search form about `app\models\Aquarium`.
+ * UserSearch represents the model behind the search form about `app\models\User`.
  */
-class AquariumSearch extends Aquarium
+class UserSearch extends User
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class AquariumSearch extends Aquarium
     public function rules()
     {
         return [
-            [['idacuario', 'espaciodisponible', 'activo'], 'integer'],
-            [['nombre', 'descripcion'], 'safe'],
+            [['id_usuario', 'activo'], 'integer'],
+            [['nombre', 'apellido', 'nombre_usuario', 'email', 'contrasenia'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class AquariumSearch extends Aquarium
      */
     public function search($params)
     {
-        $query = Aquarium::find();
+        $query = User::find();
 
         // add conditions that should always apply here
 
@@ -59,13 +59,15 @@ class AquariumSearch extends Aquarium
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idacuario' => $this->idacuario,
-            'espaciodisponible' => $this->espaciodisponible,
+            'id_usuario' => $this->id_usuario,
             'activo' => $this->activo,
         ]);
 
         $query->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+            ->andFilterWhere(['like', 'apellido', $this->apellido])
+            ->andFilterWhere(['like', 'nombre_usuario', $this->nombre_usuario])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'contrasenia', $this->contrasenia]);
 
         return $dataProvider;
     }
