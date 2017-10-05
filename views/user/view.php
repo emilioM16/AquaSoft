@@ -35,6 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             // 'contrasenia',
             'activo',
+            // [
+            //     'label'=>'assignedAquariums',
+            //     'value'=>$model->
+
+            // ]
+
         ],
     ]) ?>
 

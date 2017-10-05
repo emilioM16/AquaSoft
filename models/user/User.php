@@ -178,6 +178,13 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
 
+    // public function assignedToString(){
+    //     $assignedString = "";
+    //     foreach ($this->assignedAquariums as $aa) {
+    //         $assignedString = $aa->
+    //     }
+    // }
+
     public function loadAssignedAquariums(){
         $this->assignedAquariums = [];
         $aquariums = UserAquariums::find()->where(['usuario_idusuario'=>$this->id_usuario])->all();

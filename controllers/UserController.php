@@ -53,12 +53,21 @@ class UserController extends Controller
      * @param string $id
      * @return mixed
      */
-     public function actionView($id)
-     {
-         return $this->render('view', [
-             'model' => $this->findModel($id),
-         ]);
-     }
+    public function actionView($id)
+    {
+        $model = $this->findModel($id);
+        $model->loadAssignedAquariums();
+
+        if (Yii::$app->request->isAjax){
+            return $this->renderAjax('view',[
+                'model'=>$model,
+            ]);
+        }else{
+            return $this->render('view', [
+                'model' => $model,
+            ]);
+        }
+    }
 
 
     public function actionCreate()

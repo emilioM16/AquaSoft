@@ -50,8 +50,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{update}{delete}',
+                'template'=>'{view}{update}{delete}',
                 'buttons' => [
+                    'view'=>function($url,$model){
+                        return Html::button('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>', 
+                        [
+                          'value' => Url::to(['user/view','id'=>$model->id_usuario]), 
+                          'title' => 'Información del especialista: '.$model->nombre_usuario, 
+                          'class' => 'showModalButton btn btn-success btnAquarium'
+                        ]);
+                    },
                     'update'=>function($url,$model){
                         return Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
                         [
