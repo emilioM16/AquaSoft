@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "35ed07ad2bb8649c19ca7ea64949d142",
+    "content-hash": "90cabffe3a7b4d8a75c18da0ed3b1745",
     "packages": [
         {
             "name": "2amigos/yii2-date-time-picker-widget",
@@ -429,16 +429,16 @@
         },
         {
             "name": "bower-asset/slick-carousel",
-            "version": "1.8.0",
+            "version": "v1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kenwheeler/slick.git",
-                "reference": "f9a8733207a558bcd0ace7c0746f596660f89dbf"
+                "reference": "0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kenwheeler/slick/zipball/f9a8733207a558bcd0ace7c0746f596660f89dbf",
-                "reference": "f9a8733207a558bcd0ace7c0746f596660f89dbf",
+                "url": "https://api.github.com/repos/kenwheeler/slick/zipball/0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee",
+                "reference": "0f40c9d6a02a5c08b5f4dd80fdada3a854a59bee",
                 "shasum": ""
             },
             "require": {
@@ -677,7 +677,7 @@
                 "delocker",
                 "yii2"
             ],
-            "time": "2015-10-05T23:33:01+00:00"
+            "time": "2015-10-05 23:33:01"
         },
         {
             "name": "evgeniyrru/yii2-slick",
@@ -816,6 +816,46 @@
                 "icon"
             ],
             "time": "2016-10-24T15:52:54+00:00"
+        },
+        {
+            "name": "istvan-ujjmeszaros/bootstrap-duallistbox",
+            "version": "3.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox.git",
+                "reference": "4ebd0727b27425b96204cb0dde1d8ce564676403"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/istvan-ujjmeszaros/bootstrap-duallistbox/zipball/4ebd0727b27425b96204cb0dde1d8ce564676403",
+                "reference": "4ebd0727b27425b96204cb0dde1d8ce564676403",
+                "shasum": ""
+            },
+            "suggest": {
+                "components/jquery": "2.0.*",
+                "twbs/bootstrap": "3.*"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "István Ujj-Mészáros",
+                    "homepage": "https://github.com/istvan-ujjmeszaros"
+                }
+            ],
+            "description": "A responsive dual listbox widget optimized for Twitter Bootstrap. It works on all modern browsers and on touch devices.",
+            "homepage": "http://www.virtuosoft.eu/code/bootstrap-duallistbox/",
+            "keywords": [
+                "bootstrap",
+                "bootstrap duallistbox",
+                "bootstrap select",
+                "duallistbox",
+                "select"
+            ],
+            "time": "2016-09-06T13:18:25+00:00"
         },
         {
             "name": "kartik-v/bootstrap-popover-x",
@@ -961,7 +1001,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-08-29T13:04:56+00:00"
+            "time": "2017-08-29 13:04:56"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -1216,7 +1256,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2017-09-22T15:47:48+00:00"
+            "time": "2017-09-22 15:47:48"
         },
         {
             "name": "kartik-v/yii2-tabs-x",
@@ -1321,7 +1361,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-11-24T17:29:45+00:00"
+            "time": "2016-11-24 17:29:45"
         },
         {
             "name": "kartik-v/yii2-widget-touchspin",
@@ -1576,6 +1616,43 @@
             "time": "2017-09-20T17:11:40+00:00"
         },
         {
+            "name": "reportico/yii2-reportico",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reportico-web/yii2-reportico.git",
+                "reference": "24f70373fa5d6ccc120ad0ebe3fababf51ea9f5c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reportico-web/yii2-reportico/zipball/24f70373fa5d6ccc120ad0ebe3fababf51ea9f5c",
+                "reference": "24f70373fa5d6ccc120ad0ebe3fababf51ea9f5c",
+                "shasum": ""
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "reportico\\reportico\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Peter Deed",
+                    "email": "info@reportico.org"
+                }
+            ],
+            "description": "Reportico",
+            "keywords": [
+                "extension",
+                "yii2"
+            ],
+            "time": "2016-11-25T17:33:47+00:00"
+        },
+        {
             "name": "rmrevin/yii2-fontawesome",
             "version": "2.17.1",
             "source": {
@@ -1626,6 +1703,51 @@
                 "yii"
             ],
             "time": "2017-01-11T14:05:47+00:00"
+        },
+        {
+            "name": "softark/yii2-dual-listbox",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/softark/yii2-dual-listbox.git",
+                "reference": "9f594ebdacb3bda4483479848a449ac22ebd7505"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/softark/yii2-dual-listbox/zipball/9f594ebdacb3bda4483479848a449ac22ebd7505",
+                "reference": "9f594ebdacb3bda4483479848a449ac22ebd7505",
+                "shasum": ""
+            },
+            "require": {
+                "istvan-ujjmeszaros/bootstrap-duallistbox": "~3.0.6",
+                "yiisoft/yii2": "~2.0.0"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "softark\\duallistbox\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nobuo Kihara",
+                    "email": "softark@gmail.com",
+                    "homepage": "http://softark.net"
+                }
+            ],
+            "description": "Dual Listbox Widget for Yii 2",
+            "keywords": [
+                "dual-listbox",
+                "duallistbox",
+                "widget",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2017-06-27 04:47:12"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4699,7 +4821,9 @@
         "kartik-v/yii2-popover-x": 20,
         "delocker/yii2-animate.css": 20,
         "kartik-v/yii2-builder": 20,
-        "kartik-v/yii2-widget-activeform": 20
+        "kartik-v/yii2-widget-activeform": 20,
+        "reportico/yii2-reportico": 20,
+        "softark/yii2-dual-listbox": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

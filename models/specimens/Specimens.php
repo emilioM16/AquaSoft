@@ -7,9 +7,12 @@ use Yii;
 /**
  * This is the model class for table "ejemplares".
  *
- * @property integer $especies_idespecie
- * @property integer $acuarios_idacuario
+ * @property integer $especie_idespecie
+ * @property integer $acuario_idacuario
  * @property integer $cantidad
+ *
+ * @property Acuarios $acuarioIdacuario
+ * @property Especies $especieIdespecie
  */
 class Specimens extends \yii\db\ActiveRecord
 {
@@ -27,8 +30,10 @@ class Specimens extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['especies_idespecie', 'acuarios_idacuario', 'cantidad'], 'required'],
-            [['especies_idespecie', 'acuarios_idacuario', 'cantidad'], 'integer'],
+            [['especie_idespecie', 'acuario_idacuario', 'cantidad'], 'required'],
+            [['especie_idespecie', 'acuario_idacuario', 'cantidad'], 'integer'],
+            [['acuario_idacuario'], 'exist', 'skipOnError' => true, 'targetClass' => Acuarios::className(), 'targetAttribute' => ['acuario_idacuario' => 'idacuario']],
+            [['especie_idespecie'], 'exist', 'skipOnError' => true, 'targetClass' => Especies::className(), 'targetAttribute' => ['especie_idespecie' => 'idespecie']],
         ];
     }
 
@@ -38,9 +43,25 @@ class Specimens extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'especies_idespecie' => 'Especies Idespecie',
-            'acuarios_idacuario' => 'Acuarios Idacuario',
+            'especie_idespecie' => 'Especie Idespecie',
+            'acuario_idacuario' => 'Acuario Idacuario',
             'cantidad' => 'Cantidad',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAcuarioIdacuario()
+    {
+        return $this->hasOne(Acuarios::className(), ['idacuario' => 'acuario_idacuario']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEspecieIdespecie()
+    {
+        return $this->hasOne(Especies::className(), ['idespecie' => 'especie_idespecie']);
     }
 }

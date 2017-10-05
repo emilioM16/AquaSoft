@@ -38,7 +38,11 @@ class Aquarium extends \yii\db\ActiveRecord
             [['capacidad_maxima', 'espaciodisponible', 'activo'], 'integer'],
             [['nombre'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [['nombre'],'unique','message'=>'El nombre ingresado ya existe.']
+            [ ['nombre'], 'unique', 'when' => function ($model, $attribute) { 
+                return $model->{$attribute} !== static::getAquarium($model->idacuario)->$attribute; }, 
+                'on' => 'update',
+                'message'=>'El nombre ingresado ya existe'], //en caso de ser una modificación de datos 
+            [['nombre'], 'unique', 'on' => 'create', 'message'=>'El nombre ingresado ya existe'], //en caso de crear un nuevo especialista
         ];
     }
 
@@ -99,6 +103,9 @@ class Aquarium extends \yii\db\ActiveRecord
         return $this->hasMany(Especies::className(), ['idespecie' => 'especie_idespecie'])->viaTable('ejemplares', ['acuario_idacuario' => 'idacuario']);
     }
 
+    public function getAquarium($id){
+        return static::findOne(['idacuario'=>$id]);
+    }
 
     public function beforeSave($insert){
         $this->espaciodisponible = $this->capacidad_maxima;

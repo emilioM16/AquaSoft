@@ -12,9 +12,14 @@ use Yii;
  * @property string $aniomes
  * @property string $fechahoracreacion
  * @property integer $activo
- * @property string $estados_planificacion_idestado_planificacion
- * @property integer $acuarios_usuarios_acuarios_idacuario
- * @property integer $acuarios_usuarios_usuarios_idusuario
+ * @property string $estado_planificacion_idestado_planificacion
+ * @property integer $acuario_usuario_acuario_idacuario
+ * @property integer $acuario_usuario_usuario_idusuario
+ *
+ * @property AcuariosUsuarios $acuarioUsuarioAcuarioIdacuario
+ * @property EstadosPlanificacion $estadoPlanificacionIdestadoPlanificacion
+ * @property Tareas[] $tareas
+ * @property Validaciones[] $validaciones
  */
 class Planning extends \yii\db\ActiveRecord
 {
@@ -32,10 +37,12 @@ class Planning extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'aniomes', 'estados_planificacion_idestado_planificacion', 'acuarios_usuarios_acuarios_idacuario', 'acuarios_usuarios_usuarios_idusuario'], 'required'],
+            [['titulo', 'aniomes', 'estado_planificacion_idestado_planificacion', 'acuario_usuario_acuario_idacuario', 'acuario_usuario_usuario_idusuario'], 'required'],
             [['aniomes', 'fechahoracreacion'], 'safe'],
-            [['activo', 'acuarios_usuarios_acuarios_idacuario', 'acuarios_usuarios_usuarios_idusuario'], 'integer'],
-            [['titulo', 'estados_planificacion_idestado_planificacion'], 'string', 'max' => 45],
+            [['activo', 'acuario_usuario_acuario_idacuario', 'acuario_usuario_usuario_idusuario'], 'integer'],
+            [['titulo', 'estado_planificacion_idestado_planificacion'], 'string', 'max' => 45],
+            [['acuario_usuario_acuario_idacuario', 'acuario_usuario_usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => AcuariosUsuarios::className(), 'targetAttribute' => ['acuario_usuario_acuario_idacuario' => 'acuario_idacuario', 'acuario_usuario_usuario_idusuario' => 'usuario_idusuario']],
+            [['estado_planificacion_idestado_planificacion'], 'exist', 'skipOnError' => true, 'targetClass' => EstadosPlanificacion::className(), 'targetAttribute' => ['estado_planificacion_idestado_planificacion' => 'idestado_planificacion']],
         ];
     }
 
@@ -50,9 +57,41 @@ class Planning extends \yii\db\ActiveRecord
             'aniomes' => 'Aniomes',
             'fechahoracreacion' => 'Fechahoracreacion',
             'activo' => 'Activo',
-            'estados_planificacion_idestado_planificacion' => 'Estados Planificacion Idestado Planificacion',
-            'acuarios_usuarios_acuarios_idacuario' => 'Acuarios Usuarios Acuarios Idacuario',
-            'acuarios_usuarios_usuarios_idusuario' => 'Acuarios Usuarios Usuarios Idusuario',
+            'estado_planificacion_idestado_planificacion' => 'Estado Planificacion Idestado Planificacion',
+            'acuario_usuario_acuario_idacuario' => 'Acuario Usuario Acuario Idacuario',
+            'acuario_usuario_usuario_idusuario' => 'Acuario Usuario Usuario Idusuario',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAcuarioUsuarioAcuarioIdacuario()
+    {
+        return $this->hasOne(AcuariosUsuarios::className(), ['acuario_idacuario' => 'acuario_usuario_acuario_idacuario', 'usuario_idusuario' => 'acuario_usuario_usuario_idusuario']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEstadoPlanificacionIdestadoPlanificacion()
+    {
+        return $this->hasOne(EstadosPlanificacion::className(), ['idestado_planificacion' => 'estado_planificacion_idestado_planificacion']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTareas()
+    {
+        return $this->hasMany(Tareas::className(), ['planificacion_idplanificacion' => 'idplanificacion']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getValidaciones()
+    {
+        return $this->hasMany(Validaciones::className(), ['planificacion_idplanificacion' => 'idplanificacion']);
     }
 }

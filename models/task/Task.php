@@ -13,9 +13,17 @@ use Yii;
  * @property string $fechahorainicio
  * @property string $fechahorafin
  * @property string $fechahorarealizacion
- * @property integer $planificaciones_idplanificacion
- * @property integer $usuarios_idusuario
- * @property string $tipos_tarea_idtipo_tarea
+ * @property integer $planificacion_idplanificacion
+ * @property integer $usuario_idusuario
+ * @property string $tipo_tarea_idtipo_tarea
+ *
+ * @property CondicionesAmbientales[] $condicionesAmbientales
+ * @property Notificaciones[] $notificaciones
+ * @property Planificaciones $planificacionIdplanificacion
+ * @property TiposTarea $tipoTareaIdtipoTarea
+ * @property Usuarios $usuarioIdusuario
+ * @property TareasInsumos[] $tareasInsumos
+ * @property Insumos[] $insumoIdinsumos
  */
 class Task extends \yii\db\ActiveRecord
 {
@@ -33,11 +41,14 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'fechahorainicio', 'fechahorafin', 'tipos_tarea_idtipo_tarea'], 'required'],
+            [['titulo', 'fechahorainicio', 'fechahorafin', 'tipo_tarea_idtipo_tarea'], 'required'],
             [['fechahorainicio', 'fechahorafin', 'fechahorarealizacion'], 'safe'],
-            [['planificaciones_idplanificacion', 'usuarios_idusuario'], 'integer'],
-            [['titulo', 'tipos_tarea_idtipo_tarea'], 'string', 'max' => 45],
+            [['planificacion_idplanificacion', 'usuario_idusuario'], 'integer'],
+            [['titulo', 'tipo_tarea_idtipo_tarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
+            [['planificacion_idplanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Planificaciones::className(), 'targetAttribute' => ['planificacion_idplanificacion' => 'idplanificacion']],
+            [['tipo_tarea_idtipo_tarea'], 'exist', 'skipOnError' => true, 'targetClass' => TiposTarea::className(), 'targetAttribute' => ['tipo_tarea_idtipo_tarea' => 'idtipo_tarea']],
+            [['usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_idusuario' => 'id_usuario']],
         ];
     }
 
@@ -53,9 +64,65 @@ class Task extends \yii\db\ActiveRecord
             'fechahorainicio' => 'Fechahorainicio',
             'fechahorafin' => 'Fechahorafin',
             'fechahorarealizacion' => 'Fechahorarealizacion',
-            'planificaciones_idplanificacion' => 'Planificaciones Idplanificacion',
-            'usuarios_idusuario' => 'Usuarios Idusuario',
-            'tipos_tarea_idtipo_tarea' => 'Tipos Tarea Idtipo Tarea',
+            'planificacion_idplanificacion' => 'Planificacion Idplanificacion',
+            'usuario_idusuario' => 'Usuario Idusuario',
+            'tipo_tarea_idtipo_tarea' => 'Tipo Tarea Idtipo Tarea',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCondicionesAmbientales()
+    {
+        return $this->hasMany(CondicionesAmbientales::className(), ['tarea_idtarea' => 'idtarea']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotificaciones()
+    {
+        return $this->hasMany(Notificaciones::className(), ['tarea_idtarea' => 'idtarea']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlanificacionIdplanificacion()
+    {
+        return $this->hasOne(Planificaciones::className(), ['idplanificacion' => 'planificacion_idplanificacion']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoTareaIdtipoTarea()
+    {
+        return $this->hasOne(TiposTarea::className(), ['idtipo_tarea' => 'tipo_tarea_idtipo_tarea']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuarioIdusuario()
+    {
+        return $this->hasOne(Usuarios::className(), ['id_usuario' => 'usuario_idusuario']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTareasInsumos()
+    {
+        return $this->hasMany(TareasInsumos::className(), ['tarea_idtarea' => 'idtarea']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInsumoIdinsumos()
+    {
+        return $this->hasMany(Insumos::className(), ['idinsumo' => 'insumo_idinsumo'])->viaTable('tareas_insumos', ['tarea_idtarea' => 'idtarea']);
     }
 }

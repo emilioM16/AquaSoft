@@ -157,9 +157,15 @@ class AquariumController extends Controller
         }
     }
 
-    public function actionValidation(){
-        
-        $model = new Aquarium();
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
+            
+        if($id!=-1){ //solución horrible, no quedaba otra, mejorar si se puede a futuro
+            $scenario = 'update';
+        }else{
+            $scenario = 'create';
+        }
+
+        $model = new Aquarium(['scenario'=>$scenario,'idacuario'=>$id]);
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
         {

@@ -1,9 +1,9 @@
 <?php
 
-namespace app\models;
+namespace app\models\aquarium;
 
 use Yii;
-
+use app\models\user\User;
 /**
  * This is the model class for table "acuarios_usuarios".
  *
@@ -13,7 +13,7 @@ use Yii;
  * @property Acuarios $acuarioIdacuario
  * @property Usuarios $usuarioIdusuario
  */
-class AquariumsUsers extends \yii\db\ActiveRecord
+class UserAquariums extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -31,8 +31,8 @@ class AquariumsUsers extends \yii\db\ActiveRecord
         return [
             [['acuario_idacuario', 'usuario_idusuario'], 'required'],
             [['acuario_idacuario', 'usuario_idusuario'], 'integer'],
-            [['acuario_idacuario'], 'exist', 'skipOnError' => true, 'targetClass' => Acuarios::className(), 'targetAttribute' => ['acuario_idacuario' => 'idacuario']],
-            [['usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_idusuario' => 'id_usuario']],
+            [['acuario_idacuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['acuario_idacuario' => 'idacuario']],
+            [['usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuario_idusuario' => 'id_usuario']],
         ];
     }
 
@@ -52,7 +52,7 @@ class AquariumsUsers extends \yii\db\ActiveRecord
      */
     public function getAcuarioIdacuario()
     {
-        return $this->hasOne(Acuarios::className(), ['idacuario' => 'acuario_idacuario']);
+        return $this->hasOne(Aquarium::className(), ['idacuario' => 'acuario_idacuario']);
     }
 
     /**
@@ -60,6 +60,7 @@ class AquariumsUsers extends \yii\db\ActiveRecord
      */
     public function getUsuarioIdusuario()
     {
-        return $this->hasOne(Usuarios::className(), ['id_usuario' => 'usuario_idusuario']);
+        return $this->hasOne(User::className(), ['id_usuario' => 'usuario_idusuario']);
     }
+
 }

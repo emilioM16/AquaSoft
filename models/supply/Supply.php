@@ -12,7 +12,11 @@ use Yii;
  * @property string $descripcion
  * @property integer $stock
  * @property integer $activo
- * @property string $tipos_tarea_idtipo_tarea
+ * @property string $tipo_tarea_idtipo_tarea
+ *
+ * @property TiposTarea $tipoTareaIdtipoTarea
+ * @property TareasInsumos[] $tareasInsumos
+ * @property Tareas[] $tareaIdtareas
  */
 class Supply extends \yii\db\ActiveRecord
 {
@@ -30,10 +34,11 @@ class Supply extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'stock', 'tipos_tarea_idtipo_tarea'], 'required'],
+            [['nombre', 'stock', 'tipo_tarea_idtipo_tarea'], 'required'],
             [['stock', 'activo'], 'integer'],
-            [['nombre', 'tipos_tarea_idtipo_tarea'], 'string', 'max' => 45],
+            [['nombre', 'tipo_tarea_idtipo_tarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
+            [['tipo_tarea_idtipo_tarea'], 'exist', 'skipOnError' => true, 'targetClass' => TiposTarea::className(), 'targetAttribute' => ['tipo_tarea_idtipo_tarea' => 'idtipo_tarea']],
         ];
     }
 
@@ -48,7 +53,31 @@ class Supply extends \yii\db\ActiveRecord
             'descripcion' => 'Descripcion',
             'stock' => 'Stock',
             'activo' => 'Activo',
-            'tipos_tarea_idtipo_tarea' => 'Tipos Tarea Idtipo Tarea',
+            'tipo_tarea_idtipo_tarea' => 'Tipo Tarea Idtipo Tarea',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoTareaIdtipoTarea()
+    {
+        return $this->hasOne(TiposTarea::className(), ['idtipo_tarea' => 'tipo_tarea_idtipo_tarea']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTareasInsumos()
+    {
+        return $this->hasMany(TareasInsumos::className(), ['insumo_idinsumo' => 'idinsumo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTareaIdtareas()
+    {
+        return $this->hasMany(Tareas::className(), ['idtarea' => 'tarea_idtarea'])->viaTable('tareas_insumos', ['insumo_idinsumo' => 'idinsumo']);
     }
 }

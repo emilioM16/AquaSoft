@@ -15,39 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="aquarium-view">
 
     
-    <!-- <?php
-        $form = ActiveForm::begin(['type'=>ActiveForm::TYPE_HORIZONTAL, 'formConfig'=>['labelSpan'=>1]]);
-        echo Form::widget([
-            'model'=>$model,
-            'form'=>$form,
-            'staticOnly'=>true,
-            'columns'=>4,
-            'attributes'=>[
-                'nombre'=>['labelSpan'=>1],
-                'espaciodisponible'=>[],
-                'capacidad_maxima'=>[],
-                'espaciodisponible'=>[],
-                'activo'=>[]
-            ]
-        ]);
-
-        echo Form::widget([
-            'model'=>$model,
-            'form'=>$form,
-            'staticOnly'=>true,
-            'columns'=>1,
-            'attributes'=>[
-                'descripcion'=>[],
-            ]
-        ]);
-        ActiveForm::end();
-    ?> -->
 
     <div align="center">
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'idacuario',
             'nombre',
             'descripcion',
             'capacidad_maxima',

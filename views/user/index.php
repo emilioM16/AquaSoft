@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap\Modal;
+use rmrevin\yii\fontawesome\FA;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -11,21 +13,27 @@ use yii\bootstrap\Modal;
 $this->title = 'Especialistas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
+<div class="user-index" align="center">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <hr>
 
-    <p>
-        <?= Html::a('Nuevo especialista', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php 
+     echo   '<p>'
+            .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar especialista', 
+            [
+            'value' => Url::to(['user/create']), 
+            'title' => 'Agregar especialista', 
+            'class' => 'showModalButton btn btn-success'
+            ]).
+        '</p>';
+?>
+
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            // 'id_usuario',
             'nombre',
             'apellido',
             'nombre_usuario',
@@ -42,26 +50,38 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{update}{delete}'
+                'template'=>'{view}{update}{delete}',
+                'buttons' => [
+                    'view'=>function($url,$model){
+                        return Html::button('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>', 
+                        [
+                          'value' => Url::to(['user/view','id'=>$model->id_usuario]), 
+                          'title' => 'Información del especialista: '.$model->nombre_usuario, 
+                          'class' => 'showModalButton btn btn-success btnAquarium'
+                        ]);
+                    },
+                    'update'=>function($url,$model){
+                        return Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
+                        [
+                          'value' => Url::to(['user/update','id'=>$model->id_usuario]), 
+                          'title' => 'Modificar especialista: '.$model->nombre_usuario, 
+                          'class' => 'showModalButton btn btn-primary btnAquarium'
+                        ]);
+                    },
+                    'delete' => function($url, $model){
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id_usuario], [
+                            'class' => 'btn btn-danger btnAquarium',
+                            'data' => [
+                                'data-pjax' => '0',
+                                'confirm' => '¿Está seguro de querer dar de baja el usuario "'.$model->nombre_usuario.'"?',
+                                'method' => 'post',
+                            ],
+                        ]);
+                    }
+                ]
             ],
         ],
     ]); ?>
 <?php Pjax::end(); 
-
-// Modal::begin([
-//     'id'=>'newSpecialistModal', 
-//     'size'=>'modal-md',
-//     'closeButton'=>[],
-//     'header'=> 'Agregar especialista',
-//     'headerOptions'=> ['class'=>'h3 text-center'],
-//     'footer'=>
-//         Html::button(FA::icon('save')->size(FA::SIZE_LARGE).' Guardar', ['class' => 'btn btn-success']).
-//         Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger','data-dismiss'=>'modal'])
-
-//     ]);
-
-//     echo '<div class="contenidoModal">'.$this->render('_form').'</div>';
-    
-// Modal::end();
 
 ?></div>

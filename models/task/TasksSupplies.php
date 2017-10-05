@@ -7,9 +7,12 @@ use Yii;
 /**
  * This is the model class for table "tareas_insumos".
  *
- * @property integer $insumos_idinsumo
+ * @property integer $insumo_idinsumo
  * @property integer $tarea_idtarea
  * @property integer $cantidad
+ *
+ * @property Insumos $insumoIdinsumo
+ * @property Tareas $tareaIdtarea
  */
 class TasksSupplies extends \yii\db\ActiveRecord
 {
@@ -27,8 +30,10 @@ class TasksSupplies extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['insumos_idinsumo', 'tarea_idtarea', 'cantidad'], 'required'],
-            [['insumos_idinsumo', 'tarea_idtarea', 'cantidad'], 'integer'],
+            [['insumo_idinsumo', 'tarea_idtarea', 'cantidad'], 'required'],
+            [['insumo_idinsumo', 'tarea_idtarea', 'cantidad'], 'integer'],
+            [['insumo_idinsumo'], 'exist', 'skipOnError' => true, 'targetClass' => Insumos::className(), 'targetAttribute' => ['insumo_idinsumo' => 'idinsumo']],
+            [['tarea_idtarea'], 'exist', 'skipOnError' => true, 'targetClass' => Tareas::className(), 'targetAttribute' => ['tarea_idtarea' => 'idtarea']],
         ];
     }
 
@@ -38,9 +43,25 @@ class TasksSupplies extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'insumos_idinsumo' => 'Insumos Idinsumo',
+            'insumo_idinsumo' => 'Insumo Idinsumo',
             'tarea_idtarea' => 'Tarea Idtarea',
             'cantidad' => 'Cantidad',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInsumoIdinsumo()
+    {
+        return $this->hasOne(Insumos::className(), ['idinsumo' => 'insumo_idinsumo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTareaIdtarea()
+    {
+        return $this->hasOne(Tareas::className(), ['idtarea' => 'tarea_idtarea']);
     }
 }

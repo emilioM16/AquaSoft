@@ -5,7 +5,9 @@ namespace app\models\user;
 use Yii;
 use yii\web\IdentityInterface;
 use app\models\AuthAssignment;
+use app\models\aquarium\UserAquariums;
 use yii\base\Exception;
+use app\models\aquarium\Aquarium;
 /**
  * This is the model class for table "usuarios".
  *
@@ -29,7 +31,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     public $contrasenia_repeat;
 
-    public $assignedAquariumsIds = [];
+    public $assignedAquariums = []; //conjunto de acuarios que se le asignaron al especialista a través del formulario//
 
     /**
      * @inheritdoc
@@ -45,10 +47,20 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['nombre', 'apellido', 'nombre_usuario', 'contrasenia','contrasenia_repeat'], 'required', 'message'=>'Campo requerido.'],
+            [['nombre', 'apellido', 'nombre_usuario', 'contrasenia','contrasenia_repeat','activo'], 'required', 'message'=>'Campo requerido'],
             [['activo'], 'integer'],
+            ['id_usuario','unique'],
             [['nombre', 'apellido', 'nombre_usuario', 'email', 'contrasenia','contrasenia_repeat'], 'string', 'max' => 45],
-            [['contrasenia_repeat'], 'compare', 'compareAttribute'=>'contrasenia','message'=>'Las contraseñas deben ser iguales.'],
+            [['contrasenia_repeat'], 'compare', 'compareAttribute'=>'contrasenia','message'=>'Las contraseñas deben ser iguales'],
+            ['email','email','message'=>'El email ingresado no es válido'],
+            [ ['nombre_usuario', 'email'], 'unique', 'when' => function ($model, $attribute) { 
+                return $model->{$attribute} !== static::findOne(['id_usuario'=>$model->id_usuario])->$attribute; }, 
+                'on' => 'update',
+                'message'=>'El {attribute} ingresado ya existe'], //en caso de ser una modificación de datos 
+            [['nombre_usuario', 'email'], 'unique', 'on' => 'create', 'message'=>'El {attribute} ingresado ya existe'], //en caso de crear un nuevo especialista
+            ['assignedAquariums', 'each', 'rule' => [
+                'exist', 'targetClass' => Aquarium::className(), 'targetAttribute' => 'idacuario'
+            ]],
         ];
     }
 
@@ -66,16 +78,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'contrasenia' => 'Contraseña',
             'contrasenia_repeat'=>'Repetir contraseña',
             'activo' => 'Activo',
-            'assignedAquariumsIds'=>'Asignar acuarios'
+            'assignedAquariums'=>''
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAcuariosUsuarios()
+    public function getUserAquariums()
     {
-        return $this->hasMany(AcuariosUsuarios::className(), ['usuario_idusuario' => 'id_usuario']);
+        return $this->hasMany(UserAquariums::className(), ['usuario_idusuario' => 'id_usuario']);
     }
 
     /**
@@ -165,11 +177,41 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return static::findOne(['access_token'=>$token]);
     }
 
-    public function saveUser(){
+
+    // public function assignedToString(){
+    //     $assignedString = "";
+    //     foreach ($this->assignedAquariums as $aa) {
+    //         $assignedString = $aa->
+    //     }
+    // }
+
+    public function loadAssignedAquariums(){
+        $this->assignedAquariums = [];
+        $aquariums = UserAquariums::find()->where(['usuario_idusuario'=>$this->id_usuario])->all();
+        yii::error(\yii\helpers\VarDumper::dumpAsString($aquariums));
+        foreach ($aquariums as $a) {
+            $this->assignedAquariums[] = $a->acuario_idacuario;
+        }
+    }
+
+    public function saveAssignedAquariums(){
+        UserAquariums::deleteAll(['usuario_idusuario'=>$this->id_usuario]);
+        if(is_array($this->assignedAquariums)){
+            foreach ($this->assignedAquariums as $aqId) {
+                $ua = new UserAquariums();
+                $ua->usuario_idusuario = $this->id_usuario;
+                $ua->acuario_idacuario = $aqId;
+                $ua->save(); 
+            }
+        }
+    }
+
+    public function saveUser(){ //guarda utilizando transacciones los datos del usuario (creado o modificado) junto con su rol (especialista)//
         $authModel = new AuthAssignment();
         $transaction = Yii::$app->db->beginTransaction();
+        yii::error(\yii\helpers\VarDumper::dumpAsString($this->assignedAquariums));
         try{
-            if($this->load(Yii::$app->request->post()) && $this->save()){
+            if($this->load(Yii::$app->request->post()) && $this->save()){//si pasa las validaciones y se guarda el modelo user, guarda en authItem el rol y lo asocia. Caso contrario, se hace un rollback //
                 $authModel->item_name = 'especialista';
                 $authModel->user_id = strval($this->id_usuario);
                 if($authModel->save()){
@@ -186,4 +228,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         }
         return false;
     }
+
+
 }

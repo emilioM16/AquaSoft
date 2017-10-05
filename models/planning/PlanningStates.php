@@ -8,6 +8,8 @@ use Yii;
  * This is the model class for table "estados_planificacion".
  *
  * @property string $idestado_planificacion
+ *
+ * @property Planificaciones[] $planificaciones
  */
 class PlanningStates extends \yii\db\ActiveRecord
 {
@@ -38,5 +40,13 @@ class PlanningStates extends \yii\db\ActiveRecord
         return [
             'idestado_planificacion' => 'Idestado Planificacion',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPlanificaciones()
+    {
+        return $this->hasMany(Planificaciones::className(), ['estado_planificacion_idestado_planificacion' => 'idestado_planificacion']);
     }
 }

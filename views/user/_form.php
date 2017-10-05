@@ -1,9 +1,14 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+
 use softark\duallistbox\DualListbox;
 use app\models\aquarium\Aquarium;
+use yii\helpers\Url;
+use kartik\form\ActiveForm;
+use kartik\builder\Form;
+use kartik\builder\FormGrid;
+use rmrevin\yii\fontawesome\FA;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuario */
@@ -12,44 +17,131 @@ use app\models\aquarium\Aquarium;
 
 <div class="usuario-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+<?php 
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    $userId =-1;
 
-    <?= $form->field($model, 'apellido')->textInput(['maxlength' => true]) ?>
+    if ($model->id_usuario!==null){
+        $userId = $model->id_usuario;
+    }
 
-    <?= $form->field($model, 'nombre_usuario')->textInput(['maxlength' => true]) ?>
+        $form = ActiveForm::begin([
+            'id'=>$model->formName(),
+            'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
+            'validationUrl'=> Url::toRoute(['user/validation','id'=>$userId]), 
+            'type'=>ActiveForm::TYPE_VERTICAL]);
 
-    <?= $form->field($model, 'email')->input('email') ?> 
-
-    <?= $form->field($model, 'contrasenia')->passwordInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'contrasenia_repeat')->passwordInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'activo')->inline()->radioList([1=>'Si',0=>'No'])?>
-
-    <?php
-        $options = [
-            'multiple' => true,
-            'size' => 20,
-        ];
-        // echo $form->field($model, $attribute)->listBox($items, $options);
-        echo $form->field($model, 'assignedAquariumsIds')->widget(DualListbox::className(),[
-            'items' => Aquarium::getActiveAquariums(),
-            'options' => $options,
-            'clientOptions' => [
-                'moveOnSelect' => false,
-                'selectedListLabel' => 'Acuarios asignados',
-                'nonSelectedListLabel' => 'Acuarios disponibles',
-            ],
+        echo FormGrid::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'autoGenerateColumns'=>true,
+            'rows'=>[
+                [
+                    'contentBefore'=>'<legend class="text-info"><small>Datos del especialista</small></legend>',
+                    'attributes'=>[
+                        'nombre'=>[
+                            'type'=>Form::INPUT_TEXT,
+                            'options'=>[
+                                'placeholder'=>'Ingrese el nombre'
+                            ]
+                        ],
+                        'apellido'=>[
+                            'type'=>Form::INPUT_TEXT,
+                            'options'=>[
+                                'placeholder'=>'Ingrese el apellido'
+                            ]
+                        ],
+                        'nombre_usuario'=>[
+                            'type'=>Form::INPUT_TEXT,
+                            'options'=>[
+                                'placeholder'=>'Ingrese el nombre de usuario'
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'attributes'=>[
+                        'email'=>[
+                            'type'=>Form::INPUT_TEXT,
+                            'options'=>[
+                                'placeholder'=>'Ingrese el email'
+                            ]
+                        ],
+                        'contrasenia'=>[
+                            'type'=>Form::INPUT_PASSWORD,
+                            'options'=>[
+                                'placeholder'=>'Ingrese la contraseña'
+                            ]
+                        ],
+                        'contrasenia_repeat'=>[
+                            'type'=>Form::INPUT_PASSWORD,
+                            'options'=>[
+                                'placeholder'=>'Repita la contraseña'
+                            ]
+                        ],                        
+                    ]
+                ],
+                [
+                    'attributes'=>[
+                        'activo'=>[
+                            'type'=>Form::INPUT_RADIO_LIST,
+                            'items'=>[1=>'Activo',0=>'Inactivo'],
+                            'options'=>['inline'=>true]
+                        ]
+                    ]
+                ]
+            ]
         ]);
+
+
+
+        echo FormGrid::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'autoGenerateColumns'=>true,
+            'rows'=>[
+                [
+                    'contentBefore'=>'<legend class="text-info"><small>Asignación de acuarios</small></legend>',
+                    'attributes'=>[
+                        'assignedAquariums'=>[
+                            'type'=>Form::INPUT_WIDGET,
+                            'widgetClass'=>'softark\duallistbox\DualListbox',
+                            'options'=>[
+                                'items' => Aquarium::getActiveAquariums(),
+                                'clientOptions' => [
+                                    'moveOnSelect' => true,
+                                    'selectedListLabel' => 'Acuarios asignados',
+                                    'nonSelectedListLabel' => 'Acuarios disponibles',
+                                ],
+                            ]
+                        ]
+                    ]
+                ],
+                [
+                    'attributes'=>[
+                        'actions'=>[
+                            'type'=>Form::INPUT_RAW,
+                            'value'=>'<div class="form-group" align="center">'.
+                                Html::submitButton(
+                                    $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar',
+                                    [
+                                        'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
+                                    ]).' '.
+                                Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'])
+                                .'</div>'
+                        ]
+                    ]
+                ]   
+            ]
+        ]);
+
+ 
+    ActiveForm::end();
     ?>
 
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Aceptar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
 
-    <?php ActiveForm::end(); ?>
+
+
 
 </div>
