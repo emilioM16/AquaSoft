@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 03-10-2017 a las 13:03:21
+-- Tiempo de generación: 05-10-2017 a las 17:52:04
 -- Versión del servidor: 5.7.19-0ubuntu0.17.04.1
 -- Versión de PHP: 7.0.22-0ubuntu0.17.04.1
 
@@ -40,7 +40,13 @@ CREATE TABLE `acuarios` (
 --
 
 INSERT INTO `acuarios` (`idacuario`, `nombre`, `descripcion`, `capacidad_maxima`, `espaciodisponible`, `activo`) VALUES
-(3, 'A03', '', 0, 150, 1);
+(1, 'A01', '', 100, 100, 0),
+(3, 'A03', '', 150, 150, 1),
+(4, 'A04', '', 200, 200, 0),
+(5, 'A07', '', 300, 300, 1),
+(6, 'A02', '', 120, 120, 1),
+(7, 'A12', '', 500, 500, 1),
+(8, 'a033', '', 1331, 1331, 1);
 
 -- --------------------------------------------------------
 
@@ -52,6 +58,17 @@ CREATE TABLE `acuarios_usuarios` (
   `acuario_idacuario` int(11) NOT NULL,
   `usuario_idusuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `acuarios_usuarios`
+--
+
+INSERT INTO `acuarios_usuarios` (`acuario_idacuario`, `usuario_idusuario`) VALUES
+(5, 1),
+(6, 17),
+(7, 17),
+(6, 19),
+(7, 19);
 
 -- --------------------------------------------------------
 
@@ -72,9 +89,9 @@ CREATE TABLE `auth_assignment` (
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('administrador', 1, 1506560512),
 ('encargado', 2, 1506560523),
-('encargado', 18, 1506560537),
 ('especialista', 16, 1506560528),
-('especialista', 17, 1506560533);
+('especialista', 17, 1506560533),
+('especialista', 19, NULL);
 
 -- --------------------------------------------------------
 
@@ -150,13 +167,13 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/admin/user/reset-password', 2, NULL, NULL, NULL, 1506560356, 1506560356),
 ('/admin/user/signup', 2, NULL, NULL, NULL, 1506560356, 1506560356),
 ('/admin/user/view', 2, NULL, NULL, NULL, 1506560356, 1506560356),
-('/aquarium/create', 2, NULL, NULL, NULL, 1506883912, 1506883912),
-('/aquarium/delete', 2, NULL, NULL, NULL, 1506883912, 1506883912),
-('/aquarium/detail', 2, NULL, NULL, NULL, 1506883912, 1506883912),
-('/aquarium/index', 2, NULL, NULL, NULL, 1506883912, 1506883912),
-('/aquarium/update', 2, NULL, NULL, NULL, 1506883912, 1506883912),
-('/aquarium/validation', 2, NULL, NULL, NULL, 1506893114, 1506893114),
-('/aquarium/view', 2, NULL, NULL, NULL, 1506883912, 1506883912),
+('/aquarium/create', 2, NULL, NULL, NULL, 1507087233, 1507087233),
+('/aquarium/delete', 2, NULL, NULL, NULL, 1507087233, 1507087233),
+('/aquarium/detail', 2, NULL, NULL, NULL, 1507087233, 1507087233),
+('/aquarium/index', 2, NULL, NULL, NULL, 1507087232, 1507087232),
+('/aquarium/update', 2, NULL, NULL, NULL, 1507087233, 1507087233),
+('/aquarium/validation', 2, NULL, NULL, NULL, 1507087233, 1507087233),
+('/aquarium/view', 2, NULL, NULL, NULL, 1507087233, 1507087233),
 ('/debug/*', 2, NULL, NULL, NULL, 1506560367, 1506560367),
 ('/debug/default/*', 2, NULL, NULL, NULL, 1506560367, 1506560367),
 ('/debug/default/db-explain', 2, NULL, NULL, NULL, 1506560366, 1506560366),
@@ -178,11 +195,17 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/site/index', 2, NULL, NULL, NULL, 1506560373, 1506560373),
 ('/site/login', 2, NULL, NULL, NULL, 1506560373, 1506560373),
 ('/site/logout', 2, NULL, NULL, NULL, 1506560373, 1506560373),
+('/user-aquarium/create', 2, NULL, NULL, NULL, 1507216030, 1507216030),
+('/user-aquarium/delete', 2, NULL, NULL, NULL, 1507216031, 1507216031),
+('/user-aquarium/index', 2, NULL, NULL, NULL, 1507216030, 1507216030),
+('/user-aquarium/update', 2, NULL, NULL, NULL, 1507216031, 1507216031),
+('/user-aquarium/view', 2, NULL, NULL, NULL, 1507216030, 1507216030),
 ('/user/*', 2, NULL, NULL, NULL, 1506560602, 1506560602),
 ('/user/create', 2, NULL, NULL, NULL, 1506560370, 1506560370),
 ('/user/delete', 2, NULL, NULL, NULL, 1506560370, 1506560370),
 ('/user/index', 2, NULL, NULL, NULL, 1506560370, 1506560370),
 ('/user/update', 2, NULL, NULL, NULL, 1506560370, 1506560370),
+('/user/validation', 2, NULL, NULL, NULL, 1507158217, 1507158217),
 ('/user/view', 2, NULL, NULL, NULL, 1506560370, 1506560370),
 ('administrador', 1, NULL, NULL, NULL, 1506560408, 1506560408),
 ('encargado', 1, NULL, NULL, NULL, 1506560453, 1506560453),
@@ -257,14 +280,27 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('administrador', '/admin/user/reset-password'),
 ('administrador', '/admin/user/signup'),
 ('administrador', '/admin/user/view'),
+('encargado', '/admin/user/view'),
 ('administrador', '/aquarium/create'),
+('encargado', '/aquarium/create'),
 ('administrador', '/aquarium/delete'),
+('encargado', '/aquarium/delete'),
 ('administrador', '/aquarium/detail'),
+('encargado', '/aquarium/detail'),
+('especialista', '/aquarium/detail'),
 ('administrador', '/aquarium/index'),
+('encargado', '/aquarium/index'),
+('especialista', '/aquarium/index'),
 ('administrador', '/aquarium/update'),
+('encargado', '/aquarium/update'),
 ('administrador', '/aquarium/validation'),
+('encargado', '/aquarium/validation'),
 ('administrador', '/aquarium/view'),
+('encargado', '/aquarium/view'),
+('especialista', '/aquarium/view'),
 ('administrador', '/debug/*'),
+('encargado', '/debug/*'),
+('especialista', '/debug/*'),
 ('administrador', '/debug/default/*'),
 ('administrador', '/debug/default/db-explain'),
 ('administrador', '/debug/default/download-mail'),
@@ -293,6 +329,11 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('administrador', '/site/logout'),
 ('encargado', '/site/logout'),
 ('especialista', '/site/logout'),
+('administrador', '/user-aquarium/create'),
+('administrador', '/user-aquarium/delete'),
+('administrador', '/user-aquarium/index'),
+('administrador', '/user-aquarium/update'),
+('administrador', '/user-aquarium/view'),
 ('administrador', '/user/create'),
 ('encargado', '/user/create'),
 ('administrador', '/user/delete'),
@@ -301,6 +342,8 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('encargado', '/user/index'),
 ('administrador', '/user/update'),
 ('encargado', '/user/update'),
+('administrador', '/user/validation'),
+('encargado', '/user/validation'),
 ('administrador', '/user/view'),
 ('encargado', '/user/view');
 
@@ -324,7 +367,7 @@ CREATE TABLE `auth_rule` (
 --
 
 CREATE TABLE `condiciones_ambientales` (
-  `idcondiciones_ambientales` int(11) NOT NULL,
+  `idcondicion_ambiental` int(11) NOT NULL,
   `ph` double NOT NULL,
   `temperatura` double NOT NULL,
   `salinidad` double NOT NULL,
@@ -341,8 +384,8 @@ CREATE TABLE `condiciones_ambientales` (
 --
 
 CREATE TABLE `ejemplares` (
-  `especies_idespecie` int(11) NOT NULL,
-  `acuarios_idacuario` int(11) NOT NULL,
+  `especie_idespecie` int(11) NOT NULL,
+  `acuario_idacuario` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -385,9 +428,9 @@ CREATE TABLE `estados_planificacion` (
 --
 
 INSERT INTO `estados_planificacion` (`idestado_planificacion`) VALUES
-('Aprobado'),
-('Rechazado'),
-('SinVerificar');
+('aprobado'),
+('rechazado'),
+('sinverificar');
 
 -- --------------------------------------------------------
 
@@ -401,7 +444,7 @@ CREATE TABLE `insumos` (
   `descripcion` varchar(200) DEFAULT NULL,
   `stock` int(11) NOT NULL,
   `activo` tinyint(1) DEFAULT '1',
-  `tipos_tarea_idtipo_tarea` varchar(45) NOT NULL
+  `tipo_tarea_idtipo_tarea` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -455,10 +498,10 @@ CREATE TABLE `motivos_rechazo` (
 --
 
 INSERT INTO `motivos_rechazo` (`idmotivo_rechazo`) VALUES
-('Escasez de tareas'),
-('Incorrecta distribución de tareas'),
-('Incumplimiento de politicas'),
-('Otro');
+('escasez de tareas'),
+('incorrecta distribución de tareas'),
+('incumplimiento de politicas'),
+('otro');
 
 -- --------------------------------------------------------
 
@@ -469,8 +512,8 @@ INSERT INTO `motivos_rechazo` (`idmotivo_rechazo`) VALUES
 CREATE TABLE `notificaciones` (
   `idnotificacion` int(11) NOT NULL,
   `fechahora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `tareas_idtarea` int(11) NOT NULL,
-  `origen_notificacion` varchar(45) NOT NULL
+  `tarea_idtarea` int(11) NOT NULL,
+  `origen_notificacion_idorigen_notificacion` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -488,8 +531,8 @@ CREATE TABLE `origen_notificacion` (
 --
 
 INSERT INTO `origen_notificacion` (`idorigen_notificacion`) VALUES
-('Hábitat riesgoso'),
-('Tarea no realizada');
+('hábitat riesgoso'),
+('tarea no realizada');
 
 -- --------------------------------------------------------
 
@@ -503,9 +546,9 @@ CREATE TABLE `planificaciones` (
   `aniomes` date NOT NULL,
   `fechahoracreacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `activo` tinyint(1) DEFAULT '1',
-  `estados_planificacion_idestado_planificacion` varchar(45) NOT NULL,
-  `acuarios_usuarios_acuarios_idacuario` int(11) NOT NULL,
-  `acuarios_usuarios_usuarios_idusuario` int(11) NOT NULL
+  `estado_planificacion_idestado_planificacion` varchar(45) NOT NULL,
+  `acuario_usuario_acuario_idacuario` int(11) NOT NULL,
+  `acuario_usuario_usuario_idusuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -521,9 +564,9 @@ CREATE TABLE `tareas` (
   `fechahorainicio` datetime NOT NULL,
   `fechahorafin` datetime NOT NULL,
   `fechahorarealizacion` datetime DEFAULT NULL,
-  `planificaciones_idplanificacion` int(11) DEFAULT NULL COMMENT 'Si este campo está vacío significa que la tareas a sido creada fuera de la planificacion mensual.',
-  `usuarios_idusuario` int(11) DEFAULT NULL,
-  `tipos_tarea_idtipo_tarea` varchar(45) NOT NULL
+  `planificacion_idplanificacion` int(11) DEFAULT NULL COMMENT 'si este campo está vacío significa que la tareas a sido creada fuera de la planificacion mensual.',
+  `usuario_idusuario` int(11) DEFAULT NULL,
+  `tipo_tarea_idtipo_tarea` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -533,7 +576,7 @@ CREATE TABLE `tareas` (
 --
 
 CREATE TABLE `tareas_insumos` (
-  `insumos_idinsumo` int(11) NOT NULL,
+  `insumo_idinsumo` int(11) NOT NULL,
   `tarea_idtarea` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -553,11 +596,11 @@ CREATE TABLE `tipos_tarea` (
 --
 
 INSERT INTO `tipos_tarea` (`idtipo_tarea`) VALUES
-('Alimentación'),
-('Controlar'),
-('Limpieza'),
-('Reparación'),
-('Transferir');
+('alimentación'),
+('controlar'),
+('limpieza'),
+('reparación'),
+('transferir');
 
 -- --------------------------------------------------------
 
@@ -598,11 +641,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `nombre_usuario`, `email`, `contrasenia`, `activo`) VALUES
-(1, 'Emilio', 'Melo', 'emelo', 'emelo@gmail.com', '$2y$13$/0ILfzMsXgdSqkKuRzYAu.kCQuFsrmB6JVXIC4.rE4kbxpyYwEO6W', 1),
+(1, 'Emilio', 'Melo', 'emelo', 'emelo@gmail.com', '$2y$13$E98OGhp4T5QXg4udliXiYeBeZ3cJouWGilvnZfrqagGDFJ9gEiKTG', 1),
 (2, 'Romina', 'Bertini', 'rbertini', 'romina@gmail.com', '$2y$13$u5cBGilAW2s/sVNIF5c4i.OZE556sx1mqPCOM2hjeR1wJ76ujvV3y', 1),
 (16, 'Facundo', 'Reyna', 'freyna', 'facundo@gmail.com', '$2y$13$GMa4SuOnh8NxUT4UmUsaAOKM4cLibGyOfWKCLw8Akh32TxhSj1sku', 1),
-(17, 'Lía', 'Moreno', 'lmoreno', 'lia@gmail.com', '$2y$13$gGUmKqUOVtUvk2tP70ZO6O2bGghqLO4ArsZtTaUEVUMqVyOhNM4O6', 0),
-(18, 'Juan', 'Perez', 'jperez', 'juan@gmail.com', '$2y$13$588gD.6PaF3Gt4.vpqPTv.sawoQ9Auc8wOnwOUntuPcplq8Ba.N3m', 1);
+(17, 'Lía', 'Moreno', 'lmoreno', 'lia@gmail.com', '$2y$13$JZ6mebtsTYzn916/YxcOyeKGIoqcg5yl56UAlpIUOoe1SfjouYFu2', 0),
+(19, 'Juan', 'Perez', 'jperez', 'jose@gmail.com', '$2y$13$wJO/vm8Mp0za2uEv7Rln..gZ7TStpkH8pgQ3QkaoaBCvcxwQAl6HS', 1);
 
 -- --------------------------------------------------------
 
@@ -614,9 +657,9 @@ CREATE TABLE `validaciones` (
   `idvalidacion` int(11) NOT NULL,
   `fechahora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `observacion` varchar(200) DEFAULT NULL,
-  `planificaciones_idplanificacion` int(11) NOT NULL,
-  `usuarios_idusuario` int(11) NOT NULL,
-  `motivos_rechazo_idmotivo_rechazo` varchar(45) NOT NULL
+  `planificacion_idplanificacion` int(11) NOT NULL,
+  `usuario_idusuario` int(11) NOT NULL,
+  `motivo_rechazo_idmotivo_rechazo` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -627,16 +670,15 @@ CREATE TABLE `validaciones` (
 -- Indices de la tabla `acuarios`
 --
 ALTER TABLE `acuarios`
-  ADD PRIMARY KEY (`idacuario`),
-  ADD UNIQUE KEY `nombre` (`nombre`);
+  ADD PRIMARY KEY (`idacuario`);
 
 --
 -- Indices de la tabla `acuarios_usuarios`
 --
 ALTER TABLE `acuarios_usuarios`
   ADD PRIMARY KEY (`acuario_idacuario`,`usuario_idusuario`),
-  ADD KEY `fk_idUSUARIO_idx` (`usuario_idusuario`),
-  ADD KEY `fk_idACUARIO_idx` (`acuario_idacuario`);
+  ADD KEY `fk_idusuario_idx` (`usuario_idusuario`),
+  ADD KEY `fk_idacuario_idx` (`acuario_idacuario`);
 
 --
 -- Indices de la tabla `auth_assignment`
@@ -670,17 +712,17 @@ ALTER TABLE `auth_rule`
 -- Indices de la tabla `condiciones_ambientales`
 --
 ALTER TABLE `condiciones_ambientales`
-  ADD PRIMARY KEY (`idcondiciones_ambientales`),
-  ADD KEY `fk_CONDICION_AMBIENTAL_ACUARIO1_idx` (`acuario_idacuario`),
-  ADD KEY `fk_CONDICION_AMBIENTAL_TAREA1_idx` (`tarea_idtarea`);
+  ADD PRIMARY KEY (`idcondicion_ambiental`),
+  ADD KEY `fk_condicion_ambiental_acuario1_idx` (`acuario_idacuario`),
+  ADD KEY `fk_condicion_ambiental_tarea1_idx` (`tarea_idtarea`);
 
 --
 -- Indices de la tabla `ejemplares`
 --
 ALTER TABLE `ejemplares`
-  ADD PRIMARY KEY (`especies_idespecie`,`acuarios_idacuario`),
-  ADD KEY `fk_idACUARIO_idx` (`acuarios_idacuario`),
-  ADD KEY `fk_idESPECIE_idx` (`especies_idespecie`);
+  ADD PRIMARY KEY (`especie_idespecie`,`acuario_idacuario`),
+  ADD KEY `fk_idacuario_idx` (`acuario_idacuario`),
+  ADD KEY `fk_idespecie_idx` (`especie_idespecie`);
 
 --
 -- Indices de la tabla `especies`
@@ -699,7 +741,7 @@ ALTER TABLE `estados_planificacion`
 --
 ALTER TABLE `insumos`
   ADD PRIMARY KEY (`idinsumo`),
-  ADD KEY `fk_INSUMO_TIPO_TAREA1_idx` (`tipos_tarea_idtipo_tarea`);
+  ADD KEY `fk_insumo_tipo_tarea1_idx` (`tipo_tarea_idtipo_tarea`);
 
 --
 -- Indices de la tabla `menu`
@@ -725,8 +767,8 @@ ALTER TABLE `motivos_rechazo`
 --
 ALTER TABLE `notificaciones`
   ADD PRIMARY KEY (`idnotificacion`),
-  ADD KEY `fk_NOTIFICACION_TAREA1_idx` (`tareas_idtarea`),
-  ADD KEY `fk_NOTIFICACION_ORIGEN_NOTIFICACION1_idx` (`origen_notificacion`);
+  ADD KEY `fk_notificacion_tarea1_idx` (`tarea_idtarea`),
+  ADD KEY `fk_notificacion_origen_notificacion1_idx` (`origen_notificacion_idorigen_notificacion`);
 
 --
 -- Indices de la tabla `origen_notificacion`
@@ -739,25 +781,25 @@ ALTER TABLE `origen_notificacion`
 --
 ALTER TABLE `planificaciones`
   ADD PRIMARY KEY (`idplanificacion`),
-  ADD KEY `fk_PLANIFICACION_ESTADO_PLANIFICACION1_idx` (`estados_planificacion_idestado_planificacion`),
-  ADD KEY `fk_PLANIFICACION_ACUARIO_USUARIO1_idx` (`acuarios_usuarios_acuarios_idacuario`,`acuarios_usuarios_usuarios_idusuario`);
+  ADD KEY `fk_planificacion_estado_planificacion1_idx` (`estado_planificacion_idestado_planificacion`),
+  ADD KEY `fk_planificacion_acuario_usuario1_idx` (`acuario_usuario_acuario_idacuario`,`acuario_usuario_usuario_idusuario`);
 
 --
 -- Indices de la tabla `tareas`
 --
 ALTER TABLE `tareas`
   ADD PRIMARY KEY (`idtarea`),
-  ADD KEY `fk_TAREA_PLANIFICACION1_idx` (`planificaciones_idplanificacion`),
-  ADD KEY `fk_TAREA_USUARIO1_idx` (`usuarios_idusuario`),
-  ADD KEY `fk_TAREA_TIPO_TAREA1_idx` (`tipos_tarea_idtipo_tarea`);
+  ADD KEY `fk_tarea_planificacion1_idx` (`planificacion_idplanificacion`),
+  ADD KEY `fk_tarea_usuario1_idx` (`usuario_idusuario`),
+  ADD KEY `fk_tarea_tipo_tarea1_idx` (`tipo_tarea_idtipo_tarea`);
 
 --
 -- Indices de la tabla `tareas_insumos`
 --
 ALTER TABLE `tareas_insumos`
-  ADD PRIMARY KEY (`insumos_idinsumo`,`tarea_idtarea`),
-  ADD KEY `fk_INSUMO_has_TAREA_TAREA1_idx` (`tarea_idtarea`),
-  ADD KEY `fk_INSUMO_has_TAREA_INSUMO1_idx` (`insumos_idinsumo`);
+  ADD PRIMARY KEY (`insumo_idinsumo`,`tarea_idtarea`),
+  ADD KEY `fk_insumo_has_tarea_tarea1_idx` (`tarea_idtarea`),
+  ADD KEY `fk_insumo_has_tarea_insumo1_idx` (`insumo_idinsumo`);
 
 --
 -- Indices de la tabla `tipos_tarea`
@@ -775,16 +817,17 @@ ALTER TABLE `user`
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `nombre_usuario` (`nombre_usuario`);
 
 --
 -- Indices de la tabla `validaciones`
 --
 ALTER TABLE `validaciones`
   ADD PRIMARY KEY (`idvalidacion`),
-  ADD KEY `fk_VALIDACION_PLANIFICACION1_idx` (`planificaciones_idplanificacion`),
-  ADD KEY `fk_VALIDACION_USUARIO1_idx` (`usuarios_idusuario`),
-  ADD KEY `fk_VALIDACION_MOTIVO_RECHAZO1_idx` (`motivos_rechazo_idmotivo_rechazo`);
+  ADD KEY `fk_validacion_planificacion1_idx` (`planificacion_idplanificacion`),
+  ADD KEY `fk_validacion_usuario1_idx` (`usuario_idusuario`),
+  ADD KEY `fk_validacion_motivo_rechazo1_idx` (`motivo_rechazo_idmotivo_rechazo`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -794,12 +837,12 @@ ALTER TABLE `validaciones`
 -- AUTO_INCREMENT de la tabla `acuarios`
 --
 ALTER TABLE `acuarios`
-  MODIFY `idacuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idacuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `condiciones_ambientales`
 --
 ALTER TABLE `condiciones_ambientales`
-  MODIFY `idcondiciones_ambientales` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idcondicion_ambiental` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `especies`
 --
@@ -839,7 +882,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT de la tabla `validaciones`
 --
@@ -853,8 +896,91 @@ ALTER TABLE `validaciones`
 -- Filtros para la tabla `acuarios_usuarios`
 --
 ALTER TABLE `acuarios_usuarios`
-  ADD CONSTRAINT `fk_acuarios_usuarios_idacuario` FOREIGN KEY (`acuario_idacuario`) REFERENCES `acuarios` (`idacuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_acuarios_usuarios_idusuario` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuarios` (`id_usuario`);
+  ADD CONSTRAINT `fk_acuario_usuario_idacuario` FOREIGN KEY (`acuario_idacuario`) REFERENCES `acuarios` (`idacuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_acuario_usuario_idusuario` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `auth_assignment`
+--
+ALTER TABLE `auth_assignment`
+  ADD CONSTRAINT `auth_assignment_ibfk_1` FOREIGN KEY (`item_name`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_asignment_usuarios` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `auth_item`
+--
+ALTER TABLE `auth_item`
+  ADD CONSTRAINT `auth_item_ibfk_1` FOREIGN KEY (`rule_name`) REFERENCES `auth_rule` (`name`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `auth_item_child`
+--
+ALTER TABLE `auth_item_child`
+  ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `condiciones_ambientales`
+--
+ALTER TABLE `condiciones_ambientales`
+  ADD CONSTRAINT `fk_condambiental_idacuario` FOREIGN KEY (`acuario_idacuario`) REFERENCES `acuarios` (`idacuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_condambiental_idtarea` FOREIGN KEY (`tarea_idtarea`) REFERENCES `tareas` (`idtarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `ejemplares`
+--
+ALTER TABLE `ejemplares`
+  ADD CONSTRAINT `fk_especie_idacuario` FOREIGN KEY (`acuario_idacuario`) REFERENCES `acuarios` (`idacuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_especie_idespecie` FOREIGN KEY (`especie_idespecie`) REFERENCES `especies` (`idespecie`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `insumos`
+--
+ALTER TABLE `insumos`
+  ADD CONSTRAINT `fk_insumo_idtipo_tarea` FOREIGN KEY (`tipo_tarea_idtipo_tarea`) REFERENCES `tipos_tarea` (`idtipo_tarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `menu`
+--
+ALTER TABLE `menu`
+  ADD CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `menu` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `notificaciones`
+--
+ALTER TABLE `notificaciones`
+  ADD CONSTRAINT `fk_notificacion_idorigen_notificacion` FOREIGN KEY (`origen_notificacion_idorigen_notificacion`) REFERENCES `origen_notificacion` (`idorigen_notificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_notificacion_idtarea` FOREIGN KEY (`tarea_idtarea`) REFERENCES `tareas` (`idtarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `planificaciones`
+--
+ALTER TABLE `planificaciones`
+  ADD CONSTRAINT `fk_planificacion_acuario_usuario1` FOREIGN KEY (`acuario_usuario_acuario_idacuario`,`acuario_usuario_usuario_idusuario`) REFERENCES `acuarios_usuarios` (`acuario_idacuario`, `usuario_idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_planificacion_idestado_planificacion` FOREIGN KEY (`estado_planificacion_idestado_planificacion`) REFERENCES `estados_planificacion` (`idestado_planificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `tareas`
+--
+ALTER TABLE `tareas`
+  ADD CONSTRAINT `fk_tarea_idplanificacion` FOREIGN KEY (`planificacion_idplanificacion`) REFERENCES `planificaciones` (`idplanificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tarea_idtipo_tarea` FOREIGN KEY (`tipo_tarea_idtipo_tarea`) REFERENCES `tipos_tarea` (`idtipo_tarea`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tarea_idusuario` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `tareas_insumos`
+--
+ALTER TABLE `tareas_insumos`
+  ADD CONSTRAINT `fk_tarea_insumo_idinsumo` FOREIGN KEY (`insumo_idinsumo`) REFERENCES `insumos` (`idinsumo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_tarea_insumo_idtarea` FOREIGN KEY (`tarea_idtarea`) REFERENCES `tareas` (`idtarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `validaciones`
+--
+ALTER TABLE `validaciones`
+  ADD CONSTRAINT `fk_validacion_idmotivo_rechazo` FOREIGN KEY (`motivo_rechazo_idmotivo_rechazo`) REFERENCES `motivos_rechazo` (`idmotivo_rechazo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_validacion_idplanificacion` FOREIGN KEY (`planificacion_idplanificacion`) REFERENCES `planificaciones` (`idplanificacion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_validacion_idusuario` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
