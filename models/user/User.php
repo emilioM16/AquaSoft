@@ -7,6 +7,7 @@ use yii\web\IdentityInterface;
 use app\models\AuthAssignment;
 use app\models\aquarium\UserAquariums;
 use yii\base\Exception;
+use app\models\aquarium\Aquarium;
 /**
  * This is the model class for table "usuarios".
  *
@@ -57,6 +58,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
                 'on' => 'update',
                 'message'=>'El {attribute} ingresado ya existe'], //en caso de ser una modificación de datos 
             [['nombre_usuario', 'email'], 'unique', 'on' => 'create', 'message'=>'El {attribute} ingresado ya existe'], //en caso de crear un nuevo especialista
+            ['assignedAquariums', 'each', 'rule' => [
+                'exist', 'targetClass' => Aquarium::className(), 'targetAttribute' => 'idacuario'
+            ]],
         ];
     }
 
@@ -74,7 +78,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'contrasenia' => 'Contraseña',
             'contrasenia_repeat'=>'Repetir contraseña',
             'activo' => 'Activo',
-            'assignedAquariumsIds'=>''
+            'assignedAquariums'=>''
         ];
     }
 
@@ -189,7 +193,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             foreach ($this->assignedAquariums as $aqId) {
                 $ua = new UserAquariums();
                 $ua->usuario_idusuario = $this->id_usuario;
-                $ua->usuario_idacuario = $aqId;
+                $ua->acuario_idacuario = $aqId;
                 $ua->save(); 
             }
         }
@@ -204,7 +208,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
                 $authModel->item_name = 'especialista';
                 $authModel->user_id = strval($this->id_usuario);
                 if($authModel->save()){
-
                     $transaction->commit();
                     return true;
                 }else{

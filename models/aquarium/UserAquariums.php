@@ -3,7 +3,7 @@
 namespace app\models\aquarium;
 
 use Yii;
-
+use app\models\user\User;
 /**
  * This is the model class for table "acuarios_usuarios".
  *
@@ -31,8 +31,8 @@ class UserAquariums extends \yii\db\ActiveRecord
         return [
             [['acuario_idacuario', 'usuario_idusuario'], 'required'],
             [['acuario_idacuario', 'usuario_idusuario'], 'integer'],
-            [['acuario_idacuario'], 'exist', 'skipOnError' => true, 'targetClass' => Acuarios::className(), 'targetAttribute' => ['acuario_idacuario' => 'idacuario']],
-            [['usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_idusuario' => 'id_usuario']],
+            [['acuario_idacuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['acuario_idacuario' => 'idacuario']],
+            [['usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuario_idusuario' => 'id_usuario']],
         ];
     }
 
