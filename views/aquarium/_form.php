@@ -14,10 +14,16 @@ use rmrevin\yii\fontawesome\FA;
 <div class="acuario-form">
 
     <?php 
+
+    $aquariumId =-1;
+
+    if ($model->idacuario!==null){
+        $aquariumId = $model->idacuario;
+    }
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            'validationUrl'=> Url::toRoute('aquarium/validation'), 
+            'validationUrl'=> Url::toRoute(['aquarium/validation','id'=>$aquariumId]), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
         echo Form::widget([

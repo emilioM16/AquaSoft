@@ -18,10 +18,17 @@ use rmrevin\yii\fontawesome\FA;
 <div class="usuario-form">
 
 <?php 
+
+    $userId =-1;
+
+    if ($model->id_usuario!==null){
+        $userId = $model->id_usuario;
+    }
+
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            'validationUrl'=> Url::toRoute('user/validation'), 
+            'validationUrl'=> Url::toRoute(['user/validation','id'=>$userId]), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
         echo FormGrid::widget([

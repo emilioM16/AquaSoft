@@ -47,10 +47,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['nombre', 'apellido', 'nombre_usuario', 'contrasenia','contrasenia_repeat','activo'], 'required', 'message'=>'Campo requerido'],
             [['activo'], 'integer'],
+            ['id_usuario','unique'],
             [['nombre', 'apellido', 'nombre_usuario', 'email', 'contrasenia','contrasenia_repeat'], 'string', 'max' => 45],
             [['contrasenia_repeat'], 'compare', 'compareAttribute'=>'contrasenia','message'=>'Las contraseñas deben ser iguales'],
-            ['nombre_usuario','unique','message'=>'El nombre ingresado ya existe'],
-            ['email','email','message'=>'El email ingresado no es válido']
+            ['email','email','message'=>'El email ingresado no es válido'],
+            [ ['nombre_usuario', 'email'], 'unique', 'when' => function ($model, $attribute) { 
+                return $model->{$attribute} !== static::getActualUsername($model->id_usuario)->$attribute; }, 
+                'on' => 'update',
+                'message'=>'El {attribute} ingresado ya existe'], //en caso de ser una modificación de datos 
+            [['nombre_usuario', 'email'], 'unique', 'on' => 'create', 'message'=>'El {attribute} ingresado ya existe'], //en caso de crear un nuevo especialista
         ];
     }
 
@@ -158,6 +163,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return current( \Yii::$app->authManager->getAssignments($id) );
     }
 
+
+    public static function getActualUsername($id){
+        return static::findIdentity($id);
+    }
 
     public function validateAuthKey($authKey){
 

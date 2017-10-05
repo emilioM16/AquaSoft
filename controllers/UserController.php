@@ -81,9 +81,10 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = 'update';
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->id]);
+            return $this->redirect(['index', 'id' => $model->idacuario]);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('update',[
@@ -126,9 +127,18 @@ class UserController extends Controller
         }
     }
 
-    public function actionValidation(){
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
+
+     
         
-        $model = new User();
+        if($id!=-1){ //solución horrible, no quedaba otra, mejorar si se puede a futuro
+            $scenario = 'update';
+        }else{
+            $scenario = 'create';
+        }
+
+        yii::error(\yii\helpers\VarDumper::dumpAsString($scenario));
+        $model = new User(['scenario'=>$scenario,'id_usuario'=>$id]);
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
         {
