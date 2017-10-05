@@ -64,8 +64,10 @@ class UserController extends Controller
     public function actionCreate()
     {
         $userModel = new User();
+        $userModel->scenario = 'create';
         if($userModel->saveUser()){
-            return $this->redirect(['view', 'id' => $userModel->id_usuario]);      
+            $userModel->saveAssignedAquariums();
+            return $this->redirect(['index', 'id' => $userModel->id_usuario]);      
         }else{
             $items = Aquarium::getActiveAquariums();
             return $this->renderAjax('create', [
@@ -84,13 +86,16 @@ class UserController extends Controller
         $model->scenario = 'update';
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->idacuario]);
+            $model->saveAssignedAquariums();
+            return $this->redirect(['index', 'id' => $model->id_usuario]);
         } else {
             if (Yii::$app->request->isAjax){
+                $model->loadAssignedAquariums();
                 return $this->renderAjax('update',[
                     'model'=>$model,
                 ]);
             }else{
+                $model->loadAssignedAquariums();
                 return $this->render('update', [
                     'model' => $model,
                 ]);

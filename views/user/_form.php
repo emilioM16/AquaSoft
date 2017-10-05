@@ -80,6 +80,15 @@ use rmrevin\yii\fontawesome\FA;
                             ]
                         ],                        
                     ]
+                ],
+                [
+                    'attributes'=>[
+                        'activo'=>[
+                            'type'=>Form::INPUT_RADIO_LIST,
+                            'items'=>[1=>'Activo',0=>'Inactivo'],
+                            'options'=>['inline'=>true]
+                        ]
+                    ]
                 ]
             ]
         ]);
@@ -94,7 +103,7 @@ use rmrevin\yii\fontawesome\FA;
                 [
                     'contentBefore'=>'<legend class="text-info"><small>Asignación de acuarios</small></legend>',
                     'attributes'=>[
-                        'assignedAquariumsIds'=>[
+                        'assignedAquariums'=>[
                             'type'=>Form::INPUT_WIDGET,
                             'widgetClass'=>'softark\duallistbox\DualListbox',
                             'options'=>[

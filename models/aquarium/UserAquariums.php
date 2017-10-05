@@ -13,7 +13,7 @@ use Yii;
  * @property Acuarios $acuarioIdacuario
  * @property Usuarios $usuarioIdusuario
  */
-class AquariumsUsers extends \yii\db\ActiveRecord
+class UserAquariums extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -52,7 +52,7 @@ class AquariumsUsers extends \yii\db\ActiveRecord
      */
     public function getAcuarioIdacuario()
     {
-        return $this->hasOne(Acuarios::className(), ['idacuario' => 'acuario_idacuario']);
+        return $this->hasOne(Aquarium::className(), ['idacuario' => 'acuario_idacuario']);
     }
 
     /**
@@ -60,6 +60,7 @@ class AquariumsUsers extends \yii\db\ActiveRecord
      */
     public function getUsuarioIdusuario()
     {
-        return $this->hasOne(Usuarios::className(), ['id_usuario' => 'usuario_idusuario']);
+        return $this->hasOne(User::className(), ['id_usuario' => 'usuario_idusuario']);
     }
+
 }
