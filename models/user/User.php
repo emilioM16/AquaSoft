@@ -45,10 +45,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['nombre', 'apellido', 'nombre_usuario', 'contrasenia','contrasenia_repeat'], 'required', 'message'=>'Campo requerido.'],
+            [['nombre', 'apellido', 'nombre_usuario', 'contrasenia','contrasenia_repeat','activo'], 'required', 'message'=>'Campo requerido'],
             [['activo'], 'integer'],
             [['nombre', 'apellido', 'nombre_usuario', 'email', 'contrasenia','contrasenia_repeat'], 'string', 'max' => 45],
-            [['contrasenia_repeat'], 'compare', 'compareAttribute'=>'contrasenia','message'=>'Las contraseñas deben ser iguales.'],
+            [['contrasenia_repeat'], 'compare', 'compareAttribute'=>'contrasenia','message'=>'Las contraseñas deben ser iguales'],
+            ['nombre_usuario','unique','message'=>'El nombre ingresado ya existe'],
+            ['email','email','message'=>'El email ingresado no es válido']
         ];
     }
 
@@ -66,7 +68,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'contrasenia' => 'Contraseña',
             'contrasenia_repeat'=>'Repetir contraseña',
             'activo' => 'Activo',
-            'assignedAquariumsIds'=>'Asignación acuarios'
+            'assignedAquariumsIds'=>''
         ];
     }
 
@@ -165,11 +167,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return static::findOne(['access_token'=>$token]);
     }
 
-    public function saveUser(){
+    public function saveUser(){ //guarda utilizando transacciones los datos del usuario (creado o modificado) junto con su rol (especialista)//
         $authModel = new AuthAssignment();
         $transaction = Yii::$app->db->beginTransaction();
+        yii::error(\yii\helpers\VarDumper::dumpAsString($this->assignedAquariumsIds));
         try{
-            if($this->load(Yii::$app->request->post()) && $this->save()){
+            if($this->load(Yii::$app->request->post()) && $this->save()){//si pasa las validaciones y se guarda el modelo user, guarda en authItem el rol y lo asocia. Caso contrario, se hace un rollback //
                 $authModel->item_name = 'especialista';
                 $authModel->user_id = strval($this->id_usuario);
                 if($authModel->save()){

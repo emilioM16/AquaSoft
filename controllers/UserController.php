@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\base\Exception;
 use app\models\aquarium\Aquarium;
+use yii\widgets\ActiveForm;
 /**
  * UserController implements the CRUD actions for User model.
  */
@@ -67,7 +68,7 @@ class UserController extends Controller
             return $this->redirect(['view', 'id' => $userModel->id_usuario]);      
         }else{
             $items = Aquarium::getActiveAquariums();
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $userModel,
                 'items'=>$items
             ]);
@@ -80,13 +81,19 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_usuario]);
+            return $this->redirect(['index', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->isAjax){
+                return $this->renderAjax('update',[
+                    'model'=>$model,
+                ]);
+            }else{
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         }
     }
 
@@ -117,5 +124,16 @@ class UserController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionValidation(){
+        
+        $model = new User();
+
+        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+        {
+            Yii::$app->response->format = 'json';
+            return ActiveForm::validate($model);
+        }        
     }
 }

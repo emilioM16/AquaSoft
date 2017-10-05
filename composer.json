@@ -31,7 +31,9 @@
         "kartik-v/yii2-widget-touchspin": "*",
         "kartik-v/yii2-builder": "@dev",
         "kartik-v/yii2-widget-activeform": "@dev",
-        "yii2mod/yii2-sweet-alert": "*"
+        "yii2mod/yii2-sweet-alert": "*",
+        "reportico/yii2-reportico": "dev-master",
+        "softark/yii2-dual-listbox": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
