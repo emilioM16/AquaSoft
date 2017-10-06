@@ -56,7 +56,7 @@ class Aquarium extends \yii\db\ActiveRecord
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
             'capacidad_maxima' => 'Capacidad Maxima',
-            'espaciodisponible' => 'Espaciodisponible',
+            'espaciodisponible' => 'Espacio Disponible',
             'activo' => 'Activo',
         ];
     }
