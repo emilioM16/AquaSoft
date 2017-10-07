@@ -7,11 +7,11 @@ use app\models\user\User;
 /**
  * This is the model class for table "acuarios_usuarios".
  *
- * @property integer $acuario_idacuario
- * @property integer $usuario_idusuario
+ * @property integer $acuario_idAcuario
+ * @property integer $usuario_idUsuario
  *
- * @property Acuarios $acuarioIdacuario
- * @property Usuarios $usuarioIdusuario
+ * @property Acuarios $acuarioIdAcuario
+ * @property Usuarios $usuarioIdUsuario
  */
 class UserAquariums extends \yii\db\ActiveRecord
 {
@@ -20,7 +20,7 @@ class UserAquariums extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acuarios_usuarios';
+        return 'ACUARIO_USUARIO';
     }
 
     /**
@@ -29,10 +29,10 @@ class UserAquariums extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['acuario_idacuario', 'usuario_idusuario'], 'required'],
-            [['acuario_idacuario', 'usuario_idusuario'], 'integer'],
-            [['acuario_idacuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['acuario_idacuario' => 'idacuario']],
-            [['usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuario_idusuario' => 'id_usuario']],
+            [['acuario_idAcuario', 'usuario_idUsuario'], 'required'],
+            [['acuario_idAcuario', 'usuario_idUsuario'], 'integer'],
+            [['acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['acuario_idAcuario' => 'idAcuario']],
+            [['usuario_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['usuario_idUsuario' => 'idUsuario']],
         ];
     }
 
@@ -42,25 +42,25 @@ class UserAquariums extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'acuario_idacuario' => 'Acuario Idacuario',
-            'usuario_idusuario' => 'Usuario Idusuario',
+            'acuario_idAcuario' => 'Acuario IdAcuario',
+            'usuario_idUsuario' => 'Usuario IdUsuario',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAcuarioIdacuario()
+    public function getAcuarioIdAcuario()
     {
-        return $this->hasOne(Aquarium::className(), ['idacuario' => 'acuario_idacuario']);
+        return $this->hasOne(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioIdusuario()
+    public function getUsuarioIdUsuario()
     {
-        return $this->hasOne(User::className(), ['id_usuario' => 'usuario_idusuario']);
+        return $this->hasOne(User::className(), ['idUsuario' => 'usuario_idUsuario']);
     }
 
 }

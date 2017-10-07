@@ -19,7 +19,7 @@ class TaskTypes extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'tipos_tarea';
+        return 'TIPO_TAREA';
     }
 
     /**

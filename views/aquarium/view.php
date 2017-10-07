@@ -8,8 +8,8 @@ use kartik\builder\Form;
 /* @var $this yii\web\View */
 /* @var $model app\models\Aquarium */
 
-$this->title = $model->idacuario;
-$this->params['breadcrumbs'][] = ['label' => 'Aquaria', 'url' => ['index']];
+$this->title = $model->idAcuario;
+$this->params['breadcrumbs'][] = ['label' => 'Acuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="aquarium-view">
@@ -22,9 +22,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'nombre',
             'descripcion',
-            'capacidad_maxima',
-            'espaciodisponible',
-            'activo',
+            'capacidadMaxima',
+            'espacioDisponible',
+            [
+                'attribute'=>'activo',
+                'value'=>$model->activo == 1 ? 'Si' : 'No'
+            ]
         ],
         'class'=>['form-center']
     ]) ?>

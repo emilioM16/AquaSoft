@@ -50,9 +50,10 @@ class AquariumController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($idacuario)
+    public function actionView($idAcuario)
     {
-        $model = $this->findModel($idacuario);
+        yii::error(\yii\helpers\VarDumper::dumpAsString($idAcuario));
+        $model = $this->findModel($idAcuario);
 
         if (Yii::$app->request->isAjax){
             return $this->renderAjax('view',[
@@ -75,7 +76,7 @@ class AquariumController extends Controller
         $model = new Aquarium();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->idacuario]);
+            return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('create',[
@@ -91,12 +92,12 @@ class AquariumController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($idacuario)
+    public function actionUpdate($idAcuario)
     {
-        $model = $this->findModel($idacuario);
+        $model = $this->findModel($idAcuario);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->idacuario]);
+            return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('update',[
@@ -118,23 +119,23 @@ class AquariumController extends Controller
      */
     public function actionDelete()
     {
-        $idacuario = Yii::$app->request->post('idacuario');
+        $idAcuario = Yii::$app->request->post('idAcuario');
 
-        $model = $this->findModel($idacuario);
+        $model = $this->findModel($idAcuario);
         $model->activo = 0;
         $model->save();
-        // $this->findModel($idacuario)->delete();
+        // $this->findModel($idAcuario)->delete();
 
         return $this->redirect(['index']);
     }
 
-    public function actionDetail($idacuario)
+    public function actionDetail($idAcuario)
     {
-        // $idacuario = Yii::$app->request->post('idacuario');
-        // $usuarios_nombre_usuario = Yii::$app->request->post('usuarios_nombre_usuario');
+        // $idAcuario = Yii::$app->request->post('idAcuario');
+        // $usuarios_nombreUsuario = Yii::$app->request->post('usuarios_nombreUsuario');
         // $idCondiciones = Yii::$app->request->post('idCondiciones');
 
-        $model = $this->findModel($idacuario);
+        $model = $this->findModel($idAcuario);
 
         return $this->render('detail', [
             'acuario'=>$model,
@@ -165,7 +166,7 @@ class AquariumController extends Controller
             $scenario = 'create';
         }
 
-        $model = new Aquarium(['scenario'=>$scenario,'idacuario'=>$id]);
+        $model = new Aquarium(['scenario'=>$scenario,'idAcuario'=>$id]);
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
         {

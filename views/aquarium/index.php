@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="acuario-index">
-    <?php Pjax::begin(['id'=>'idacuario']); ?>
+    <?php Pjax::begin(['id'=>'idAcuario']); ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
 

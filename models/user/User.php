@@ -11,16 +11,16 @@ use app\models\aquarium\Aquarium;
 /**
  * This is the model class for table "usuarios".
  *
- * @property integer $id_usuario
+ * @property integer $idUsuario
  * @property string $nombre
  * @property string $apellido
- * @property string $nombre_usuario
+ * @property string $nombreUsuario
  * @property string $email
  * @property string $contrasenia
  * @property integer $activo
 
  * @property AcuariosUsuarios[] $acuariosUsuarios
- * @property Acuarios[] $acuarioIdacuarios
+ * @property Acuarios[] $acuarioidAcuarios
  * @property AuthAssignment[] $authAssignments
  * @property AuthItem[] $itemNames
  * @property Tareas[] $tareas
@@ -31,14 +31,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     public $contrasenia_repeat;
 
-    public $assignedAquariums = []; //conjunto de acuarios que se le asignaron al especialista a través del formulario//
-
+    public $assignedAquariumsIds = []; //conjunto de IDs de acuarios que se le asignaron al especialista a través del formulario//
+    public $assignedAquariumsNames = [];//conjunto de NOMBRES de acuarios que se le asignaron al especialista a través del formulario//
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'usuarios';
+        return 'USUARIO';
     }
 
     /**
@@ -47,19 +47,19 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['nombre', 'apellido', 'nombre_usuario', 'contrasenia','contrasenia_repeat','activo'], 'required', 'message'=>'Campo requerido'],
+            [['nombre', 'apellido', 'nombreUsuario', 'contrasenia','contrasenia_repeat','activo'], 'required', 'message'=>'Campo requerido'],
             [['activo'], 'integer'],
-            ['id_usuario','unique'],
-            [['nombre', 'apellido', 'nombre_usuario', 'email', 'contrasenia','contrasenia_repeat'], 'string', 'max' => 45],
+            ['idUsuario','unique'],
+            [['nombre', 'apellido', 'nombreUsuario', 'email', 'contrasenia','contrasenia_repeat'], 'string', 'max' => 45],
             [['contrasenia_repeat'], 'compare', 'compareAttribute'=>'contrasenia','message'=>'Las contraseñas deben ser iguales'],
             ['email','email','message'=>'El email ingresado no es válido'],
-            [ ['nombre_usuario', 'email'], 'unique', 'when' => function ($model, $attribute) { 
-                return $model->{$attribute} !== static::findOne(['id_usuario'=>$model->id_usuario])->$attribute; }, 
+            [ ['nombreUsuario', 'email'], 'unique', 'when' => function ($model, $attribute) { 
+                return $model->{$attribute} !== static::findOne(['idUsuario'=>$model->idUsuario])->$attribute; }, 
                 'on' => 'update',
                 'message'=>'El {attribute} ingresado ya existe'], //en caso de ser una modificación de datos 
-            [['nombre_usuario', 'email'], 'unique', 'on' => 'create', 'message'=>'El {attribute} ingresado ya existe'], //en caso de crear un nuevo especialista
-            ['assignedAquariums', 'each', 'rule' => [
-                'exist', 'targetClass' => Aquarium::className(), 'targetAttribute' => 'idacuario'
+            [['nombreUsuario', 'email'], 'unique', 'on' => 'create', 'message'=>'El {attribute} ingresado ya existe'], //en caso de crear un nuevo especialista
+            ['assignedAquariumsIds', 'each', 'rule' => [
+                'exist', 'targetClass' => Aquarium::className(), 'targetAttribute' => 'idAcuario'
             ]],
         ];
     }
@@ -70,15 +70,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id_usuario' => 'Id Usuario',
+            'idUsuario' => 'Id Usuario',
             'nombre' => 'Nombre',
             'apellido' => 'Apellido',
-            'nombre_usuario' => 'Nombre de usuario',
+            'nombreUsuario' => 'Nombre de usuario',
             'email' => 'Email',
             'contrasenia' => 'Contraseña',
             'contrasenia_repeat'=>'Repetir contraseña',
             'activo' => 'Activo',
-            'assignedAquariums'=>''
+            'assignedAquariumsIds'=>'',
+            'assignedAquariumsNames'=>'Aquarios asignados'
         ];
     }
 
@@ -87,15 +88,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getUserAquariums()
     {
-        return $this->hasMany(UserAquariums::className(), ['usuario_idusuario' => 'id_usuario']);
+        return $this->hasMany(UserAquariums::className(), ['usuario_idUsuario' => 'idUsuario']);
     }
 
     /**
     * @return \yii\db\ActiveQuery
     */
-    public function getAcuarioIdacuarios()
+    public function getAcuarioidAcuarios()
     {
-        return $this->hasMany(Acuarios::className(), ['idacuario' => 'acuario_idacuario'])->viaTable('acuarios_usuarios', ['usuario_idusuario' => 'id_usuario']);
+        return $this->hasMany(Acuarios::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('acuarios_usuarios', ['usuario_idUsuario' => 'idUsuario']);
     }
 
     /**
@@ -103,7 +104,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     */
     public function getAuthAssignments()
     {
-        return $this->hasMany(AuthAssignment::className(), ['user_id' => 'id_usuario']);
+        return $this->hasMany(AuthAssignment::className(), ['user_id' => 'idUsuario']);
     }
 
     /**
@@ -111,7 +112,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     */
     public function getItemNames()
     {
-        return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'id_usuario']);
+        return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'idUsuario']);
     }
 
     /**
@@ -119,7 +120,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     */
     public function getTareas()
     {
-        return $this->hasMany(Tareas::className(), ['usuario_idusuario' => 'id_usuario']);
+        return $this->hasMany(Tareas::className(), ['usuario_idUsuario' => 'idUsuario']);
     }
 
     /**
@@ -127,17 +128,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     */
     public function getValidaciones()
     {
-        return $this->hasMany(Validaciones::className(), ['usuario_idusuario' => 'id_usuario']);
+        return $this->hasMany(Validaciones::className(), ['usuario_idUsuario' => 'idUsuario']);
     }
 
     
     public static function findIdentity($id){
-        return static::findOne(['id_usuario' => $id]);
+        return static::findOne(['idUsuario' => $id]);
     }
 
 
-    public static function findByUsername($nombre_usuario){
-        return static::findOne(['nombre_usuario'=>$nombre_usuario]);
+    public static function findByUsername($nombreUsuario){
+        return static::findOne(['nombreUsuario'=>$nombreUsuario]);
     }
 
 
@@ -178,29 +179,22 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
 
-    // public function assignedToString(){
-    //     $assignedString = "";
-    //     foreach ($this->assignedAquariums as $aa) {
-    //         $assignedString = $aa->
-    //     }
-    // }
-
     public function loadAssignedAquariums(){
-        $this->assignedAquariums = [];
-        $aquariums = UserAquariums::find()->where(['usuario_idusuario'=>$this->id_usuario])->all();
-        yii::error(\yii\helpers\VarDumper::dumpAsString($aquariums));
+        $this->assignedAquariumsIds = [];
+        $aquariums = UserAquariums::find()->where(['usuario_idUsuario'=>$this->idUsuario])->all();
         foreach ($aquariums as $a) {
-            $this->assignedAquariums[] = $a->acuario_idacuario;
+            $this->assignedAquariumsIds[] = $a->acuario_idAcuario;
+            $this->assignedAquariumsNames[] = Aquarium::findOne($a->acuario_idAcuario)->nombre;
         }
     }
 
     public function saveAssignedAquariums(){
-        UserAquariums::deleteAll(['usuario_idusuario'=>$this->id_usuario]);
-        if(is_array($this->assignedAquariums)){
-            foreach ($this->assignedAquariums as $aqId) {
+        UserAquariums::deleteAll(['usuario_idUsuario'=>$this->idUsuario]);
+        if(is_array($this->assignedAquariumsIds)){
+            foreach ($this->assignedAquariumsIds as $aqId) {
                 $ua = new UserAquariums();
-                $ua->usuario_idusuario = $this->id_usuario;
-                $ua->acuario_idacuario = $aqId;
+                $ua->usuario_idUsuario = $this->idUsuario;
+                $ua->acuario_idAcuario = $aqId;
                 $ua->save(); 
             }
         }
@@ -209,11 +203,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function saveUser(){ //guarda utilizando transacciones los datos del usuario (creado o modificado) junto con su rol (especialista)//
         $authModel = new AuthAssignment();
         $transaction = Yii::$app->db->beginTransaction();
-        yii::error(\yii\helpers\VarDumper::dumpAsString($this->assignedAquariums));
         try{
             if($this->load(Yii::$app->request->post()) && $this->save()){//si pasa las validaciones y se guarda el modelo user, guarda en authItem el rol y lo asocia. Caso contrario, se hace un rollback //
                 $authModel->item_name = 'especialista';
-                $authModel->user_id = strval($this->id_usuario);
+                $authModel->user_id = strval($this->idUsuario);
                 if($authModel->save()){
                     $transaction->commit();
                     return true;

@@ -17,8 +17,8 @@ use rmrevin\yii\fontawesome\FA;
 
     $aquariumId =-1;
 
-    if ($model->idacuario!==null){
-        $aquariumId = $model->idacuario;
+    if ($model->idAcuario!==null){
+        $aquariumId = $model->idAcuario;
     }
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
@@ -38,7 +38,7 @@ use rmrevin\yii\fontawesome\FA;
                         'maxlength'=>true,
                     ]
                 ],
-                'capacidad_maxima'=>[
+                'capacidadMaxima'=>[
                     'type'=>Form::INPUT_TEXT,
                     'options'=>[
                         'placeholder'=>'Ingrese la capacidad',

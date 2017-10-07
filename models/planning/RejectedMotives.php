@@ -18,7 +18,7 @@ class RejectedMotives extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'motivos_rechazo';
+        return 'MOTIVO_RECHAZO';
     }
 
     /**

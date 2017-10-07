@@ -26,7 +26,7 @@ class Conditions extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'condiciones_ambientales';
+        return 'CONDICION_AMBIENTAL';
     }
 
     /**

@@ -18,7 +18,7 @@ class UserAquariumsSearch extends UserAquariums
     public function rules()
     {
         return [
-            [['acuario_idacuario', 'usuario_idusuario'], 'integer'],
+            [['acuario_idAcuario', 'usuario_idUsuario'], 'integer'],
         ];
     }
 
@@ -58,8 +58,8 @@ class UserAquariumsSearch extends UserAquariums
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'acuario_idacuario' => $this->acuario_idacuario,
-            'usuario_idusuario' => $this->usuario_idusuario,
+            'acuario_idAcuario' => $this->acuario_idAcuario,
+            'usuario_idUsuario' => $this->usuario_idUsuario,
         ]);
 
         return $dataProvider;

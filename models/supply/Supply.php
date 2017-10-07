@@ -25,7 +25,7 @@ class Supply extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'insumos';
+        return 'INSUMO';
     }
 
     /**

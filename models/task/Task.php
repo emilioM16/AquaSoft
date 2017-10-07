@@ -32,7 +32,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'tareas';
+        return 'TAREA';
     }
 
     /**

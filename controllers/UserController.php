@@ -76,7 +76,7 @@ class UserController extends Controller
         $userModel->scenario = 'create';
         if($userModel->saveUser()){
             $userModel->saveAssignedAquariums();
-            return $this->redirect(['index', 'id' => $userModel->id_usuario]);      
+            return $this->redirect(['index', 'id' => $userModel->idUsuario]);      
         }else{
             $items = Aquarium::getActiveAquariums();
             return $this->renderAjax('create', [
@@ -96,7 +96,7 @@ class UserController extends Controller
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->saveAssignedAquariums();
-            return $this->redirect(['index', 'id' => $model->id_usuario]);
+            return $this->redirect(['index', 'id' => $model->idUsuario]);
         } else {
             if (Yii::$app->request->isAjax){
                 $model->loadAssignedAquariums();
@@ -152,7 +152,7 @@ class UserController extends Controller
         }
 
         yii::error(\yii\helpers\VarDumper::dumpAsString($scenario));
-        $model = new User(['scenario'=>$scenario,'id_usuario'=>$id]);
+        $model = new User(['scenario'=>$scenario,'idUsuario'=>$id]);
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
         {

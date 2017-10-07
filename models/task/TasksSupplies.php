@@ -21,7 +21,7 @@ class TasksSupplies extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'tareas_insumos';
+        return 'TAREA_INSUMO';
     }
 
     /**

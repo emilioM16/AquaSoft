@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
           '</p>
           <br>
 
-          <label>Espacio disponible: </label> <span>'.$acuario->espaciodisponible.'</span>
+          <label>Espacio disponible: </label> <span>'.$acuario->espacioDisponible.'</span>
           <br><br>
           
       </div>' ;
