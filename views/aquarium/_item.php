@@ -19,7 +19,7 @@ use rmrevin\yii\fontawesome\FA;
             <?php
               echo  Html::button('<span class="glyphicon glyphicon-eye-open"></span>', 
                     [
-                      'value' => Url::to(['aquarium/view','idacuario'=>$model->idacuario]), 
+                      'value' => Url::to(['aquarium/view','idAcuario'=>$model->idAcuario]), 
                       'title' => 'Información del acuario '.$model->nombre, 
                       'class' => 'showModalButton btn btn-success btnAquarium'
                     ]);
@@ -27,7 +27,7 @@ use rmrevin\yii\fontawesome\FA;
               
               echo  Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
                     [
-                      'value' => Url::to(['aquarium/update','idacuario'=>$model->idacuario]), 
+                      'value' => Url::to(['aquarium/update','idAcuario'=>$model->idAcuario]), 
                       'title' => 'Modificar acuario '.$model->nombre, 
                       'class' => 'showModalButton btn btn-primary btnAquarium'
                     ]);
@@ -36,7 +36,7 @@ use rmrevin\yii\fontawesome\FA;
 
               // echo  Html::button('<span class="glyphicon glyphicon-trash"></span>', 
               // [
-              //   'value' => Url::to(['aquarium/delete','idacuario'=>$model->idacuario]), 
+              //   'value' => Url::to(['aquarium/delete','idAcuario'=>$model->idAcuario]), 
               //   'title' => 'Eliminar acuario', 
               //   'class' => 'btn btn-danger btnAquarium',
               //   'method'=>'post'
@@ -55,7 +55,7 @@ use rmrevin\yii\fontawesome\FA;
                 'data'=>[
                   'method'=>'POST',
                   'params'=>[
-                    'idacuario'=>$model->idacuario,
+                    'idAcuario'=>$model->idAcuario,
                   ],
                   'confirm'=>'¿Está seguro de querer dar de baja el acuario '.$model->nombre.'?',
                 ]
@@ -66,7 +66,7 @@ use rmrevin\yii\fontawesome\FA;
                             [
                               'detail',
                               'nombreacuario' => $model->nombre,
-                              'idacuario'=>$model->idacuario,
+                              'idAcuario'=>$model->idAcuario,
                               // 'usuarios_nombre_usuario' => $model->usuarios_nombre_usuario,
                               // 'id_condiciones_ambientales' => $model->id_condiciones_ambientales,
                             ],

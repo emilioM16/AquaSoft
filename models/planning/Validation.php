@@ -25,7 +25,7 @@ class Validation extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'validaciones';
+        return 'VALIDACION';
     }
 
     /**

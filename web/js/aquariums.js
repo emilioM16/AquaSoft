@@ -27,7 +27,7 @@
 
 
 $('document').on('ready pjax:success',function(){ //para la búsqueda de acuarios
-    $('#idacuario').on('pjax:end', function() {
+    $('#idAcuario').on('pjax:end', function() {
         $.pjax.reload({container:'#acuarios'}); 
     });
 });

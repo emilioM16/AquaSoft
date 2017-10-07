@@ -33,7 +33,7 @@ class Species extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'especies';
+        return 'ESPECIE';
     }
 
     /**

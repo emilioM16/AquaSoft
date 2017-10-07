@@ -8,11 +8,11 @@ use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "acuarios".
  *
- * @property integer $idacuario
+ * @property integer $idAcuario
  * @property string $nombre
  * @property string $descripcion
- * @property integer $capacidad_maxima
- * @property integer $espaciodisponible
+ * @property integer $capacidadMaxima
+ * @property integer $espacioDisponible
  * @property integer $activo
  *
  * @property AcuariosUsuarios[] $acuariosUsuarios
@@ -25,7 +25,7 @@ class Aquarium extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'acuarios';
+        return 'ACUARIO';
     }
 
     /**
@@ -34,12 +34,12 @@ class Aquarium extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'capacidad_maxima','activo'], 'required','message'=>'Campo obligatorio.'],
-            [['capacidad_maxima', 'espaciodisponible', 'activo'], 'integer'],
+            [['nombre', 'capacidadMaxima','activo'], 'required','message'=>'Campo obligatorio.'],
+            [['capacidadMaxima', 'espacioDisponible', 'activo'], 'integer'],
             [['nombre'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
             [ ['nombre'], 'unique', 'when' => function ($model, $attribute) { 
-                return $model->{$attribute} !== static::getAquarium($model->idacuario)->$attribute; }, 
+                return $model->{$attribute} !== static::getAquarium($model->idAcuario)->$attribute; }, 
                 'on' => 'update',
                 'message'=>'El nombre ingresado ya existe'], //en caso de ser una modificación de datos 
             [['nombre'], 'unique', 'on' => 'create', 'message'=>'El nombre ingresado ya existe'], //en caso de crear un nuevo especialista
@@ -52,11 +52,11 @@ class Aquarium extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idacuario' => 'Idacuario',
+            'idAcuario' => 'idAcuario',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
-            'capacidad_maxima' => 'Capacidad Maxima',
-            'espaciodisponible' => 'Espacio Disponible',
+            'capacidadMaxima' => 'Capacidad Maxima',
+            'espacioDisponible' => 'EspacioDisponible',
             'activo' => 'Activo',
         ];
     }
@@ -66,7 +66,7 @@ class Aquarium extends \yii\db\ActiveRecord
      */
     public function getAcuariosUsuarios()
     {
-        return $this->hasMany(AcuariosUsuarios::className(), ['acuario_idacuario' => 'idacuario']);
+        return $this->hasMany(AcuariosUsuarios::className(), ['acuario_idAcuario' => 'idAcuario']);
     }
 
     /**
@@ -74,7 +74,7 @@ class Aquarium extends \yii\db\ActiveRecord
      */
     public function getUsuarioIdusuarios()
     {
-        return $this->hasMany(Usuarios::className(), ['id_usuario' => 'usuario_idusuario'])->viaTable('acuarios_usuarios', ['acuario_idacuario' => 'idacuario']);
+        return $this->hasMany(Usuarios::className(), ['id_usuario' => 'usuario_idusuario'])->viaTable('acuarios_usuarios', ['acuario_idAcuario' => 'idAcuario']);
     }
 
 
@@ -83,7 +83,7 @@ class Aquarium extends \yii\db\ActiveRecord
      */
      public function getCondicionesAmbientales()
      {
-         return $this->hasMany(CondicionesAmbientales::className(), ['acuario_idacuario' => 'idacuario']);
+         return $this->hasMany(CondicionesAmbientales::className(), ['acuario_idAcuario' => 'idAcuario']);
      }
 
 
@@ -92,7 +92,7 @@ class Aquarium extends \yii\db\ActiveRecord
      */
     public function getEjemplares()
     {
-        return $this->hasMany(Ejemplares::className(), ['acuario_idacuario' => 'idacuario']);
+        return $this->hasMany(Ejemplares::className(), ['acuario_idAcuario' => 'idAcuario']);
     }
 
     /**
@@ -100,21 +100,21 @@ class Aquarium extends \yii\db\ActiveRecord
      */
     public function getEspecieIdespecies()
     {
-        return $this->hasMany(Especies::className(), ['idespecie' => 'especie_idespecie'])->viaTable('ejemplares', ['acuario_idacuario' => 'idacuario']);
+        return $this->hasMany(Especies::className(), ['idespecie' => 'especie_idespecie'])->viaTable('ejemplares', ['acuario_idAcuario' => 'idAcuario']);
     }
 
     public function getAquarium($id){
-        return static::findOne(['idacuario'=>$id]);
+        return static::findOne(['idAcuario'=>$id]);
     }
 
     public function beforeSave($insert){
-        $this->espaciodisponible = $this->capacidad_maxima;
+        $this->espacioDisponible = $this->capacidadMaxima;
         return parent::beforeSave($insert);
     }
 
     public static function getActiveAquariums(){
         $aquariums = static::find()->where(['activo'=>1])->all();
-        $items = ArrayHelper::map($aquariums, 'idacuario','nombre');
+        $items = ArrayHelper::map($aquariums, 'idAcuario','nombre');
         return $items;
     }
 

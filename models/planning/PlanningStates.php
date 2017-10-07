@@ -18,7 +18,7 @@ class PlanningStates extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'estados_planificacion';
+        return 'ESTADO_PLANIFICACION';
     }
 
     /**

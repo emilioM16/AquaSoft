@@ -7,7 +7,7 @@ use rmrevin\yii\fontawesome\FA;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
-$this->title = $model->id_usuario;
+$this->title = $model->idUsuario;
 $this->params['breadcrumbs'][] = ['label' => 'Especialistas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -18,14 +18,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'nombre',
             'apellido',
-            'nombre_usuario',
+            'nombreUsuario',
             'email:email',
-            'activo',
-            // [
-            //     'label'=>'assignedAquariums',
-            //     'value'=>$model->
+            [
+                'attribute'=>'activo',
+                'value'=>$model->activo == 1 ? 'Si' : 'No'
+            ],
 
-            // ]
+            [
+                'attribute'=>'assignedAquariumsNames',
+                'label'=>'Aquarios asignados',
+                'value'=>function($model){
+                    $aquariums = [];
+                    foreach ($model->assignedAquariumsNames as $key => $value) {
+                        $aquariums[] = $value;
+                    }
+                    return implode(', ',$aquariums);
+                }
+
+            ]
 
         ],
     ]) ?>

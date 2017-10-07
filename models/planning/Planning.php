@@ -28,7 +28,7 @@ class Planning extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'planificaciones';
+        return 'PLANIFICACION';
     }
 
     /**

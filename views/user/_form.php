@@ -21,8 +21,8 @@ use rmrevin\yii\fontawesome\FA;
 
     $userId =-1;
 
-    if ($model->id_usuario!==null){
-        $userId = $model->id_usuario;
+    if ($model->idUsuario!==null){
+        $userId = $model->idUsuario;
     }
 
         $form = ActiveForm::begin([
@@ -51,7 +51,7 @@ use rmrevin\yii\fontawesome\FA;
                                 'placeholder'=>'Ingrese el apellido'
                             ]
                         ],
-                        'nombre_usuario'=>[
+                        'nombreUsuario'=>[
                             'type'=>Form::INPUT_TEXT,
                             'options'=>[
                                 'placeholder'=>'Ingrese el nombre de usuario'
@@ -103,7 +103,7 @@ use rmrevin\yii\fontawesome\FA;
                 [
                     'contentBefore'=>'<legend class="text-info"><small>Asignación de acuarios</small></legend>',
                     'attributes'=>[
-                        'assignedAquariums'=>[
+                        'assignedAquariumsIds'=>[
                             'type'=>Form::INPUT_WIDGET,
                             'widgetClass'=>'softark\duallistbox\DualListbox',
                             'options'=>[

@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Modificar acuario: ' . $model->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Acuarios', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->idacuario, 'url' => ['view', 'id' => $model->nombre]];
+$this->params['breadcrumbs'][] = ['label' => $model->idAcuario, 'url' => ['view', 'id' => $model->nombre]];
 $this->params['breadcrumbs'][] = 'Modificar';
 ?>
 <div class="aquarium-update">

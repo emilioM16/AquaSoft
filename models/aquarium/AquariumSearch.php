@@ -18,7 +18,7 @@ class AquariumSearch extends Aquarium
     public function rules()
     {
         return [
-            [['idacuario', 'espaciodisponible', 'activo'], 'integer'],
+            [['idAcuario', 'espacioDisponible', 'activo'], 'integer'],
             [['nombre', 'descripcion'], 'safe'],
         ];
     }
@@ -59,8 +59,8 @@ class AquariumSearch extends Aquarium
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idacuario' => $this->idacuario,
-            'espaciodisponible' => $this->espaciodisponible,
+            'idAcuario' => $this->idAcuario,
+            'espacioDisponible' => $this->espacioDisponible,
             'activo' => $this->activo,
         ]);
 

@@ -21,7 +21,7 @@ class Specimens extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'ejemplares';
+        return 'EJEMPLAR';
     }
 
     /**

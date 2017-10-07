@@ -18,7 +18,7 @@ class NotificationOrigin extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'origen_notificacion';
+        return 'ORIGEN_NOTIFICACION';
     }
 
     /**
