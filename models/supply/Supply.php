@@ -5,18 +5,18 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "insumos".
+ * This is the model class for table "INSUMO".
  *
- * @property integer $idinsumo
+ * @property integer $idInsumo
  * @property string $nombre
  * @property string $descripcion
  * @property integer $stock
  * @property integer $activo
- * @property string $tipo_tarea_idtipo_tarea
+ * @property string $TIPO_TAREA_idTipoTarea
  *
- * @property TiposTarea $tipoTareaIdtipoTarea
- * @property TareasInsumos[] $tareasInsumos
- * @property Tareas[] $tareaIdtareas
+ * @property TIPOTAREA $tIPOTAREAIdTipoTarea
+ * @property INSUMOTAREA[] $iNSUMOTAREAs
+ * @property TAREA[] $tAREAIdTareas
  */
 class Supply extends \yii\db\ActiveRecord
 {
@@ -34,11 +34,11 @@ class Supply extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'stock', 'tipo_tarea_idtipo_tarea'], 'required'],
+            [['nombre', 'stock', 'TIPO_TAREA_idTipoTarea'], 'required'],
             [['stock', 'activo'], 'integer'],
-            [['nombre', 'tipo_tarea_idtipo_tarea'], 'string', 'max' => 45],
+            [['nombre', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [['tipo_tarea_idtipo_tarea'], 'exist', 'skipOnError' => true, 'targetClass' => TiposTarea::className(), 'targetAttribute' => ['tipo_tarea_idtipo_tarea' => 'idtipo_tarea']],
+            [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TIPOTAREA::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
         ];
     }
 
@@ -48,36 +48,36 @@ class Supply extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idinsumo' => 'Idinsumo',
+            'idInsumo' => 'Id Insumo',
             'nombre' => 'Nombre',
             'descripcion' => 'Descripcion',
             'stock' => 'Stock',
             'activo' => 'Activo',
-            'tipo_tarea_idtipo_tarea' => 'Tipo Tarea Idtipo Tarea',
+            'TIPO_TAREA_idTipoTarea' => 'Tipo  Tarea Id Tipo Tarea',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTipoTareaIdtipoTarea()
+    public function getTIPOTAREAIdTipoTarea()
     {
-        return $this->hasOne(TiposTarea::className(), ['idtipo_tarea' => 'tipo_tarea_idtipo_tarea']);
+        return $this->hasOne(TIPOTAREA::className(), ['idTipoTarea' => 'TIPO_TAREA_idTipoTarea']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTareasInsumos()
+    public function getINSUMOTAREAs()
     {
-        return $this->hasMany(TareasInsumos::className(), ['insumo_idinsumo' => 'idinsumo']);
+        return $this->hasMany(INSUMOTAREA::className(), ['INSUMO_idInsumo' => 'idInsumo']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTareaIdtareas()
+    public function getTAREAIdTareas()
     {
-        return $this->hasMany(Tareas::className(), ['idtarea' => 'tarea_idtarea'])->viaTable('tareas_insumos', ['insumo_idinsumo' => 'idinsumo']);
+        return $this->hasMany(TAREA::className(), ['idTarea' => 'TAREA_idTarea'])->viaTable('INSUMO_TAREA', ['INSUMO_idInsumo' => 'idInsumo']);
     }
 }
