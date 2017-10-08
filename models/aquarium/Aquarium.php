@@ -4,6 +4,7 @@ namespace app\models\aquarium;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use app\models\task\Task;
 
 /**
  * This is the model class for table "acuarios".
@@ -15,11 +16,13 @@ use yii\helpers\ArrayHelper;
  * @property integer $espacioDisponible
  * @property integer $activo
  *
- * @property AcuariosUsuarios[] $acuariosUsuarios
- * @property Usuarios[] $usuarioIdusuarios
+ * @property UserAquariums[] $acuariosUser
+ * @property User[] $usuarioIdusuarios
  */
 class Aquarium extends \yii\db\ActiveRecord
 {
+
+    public $events = [];
     /**
      * @inheritdoc
      */
@@ -64,44 +67,54 @@ class Aquarium extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAcuariosUsuarios()
+    public function getUserAquariums()
     {
-        return $this->hasMany(AcuariosUsuarios::className(), ['acuario_idAcuario' => 'idAcuario']);
+        return $this->hasMany(UserAquariums::className(), ['acuario_idAcuario' => 'idAcuario']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioIdusuarios()
+    public function getUsers()
     {
-        return $this->hasMany(Usuarios::className(), ['id_usuario' => 'usuario_idusuario'])->viaTable('acuarios_usuarios', ['acuario_idAcuario' => 'idAcuario']);
+        return $this->hasMany(User::className(), ['id_usuario' => 'usuario_idusuario'])->viaTable('acuarios_usuarios', ['acuario_idAcuario' => 'idAcuario']);
     }
 
 
         /**
      * @return \yii\db\ActiveQuery
      */
-     public function getCondicionesAmbientales()
+     public function getEnviromentalConditions()
      {
-         return $this->hasMany(CondicionesAmbientales::className(), ['acuario_idAcuario' => 'idAcuario']);
+         return $this->hasMany(EnviromentalConditions::className(), ['acuario_idAcuario' => 'idAcuario']);
      }
 
 
          /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEjemplares()
+    public function getSpecimens()
     {
-        return $this->hasMany(Ejemplares::className(), ['acuario_idAcuario' => 'idAcuario']);
+        return $this->hasMany(Specimen::className(), ['acuario_idAcuario' => 'idAcuario']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEspecieIdespecies()
+    public function getSpecies()
     {
-        return $this->hasMany(Especies::className(), ['idespecie' => 'especie_idespecie'])->viaTable('ejemplares', ['acuario_idAcuario' => 'idAcuario']);
+        return $this->hasMany(Specie::className(), ['idespecie' => 'especie_idespecie'])->viaTable('ejemplares', ['acuario_idAcuario' => 'idAcuario']);
     }
+
+
+        /**
+     * @return \yii\db\ActiveQuery
+     */
+     public function getTasks()
+     {
+         return $this->hasMany(Task::className(), ['ACUARIO_idAcuario' => 'idAcuario']);
+     }
+
 
     public function getAquarium($id){
         return static::findOne(['idAcuario'=>$id]);
@@ -116,6 +129,28 @@ class Aquarium extends \yii\db\ActiveRecord
         $aquariums = static::find()->where(['activo'=>1])->all();
         $items = ArrayHelper::map($aquariums, 'idAcuario','nombre');
         return $items;
+    }
+    
+
+    public function loadEvents(){
+
+        $tasks = $this->tasks;
+    
+        foreach ($tasks as $task) 
+        {
+            $event = new \yii2fullcalendar\models\Event();
+            $event->id = $task->idTarea;
+            $event->title = $task->titulo;
+            $event->start = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraInicio));
+            $event->end = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraFin));
+            // $task->nonstandard = [
+            //   'field1' => 'Something I want to be included in object #1',
+            //   'field2' => 'Something I want to be included in object #2',
+            // ],
+            $event->editable = true;
+            $this->events[] = $event;
+        }
+        return $this->events;
     }
 
 }

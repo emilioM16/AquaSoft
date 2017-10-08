@@ -16,7 +16,7 @@ $config = [
                     'class'=>'mdm\admin\controllers\AssignmentController',
                     'userClassName' => 'app\models\user\User',
                     'idField'=>'id_usuario',
-                    'usernameField' => 'nombre_usuario',
+                    'usernameField' => 'nombreUsuario',
                     'searchClass'=>'app\models\user\UserSearch',
                 ],
             ],
@@ -27,15 +27,15 @@ $config = [
             'class'=>'yii\rbac\DbManager',
             'defaultRoles'=>['guest'],
         ],
-        // 'assetManager' => [
-        //         'bundles' => [
-        //             'yii\bootstrap\BootstrapAsset' => [
-        //                 'depends' => [                  
-        //                     'yii\jui\JuiAsset',
-        //                 ],
-        //             ],
-        //         ],
-        //     ],
+        'assetManager' => [
+                'bundles' => [
+                    'yii\bootstrap\BootstrapAsset' => [
+                        'depends' => [                  
+                            'yii\jui\JuiAsset',
+                        ],
+                    ],
+                ],
+            ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '7okQHtT7b1E0btykD3V7mVEiaZBx2A3i',
