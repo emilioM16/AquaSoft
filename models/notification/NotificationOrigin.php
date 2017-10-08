@@ -5,11 +5,11 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "origen_notificacion".
+ * This is the model class for table "ORIGEN_NOTIFICACION".
  *
- * @property string $idorigen_notificacion
+ * @property string $idOrigenNotificacion
  *
- * @property Notificaciones[] $notificaciones
+ * @property NOTIFICACION[] $nOTIFICACIONs
  */
 class NotificationOrigin extends \yii\db\ActiveRecord
 {
@@ -27,8 +27,8 @@ class NotificationOrigin extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idorigen_notificacion'], 'required'],
-            [['idorigen_notificacion'], 'string', 'max' => 45],
+            [['idOrigenNotificacion'], 'required'],
+            [['idOrigenNotificacion'], 'string', 'max' => 45],
         ];
     }
 
@@ -38,15 +38,15 @@ class NotificationOrigin extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idorigen_notificacion' => 'Idorigen Notificacion',
+            'idOrigenNotificacion' => 'Id Origen Notificacion',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getNotificaciones()
+    public function getNOTIFICACIONs()
     {
-        return $this->hasMany(Notificaciones::className(), ['origen_notificacion_idorigen_notificacion' => 'idorigen_notificacion']);
+        return $this->hasMany(NOTIFICACION::className(), ['ORIGEN_NOTIFICACION_idOrigenNotificacion' => 'idOrigenNotificacion']);
     }
 }
