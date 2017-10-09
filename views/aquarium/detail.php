@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 use derekisbusy\panel\PanelWidget;
 use yii\bootstrap\Modal;
 use kartik\tabs\TabsX;
+use rmrevin\yii\fontawesome\FA;
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
@@ -87,3 +88,31 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
+  <!-- Calendario -->
+  <div class="col-lg-6">
+      <div class="row">
+        <div id="pieChart" class="col-lg-12" align="center">
+        <?= yii2fullcalendar\yii2fullcalendar::widget([
+            'id'=>'calendar',
+            'defaultView'=>'basicDay',
+            'header'=>[
+                'left'=>'prev,next today',
+                'center'=>'title',
+                'right'=>'basicDay,agendaWeek,month'
+            ],
+            'options' => [
+                'lang' => 'es',
+            ],
+            'events' => $acuario->events,
+        ]);
+        ?>
+      </div>
+    </div>
+  </div>
+
+  <?php 
+  if(Yii::$app->user->can('administrarTareas')){
+    echo '<div id="btnDetail" class="col-lg-2">'
+          .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',['class'=>'btn btn-success']).
+      '</div>';
+  }

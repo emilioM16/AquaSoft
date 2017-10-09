@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\task;
 
 use Yii;
 
@@ -154,5 +154,12 @@ class Task extends \yii\db\ActiveRecord
     public function getEJEMPLAREspecieIdEspecies()
     {
         return $this->hasMany(EJEMPLAR::className(), ['especie_idEspecie' => 'EJEMPLAR_especie_idEspecie', 'acuario_idAcuario' => 'EJEMPLAR_acuario_idAcuario'])->viaTable('TAREA_EJEMPLAR', ['TAREA_idTarea' => 'idTarea']);
+    }
+
+    
+    public function beforeSave($insert){
+        $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
+        $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion);
+        return parent::beforeSave($insert);
     }
 }

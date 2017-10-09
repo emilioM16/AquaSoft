@@ -136,6 +136,7 @@ class AquariumController extends Controller
         // $idCondiciones = Yii::$app->request->post('idCondiciones');
 
         $model = $this->findModel($idAcuario);
+        $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
 
         return $this->render('detail', [
             'acuario'=>$model,
