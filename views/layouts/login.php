@@ -42,14 +42,6 @@ AppAsset::register($this);
         ]); 
         ?> 
 
-         
-    <!-- <div id="background-carousel" class="carousel slide carousel-fade" data-ride="carousel"> 
-        <div class="carousel-inner" role="listbox"> 
-                <div class="item active" style="background-image:url(/img/fondo1.jpg)"></div> 
-                <div class="item" style="background-image:url(/img/fondo2.jpg)"></div> 
-        </div> 
-    </div>  -->
-
 
 <div class="wrap">
 

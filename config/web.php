@@ -20,7 +20,15 @@ $config = [
                     'searchClass'=>'app\models\user\UserSearch',
                 ],
             ],
-        ]
+        ],
+        'reportico' => [
+            'class' => 'reportico\reportico\Module' ,
+            'controllerMap' => [
+                            'reportico' => 'reportico\reportico\controllers\ReporticoController',
+                            'mode' => 'reportico\reportico\controllers\ModeController',
+                            'ajax' => 'reportico\reportico\controllers\AjaxController',
+            ]
+        ],
     ],
     'components' => [
         'authManager'=>[
