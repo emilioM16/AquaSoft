@@ -146,7 +146,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return Yii::$app->security->validatePassword($pass,$this->contrasenia);//si la contrasenia  es correcta devuelve true
     }
 
-
+    
     public function beforeSave($insert) { //antes de almacenar la contrasenia  la hashea
         if(isset($this->contrasenia)){
             $this->contrasenia  = Yii::$app->security->generatePasswordHash($this->contrasenia);

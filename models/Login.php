@@ -16,6 +16,7 @@ class Login extends Model{
     return[
       [['username','password'],'required','message'=>'Campo obligatorio'],
       [['password'],'validarPass'],
+      [['username'],'checkIfActive'],
     ];
   }
 
@@ -35,6 +36,12 @@ class Login extends Model{
     }
   }
 
+  public function checkIfActive($attribute,$params){ //valida si el usuario que intenta loguearse está activo//
+    $user = User::findOne(['nombreUsuario'=>$this->$attribute]);
+    if($user->activo==0){ //el usuario no está activo (dado de alta)//
+      $this->addError($attribute, 'El usuario ingresado se encuenta dado de baja.');
+    }
+  }
 
   public function login(){ //valida los datos ingresados usando las reglas , y si son correctos inicia sesión
     if($this->validate()){

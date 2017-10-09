@@ -10,7 +10,7 @@ use app\models\user\User;
 /**
  * UserSearch represents the model behind the search form about `app\models\User`.
  */
-class UserSearch extends User
+class UserSearchAll extends User
 {
     /**
      * @inheritdoc
@@ -41,10 +41,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find() //obtiene solamente los especialistas de la tabla usuario//
-                ->joinWith(['authAssignments'])
-                ->select(['*'])
-                ->where(['item_name'=>'especialista']);
+        $query = User::find();
 
         // add conditions that should always apply here
 
