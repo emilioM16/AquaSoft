@@ -106,3 +106,7 @@
  #searchField{
      margin-bottom: 20px;
  }
+
+ .highcharts-container{
+     height: 280px !important;
+ }

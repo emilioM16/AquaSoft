@@ -5,6 +5,7 @@ namespace app\models\aquarium;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\models\task\Task;
+use app\models\conditions\EnviromentalConditions;
 
 /**
  * This is the model class for table "acuarios".
@@ -128,6 +129,7 @@ class Aquarium extends \yii\db\ActiveRecord
     public static function getActiveAquariums(){
         $aquariums = static::find()->where(['activo'=>1])->all();
         $items = ArrayHelper::map($aquariums, 'idAcuario','nombre');
+        yii::error(\yii\helpers\VarDumper::dumpAsString());
         return $items;
     }
     
@@ -151,6 +153,17 @@ class Aquarium extends \yii\db\ActiveRecord
             $this->events[] = $event;
         }
         return $this->events;
+    }
+
+
+    public function getActualConditions(){ //obtiene las condiciones ambientales actuales del acuario//
+        $conditions = EnviromentalConditions::find()
+                        ->asArray()
+                        ->select(['temperatura','ph','salinidad','lux','CO2'])
+                        ->where(['acuario_idAcuario'=>$this->idAcuario])
+                        ->orderBy('idCondicionAmbiental')
+                        ->one();
+        return $conditions;
     }
 
 }

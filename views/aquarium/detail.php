@@ -7,6 +7,7 @@ use derekisbusy\panel\PanelWidget;
 use yii\bootstrap\Modal;
 use kartik\tabs\TabsX;
 use rmrevin\yii\fontawesome\FA;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
@@ -59,16 +60,21 @@ $this->params['breadcrumbs'][] = $this->title;
  
 
 
+
         $items = [
           [
               'label'=>'<i class="glyphicon glyphicon-home"></i> Home',
               'content'=>$content1,
-              //'linkOptions'=>['data-url'=>\yii\helpers\Url::to(['/acuarium/tab'])],
-              'active'=>true
+              // 'active'=>true
           ],
           [
               'label'=>'<i class="glyphicon glyphicon-user"></i> Condiciones ambientales',
-              'content'=>''
+              'content'=>'<div class="row">
+                            <div class="col-lg-12" align="center">'.
+                                $this->render('_gauges',['condiciones'=>$condiciones])
+                            .'</div>
+                            </div>',
+              'active'=>true,
           ],
           [
             'label'=>'<i class="glyphicon glyphicon-user"></i> Población',

@@ -1,23 +1,25 @@
 <?php
 
-namespace app\models;
+namespace app\models\conditions;
 
 use Yii;
+use app\models\aquarium\Aquarium;
+use app\models\task\Task;
 
 /**
  * This is the model class for table "CONDICION_AMBIENTAL".
  *
- * @property integer $idCondicionAmbiental
- * @property double $ph
+ * @property integer $idCondicionAmbiental 
  * @property double $temperatura
+ * @property double $ph
  * @property double $salinidad
  * @property double $lux
  * @property double $CO2
  * @property integer $acuario_idAcuario
  * @property integer $tarea_idTarea
  *
- * @property ACUARIO $acuarioIdAcuario
- * @property TAREA $tareaIdTarea
+ * @property Aquarium $acuarioIdAcuario
+ * @property Task $tareaIdTarea
  */
 class EnviromentalConditions extends \yii\db\ActiveRecord
 {
@@ -38,8 +40,8 @@ class EnviromentalConditions extends \yii\db\ActiveRecord
             [['ph', 'temperatura', 'salinidad', 'lux', 'CO2', 'acuario_idAcuario', 'tarea_idTarea'], 'required'],
             [['ph', 'temperatura', 'salinidad', 'lux', 'CO2'], 'number'],
             [['acuario_idAcuario', 'tarea_idTarea'], 'integer'],
-            [['acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => ACUARIO::className(), 'targetAttribute' => ['acuario_idAcuario' => 'idAcuario']],
-            [['tarea_idTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TAREA::className(), 'targetAttribute' => ['tarea_idTarea' => 'idTarea']],
+            [['acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['acuario_idAcuario' => 'idAcuario']],
+            [['tarea_idTarea'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['tarea_idTarea' => 'idTarea']],
         ];
     }
 
@@ -65,7 +67,7 @@ class EnviromentalConditions extends \yii\db\ActiveRecord
      */
     public function getAcuarioIdAcuario()
     {
-        return $this->hasOne(ACUARIO::className(), ['idAcuario' => 'acuario_idAcuario']);
+        return $this->hasOne(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario']);
     }
 
     /**
@@ -73,6 +75,25 @@ class EnviromentalConditions extends \yii\db\ActiveRecord
      */
     public function getTareaIdTarea()
     {
-        return $this->hasOne(TAREA::className(), ['idTarea' => 'tarea_idTarea']);
+        return $this->hasOne(Task::className(), ['idTarea' => 'tarea_idTarea']);
+    }
+
+
+    public static function getSuffix($name){
+        switch ($name) {
+            case 'temperatura':
+                return '°C';
+                break;
+            case 'ph':
+                return '';
+            case 'CO2':
+                return 'mg/l';
+            case 'salinidad':
+                return 'g/L';
+            case 'lux':
+                return 'lx';
+            default:
+                break;
+        }
     }
 }
