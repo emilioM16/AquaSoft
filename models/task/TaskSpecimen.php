@@ -3,8 +3,8 @@
 namespace app\models\task;
 
 use Yii;
-use app\models\specimen;
-use app\models\task;
+use app\models\specimen\Specimen;
+use app\models\task\Task;
 
 /**
  * This is the model class for table "TAREA_EJEMPLAR".

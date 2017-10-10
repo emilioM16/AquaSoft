@@ -121,6 +121,7 @@ class Aquarium extends \yii\db\ActiveRecord
     }
 
     public function beforeSave($insert){
+        $this->activo = !$this->activo; // esto es porqeu el check, si no marcás nada, te devuelve un cero.
         $this->espacioDisponible = $this->capacidadMaxima;
         return parent::beforeSave($insert);
     }

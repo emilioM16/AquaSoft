@@ -3,15 +3,14 @@
 namespace app\models\task;
 
 use Yii;
-use app\models\aquarium;
-use app\models\conditions;
-use app\models\notification;
-use app\models\planning;
+use app\models\aquarium\Aquarium;
+use app\models\conditions\EnviromentalConditions;
+use app\models\notification\Notification;
+use app\models\planning\Planning;
 // use app\models\specie;
-use app\models\specimen;
-use app\models\supply;
-use app\models\task;
-use app\models\user;
+use app\models\specimen\Specimen;
+use app\models\supply\Supply;
+use app\models\user\User;
 
 /**
  * This is the model class for table "TAREA".

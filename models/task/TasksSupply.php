@@ -3,8 +3,8 @@
 namespace app\models\task;
 
 use Yii;
-use app\models\supply;
-use app\models\task;
+use app\models\supply\Supply;
+use app\models\task\Task;
 
 /**
  * This is the model class for table "INSUMO_TAREA".
