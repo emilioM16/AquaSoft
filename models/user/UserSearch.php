@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\models\user;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\User;
+use app\models\user\User;
 
 /**
  * UserSearch represents the model behind the search form about `app\models\User`.
@@ -18,8 +18,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id_usuario', 'activo'], 'integer'],
-            [['nombre', 'apellido', 'nombre_usuario', 'email', 'contrasenia'], 'safe'],
+            [['idUsuario', 'activo'], 'integer'],
+            [['nombre', 'apellido', 'nombreUsuario', 'email', 'contrasenia'], 'safe'],
         ];
     }
 
@@ -59,13 +59,13 @@ class UserSearch extends User
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_usuario' => $this->id_usuario,
+            'idUsuario' => $this->idUsuario,
             'activo' => $this->activo,
         ]);
 
         $query->andFilterWhere(['like', 'nombre', $this->nombre])
             ->andFilterWhere(['like', 'apellido', $this->apellido])
-            ->andFilterWhere(['like', 'nombre_usuario', $this->nombre_usuario])
+            ->andFilterWhere(['like', 'nombreUsuario', $this->nombreUsuario])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'contrasenia', $this->contrasenia]);
 

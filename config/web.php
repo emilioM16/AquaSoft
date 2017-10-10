@@ -14,28 +14,36 @@ $config = [
             'controllerMap'=>[
                 'assignment'=>[
                     'class'=>'mdm\admin\controllers\AssignmentController',
-                    'userClassName' => 'app\models\User',
+                    'userClassName' => 'app\models\user\User',
                     'idField'=>'id_usuario',
-                    'usernameField' => 'nombre_usuario',
-                    'searchClass'=>'app\models\UserSearch',
+                    'usernameField' => 'nombreUsuario',
+                    'searchClass'=>'app\models\user\UserSearch',
                 ],
             ],
-        ]
+        ],
+        'reportico' => [
+            'class' => 'reportico\reportico\Module' ,
+            'controllerMap' => [
+                            'reportico' => 'reportico\reportico\controllers\ReporticoController',
+                            'mode' => 'reportico\reportico\controllers\ModeController',
+                            'ajax' => 'reportico\reportico\controllers\AjaxController',
+            ]
+        ],
     ],
     'components' => [
         'authManager'=>[
             'class'=>'yii\rbac\DbManager',
             'defaultRoles'=>['guest'],
         ],
-        // 'assetManager' => [
-        //         'bundles' => [
-        //             'yii\bootstrap\BootstrapAsset' => [
-        //                 'depends' => [                  
-        //                     'yii\jui\JuiAsset',
-        //                 ],
-        //             ],
-        //         ],
-        //     ],
+        'assetManager' => [
+                'bundles' => [
+                    'yii\bootstrap\BootstrapAsset' => [
+                        'depends' => [                  
+                            'yii\jui\JuiAsset',
+                        ],
+                    ],
+                ],
+            ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '7okQHtT7b1E0btykD3V7mVEiaZBx2A3i',
@@ -44,7 +52,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\user\User',
             'loginUrl'=> ['site/login'],
             'enableAutoLogin' => true,
             'enableSession'=>true,

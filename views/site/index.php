@@ -21,7 +21,7 @@ $this->title= 'Sistema de gestión AquaSoft';
         <?php
           echo Html::a(
             Html::img('@web/img/sea-bottom.png',['class'=>'img-circle img-responsive']),
-            ['acuarium/']
+            ['aquarium/']
           );
         ?>
         <div  class="imgFooter text-center"> Acuarios </div>

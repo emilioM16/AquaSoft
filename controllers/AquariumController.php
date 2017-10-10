@@ -3,19 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\user\User;
-use app\models\AuthAssignment;
-use app\models\user\UserSearch;
+use app\models\aquarium\Aquarium;
+use app\models\aquarium\AquariumSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\base\Exception;
-use app\models\aquarium\Aquarium;
 use yii\widgets\ActiveForm;
+
 /**
- * UserController implements the CRUD actions for User model.
+ * AquariumController implements the CRUD actions for Aquarium model.
  */
-class UserController extends Controller
+class AquariumController extends Controller
 {
     /**
      * @inheritdoc
@@ -33,12 +31,12 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all Aquarium models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
+        $searchModel = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,16 +45,15 @@ class UserController extends Controller
         ]);
     }
 
-
     /**
-     * Displays a single Usuario model.
-     * @param string $id
+     * Displays a single Aquarium model.
+     * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($idAcuario)
     {
-        $model = $this->findModel($id);
-        $model->loadAssignedAquariums();
+        yii::error(\yii\helpers\VarDumper::dumpAsString($idAcuario));
+        $model = $this->findModel($idAcuario);
 
         if (Yii::$app->request->isAjax){
             return $this->renderAjax('view',[
@@ -69,42 +66,44 @@ class UserController extends Controller
         }
     }
 
-
+    /**
+     * Creates a new Aquarium model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
     public function actionCreate()
     {
-        $userModel = new User();
-        $userModel->scenario = 'create';
-        if($userModel->saveUser()){
-            $userModel->saveAssignedAquariums();
-            return $this->redirect(['index', 'id' => $userModel->idUsuario]);      
-        }else{
-            $items = Aquarium::getActiveAquariums();
-            return $this->renderAjax('create', [
-                'model' => $userModel,
-                'items'=>$items
-            ]);
-        }
+        $model = new Aquarium();
 
-    }
-
-
-
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-        $model->scenario = 'update';
-        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->saveAssignedAquariums();
-            return $this->redirect(['index', 'id' => $model->idUsuario]);
+            return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
             if (Yii::$app->request->isAjax){
-                $model->loadAssignedAquariums();
+                return $this->renderAjax('create',[
+                    'model'=>$model,
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Updates an existing Aquarium model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($idAcuario)
+    {
+        $model = $this->findModel($idAcuario);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index', 'id' => $model->idAcuario]);
+        } else {
+            if (Yii::$app->request->isAjax){
                 return $this->renderAjax('update',[
                     'model'=>$model,
                 ]);
             }else{
-                $model->loadAssignedAquariums();
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -113,28 +112,47 @@ class UserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Aquarium model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
-        $this->findModel($id)->delete();
+        $idAcuario = Yii::$app->request->post('idAcuario');
+
+        $model = $this->findModel($idAcuario);
+        $model->activo = 0;
+        $model->save();
+        // $this->findModel($idAcuario)->delete();
 
         return $this->redirect(['index']);
     }
 
+    public function actionDetail($idAcuario)
+    {
+        // $idAcuario = Yii::$app->request->post('idAcuario');
+        // $usuarios_nombreUsuario = Yii::$app->request->post('usuarios_nombreUsuario');
+        // $idCondiciones = Yii::$app->request->post('idCondiciones');
+
+        $model = $this->findModel($idAcuario);
+        $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
+
+        return $this->render('detail', [
+            'acuario'=>$model,
+            ]);
+    }
+
     /**
-     * Finds the User model based on its primary key value.
+     * Finds the Aquarium model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return User the loaded model
+     * @return Aquarium the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = Aquarium::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -142,17 +160,14 @@ class UserController extends Controller
     }
 
     public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
-
-     
-        
+            
         if($id!=-1){ //solución horrible, no quedaba otra, mejorar si se puede a futuro
             $scenario = 'update';
         }else{
             $scenario = 'create';
         }
 
-        yii::error(\yii\helpers\VarDumper::dumpAsString($scenario));
-        $model = new User(['scenario'=>$scenario,'idUsuario'=>$id]);
+        $model = new Aquarium(['scenario'=>$scenario,'idAcuario'=>$id]);
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
         {

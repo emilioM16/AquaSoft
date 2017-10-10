@@ -11,6 +11,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use rmrevin\yii\fontawesome\FA;
 use kartik\popover\PopoverX;
+use yii\bootstrap\Modal;
 
 AppAsset::register($this);
 rmrevin\yii\fontawesome\AssetBundle::register($this);
@@ -73,7 +74,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
         'options' => ['class'=>'navbar-nav navbar-left'],
         'items'=>[
             ['label'=>FA::icon('cubes')->size(FA::SIZE_LARGE),
-                'url'=>['acuarium/'],
+                'url'=>['aquarium/'],
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -94,7 +95,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             //SOLO PARA ESPECIALISTA
             ['label'=>file_get_contents("img/fishIcon4.svg"),
                 'url'=>['specimen/'],
-                'visible'=>Yii::$app->session->get('user.role') == 'especialista' || Yii::$app->session->get('user.role') == 'administrador',
+                'visible'=>Yii::$app->user->can('verEjemplares'),
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -107,7 +108,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
             ['label'=>file_get_contents("img/fishes.svg"),
                 'url'=>['species/'],
-                'visible'=>Yii::$app->session->get('user.role') == 'especialista' || Yii::$app->session->get('user.role') == 'administrador',
+                'visible'=>Yii::$app->user->can('verEspecies'),
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -122,7 +123,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
             ['label'=>FA::icon('users')->size(FA::SIZE_LARGE),
                 'url'=>['user/'],
-                'visible'=>Yii::$app->session->get('user.role') == 'encargado' || Yii::$app->session->get('user.role') == 'administrador',
+                'visible'=>Yii::$app->user->can('verEspecialistas'),
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -132,7 +133,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
             ['label'=>FA::icon('archive')->size(FA::SIZE_LARGE),
                 'url'=>['supply/'],
-                'visible'=>Yii::$app->session->get('user.role') == 'encargado' || Yii::$app->session->get('user.role') == 'administrador',
+                'visible'=>Yii::$app->user->can('verInsumos'),
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
@@ -229,6 +230,18 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
     </div>
 </div>
     
+<?php
+Modal::begin([ //Modal utilizado en todo el sitio//
+    'closeButton'=>[],
+    'headerOptions' => ['id' => 'modalHeader'],
+    'id' => 'modal',
+    'size' => 'modal-md',
+]);
+    echo "<div id='modalContent'></div>";
+Modal::end();
+?>
+
+
 <?php $this->endBody() ?>
 </body>
 </html>
