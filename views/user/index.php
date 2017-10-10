@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                           'value' => Url::to(['user/view','id'=>$model->idUsuario]), 
                           'title' => 'Información del especialista: '.$model->nombreUsuario, 
-                          'class' => 'showModalButton btn btn-success btnAquarium'
+                          'class' => 'showModalButton btn btn-warning btnAquarium'
                         ]);
                     },
                     'update'=>function($url,$model){
@@ -69,14 +69,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     },
                     'delete' => function($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', ['delete', 'id' => $model->idUsuario], [
-                            'class' => 'btn btn-danger btnAquarium',
-                            'data' => [
-                                'data-pjax' => '0',
-                                'confirm' => '¿Está seguro de querer dar de baja el usuario "'.$model->nombreUsuario.'"?',
-                                'method' => 'post',
-                            ],
-                        ]);
+                        if($model->activo==0){
+                            return Html::a('<span class="glyphicon glyphicon-arrow-up"></span>', ['change-state', 'id' => $model->idUsuario], [
+                                'class' => 'btn btn-success btnAquarium',
+                                'data' => [
+                                    'data-pjax' => '0',
+                                    'confirm' => '¿Está seguro de querer dar de alta el usuario "'.$model->nombreUsuario.'"?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        }else{
+                            return Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', ['change-state', 'id' => $model->idUsuario], [
+                                'class' => 'btn btn-danger btnAquarium',
+                                'data' => [
+                                    'data-pjax' => '0',
+                                    'confirm' => '¿Está seguro de querer dar de baja el usuario "'.$model->nombreUsuario.'"?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        }
                     }
                 ]
             ],
