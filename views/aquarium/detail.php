@@ -7,6 +7,7 @@ use derekisbusy\panel\PanelWidget;
 use yii\bootstrap\Modal;
 use kartik\tabs\TabsX;
 use rmrevin\yii\fontawesome\FA;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
@@ -73,7 +74,18 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="col-lg-12" align="center">'.
                                 $this->render('_gauges',['condiciones'=>$condiciones])
                             .'</div>
-                            </div>',
+                            </div>
+                            <div class="row">
+                            <div class="col-lg-12" align="center">'.
+                                Html::button(FA::icon('check-square-o')->size(FA::SIZE_LARGE).' Nuevo control', 
+                                [
+                                    'value' => Url::to(['']), 
+                                    'title' => 'Nuevo control', 
+                                    'class' => 'showModalButton btn btn-primary',
+                                    'style'=>['width'=>'70%']
+                                ])
+                            .'</div>
+                          </div>',
               'active'=>true,
           ],
           [

@@ -129,7 +129,6 @@ class Aquarium extends \yii\db\ActiveRecord
     public static function getActiveAquariums(){
         $aquariums = static::find()->where(['activo'=>1])->all();
         $items = ArrayHelper::map($aquariums, 'idAcuario','nombre');
-        yii::error(\yii\helpers\VarDumper::dumpAsString());
         return $items;
     }
     
@@ -161,7 +160,7 @@ class Aquarium extends \yii\db\ActiveRecord
                         ->asArray()
                         ->select(['temperatura','ph','salinidad','lux','CO2'])
                         ->where(['acuario_idAcuario'=>$this->idAcuario])
-                        ->orderBy('idCondicionAmbiental')
+                        ->orderBy(['idCondicionAmbiental'=>SORT_DESC])
                         ->one();
         return $conditions;
     }

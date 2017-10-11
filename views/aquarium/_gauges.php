@@ -9,7 +9,7 @@ foreach ($condiciones as $nombre => $valor) {
     $suffix = EnviromentalConditions::getSuffix($nombre);
 
     $col = 'col-lg-6';
-    $size = '70%';
+    $size = '60%';
 
     if($nombre=='temperatura'){
         $col = 'col-lg-12';
@@ -27,7 +27,8 @@ foreach ($condiciones as $nombre => $valor) {
                     'plotBackgroundColor'=> null,
                     'plotBackgroundImage'=> null,
                     'plotBorderWidth'=> 0,
-                    'plotShadow'=> false
+                    'plotShadow'=> false,
+                    'credits'=>false
                 ],
         
             'title'=> [
@@ -108,10 +109,10 @@ foreach ($condiciones as $nombre => $valor) {
             ],
         
             'series'=> [[
-                'name'=> 'Speed',
+                'name'=> $nombre,
                 'data'=> [(float)$valor],
                 'tooltip'=> [
-                    'valueSuffix'=> 'km/h'
+                    'valueSuffix'=> $suffix
                 ]
             ]]
             ]
