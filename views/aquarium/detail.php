@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
           [
               'label'=>FA::icon('info')->size(FA::SIZE_LARGE).' Información',
               'content'=>$content1,
-              // 'active'=>true
+            //   'active'=>true
           ],
           [
               'label'=>FA::icon('thermometer-3')->size(FA::SIZE_LARGE).' Condiciones ambientales',
@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
           ],
           [
             'label'=>FA::icon('pie-chart')->size(FA::SIZE_LARGE).' Población',
-            'content'=>$this->render('_population',['especies'=>$especies])
+            'content'=>$this->render('_population',['especies'=>$especies,'porcentajes'=>$porcentajes]),
           ],
         ];
 

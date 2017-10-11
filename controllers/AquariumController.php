@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
+use app\models\specie\Specie;
 
 /**
  * AquariumController implements the CRUD actions for Aquarium model.
@@ -124,25 +125,22 @@ class AquariumController extends Controller
         $model = $this->findModel($idAcuario);
         $model->activo = 0;
         $model->save();
-        // $this->findModel($idAcuario)->delete();
-
         return $this->redirect(['index']);
     }
 
     public function actionDetail($idAcuario)
     {
-        // $idAcuario = Yii::$app->request->post('idAcuario');
-        // $usuarios_nombreUsuario = Yii::$app->request->post('usuarios_nombreUsuario');
-        // $idCondiciones = Yii::$app->request->post('idCondiciones');
-
         $model = $this->findModel($idAcuario);
         $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
         $actualConditions = $model->getActualConditions();
         $species = $model->getQuantityBySpecie();
+        $speciesPorcentages = Specie::calculatePorcentageBySpecie($species);
+        yii::error(\yii\helpers\VarDumper::dumpAsString($speciesPorcentages));
         return $this->render('detail', [
             'acuario'=>$model,
             'condiciones'=>$actualConditions,
-            'especies'=>$species
+            'especies'=>$species,
+            'porcentajes'=>$speciesPorcentages
             ]);
     }
 

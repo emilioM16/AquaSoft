@@ -107,7 +107,7 @@
      margin-bottom: 20px;
  }
 
- .highcharts-container{
+ #gaugeChart > .highcharts-container{
      height: 280px !important;
  }
 

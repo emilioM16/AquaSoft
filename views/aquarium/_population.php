@@ -1,30 +1,32 @@
 <?php 
 use miloschuman\highcharts\Highcharts;
+use yii\helpers\Json;
+yii::error(\yii\helpers\VarDumper::dumpAsString($porcentajes));
 ?>
 
 <div class="row">
-        <div class="col-lg-12" align="center">
-        <table class="table table-striped table-bordered table-hover table-condensed">
-            <thead>
-            <tr>
-                <th>Especie</th>
-                <th>Cantidad</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
+    <div class="col-lg-12" align="center">
+      <table class="table table-striped table-bordered table-hover table-condensed">
+          <thead>
+          <tr>
+              <th>Especie</th>
+              <th>Cantidad</th>
+          </tr>
+          </thead>
+          <tbody>
+          <?php
 
-               foreach ($especies as $key => $value) {
-                   echo '<tr>
-                            <td>'.$value['nombre'].'</td>
-                            <td>'.$value['cantidad'].'</td>
-                        </tr>';
-               } 
-            ?>
-            </tbody>
-        </table>
-        </div>
-    </div> 
+              foreach ($especies as $key => $value) {
+                  echo '<tr>
+                          <td>'.$value['nombre'].'</td>
+                          <td>'.$value['cantidad'].'</td>
+                      </tr>';
+              } 
+          ?>
+          </tbody>
+      </table>
+    </div>
+</div> 
         
     <?php
      echo '<div class="row">
@@ -39,6 +41,7 @@ use miloschuman\highcharts\Highcharts;
                     'options3d'=> [
                       'enabled'=> true,
                       'alpha'=>45,
+                      'beta'=>0
                     ],
                 ],
                 'title' => [
@@ -49,8 +52,8 @@ use miloschuman\highcharts\Highcharts;
                 ],
                 'plotOptions'=>[
                   'pie' => [
-                    'innerSize'=>100,
-                    'depth'=>45,
+                    // 'innerSize'=>100,
+                    'depth'=>35,
                     'allowPointSelect' =>  true,
                     'cursor'=> 'pointer',
                     'dataLabels'=>[
@@ -61,13 +64,10 @@ use miloschuman\highcharts\Highcharts;
                       ],
                 'series' => [
                     [
+                      'type'=>'pie',
                       'name' => 'Especies', 
                       'colorByPoint'=>true,
-                      'data' => [
-                        ['name'=>'Payaso','y'=> 53.57],
-                        ['name'=>'Carpín dorado','y'=>41.07],
-                        ['name'=>'Pez beta','y'=>5.35]
-                      ]
+                      'data' => $porcentajes
                     ],
                   ]
                 ]

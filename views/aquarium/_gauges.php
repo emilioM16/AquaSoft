@@ -18,7 +18,7 @@ if(isset($condiciones)){
             $size = '50%';
         }
         
-        echo  '<div class="'.$col.'">
+        echo  '<div class="'.$col.' gaugeChart">
             '.HighCharts::widget([
                 'scripts' => [
                 'highcharts-more',
