@@ -79,7 +79,7 @@ class Specie extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEJEMPLARs()
+    public function getSpecimens()
     {
         return $this->hasMany(Specimen::className(), ['especie_idEspecie' => 'idEspecie']);
     }

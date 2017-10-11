@@ -15,19 +15,6 @@ use yii\helpers\Url;
 $this->title = $acuario->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Acuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-    Modal::begin([
-        'id'=>'pModal', 
-        'size'=>'modal-md',
-        'closeButton'=>[],
-        'header'=> Yii::$app->session->get('modalTitle'),
-        'headerOptions'=> ['class'=>'h3 text-center'],
-        ]);
-    
-        echo '<div class="contenidoModal"></div>';
-        
-    Modal::end();
-
 ?>
 
 <div id="jumboIdAcuario" class="jumbotron">
@@ -90,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
           ],
           [
             'label'=>FA::icon('pie-chart')->size(FA::SIZE_LARGE).' Población',
-            'content'=>$this->render('_population')
+            'content'=>$this->render('_population',['especies'=>$especies])
           ],
         ];
 

@@ -138,9 +138,11 @@ class AquariumController extends Controller
         $model = $this->findModel($idAcuario);
         $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
         $actualConditions = $model->getActualConditions();
+        $species = $model->getQuantityBySpecie();
         return $this->render('detail', [
             'acuario'=>$model,
-            'condiciones'=>$actualConditions
+            'condiciones'=>$actualConditions,
+            'especies'=>$species
             ]);
     }
 
