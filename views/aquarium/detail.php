@@ -64,12 +64,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
         $items = [
           [
-              'label'=>'<i class="glyphicon glyphicon-home"></i> Home',
+              'label'=>FA::icon('info')->size(FA::SIZE_LARGE).' Información',
               'content'=>$content1,
               // 'active'=>true
           ],
           [
-              'label'=>'<i class="glyphicon glyphicon-user"></i> Condiciones ambientales',
+              'label'=>FA::icon('thermometer-3')->size(FA::SIZE_LARGE).' Condiciones ambientales',
               'content'=>'<div class="row">
                             <div class="col-lg-12" align="center">'.
                                 $this->render('_gauges',['condiciones'=>$condiciones])
@@ -89,8 +89,8 @@ $this->params['breadcrumbs'][] = $this->title;
               'active'=>true,
           ],
           [
-            'label'=>'<i class="glyphicon glyphicon-user"></i> Población',
-            'content'=>''
+            'label'=>FA::icon('pie-chart')->size(FA::SIZE_LARGE).' Población',
+            'content'=>$this->render('_population')
           ],
         ];
 

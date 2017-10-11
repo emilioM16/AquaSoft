@@ -110,3 +110,7 @@
  .highcharts-container{
      height: 280px !important;
  }
+
+ #textCA{
+     font-weight: bold;
+ }

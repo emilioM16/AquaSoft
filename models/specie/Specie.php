@@ -1,8 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\models\specie;
 
 use Yii;
+use app\models\specimen\Specimen;
+use app\models\aquarium\Aquarium;
 
 /**
  * This is the model class for table "ESPECIE".
@@ -23,8 +25,8 @@ use Yii;
  * @property double $maxCO2
  * @property integer $activo
  *
- * @property EJEMPLAR[] $eJEMPLARs
- * @property ACUARIO[] $acuarioIdAcuarios
+ * @property Specimen[] $eJEMPLARs
+ * @property Aquarium[] $acuarioIdAcuarios
  */
 class Specie extends \yii\db\ActiveRecord
 {
@@ -79,7 +81,7 @@ class Specie extends \yii\db\ActiveRecord
      */
     public function getEJEMPLARs()
     {
-        return $this->hasMany(EJEMPLAR::className(), ['especie_idEspecie' => 'idEspecie']);
+        return $this->hasMany(Specimen::className(), ['especie_idEspecie' => 'idEspecie']);
     }
 
     /**
@@ -87,6 +89,6 @@ class Specie extends \yii\db\ActiveRecord
      */
     public function getAcuarioIdAcuarios()
     {
-        return $this->hasMany(ACUARIO::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('EJEMPLAR', ['especie_idEspecie' => 'idEspecie']);
+        return $this->hasMany(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('EJEMPLAR', ['especie_idEspecie' => 'idEspecie']);
     }
 }
