@@ -1,9 +1,9 @@
 <?php 
 use miloschuman\highcharts\Highcharts;
 use yii\helpers\Json;
-yii::error(\yii\helpers\VarDumper::dumpAsString($porcentajes));
-?>
 
+if($porcentajes!=[]){
+?>
 <div class="row">
     <div class="col-lg-12" align="center">
       <table class="table table-striped table-bordered table-hover table-condensed">
@@ -36,12 +36,13 @@ yii::error(\yii\helpers\VarDumper::dumpAsString($porcentajes));
                   'highcharts-3d',
                 ],
                 'options' => [
-                'chart' => [
-                    'type' => 'pie',
-                    'options3d'=> [
-                      'enabled'=> true,
-                      'alpha'=>45,
-                      'beta'=>0
+                    'chart' => [
+                        'type' => 'pie',
+                        'options3d'=> [
+                        'enabled'=> true,
+                        'alpha'=>45,
+                        'beta'=>0,
+                        'credits'=>false
                     ],
                 ],
                 'title' => [
@@ -74,5 +75,7 @@ yii::error(\yii\helpers\VarDumper::dumpAsString($porcentajes));
               ]).'
           </div>
         </div>';
-
+}else{
+    echo '<p id="textCA" class="text-center">Aún no se han ingresado ejemplares a este acuario.</p>';;
+}
 ?>

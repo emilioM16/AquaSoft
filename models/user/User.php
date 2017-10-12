@@ -96,9 +96,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     /**
     * @return \yii\db\ActiveQuery
     */
-    public function getAcuarioidAcuarios()
+    public function getAquariums()
     {
-        return $this->hasMany(Acuarios::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('acuarios_usuarios', ['usuario_idUsuario' => 'idUsuario']);
+        return $this->hasMany(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('acuarios_usuarios', ['usuario_idUsuario' => 'idUsuario']);
     }
 
     /**
@@ -122,7 +122,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     */
     public function getTareas()
     {
-        return $this->hasMany(Tareas::className(), ['usuario_idUsuario' => 'idUsuario']);
+        return $this->hasMany(Task::className(), ['usuario_idUsuario' => 'idUsuario']);
     }
 
     /**
@@ -130,7 +130,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     */
     public function getValidaciones()
     {
-        return $this->hasMany(Validaciones::className(), ['usuario_idUsuario' => 'idUsuario']);
+        return $this->hasMany(Validation::className(), ['usuario_idUsuario' => 'idUsuario']);
     }
 
     
