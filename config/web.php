@@ -17,7 +17,7 @@ $config = [
                     'userClassName' => 'app\models\user\User',
                     'idField'=>'id_usuario',
                     'usernameField' => 'nombreUsuario',
-                    'searchClass'=>'app\models\user\UserSearch',
+                    'searchClass'=>'app\models\user\UserSearchAll',
                 ],
             ],
         ],

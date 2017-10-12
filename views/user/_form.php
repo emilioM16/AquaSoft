@@ -81,15 +81,15 @@ use rmrevin\yii\fontawesome\FA;
                         ],                        
                     ]
                 ],
-                [
-                    'attributes'=>[
-                        'activo'=>[
-                            'type'=>Form::INPUT_RADIO_LIST,
-                            'items'=>[1=>'Activo',0=>'Inactivo'],
-                            'options'=>['inline'=>true]
-                        ]
-                    ]
-                ]
+                // [
+                //     'attributes'=>[
+                //         'activo'=>[
+                //             'type'=>Form::INPUT_RADIO_LIST,
+                //             'items'=>[1=>'Activo',0=>'Inactivo'],
+                //             'options'=>['inline'=>true]
+                //         ]
+                //     ]
+                // ]
             ]
         ]);
 

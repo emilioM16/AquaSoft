@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
+use app\models\specie\Specie;
+use app\models\user\User;
 
 /**
  * AquariumController implements the CRUD actions for Aquarium model.
@@ -36,6 +38,8 @@ class AquariumController extends Controller
      */
     public function actionIndex()
     {
+        $user = User::findOne(Yii::$app->user->identity->idUsuario);
+        // yii::error(\yii\helpers\VarDumper::dumpAsString($user));
         $searchModel = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -52,7 +56,6 @@ class AquariumController extends Controller
      */
     public function actionView($idAcuario)
     {
-        yii::error(\yii\helpers\VarDumper::dumpAsString($idAcuario));
         $model = $this->findModel($idAcuario);
 
         if (Yii::$app->request->isAjax){
@@ -124,22 +127,21 @@ class AquariumController extends Controller
         $model = $this->findModel($idAcuario);
         $model->activo = 0;
         $model->save();
-        // $this->findModel($idAcuario)->delete();
-
         return $this->redirect(['index']);
     }
 
     public function actionDetail($idAcuario)
     {
-        // $idAcuario = Yii::$app->request->post('idAcuario');
-        // $usuarios_nombreUsuario = Yii::$app->request->post('usuarios_nombreUsuario');
-        // $idCondiciones = Yii::$app->request->post('idCondiciones');
-
         $model = $this->findModel($idAcuario);
         $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
-
+        $actualConditions = $model->getActualConditions();
+        $species = $model->getQuantityBySpecie();
+        $speciesPorcentages = Specie::calculatePorcentageBySpecie($species);
         return $this->render('detail', [
             'acuario'=>$model,
+            'condiciones'=>$actualConditions,
+            'especies'=>$species,
+            'porcentajes'=>$speciesPorcentages
             ]);
     }
 

@@ -5,6 +5,9 @@ namespace app\models\aquarium;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\models\task\Task;
+use app\models\conditions\EnviromentalConditions;
+use app\models\specie\Specie;
+use app\models\specimen\Specimen;
 
 /**
  * This is the model class for table "acuarios".
@@ -103,7 +106,7 @@ class Aquarium extends \yii\db\ActiveRecord
      */
     public function getSpecies()
     {
-        return $this->hasMany(Specie::className(), ['idespecie' => 'especie_idespecie'])->viaTable('ejemplares', ['acuario_idAcuario' => 'idAcuario']);
+        return $this->hasMany(Specie::className(), ['idEspecie' => 'especie_idEspecie'])->viaTable('EJEMPLAR', ['acuario_idAcuario' => 'idAcuario']);
     }
 
 
@@ -151,6 +154,28 @@ class Aquarium extends \yii\db\ActiveRecord
             $this->events[] = $event;
         }
         return $this->events;
+    }
+
+
+    public function getActualConditions(){ //obtiene las condiciones ambientales actuales del acuario//
+        $conditions = EnviromentalConditions::find()
+                        ->asArray()
+                        ->select(['temperatura','ph','salinidad','lux','CO2'])
+                        ->where(['acuario_idAcuario'=>$this->idAcuario])
+                        ->orderBy(['idCondicionAmbiental'=>SORT_DESC])
+                        ->one();
+        return $conditions;
+    }
+
+
+    public function getQuantityBySpecie(){
+        $species = Specie::find()
+                    ->asArray()
+                    ->select(['idEspecie','nombre','cantidad'])
+                    ->joinWith('specimens')
+                    ->where(['acuario_idAcuario'=>$this->idAcuario])
+                    ->all();
+        return $species;
     }
 
 }

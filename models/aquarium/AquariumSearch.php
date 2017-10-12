@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\aquarium\Aquarium;
+use app\models\aquarium\UserAquariums;
 
 /**
  * AquariumSearch represents the model behind the search form about `app\models\Aquarium`.
@@ -41,8 +42,14 @@ class AquariumSearch extends Aquarium
      */
     public function search($params)
     {
-        $query = Aquarium::find();
-
+        $rol = Yii::$app->user->identity->getRole(Yii::$app->user->identity->idUsuario)->roleName;
+        if($rol != 'administrador'){
+            $query = Aquarium::find()
+                    ->joinWith('userAquariums')
+                    ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario]);
+        }else{
+            $query = Aquarium::find();
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
