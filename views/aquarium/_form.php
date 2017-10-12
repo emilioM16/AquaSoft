@@ -29,7 +29,7 @@ use rmrevin\yii\fontawesome\FA;
         echo Form::widget([
             'model'=>$model,
             'form'=>$form,
-            'columns'=>3,
+            'columns'=>2,
             'attributes'=>[
                 'nombre'=>[
                     'type'=>Form::INPUT_TEXT,

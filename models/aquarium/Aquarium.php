@@ -5,6 +5,12 @@ namespace app\models\aquarium;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\models\task\Task;
+use app\models\aquarium\Aquarium;
+use app\models\aquarium\UserAquariums;
+use app\models\condition\EnviromentalConditions;
+use app\models\specimen\Specimen;
+use app\models\specie\Specie;
+
 
 /**
  * This is the model class for table "acuarios".

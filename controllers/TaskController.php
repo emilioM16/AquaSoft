@@ -8,6 +8,7 @@ use app\models\task\TaskSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -61,16 +62,26 @@ class TaskController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($idAcuario, $idPlanificacion, $fecha)
     {
         $model = new Task();
+
+        $model->ACUARIO_idAcuario = $idAcuario;
+        $model->fechaHoraInicio = $fecha;
+        $model->PLANIFICACION_idPlanificacion = $idPlanificacion;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idTarea]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->isAjax){
+                return $this->renderAjax('create',[
+                    'model'=>$model,
+                ]);
+            }else{
+                return $this->render('create',[
+                    'model'->$model,
+                ]);
+            }
         }
     }
 
@@ -121,4 +132,16 @@ class TaskController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
+
+        $model = new Task(['idTarea'=>$id]);
+
+        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+        {
+            Yii::$app->response->format = 'json';
+            return ActiveForm::validate($model);
+        }        
+    }
+
 }

@@ -4,14 +4,15 @@ namespace app\models\aquarium;
 
 use Yii;
 use app\models\user\User;
+use app\models\aquarium\Aquarium;
 /**
  * This is the model class for table "acuarios_usuarios".
  *
  * @property integer $acuario_idAcuario
  * @property integer $usuario_idUsuario
  *
- * @property Acuarios $acuarioIdAcuario
- * @property Usuarios $usuarioIdUsuario
+ * @property Aquarium $acuarioIdAcuario
+ * @property User $usuarioIdUsuario
  */
 class UserAquariums extends \yii\db\ActiveRecord
 {

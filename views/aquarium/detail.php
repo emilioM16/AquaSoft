@@ -7,6 +7,8 @@ use derekisbusy\panel\PanelWidget;
 use yii\bootstrap\Modal;
 use kartik\tabs\TabsX;
 use rmrevin\yii\fontawesome\FA;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
@@ -112,7 +114,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
   <?php 
   if(Yii::$app->user->can('administrarTareas')){
+    // echo '<div id="btnDetail" class="col-lg-2">'
+    //       .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',['class'=>'btn btn-success']).
+    //   '</div>';
     echo '<div id="btnDetail" class="col-lg-2">'
-          .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',['class'=>'btn btn-success']).
-      '</div>';
+      .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada', 
+                [
+                'value' => Url::to(['task/create',
+                      'idAcuario'=>$acuario->idAcuario,
+                      'idPlanificacion'=>-1, // esto significa que es no planificada
+                      'fecha'=>date("Y-m-d")
+                  ]), 
+                'title' => 'Agregar tarea no planificada', 
+                'class' => 'showModalButton btn btn-success'
+                ]).
+    '</div>';
   }
