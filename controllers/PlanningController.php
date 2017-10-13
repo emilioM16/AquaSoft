@@ -10,6 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\web\response;
+
+use app\models\aquarium\Aquarium;
+use yii\helpers\ArrayHelper;
 /**
  * PlanningController implements the CRUD actions for Planning model.
  */
@@ -65,15 +68,15 @@ class PlanningController extends Controller
     public function actionCreate()
     {
         $model = new Planning();
-
-        $model->titulo = "lalal";
-
-
+         $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+        yii::error(\yii\helpers\VarDumper::dumpAsString($aquariums));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPlanificacion]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'aquariums'=>$aquariums
+
             ]);
         }
     }
@@ -128,13 +131,13 @@ class PlanningController extends Controller
 
     public function actionValidarPlanificacion()
     {
-      $model = new Planning;
+      yii::error(\yii\helpers\VarDumper::dumpAsString("gcdjdfhjehf"));
+      $model = new Planning();
       $msg = null;
 
         if ($model ->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
-
-        Yii::$app->response->format = Response :: FORMART_JSON;
-        return ActiveForm::render("create");
+            Yii::$app->response->format = 'json';
+            return ActiveForm::render("create");
         }
 
         if ($model->load(Yii::$app->request->post)) {

@@ -42,9 +42,8 @@ class Planning extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'anioMes', 'ACUARIO_USUARIO_acuario_idAcuario', 'ACUARIO_USUARIO_usuario_idUsuario', 'ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'required'],
+            [['titulo', 'anioMes', 'ACUARIO_USUARIO_acuario_idAcuario'], 'required','message'=>'Campo obligatorio'],
             [['anioMes', 'fechaHoraCreacion'], 'safe'],
-            [['anioMes', 'validarPlanificacion'], 'safe'],
             [['activo', 'ACUARIO_USUARIO_acuario_idAcuario', 'ACUARIO_USUARIO_usuario_idUsuario'], 'integer'],
             [['titulo','requiered','message'=> 'Campo requerido', 'ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'string', 'max' => 45],
             [['ACUARIO_USUARIO_acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['ACUARIO_USUARIO_acuario_idAcuario' => 'idAcuario']],
@@ -58,11 +57,11 @@ class Planning extends \yii\db\ActiveRecord
     {
         return [
             'idPlanificacion' => 'Id Planificacion',
-            'titulo' => 'Titulo',
+            'titulo' => 'Título',
             'anioMes' => 'Anio Mes',
             'fechaHoraCreacion' => 'Fecha Hora Creacion',
             'activo' => 'Activo',
-            'ACUARIO_USUARIO_acuario_idAcuario' => 'Acuario  Usuario Acuario Id Acuario',
+            'ACUARIO_USUARIO_acuario_idAcuario' => 'Acuarios',
             'ACUARIO_USUARIO_usuario_idUsuario' => 'Acuario  Usuario Usuario Id Usuario',
             'ESTADO_PLANIFICACION_idEstadoPlanificacion' => 'Estado  Planificacion Id Estado Planificacion',
         ];
@@ -101,11 +100,11 @@ class Planning extends \yii\db\ActiveRecord
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
-    public function validarPlanificacion($unAcuario , $unAñoMes)
+    public function validatePlanning($unAcuario , $unAñoMes)
     { //metodo que valida la inexistencia de una planificacion para ese mes y ese acuario
       //ExistValidator:
       $planificaciones = Planning::find()->all(); //tomo todas las planificaciones
-
+      yii::error(\yii\helpers\VarDumper::dumpAsString($planificaciones));
       foreach ($planificaciones as $plani) { // recorro la lista de planificaciones
         //if ($planis->anioMes == $unAñoMes && $planis->Acuario== $unAcuario) {
           if ($planis->anioMes == $unAñoMes) {
@@ -116,28 +115,59 @@ class Planning extends \yii\db\ActiveRecord
       }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
-    public function registrarPlanificacion()
-    {// cambia el estado de la planificacion creada a 'Sin verificar'
+    public function registerPlanning($titulo, $anioMes, $idAcuario)
+      //AGREGAR ATRIBUTOS DE ENTRADA
+    {
+    // cambia el estado de la planificacion creada a 'SinVerificar'
     //guarda la planificacion en la tabla 'PLANIFICACIONES'
 
 
+    // $valido=  this->validarPlanificacion();
+    //
+    //       if ($valido) {
+    //         //es valida la registra
+    //       }
+    //       else {
+    //         //ya aviso antes que no es valida
+    //       }
+    //
 
 
-    }
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    public function listaPlanificaciones(){
-
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    public function listaTareasAsociadas(){
-
-    }
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    public function AutorizarPlanificacion(){
 
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
+    public function unauthorizedPlanning(){
+      //devuelve las planificaciones que no fueron autorizadas
 
+      $planificaciones = Planning::find()->where(['ESTADO_PLANIFICACION_idEstadoPlanificacion'=>'SinVerificar'])->all();
+       $items = ArrayHelper::map($planificaciones, 'idPlanificacion','titulo');
+       return $items;
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public function authorizePlanning(){ //
+        //el encargado cambia el estado de un Planificacion
+        // inserta datos en un campo de descripcion
+        //recibe un boolean depende del boton que apreto
+        //si [autorizo] cambia estado a Autorizada
+        //si [rechazo] cambia el estado a REchazada
+        //solicita un motivo
+
+
+
+
+    }
+
+    //activo es bajo de baja
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public function changeStatus($oneState){
+      //SinVerificar//Aprobado//Rechazado
+        $this->ESTADO_PLANIFICACION_idEstadoPlanificacion = $oneState;
+
+
+    }
 
 }
