@@ -88,7 +88,25 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
     </div>
+<div id=modal></div>
+<?php 
 
+$JSEventClick = <<<EOF
+    function(calEvent, jsEvent, view) {
+      $('#modal').modal();
+    }
+EOF;
+
+
+$JSCode = <<<EOF
+    function(start, end) {
+    var date = $('#calendar').fullCalendar('getDate');
+    $('div.modal-header').html('<h4 class="text-center"> Registrar tarea para el ' + end.format('dddd D, MMMM YYYY')+'</h4>');
+    $('#pModal').modal();
+    }
+EOF;
+
+?>
 
   <!-- Calendario -->
   <div class="col-lg-6">
@@ -106,6 +124,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'lang' => 'es',
             ],
             'events' => $acuario->events,
+            'clientOptions' => [
+                'language' => 'fa',
+                'eventLimit' => TRUE,
+//                'theme'=>true,
+                'fixedWeekCount' => false,
+                // 'dayClick'=>new \yii\web\JsExpression('function () {console.log("hola");}')
+                'eventClick'=>new \yii\web\JsExpression($JSEventClick)
+            ],
         ]);
         ?>
       </div>
@@ -120,13 +146,16 @@ $this->params['breadcrumbs'][] = $this->title;
     echo '<div id="btnDetail" class="col-lg-2">'
       .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada', 
                 [
-                'value' => Url::to(['task/create',
+                // 'value' => Url::to(['task/execute',
+                      // 'idTask'=>1, ESTO SE PARA PROBAR EL MODAL DE LA REALIZACIÓN DE TAREAS
+                   'value' => Url::to([
+                      'task/create',
                       'idAcuario'=>$acuario->idAcuario,
-                      'idPlanificacion'=>-1, // esto significa que es no planificada
-                      'fecha'=>date("Y-m-d")
-                  ]), 
-                'title' => 'Agregar tarea no planificada', 
-                'class' => 'showModalButton btn btn-success'
+                      // 'idPlanificacion'=>-1, // esto significa que es no planificada
+                      // 'fecha'=>date("Y-m-d") // hoy
+                    ]), 
+                  'title' => 'Agregar tarea no planificada', 
+                  'class' => 'showModalButton btn btn-success'
                 ]).
     '</div>';
   }

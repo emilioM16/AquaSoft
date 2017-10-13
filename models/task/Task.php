@@ -40,6 +40,18 @@ use app\models\user\User;
  */
 class Task extends \yii\db\ActiveRecord
 {
+
+    public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
+    {
+        $this->ACUARIO_idAcuario = $idAcuario;
+        // Si es no planificada seteo con la fecha actual
+        $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
+        if ($idPlanificacion == -1)
+            $this->fechaHoraInicio = date('Y-m-d H:i:s');
+        else
+            $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
+    }
+
     /**
      * @inheritdoc
      */
@@ -167,8 +179,10 @@ class Task extends \yii\db\ActiveRecord
 
     
     public function beforeSave($insert){
+        // strtotime Convierte una descripción de fecha/hora textual en una fecha Unix (el número de segundos desde el 1 de Enero del 1970 00:00:00 UTC)
         $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
-        $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion);
+        // $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion); A esto lo comento porque creo que no manejamos esos atributos (la hora está incluida en los parámetros de fechaHoraInicio y Fin)
+        $this->fechaHoraFin = date('Y-m-d H:i:s',strtotime($this->fechaHoraInicio)+$this->duracion);
         return parent::beforeSave($insert);
     }
 }

@@ -10,10 +10,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $tarea->idTarea, 'url' => ['view', 'id' => $tarea->idTarea]];
 $this->params['breadcrumbs'][] = 'Execute';
 ?>
-<div class="task-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+<div class="task-execute"> 
+    <h2><?= Html::encode($this->title) ?></h2>
+    <!-- Áquí el resto de los atributos -->
     
 
 </div>

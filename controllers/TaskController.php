@@ -62,13 +62,11 @@ class TaskController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($idAcuario, $idPlanificacion, $fecha)
+    public function actionCreate($idAcuario, $idPlanificacion = -1, $fecha = '0')
     {
         $model = new Task();
-
-        $model->ACUARIO_idAcuario = $idAcuario;
-        $model->fechaHoraInicio = $fecha;
-        $model->PLANIFICACION_idPlanificacion = $idPlanificacion;
+        
+        $model->inicialice($idAcuario, $idPlanificacion, $fecha);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idTarea]);
@@ -126,19 +124,19 @@ class TaskController extends Controller
     {        
         $model = $this->findModel($idTask);
 
-        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //     return $this->redirect(['view', 'id' => $model->idTarea]);
-        // } else {
-        //     if (Yii::$app->request->isAjax){
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idTarea]);
+        } else {
+            if (Yii::$app->request->isAjax){
                 return $this->renderAjax('execute',[
                     'tarea'=>$model
                 ]);
-        //     }else{
-        //         return $this->render('execute',[
-        //             'tarea'=>$model
-        //         ]);
-        //     }
-        // }
+            }else{
+                return $this->render('execute',[
+                    'tarea'=>$model
+                ]);
+            }
+        }
     }
 
     /**
