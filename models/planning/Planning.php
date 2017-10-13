@@ -2,6 +2,11 @@
 
 namespace app\models\planning;
 
+use app\models\aquarium\Aquarium;
+use app\models\user\User;
+use app\models\task\Task;
+use yii\helpers\ArrayHelper;
+
 use Yii;
 
 /**
@@ -16,10 +21,10 @@ use Yii;
  * @property integer $ACUARIO_USUARIO_usuario_idUsuario
  * @property string $ESTADO_PLANIFICACION_idEstadoPlanificacion
  *
- * @property ACUARIOUSUARIO $aCUARIOUSUARIOAcuarioIdAcuario
- * @property ESTADOPLANIFICACION $eSTADOPLANIFICACIONIdEstadoPlanificacion
- * @property TAREA[] $tAREAs
- * @property VALIDACION[] $vALIDACIONs
+ * @property Acuarium $aCUARIOUSUARIOAcuarioIdAcuario
+ * @property User $aCUARIOUSUARIOUsuarioIdUsuario
+ * @property Task[] $tAREAs
+ * @property Validation[] $vALIDACIONs
  */
 class Planning extends \yii\db\ActiveRecord
 {
@@ -39,13 +44,13 @@ class Planning extends \yii\db\ActiveRecord
         return [
             [['titulo', 'anioMes', 'ACUARIO_USUARIO_acuario_idAcuario', 'ACUARIO_USUARIO_usuario_idUsuario', 'ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'required'],
             [['anioMes', 'fechaHoraCreacion'], 'safe'],
+            [['anioMes', 'validarPlanificacion'], 'safe'],
             [['activo', 'ACUARIO_USUARIO_acuario_idAcuario', 'ACUARIO_USUARIO_usuario_idUsuario'], 'integer'],
-            [['titulo', 'ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'string', 'max' => 45],
-            [['ACUARIO_USUARIO_acuario_idAcuario', 'ACUARIO_USUARIO_usuario_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => ACUARIOUSUARIO::className(), 'targetAttribute' => ['ACUARIO_USUARIO_acuario_idAcuario' => 'acuario_idAcuario', 'ACUARIO_USUARIO_usuario_idUsuario' => 'usuario_idUsuario']],
-            [['ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => ESTADOPLANIFICACION::className(), 'targetAttribute' => ['ESTADO_PLANIFICACION_idEstadoPlanificacion' => 'idEstadoPlanificacion']],
+            [['titulo','requiered','message'=> 'Campo requerido', 'ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'string', 'max' => 45],
+            [['ACUARIO_USUARIO_acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['ACUARIO_USUARIO_acuario_idAcuario' => 'idAcuario']],
+            [['ACUARIO_USUARIO_usuario_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['ACUARIO_USUARIO_usuario_idUsuario' => 'idUsuario']],
         ];
     }
-
     /**
      * @inheritdoc
      */
@@ -68,15 +73,15 @@ class Planning extends \yii\db\ActiveRecord
      */
     public function getACUARIOUSUARIOAcuarioIdAcuario()
     {
-        return $this->hasOne(ACUARIOUSUARIO::className(), ['acuario_idAcuario' => 'ACUARIO_USUARIO_acuario_idAcuario', 'usuario_idUsuario' => 'ACUARIO_USUARIO_usuario_idUsuario']);
+        return $this->hasOne(Aquarium::className(), ['idAcuario' => 'ACUARIO_USUARIO_acuario_idAcuario']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getESTADOPLANIFICACIONIdEstadoPlanificacion()
+    public function getACUARIOUSUARIOUsuarioIdUsuario()
     {
-        return $this->hasOne(ESTADOPLANIFICACION::className(), ['idEstadoPlanificacion' => 'ESTADO_PLANIFICACION_idEstadoPlanificacion']);
+        return $this->hasOne(User::className(), ['idUsuario' => 'ACUARIO_USUARIO_usuario_idUsuario']);
     }
 
     /**
@@ -84,7 +89,7 @@ class Planning extends \yii\db\ActiveRecord
      */
     public function getTAREAs()
     {
-        return $this->hasMany(TAREA::className(), ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']);
+        return $this->hasMany(Task::className(), ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']);
     }
 
     /**
@@ -92,6 +97,47 @@ class Planning extends \yii\db\ActiveRecord
      */
     public function getVALIDACIONs()
     {
-        return $this->hasMany(VALIDACION::className(), ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']);
+        return $this->hasMany(Validation::className(), ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']);
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public function validarPlanificacion($unAcuario , $unAñoMes)
+    { //metodo que valida la inexistencia de una planificacion para ese mes y ese acuario
+      //ExistValidator:
+      $planificaciones = Planning::find()->all(); //tomo todas las planificaciones
+
+      foreach ($planificaciones as $plani) { // recorro la lista de planificaciones
+        //if ($planis->anioMes == $unAñoMes && $planis->Acuario== $unAcuario) {
+          if ($planis->anioMes == $unAñoMes) {
+
+            $this->addError($attribute,"La planificacion ya existe para este mes y con este acuario");
+            return false;
+        }
+      }
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public function registrarPlanificacion()
+    {// cambia el estado de la planificacion creada a 'Sin verificar'
+    //guarda la planificacion en la tabla 'PLANIFICACIONES'
+
+
+
+
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public function listaPlanificaciones(){
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public function listaTareasAsociadas(){
+
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    public function AutorizarPlanificacion(){
+
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+
 }
