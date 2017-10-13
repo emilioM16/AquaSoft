@@ -69,7 +69,6 @@ class PlanningController extends Controller
     {
         $model = new Planning();
          $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
-        yii::error(\yii\helpers\VarDumper::dumpAsString($aquariums));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPlanificacion]);
         } else {
@@ -131,7 +130,7 @@ class PlanningController extends Controller
 
     public function actionValidarPlanificacion()
     {
-      yii::error(\yii\helpers\VarDumper::dumpAsString("gcdjdfhjehf"));
+      yii::error(\yii\helpers\VarDumper::dumpAsString());
       $model = new Planning();
       $msg = null;
 

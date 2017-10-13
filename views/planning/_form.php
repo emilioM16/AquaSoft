@@ -49,9 +49,14 @@ $this->params['breadcrumbs'][] = $this->title;
                               ]
                           ],
                           'anioMes'=>[
-                              'type'=>Form::INPUT_TEXT,
+                              'type'=>Form::INPUT_WIDGET,
+                              'widgetClass'=>'kartik\date\DatePicker',
                               'options'=>[
-                                  'placeholder'=>'Ingrese la capacidad',
+
+                              ],
+                              'pluginOptions' => [
+                                'format' => 'dd-M-yyyy',
+                                'todayHighlight' => true
                               ]
                           ],
                           'ACUARIO_USUARIO_acuario_idAcuario'=>[
