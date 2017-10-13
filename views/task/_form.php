@@ -72,6 +72,7 @@ use rmrevin\yii\fontawesome\FA;
                 ]
             ]
         ]);
+        // TODO: AGREGAR EL RESTO DE LOS CAMPOS
     ActiveForm::end();
     ?>
 

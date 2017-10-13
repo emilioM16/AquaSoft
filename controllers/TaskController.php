@@ -75,11 +75,11 @@ class TaskController extends Controller
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('create',[
-                    'model'=>$model,
+                    'model'=>$model
                 ]);
             }else{
                 return $this->render('create',[
-                    'model'->$model,
+                    'model'->$model
                 ]);
             }
         }
@@ -115,6 +115,30 @@ class TaskController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Execute an existing Task model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionExecute($idTask)
+    {        
+        $model = $this->findModel($idTask);
+
+        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->idTarea]);
+        // } else {
+        //     if (Yii::$app->request->isAjax){
+                return $this->renderAjax('execute',[
+                    'tarea'=>$model
+                ]);
+        //     }else{
+        //         return $this->render('execute',[
+        //             'tarea'=>$model
+        //         ]);
+        //     }
+        // }
     }
 
     /**
