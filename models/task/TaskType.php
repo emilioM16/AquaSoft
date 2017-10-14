@@ -1,16 +1,18 @@
 <?php
 
-namespace app\models;
+namespace app\models\task;
 
 use Yii;
+use app\models\supply\Supply;
+use app\models\task\Task;
 
 /**
  * This is the model class for table "TIPO_TAREA".
  *
  * @property string $idTipoTarea
  *
- * @property INSUMO[] $iNSUMOs
- * @property TAREA[] $tAREAs
+ * @property Supply[] $insumos
+ * @property Task[] $tareas
  */
 class TaskType extends \yii\db\ActiveRecord
 {
@@ -46,16 +48,16 @@ class TaskType extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getINSUMOs()
+    public function getInsumos()
     {
-        return $this->hasMany(INSUMO::className(), ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']);
+        return $this->hasMany(Supply::className(), ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTAREAs()
+    public function getTareas()
     {
-        return $this->hasMany(TAREA::className(), ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']);
+        return $this->hasMany(Task::className(), ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']);
     }
 }

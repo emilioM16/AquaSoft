@@ -1,47 +1,41 @@
 <?php
 
 use yii\helpers\Html;
+// use yii\widgets\ActiveForm;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use yii\helpers\Url;
 use rmrevin\yii\fontawesome\FA;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Acuario */
+/* @var $model app\models\task\Task */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="acuario-form">
-
+<div class="task-form">
     <?php 
 
-    $aquariumId =-1;
+    $taskId =-1;
 
-    if ($model->idAcuario!==null){
-        $aquariumId = $model->idAcuario;
+    if ($model->idTarea!==null){
+        $taskId = $model->idTarea;
     }
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            'validationUrl'=> Url::toRoute(['aquarium/validation','id'=>$aquariumId]), 
+            'validationUrl'=> Url::toRoute(['task/validation','id'=>$taskId]), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
         echo Form::widget([
             'model'=>$model,
             'form'=>$form,
-            'columns'=>2,
+            'columns'=>1,
             'attributes'=>[
-                'nombre'=>[
+                'titulo'=>[
                     'type'=>Form::INPUT_TEXT,
                     'options'=>[
-                        'placeholder'=>'Ingrese el nombre',
+                        'placeholder'=>'Ingrese el titulo',
                         'maxlength'=>true,
-                    ]
-                ],
-                'capacidadMaxima'=>[
-                    'type'=>Form::INPUT_TEXT,
-                    'options'=>[
-                        'placeholder'=>'Ingrese la capacidad',
                     ]
                 ]
             ]
@@ -63,21 +57,13 @@ use rmrevin\yii\fontawesome\FA;
         echo Form::widget([
             'model'=>$model,
             'form'=>$form,
-            'columns'=>2,
+            'columns'=>1,
             'attributes'=>[
-                'activo'=>[
-                    'label'=>'Inactivo',
-                    'type'=>Form::INPUT_CHECKBOX,
-                    'items'=>[0=>'Inactivo'],
-                    // 'options'=>[
-                    //     'float'=>'right'
-                    // ]
-                ],
                 'actions'=>[
                     'type'=>Form::INPUT_RAW,
                     'value'=>'<div class="form-group" align="center">'.
                         Html::submitButton(
-                            $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar',
+                            $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Realizar',
                             [
                                 'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                             ]).' '.
@@ -86,6 +72,7 @@ use rmrevin\yii\fontawesome\FA;
                 ]
             ]
         ]);
+        // TODO: AGREGAR EL RESTO DE LOS CAMPOS
     ActiveForm::end();
     ?>
 

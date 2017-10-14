@@ -5,9 +5,12 @@ namespace app\models\aquarium;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\models\task\Task;
-use app\models\conditions\EnviromentalConditions;
-use app\models\specie\Specie;
+use app\models\aquarium\Aquarium;
+use app\models\aquarium\UserAquariums;
+use app\models\condition\EnviromentalConditions;
 use app\models\specimen\Specimen;
+use app\models\specie\Specie;
+
 
 /**
  * This is the model class for table "acuarios".
@@ -124,6 +127,7 @@ class Aquarium extends \yii\db\ActiveRecord
     }
 
     public function beforeSave($insert){
+        $this->activo = !$this->activo; // esto es porqeu el check, si no marcás nada, te devuelve un cero.
         $this->espacioDisponible = $this->capacidadMaxima;
         return parent::beforeSave($insert);
     }
