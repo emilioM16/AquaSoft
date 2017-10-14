@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1f6fd523f8092028407daf9914c7ce5a",
+    "content-hash": "1be89d0fa23328c2f61efd4f248f4c33",
     "packages": [
         {
             "name": "2amigos/yii2-date-time-picker-widget",
@@ -1264,16 +1264,16 @@
         },
         {
             "name": "kartik-v/yii2-tabs-x",
-            "version": "v1.2.3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-tabs-x.git",
-                "reference": "1e35056b49d48d103459be13d812a5cc9bc83b1b"
+                "reference": "685eef44354194b36f6892de2f8288bcf12bc321"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-tabs-x/zipball/1e35056b49d48d103459be13d812a5cc9bc83b1b",
-                "reference": "1e35056b49d48d103459be13d812a5cc9bc83b1b",
+                "url": "https://api.github.com/repos/kartik-v/yii2-tabs-x/zipball/685eef44354194b36f6892de2f8288bcf12bc321",
+                "reference": "685eef44354194b36f6892de2f8288bcf12bc321",
                 "shasum": ""
             },
             "require": {
@@ -1313,7 +1313,7 @@
                 "tabs",
                 "tabs-x"
             ],
-            "time": "2016-09-09T11:33:18+00:00"
+            "time": "2017-05-04T12:30:21+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-activeform",
@@ -4873,6 +4873,7 @@
     "stability-flags": {
         "kartik-v/yii2-popover-x": 20,
         "delocker/yii2-animate.css": 20,
+        "kartik-v/yii2-tabs-x": 20,
         "kartik-v/yii2-builder": 20,
         "kartik-v/yii2-widget-activeform": 20,
         "reportico/yii2-reportico": 20,

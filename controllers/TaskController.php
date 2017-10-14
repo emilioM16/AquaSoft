@@ -120,9 +120,10 @@ class TaskController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionExecute($idTask)
+    public function actionExecute()
     {        
-        $model = $this->findModel($idTask);
+        $idTarea = Yii::$app->request->post('idTarea');
+        $model = $this->findModel($idTarea);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idTarea]);

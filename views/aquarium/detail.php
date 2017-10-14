@@ -85,28 +85,46 @@ $this->params['breadcrumbs'][] = $this->title;
         'encodeLabels'=>false,
         'bordered'=>true,
           ]);
-    ?>
-
+    ?>    
     </div>
-<div id=modal></div>
-<?php 
 
-$JSEventClick = <<<EOF
+<?php
+    $JSEventClick = <<<EOF
     function(calEvent, jsEvent, view) {
-      $('#modal').modal();
+      $.ajax({
+        type: 'POST',
+        url: "/task/execute", 
+        data: 'idTarea=' + calEvent.id,
+        dataType: 'html',
+        error: function(xhr){
+            alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
+            },
+        success: function(response){
+            $('#modalContent').html(response);
+            $('#modalHeader').html('<h2 class="modalTitle">Registrar tarea</h2>');
+            $('#xModal').modal('show');
+            }
+        });
+      // change the border color just for fun
+      $(this).css('border-color', 'red');
     }
 EOF;
 
-
-$JSCode = <<<EOF
-    function(start, end) {
-    var date = $('#calendar').fullCalendar('getDate');
-    $('div.modal-header').html('<h4 class="text-center"> Registrar tarea para el ' + end.format('dddd D, MMMM YYYY')+'</h4>');
-    $('#pModal').modal();
-    }
-EOF;
-
+Modal::begin([
+    'id'=>'xModal', 
+    'size'=>'modal-md',
+    'headerOptions' => ['id' => 'modalHeader'],
+    'closeButton'=>[],
+    'footer'=>
+        Html::button(FA::icon('save')->size(FA::SIZE_LARGE).' Guardar', ['class' => 'btn btn-success']).
+        Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger','data-dismiss'=>'modal'])
+    
+    ]);
+    echo '<div id="modalContent"></div>';
+Modal::end();
 ?>
+
+<div id=modal></div>
 
   <!-- Calendario -->
   <div class="col-lg-6">
@@ -127,9 +145,8 @@ EOF;
             'clientOptions' => [
                 'language' => 'fa',
                 'eventLimit' => TRUE,
-//                'theme'=>true,
                 'fixedWeekCount' => false,
-                // 'dayClick'=>new \yii\web\JsExpression('function () {console.log("hola");}')
+                // 'dayClick'=>new \yii\web\JsExpression('function () {console.log("hola");}') Esto es para capturar el click sobre el día
                 'eventClick'=>new \yii\web\JsExpression($JSEventClick)
             ],
         ]);
@@ -140,14 +157,9 @@ EOF;
 
   <?php 
   if(Yii::$app->user->can('administrarTareas')){
-    // echo '<div id="btnDetail" class="col-lg-2">'
-    //       .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',['class'=>'btn btn-success']).
-    //   '</div>';
     echo '<div id="btnDetail" class="col-lg-2">'
       .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada', 
                 [
-                // 'value' => Url::to(['task/execute',
-                      // 'idTask'=>1, ESTO SE PARA PROBAR EL MODAL DE LA REALIZACIÓN DE TAREAS
                    'value' => Url::to([
                       'task/create',
                       'idAcuario'=>$acuario->idAcuario,
