@@ -89,25 +89,26 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 <?php
-    $JSEventClick = <<<EOF
-    function(calEvent, jsEvent, view) {
-      $.ajax({
-        type: 'POST',
-        url: "/task/execute", 
-        data: 'idTarea=' + calEvent.id,
-        dataType: 'html',
-        error: function(xhr){
-            alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
-            },
-        success: function(response){
-            $('#modalContent').html(response);
-            $('#modalHeader').html('<h2 class="modalTitle">Registrar tarea</h2>');
-            $('#xModal').modal('show');
-            }
-        });
-      // change the border color just for fun
-      $(this).css('border-color', 'red');
-    }
+
+$JSEventClick = <<<EOF
+function(calEvent, jsEvent, view) {
+  $.ajax({
+    type: 'POST',
+    url: "/task/execute", 
+    data: 'idTarea=' + calEvent.id,
+    dataType: 'html',
+    error: function(xhr){
+        alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
+        },
+    success: function(response){
+        $('#modalContent').html(response);
+        $('#modalHeader').html('<h2 class="modalTitle">Registrar tarea</h2>');
+        $('#xModal').modal('show');
+        }
+    });
+  // change the border color just for fun
+  $(this).css('border-color', 'red');
+}
 EOF;
 
 Modal::begin([
@@ -123,8 +124,6 @@ Modal::begin([
     echo '<div id="modalContent"></div>';
 Modal::end();
 ?>
-
-<div id=modal></div>
 
   <!-- Calendario -->
   <div class="col-lg-6">
