@@ -177,6 +177,8 @@ class Planning extends \yii\db\ActiveRecord
     }
 
     public function beforeSave($insert){
+      $this->estado = '1';
+
       return parent::beforeSave($insert);
     }
 

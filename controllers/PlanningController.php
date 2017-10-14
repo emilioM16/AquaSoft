@@ -90,7 +90,8 @@ class PlanningController extends Controller
         //si la planificacion es valida  guarda en la bd la planificion y
         //muestra la vista de calendario
 
-        return $this->redirect(['view', 'id' => $model->idPlanificacion]);
+        $model-save();
+        return $this->redirect(['planning/calendarTask', 'id' => $model->idPlanificacion]);
 
 
       }
