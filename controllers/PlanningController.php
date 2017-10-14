@@ -68,7 +68,8 @@ class PlanningController extends Controller
     public function actionCreate()
     {
         $model = new Planning();
-         $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+        $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPlanificacion]);
         } else {
@@ -77,8 +78,31 @@ class PlanningController extends Controller
                 'aquariums'=>$aquariums
 
             ]);
+
         }
+
     }
+
+    public function savePlanning(){
+      $planningOK = true;
+
+      if ($planningOK) {
+        //si la planificacion es valida  guarda en la bd la planificion y
+        //muestra la vista de calendario
+
+        return $this->redirect(['view', 'id' => $model->idPlanificacion]);
+
+
+      }
+      else {
+        //sino muestra alerta
+        //y vuelve a renderizar la pagina
+
+      }
+
+    }
+
+
 
     /**
      * Updates an existing Planning model.
@@ -128,31 +152,46 @@ class PlanningController extends Controller
         }
     }
 
-    public function actionValidarPlanificacion()
+    public function actionGetinfo()
     {
-      yii::error(\yii\helpers\VarDumper::dumpAsString());
+        if(!isset($_POST['country_code']) || empty($_POST['country_code']))
+            return;
+
+        $code = $_POST['country_code'];
+
+        return $this->renderAjax('resultwidget', ['code' => $code]);
+    }
+
+
+    public function actionValidatePlanning()
+    {
+      yii::error(\yii\helpers\VarDumper::dumpAsString('aaa'));
       $model = new Planning();
       $msg = null;
+      $model->validatePlanning(); // llama al metodo de validacion que tiene el modelo
 
-        if ($model ->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
-            Yii::$app->response->format = 'json';
-            return ActiveForm::render("create");
-        }
+        // if ($model ->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+        //     Yii::$app->response->format = 'json';
+        //     return ActiveForm::render("create");
+        // }
 
-        if ($model->load(Yii::$app->request->post)) {
+    //     if ($model->load(Yii::$app->request->post)) {
+     //
+    //         if ($model->validate()) {
+    //           //hacer consulta a bd
+    //         $msg="Planificacion correcta";
+    //         }
+    //         else {
+    //           $model->getErrors();
+    //         }
+     //
+    //  }
 
-            if ($model->validate()) {
-              //hacer consulta a bd
-            $msg="Planificacion correcta";
-            }
-            else {
-              $model->getErrors();
-            }
 
-      }
-
-      return $this->render("create",['model'=> $model, 'msg'=> $msg]);
     }
+
+
+
 
 
 

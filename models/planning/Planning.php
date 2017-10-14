@@ -100,19 +100,25 @@ class Planning extends \yii\db\ActiveRecord
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
-    public function validatePlanning($unAcuario , $unAñoMes)
+    public function validatePlanning()
     { //metodo que valida la inexistencia de una planificacion para ese mes y ese acuario
       //ExistValidator:
-      $planificaciones = Planning::find()->all(); //tomo todas las planificaciones
-      yii::error(\yii\helpers\VarDumper::dumpAsString($planificaciones));
-      foreach ($planificaciones as $plani) { // recorro la lista de planificaciones
-        //if ($planis->anioMes == $unAñoMes && $planis->Acuario== $unAcuario) {
-          if ($planis->anioMes == $unAñoMes) {
+      // $planificaciones = Planning::find()->all(); //tomo todas las planificaciones
+      // yii::error(\yii\helpers\VarDumper::dumpAsString($planificaciones));
+      // foreach ($planificaciones as $plani) { // recorro la lista de planificaciones
+      //   //if ($planis->anioMes == $unAñoMes && $planis->Acuario== $unAcuario) {
+      //     if ($planis->anioMes == $unAñoMes) {
+      //
+      //       $this->addError($attribute,"La planificacion ya existe para este mes y con este acuario");
+      //       return false;
+      //
+      //       return $this->render('calendarTask', [
+      //         //  'model' => $this->findModel($id),
+      //       ]);
 
-            $this->addError($attribute,"La planificacion ya existe para este mes y con este acuario");
-            return false;
-        }
-      }
+
+        //}
+      //}
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
     public function registerPlanning($titulo, $anioMes, $idAcuario)
@@ -168,6 +174,10 @@ class Planning extends \yii\db\ActiveRecord
         $this->ESTADO_PLANIFICACION_idEstadoPlanificacion = $oneState;
 
 
+    }
+
+    public function beforeSave($insert){
+      return parent::beforeSave($insert);
     }
 
 }

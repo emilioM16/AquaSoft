@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7559775030042c8e5cbe4b8db8eb1968",
-    "content-hash": "a8543ed8dc95436678a2380a7fd84de5",
+    "content-hash": "97840bf3647c998075de62069dc3c538",
     "packages": [
         {
             "name": "2amigos/yii2-date-time-picker-widget",
@@ -67,7 +66,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2017-07-05 05:38:36"
+            "time": "2017-07-05T05:38:36+00:00"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -330,7 +329,7 @@
                 "mask",
                 "plugins"
             ],
-            "time": "2017-10-10 12:47:01"
+            "time": "2017-10-10T12:47:01+00:00"
         },
         {
             "name": "bower-asset/moment",
@@ -374,7 +373,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2017-10-11 20:55:53"
+            "time": "2017-10-11T20:55:53+00:00"
         },
         {
             "name": "bower-asset/owl.carousel",
@@ -576,7 +575,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2017-10-12 10:11:14"
+            "time": "2017-10-12T10:11:14+00:00"
         },
         {
             "name": "cebe/markdown",
@@ -636,7 +635,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2017-07-16 21:13:23"
+            "time": "2017-07-16T21:13:23+00:00"
         },
         {
             "name": "delocker/yii2-animate.css",
@@ -682,7 +681,52 @@
                 "delocker",
                 "yii2"
             ],
-            "time": "2015-10-05 23:33:01"
+            "time": "2015-10-05T23:33:01+00:00"
+        },
+        {
+            "name": "demogorgorn/yii2-ajax-submit-button",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/demogorgorn/yii2-ajax-submit-button.git",
+                "reference": "e37725bb0c11b22a07f45381dd0ace2d2eb39c4a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/demogorgorn/yii2-ajax-submit-button/zipball/e37725bb0c11b22a07f45381dd0ace2d2eb39c4a",
+                "reference": "e37725bb0c11b22a07f45381dd0ace2d2eb39c4a",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "demogorgorn\\ajax\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oleg Martemjanov",
+                    "email": "demogorgorn@gmail.com",
+                    "homepage": "http://foreign.by"
+                }
+            ],
+            "description": "AjaxSubmitButton renders an ajax button which is very similar to ajaxSubmitButton from Yii1.",
+            "homepage": "https://github.com/demogorgorn/yii2-ajax-submit-button",
+            "keywords": [
+                "ajax",
+                "button",
+                "extension",
+                "submit",
+                "widget"
+            ],
+            "time": "2017-01-28T20:43:37+00:00"
         },
         {
             "name": "evgeniyrru/yii2-slick",
@@ -725,7 +769,7 @@
                 "widget",
                 "yii"
             ],
-            "time": "2017-03-31 07:00:27"
+            "time": "2017-03-31T07:00:27+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -772,7 +816,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-06-03 02:28:16"
+            "time": "2017-06-03T02:28:16+00:00"
         },
         {
             "name": "fortawesome/font-awesome",
@@ -820,7 +864,7 @@
                 "font",
                 "icon"
             ],
-            "time": "2016-10-24 15:52:54"
+            "time": "2016-10-24T15:52:54+00:00"
         },
         {
             "name": "istvan-ujjmeszaros/bootstrap-duallistbox",
@@ -860,7 +904,7 @@
                 "duallistbox",
                 "select"
             ],
-            "time": "2016-09-06 13:18:25"
+            "time": "2016-09-06T13:18:25+00:00"
         },
         {
             "name": "kartik-v/bootstrap-popover-x",
@@ -909,7 +953,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2017-09-07 13:05:26"
+            "time": "2017-09-07T13:05:26+00:00"
         },
         {
             "name": "kartik-v/bootstrap-tabs-x",
@@ -953,7 +997,7 @@
                 "tabs",
                 "tabs-x"
             ],
-            "time": "2015-06-26 14:48:16"
+            "time": "2015-06-26T14:48:16+00:00"
         },
         {
             "name": "kartik-v/yii2-builder",
@@ -1006,7 +1050,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-08-29 13:04:56"
+            "time": "2017-08-29T13:04:56+00:00"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -1058,7 +1102,7 @@
                 "modal",
                 "yii2"
             ],
-            "time": "2016-09-13 18:15:26"
+            "time": "2016-09-13T18:15:26+00:00"
         },
         {
             "name": "kartik-v/yii2-grid",
@@ -1111,7 +1155,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-06-09 10:08:02"
+            "time": "2017-06-09T10:08:02+00:00"
         },
         {
             "name": "kartik-v/yii2-helpers",
@@ -1162,7 +1206,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2016-11-26 06:03:52"
+            "time": "2016-11-26T06:03:52+00:00"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -1213,7 +1257,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-29 06:18:14"
+            "time": "2017-09-29T06:18:14+00:00"
         },
         {
             "name": "kartik-v/yii2-popover-x",
@@ -1261,7 +1305,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2017-09-22 15:47:48"
+            "time": "2017-09-22T15:47:48+00:00"
         },
         {
             "name": "kartik-v/yii2-tabs-x",
@@ -1314,7 +1358,7 @@
                 "tabs",
                 "tabs-x"
             ],
-            "time": "2016-09-09 11:33:18"
+            "time": "2016-09-09T11:33:18+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-activeform",
@@ -1366,7 +1410,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-11-24 17:29:45"
+            "time": "2016-11-24T17:29:45+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-datepicker",
@@ -1420,7 +1464,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-06 06:18:08"
+            "time": "2017-09-06T06:18:08+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-select2",
@@ -1473,7 +1517,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-04 15:30:52"
+            "time": "2017-09-04T15:30:52+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-touchspin",
@@ -1523,7 +1567,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-01-10 17:10:39"
+            "time": "2016-01-10T17:10:39+00:00"
         },
         {
             "name": "kv4nt/yii2-owl-carousel2",
@@ -1573,7 +1617,7 @@
                 "yii2 owlcarousel",
                 "yii2-owl-carousel"
             ],
-            "time": "2017-09-15 11:16:39"
+            "time": "2017-09-15T11:16:39+00:00"
         },
         {
             "name": "mdmsoft/yii2-admin",
@@ -1631,7 +1675,7 @@
                 "rbac",
                 "yii"
             ],
-            "time": "2017-10-04 02:54:53"
+            "time": "2017-10-04T02:54:53+00:00"
         },
         {
             "name": "miloschuman/yii2-highcharts-widget",
@@ -1676,7 +1720,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-11-16 16:25:21"
+            "time": "2016-11-16T16:25:21+00:00"
         },
         {
             "name": "philippfrenzel/yii2fullcalendar",
@@ -1725,7 +1769,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-20 17:11:40"
+            "time": "2017-09-20T17:11:40+00:00"
         },
         {
             "name": "reportico/yii2-reportico",
@@ -1762,7 +1806,7 @@
                 "extension",
                 "yii2"
             ],
-            "time": "2016-11-25 17:33:47"
+            "time": "2016-11-25T17:33:47+00:00"
         },
         {
             "name": "rmrevin/yii2-fontawesome",
@@ -1814,7 +1858,7 @@
                 "font",
                 "yii"
             ],
-            "time": "2017-01-11 14:05:47"
+            "time": "2017-01-11T14:05:47+00:00"
         },
         {
             "name": "scotthuangzl/yii2-google-chart",
@@ -1858,7 +1902,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-11 12:13:00"
+            "time": "2015-06-11T12:13:00+00:00"
         },
         {
             "name": "softark/yii2-dual-listbox",
@@ -1903,7 +1947,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2017-06-27 04:47:12"
+            "time": "2017-06-27T04:47:12+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1957,7 +2001,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2017-05-01 15:54:03"
+            "time": "2017-05-01T15:54:03+00:00"
         },
         {
             "name": "yii2mod/yii2-sweet-alert",
@@ -2005,7 +2049,7 @@
                 "yii2 alert",
                 "yii2 sweet alert"
             ],
-            "time": "2017-09-12 08:35:07"
+            "time": "2017-09-12T08:35:07+00:00"
         },
         {
             "name": "yiisoft/yii2",
@@ -2105,7 +2149,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2017-06-05 14:33:41"
+            "time": "2017-06-05T14:33:41+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2151,7 +2195,7 @@
                 "bootstrap",
                 "yii2"
             ],
-            "time": "2017-10-09 19:48:22"
+            "time": "2017-10-09T19:48:22+00:00"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -2201,7 +2245,7 @@
                 "extension installer",
                 "yii2"
             ],
-            "time": "2016-12-20 13:26:02"
+            "time": "2016-12-20T13:26:02+00:00"
         },
         {
             "name": "yiisoft/yii2-jui",
@@ -2251,7 +2295,7 @@
                 "jQuery UI",
                 "yii2"
             ],
-            "time": "2016-07-22 22:26:59"
+            "time": "2016-07-22T22:26:59+00:00"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
@@ -2301,7 +2345,7 @@
                 "swiftmailer",
                 "yii2"
             ],
-            "time": "2017-05-01 08:29:00"
+            "time": "2017-05-01T08:29:00+00:00"
         }
     ],
     "packages-dev": [
@@ -2362,7 +2406,7 @@
                 "gherkin",
                 "parser"
             ],
-            "time": "2016-10-30 11:50:56"
+            "time": "2016-10-30T11:50:56+00:00"
         },
         {
             "name": "bower-asset/typeahead.js",
@@ -2481,7 +2525,7 @@
                 "functional testing",
                 "unit testing"
             ],
-            "time": "2017-09-29 00:03:44"
+            "time": "2017-09-29T00:03:44+00:00"
         },
         {
             "name": "codeception/specify",
@@ -2521,7 +2565,7 @@
                 }
             ],
             "description": "BDD code blocks for PHPUnit and Codeception",
-            "time": "2016-10-21 09:42:00"
+            "time": "2016-10-21T09:42:00+00:00"
         },
         {
             "name": "codeception/verify",
@@ -2557,7 +2601,7 @@
                 }
             ],
             "description": "BDD assertion library for PHPUnit",
-            "time": "2017-01-09 10:58:51"
+            "time": "2017-01-09T10:58:51+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -2611,7 +2655,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2015-06-14T21:17:01+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -2661,7 +2705,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2017-08-15 16:48:10"
+            "time": "2017-08-15T16:48:10+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -2726,7 +2770,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20 17:10:46"
+            "time": "2017-03-20T17:10:46+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -2768,7 +2812,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-04-12 18:52:22"
+            "time": "2017-04-12T18:52:22+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -2823,7 +2867,7 @@
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
-            "time": "2017-03-05 18:14:27"
+            "time": "2017-03-05T18:14:27+00:00"
         },
         {
             "name": "phar-io/version",
@@ -2870,7 +2914,7 @@
                 }
             ],
             "description": "Library for handling version information and constraints",
-            "time": "2017-03-05 17:38:23"
+            "time": "2017-03-05T17:38:23+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -2924,7 +2968,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2017-09-11 18:02:19"
+            "time": "2017-09-11T18:02:19+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -2969,7 +3013,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2017-08-30 18:51:59"
+            "time": "2017-08-30T18:51:59+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -3016,7 +3060,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2017-07-14 14:27:02"
+            "time": "2017-07-14T14:27:02+00:00"
         },
         {
             "name": "phpspec/php-diff",
@@ -3054,7 +3098,7 @@
                 }
             ],
             "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
-            "time": "2016-04-07 12:29:16"
+            "time": "2016-04-07T12:29:16+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -3117,7 +3161,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-09-04 11:05:03"
+            "time": "2017-09-04T11:05:03+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3181,7 +3225,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-08-03 12:40:43"
+            "time": "2017-08-03T12:40:43+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3228,7 +3272,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2016-10-03 07:40:28"
+            "time": "2016-10-03T07:40:28+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -3269,7 +3313,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21 13:50:34"
+            "time": "2015-06-21T13:50:34+00:00"
         },
         {
             "name": "phpunit/php-timer",
@@ -3318,7 +3362,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26 11:10:40"
+            "time": "2017-02-26T11:10:40+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -3367,7 +3411,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-08-20 05:47:52"
+            "time": "2017-08-20T05:47:52+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -3451,7 +3495,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-10-07 17:53:53"
+            "time": "2017-10-07T17:53:53+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3510,7 +3554,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2017-08-03 14:08:16"
+            "time": "2017-08-03T14:08:16+00:00"
         },
         {
             "name": "psr/http-message",
@@ -3560,7 +3604,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06 14:39:51"
+            "time": "2016-08-06T14:39:51+00:00"
         },
         {
             "name": "psr/log",
@@ -3607,7 +3651,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -3652,7 +3696,7 @@
             ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
-            "time": "2017-03-04 06:30:41"
+            "time": "2017-03-04T06:30:41+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -3716,7 +3760,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-08-03 07:14:59"
+            "time": "2017-08-03T07:14:59+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -3768,7 +3812,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-08-03 08:09:46"
+            "time": "2017-08-03T08:09:46+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -3818,7 +3862,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2017-07-01 08:51:00"
+            "time": "2017-07-01T08:51:00+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -3885,7 +3929,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2017-04-03 13:19:02"
+            "time": "2017-04-03T13:19:02+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -3936,7 +3980,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2017-04-27 15:39:26"
+            "time": "2017-04-27T15:39:26+00:00"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -3983,7 +4027,7 @@
             ],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
-            "time": "2017-08-03 12:35:26"
+            "time": "2017-08-03T12:35:26+00:00"
         },
         {
             "name": "sebastian/object-reflector",
@@ -4028,7 +4072,7 @@
             ],
             "description": "Allows reflection of object attributes, including inherited and non-public ones",
             "homepage": "https://github.com/sebastianbergmann/object-reflector/",
-            "time": "2017-03-29 09:07:27"
+            "time": "2017-03-29T09:07:27+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -4081,7 +4125,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2017-03-03 06:23:57"
+            "time": "2017-03-03T06:23:57+00:00"
         },
         {
             "name": "sebastian/resource-operations",
@@ -4123,7 +4167,7 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
-            "time": "2015-07-28 20:34:47"
+            "time": "2015-07-28T20:34:47+00:00"
         },
         {
             "name": "sebastian/version",
@@ -4166,7 +4210,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2016-10-03 07:35:21"
+            "time": "2016-10-03T07:35:21+00:00"
         },
         {
             "name": "stecman/symfony-console-completion",
@@ -4211,7 +4255,7 @@
                 }
             ],
             "description": "Automatic BASH completion for Symfony Console Component based applications.",
-            "time": "2016-02-24 05:08:54"
+            "time": "2016-02-24T05:08:54+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -4268,7 +4312,7 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02 06:42:24"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/console",
@@ -4336,7 +4380,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02 06:42:24"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -4389,7 +4433,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02 06:42:24"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/debug",
@@ -4445,7 +4489,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02 06:42:24"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -4501,7 +4545,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02 06:42:24"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -4564,7 +4608,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02 06:42:24"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/finder",
@@ -4613,7 +4657,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02 06:42:24"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -4672,7 +4716,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14 15:44:48"
+            "time": "2017-06-14T15:44:48+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -4727,7 +4771,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-05 14:43:42"
+            "time": "2017-10-05T14:43:42+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -4767,7 +4811,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2017-04-07 12:08:54"
+            "time": "2017-04-07T12:08:54+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -4817,7 +4861,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23 20:04:58"
+            "time": "2016-11-23T20:04:58+00:00"
         },
         {
             "name": "yiisoft/yii2-debug",
@@ -4864,7 +4908,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2017-10-09 20:30:01"
+            "time": "2017-10-09T20:30:01+00:00"
         },
         {
             "name": "yiisoft/yii2-faker",
@@ -4911,7 +4955,7 @@
                 "faker",
                 "yii2"
             ],
-            "time": "2015-03-01 06:22:44"
+            "time": "2015-03-01T06:22:44+00:00"
         },
         {
             "name": "yiisoft/yii2-gii",
@@ -4964,7 +5008,7 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2016-03-18 14:09:46"
+            "time": "2016-03-18T14:09:46+00:00"
         }
     ],
     "aliases": [],
