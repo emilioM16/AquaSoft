@@ -14,7 +14,7 @@ $(document).on('change','#selectSpecie',function(){
           $("#inputs").html(response);
        },
        error:function(){
-           $("#inputs").append("Error. Contacte al administrador");
+           $("#inputs").html("Error. Contacte al administrador");
        }
      });
 })

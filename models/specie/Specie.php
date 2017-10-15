@@ -103,18 +103,49 @@ class Specie extends \yii\db\ActiveRecord
     }
 
 
+
+    private function validConditions($aquarium){ //evalúa las condiciones ambientales de un determinado acuario//
+        $actualConditions = $aquarium->getActualConditions();
+        
+        if(($this->minPH <= $actualConditions['ph']) && ($actualConditions['ph'] <= $this->maxPH)){ 
+            if(($this->minTemp <= $actualConditions['temperatura']) && ($actualConditions['temperatura'] <= $this->maxTemp)){
+                if(($this->minSalinidad <= $actualConditions['salinidad']) && ($actualConditions['salinidad'] <= $this->maxSalinidad)){
+                    if(($this->minLux <= $actualConditions['lux']) && ($actualConditions['lux'] <= $this->maxLux)){
+                        if(($this->minCO2 <= $actualConditions['CO2']) && ($actualConditions['CO2'] <= $this->maxCO2)){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+
     public function getCompatibleAquariums(){
         $searchModel  = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $aquariums = $dataProvider->getModels();
+
         foreach ($aquariums as $key => $aquarium) {
-            if($aquarium->espacioDisponible<$this->minEspacio){ //si el espacio no es sufiente, se descarta ese acuario//
+            if($aquarium->espacioDisponible < $this->minEspacio){ //si el espacio no es sufiente, se descarta ese acuario//
                 unset($aquariums[$key]); //elimina el item del arreglo//
-                $aquariums = array_values($aquariums);
-            }else{ //si hay espacio, se evalúan las condiciones ambientales//
-                
+            }else{ //si hay espacio, se evalúan las condiciones ambientales//                    
+                if(!$this->validConditions($aquarium)){ //las condiciones ambientales del acuario NO son adecuadas para la especie seleccionada//
+                    unset($aquariums[$key]); //elimina el item del arreglo//
+                }
             }
         }
+        $aquariums = array_values($aquariums); //vuelve a asignar los indices a los elementos//
         return $aquariums;
     }
 
