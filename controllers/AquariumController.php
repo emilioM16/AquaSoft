@@ -39,10 +39,8 @@ class AquariumController extends Controller
     public function actionIndex()
     {
         $user = User::findOne(Yii::$app->user->identity->idUsuario);
-        // yii::error(\yii\helpers\VarDumper::dumpAsString($user));
         $searchModel = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

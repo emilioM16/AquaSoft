@@ -94,7 +94,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
             //SOLO PARA ESPECIALISTA
             ['label'=>file_get_contents("img/fishIcon4.svg"),
-                'url'=>['specimen/'],
+                'url'=>[Url::toRoute('task-specimen/specimens-tasks')],
                 'visible'=>Yii::$app->user->can('verEjemplares'),
                 'options'=>[
                     'data-toggle'=>'tooltip',

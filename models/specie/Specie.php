@@ -6,6 +6,8 @@ use Yii;
 use app\models\specimen\Specimen;
 use app\models\aquarium\Aquarium;
 
+
+use app\models\aquarium\AquariumSearch;
 /**
  * This is the model class for table "ESPECIE".
  *
@@ -99,4 +101,21 @@ class Specie extends \yii\db\ActiveRecord
         }
         return $porcentages;
     }
+
+
+    public function getCompatibleAquariums(){
+        $searchModel  = new AquariumSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $aquariums = $dataProvider->getModels();
+        foreach ($aquariums as $key => $aquarium) {
+            if($aquarium->espacioDisponible<$this->minEspacio){ //si el espacio no es sufiente, se descarta ese acuario//
+                unset($aquariums[$key]); //elimina el item del arreglo//
+                $aquariums = array_values($aquariums);
+            }else{ //si hay espacio, se evalúan las condiciones ambientales//
+                
+            }
+        }
+        return $aquariums;
+    }
+
 }

@@ -1,8 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\models\task;
 
 use Yii;
+use app\models\supply\Supply;
+use app\models\task\Task;
 
 /**
  * This is the model class for table "INSUMO_TAREA".
@@ -11,8 +13,8 @@ use Yii;
  * @property integer $TAREA_idTarea
  * @property integer $cantidad
  *
- * @property INSUMO $iNSUMOIdInsumo
- * @property TAREA $tAREAIdTarea
+ * @property Supply $insumo
+ * @property Task $tarea
  */
 class TasksSupply extends \yii\db\ActiveRecord
 {
@@ -32,8 +34,8 @@ class TasksSupply extends \yii\db\ActiveRecord
         return [
             [['INSUMO_idInsumo', 'TAREA_idTarea'], 'required'],
             [['INSUMO_idInsumo', 'TAREA_idTarea', 'cantidad'], 'integer'],
-            [['INSUMO_idInsumo'], 'exist', 'skipOnError' => true, 'targetClass' => INSUMO::className(), 'targetAttribute' => ['INSUMO_idInsumo' => 'idInsumo']],
-            [['TAREA_idTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TAREA::className(), 'targetAttribute' => ['TAREA_idTarea' => 'idTarea']],
+            [['INSUMO_idInsumo'], 'exist', 'skipOnError' => true, 'targetClass' => Supply::className(), 'targetAttribute' => ['INSUMO_idInsumo' => 'idInsumo']],
+            [['TAREA_idTarea'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['TAREA_idTarea' => 'idTarea']],
         ];
     }
 
@@ -52,16 +54,16 @@ class TasksSupply extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getINSUMOIdInsumo()
+    public function getInsumo()
     {
-        return $this->hasOne(INSUMO::className(), ['idInsumo' => 'INSUMO_idInsumo']);
+        return $this->hasOne(Supply::className(), ['idInsumo' => 'INSUMO_idInsumo']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTAREAIdTarea()
+    public function getTarea()
     {
-        return $this->hasOne(TAREA::className(), ['idTarea' => 'TAREA_idTarea']);
+        return $this->hasOne(Task::className(), ['idTarea' => 'TAREA_idTarea']);
     }
 }
