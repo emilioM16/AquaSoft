@@ -12,10 +12,14 @@ use yii\web\JsExpression;
 $this->title = $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="planning-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+
+<h2>ACA VA EL CALENDARIO :))), guarda en la base pero no se si trae la planificacion hasta aca :)</h2>
+
 
 
 

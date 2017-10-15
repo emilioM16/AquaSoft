@@ -33,9 +33,10 @@
         "kartik-v/yii2-widget-activeform": "@dev",
         "yii2mod/yii2-sweet-alert": "*",
         "reportico/yii2-reportico": "dev-master",
-                "kartik-v/yii2-widget-datepicker": "@dev",
+        "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-widget-select2": "@dev",
         "softark/yii2-dual-listbox": "dev-master",
+        "kartik-v/yii2-datecontrol": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

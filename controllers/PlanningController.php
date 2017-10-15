@@ -60,15 +60,41 @@ class PlanningController extends Controller
         ]);
     }
 
+    public function actionCalendar()
+    {
+
+      $model = new Planning();
+      $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+
+
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           return $this->redirect(['calendar', 'id' => $model->idPlanificacion]);
+       } else {
+          return $this->render('calendar', [
+              'model' => $model,
+              'aquariums'=>$aquariums
+
+          ]);
+
+      }
+
+    }
+
     /**
      * Creates a new Planning model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+
+
+
     public function actionCreate()
     {
+
+
         $model = new Planning();
         $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPlanificacion]);
@@ -82,27 +108,6 @@ class PlanningController extends Controller
         }
 
     }
-
-    public function savePlanning(){
-      $planningOK = true;
-
-      if ($planningOK) {
-        //si la planificacion es valida  guarda en la bd la planificion y
-        //muestra la vista de calendario
-
-        $model-save();
-        return $this->redirect(['planning/calendarTask', 'id' => $model->idPlanificacion]);
-
-
-      }
-      else {
-        //sino muestra alerta
-        //y vuelve a renderizar la pagina
-
-      }
-
-    }
-
 
 
     /**

@@ -12,6 +12,8 @@ use app\controllers\PlanningController;
 use yii\helpers\ArrayHelper;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
+use  kartik\datecontrol\Module ;
+use  kartik\datecontrol\DateControl ;
 
 
 /* @var $this yii\web\View */
@@ -32,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   <?php
                   $form = ActiveForm::begin([
-                   'action' => ['planning/save-planning'],
+                   'action' => ['planning/calendar'],
                       'id'=>$model->formName(),
                       'type'=>ActiveForm::TYPE_VERTICAL]);
 
@@ -48,18 +50,37 @@ $this->params['breadcrumbs'][] = $this->title;
                                   'maxlength'=>true,
                               ]
                           ],
-                          'anioMes'=>[
-                              'type'=>Form::INPUT_WIDGET,
-                              'widgetClass'=>'kartik\date\DatePicker',
-                              'options'=>[
+                          // 'anioMes'=>[
+                          //     'type'=>Form::INPUT_WIDGET,
+                          //     'widgetClass'=>'kartik\date\DatePicker',
+                          //     'options'=>[
+                          //
+                          //     ],
+                          //     'convertFormat'=>false,
+                          //     'pluginOptions' => [
+                          //     'format' => 'yyyy-MM-dd',
+                          //     ' pluginOptions ' => [ ' language ' => ' ru ' , ' endDate ' => ' 31-12-1999 ' , ' format ' => ' php: dmY ' ,
+                          //     'todayHighlight' => true
+                          //
+                          //   ]
+                          //   ]
+                          // ],
 
-                              ],
-                              'pluginOptions' => [
-                                'format' => 'dd-M-yyyy',
-                                'todayHighlight' => true
-                              ]
-                          ],
-                          'ACUARIO_USUARIO_acuario_idAcuario'=>[
+                          'anioMes'=>[
+                           'type'=>Form::INPUT_WIDGET,
+                           'widgetClass'=>'kartik\date\DatePicker',
+                           'convertFormat' => true,
+        'pluginOptions' => [
+            'language' => 'ru',
+            'endDate' => '31-12-1999',
+            'format' => 'php:d-m-Y',
+            'autoclose' => true,
+            'startView' => 'decade',
+        ]
+                        ],
+
+
+                              'ACUARIO_USUARIO_acuario_idAcuario'=>[
                               'type'=>Form::INPUT_WIDGET,
                               'widgetClass'=>'kartik\select2\Select2',
                               'options'=>['data'=>$aquariums],

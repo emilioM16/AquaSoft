@@ -45,9 +45,9 @@ class Planning extends \yii\db\ActiveRecord
             [['titulo', 'anioMes', 'ACUARIO_USUARIO_acuario_idAcuario'], 'required','message'=>'Campo obligatorio'],
             [['anioMes', 'fechaHoraCreacion'], 'safe'],
             [['activo', 'ACUARIO_USUARIO_acuario_idAcuario', 'ACUARIO_USUARIO_usuario_idUsuario'], 'integer'],
-            [['titulo','requiered','message'=> 'Campo requerido', 'ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'string', 'max' => 45],
+          //  [['titulo','requiered','message'=> 'Campo requerido', 'ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'string', 'max' => 45],
             [['ACUARIO_USUARIO_acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['ACUARIO_USUARIO_acuario_idAcuario' => 'idAcuario']],
-            [['ACUARIO_USUARIO_usuario_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['ACUARIO_USUARIO_usuario_idUsuario' => 'idUsuario']],
+            //[['ACUARIO_USUARIO_usuario_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['ACUARIO_USUARIO_usuario_idUsuario' => 'idUsuario']],
         ];
     }
     /**
@@ -161,25 +161,31 @@ class Planning extends \yii\db\ActiveRecord
         //si [autorizo] cambia estado a Autorizada
         //si [rechazo] cambia el estado a REchazada
         //solicita un motivo
-
-
+          $this->changeStatus('Autorizada');
 
 
     }
 
     //activo es bajo de baja
     /////////////////////////////////////////////////////////////////////////////////////////////
-    public function changeStatus($oneState){
+    public function changeStatus($oneState){ //FUNCIONA
       //SinVerificar//Aprobado//Rechazado
         $this->ESTADO_PLANIFICACION_idEstadoPlanificacion = $oneState;
 
 
     }
 
-    public function beforeSave($insert){
-      $this->estado = '1';
+    public function beforeSave($insert){ //FUNCIONA
+      //idPlanificacion autogenerado
+      //fechaHoraCreacion autogenerado
+      $this->activo = 1;
+      $this->ESTADO_PLANIFICACION_idEstadoPlanificacion ='SinVerificar';
+      $this->ACUARIO_USUARIO_usuario_idUsuario=21;
 
       return parent::beforeSave($insert);
+
+
     }
+
 
 }

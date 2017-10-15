@@ -29,13 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-lg-4">
     <?php
       $content1 =
-      
-      '<div class="col-lg-12">  
+
+      '<div class="col-lg-12">
 
           <label>Nombre del acuario: </label> <span>'.$acuario->nombre.'</span>
           <br><br>
 
-          <p class="text-justify">       
+          <p class="text-justify">
             <label>Descripción:</label>'
               .$acuario->descripcion.
           '</p>
@@ -43,9 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
           <label>Espacio disponible: </label> <span>'.$acuario->espacioDisponible.'</span>
           <br><br>
-          
+
       </div>' ;
- 
+
 
 
 
@@ -64,10 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <div class="row">
                             <div class="col-lg-12" align="center">'.
-                                Html::button(FA::icon('check-square-o')->size(FA::SIZE_LARGE).' Nuevo control', 
+                                Html::button(FA::icon('check-square-o')->size(FA::SIZE_LARGE).' Nuevo control',
                                 [
-                                    'value' => Url::to(['']), 
-                                    'title' => 'Nuevo control', 
+                                    'value' => Url::to(['']),
+                                    'title' => 'Nuevo control',
                                     'class' => 'showModalButton btn btn-primary',
                                     'style'=>['width'=>'70%']
                                 ])
@@ -88,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'encodeLabels'=>false,
         'bordered'=>true,
           ]);
-    ?>    
+    ?>
     </div>
 
 <?php
@@ -97,7 +97,7 @@ $JSEventClick = <<<EOF
 function(calEvent, jsEvent, view) {
   $.ajax({
     type: 'POST',
-    url: "/task/execute", 
+    url: "/task/execute",
     data: 'idTarea=' + calEvent.id,
     dataType: 'html',
     error: function(xhr){
@@ -115,14 +115,14 @@ function(calEvent, jsEvent, view) {
 EOF;
 
 Modal::begin([
-    'id'=>'xModal', 
+    'id'=>'xModal',
     'size'=>'modal-md',
     'headerOptions' => ['id' => 'modalHeader'],
     'closeButton'=>[],
     'footer'=>
         Html::button(FA::icon('save')->size(FA::SIZE_LARGE).' Guardar', ['class' => 'btn btn-success']).
         Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger','data-dismiss'=>'modal'])
-    
+
     ]);
     echo '<div id="modalContent"></div>';
 Modal::end();
@@ -157,18 +157,18 @@ Modal::end();
     </div>
   </div>
 
-  <?php 
+  <?php
   if(Yii::$app->user->can('administrarTareas')){
     echo '<div id="btnDetail" class="col-lg-2">'
-      .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada', 
+      .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',
                 [
                    'value' => Url::to([
                       'task/create',
                       'idAcuario'=>$acuario->idAcuario,
                       // 'idPlanificacion'=>-1, // esto significa que es no planificada
                       // 'fecha'=>date("Y-m-d") // hoy
-                    ]), 
-                  'title' => 'Agregar tarea no planificada', 
+                    ]),
+                  'title' => 'Agregar tarea no planificada',
                   'class' => 'showModalButton btn btn-success'
                 ]).
     '</div>';
