@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'nombre',
             'apellido',
-            'nombre_usuario',
+            'nombreUsuario',
             'email:email',
             [
                 'attribute'=>'activo',
@@ -55,28 +55,39 @@ $this->params['breadcrumbs'][] = $this->title;
                     'view'=>function($url,$model){
                         return Html::button('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>', 
                         [
-                          'value' => Url::to(['user/view','id'=>$model->id_usuario]), 
-                          'title' => 'Información del especialista: '.$model->nombre_usuario, 
-                          'class' => 'showModalButton btn btn-success btnAquarium'
+                          'value' => Url::to(['user/view','id'=>$model->idUsuario]), 
+                          'title' => 'Información del especialista: '.$model->nombreUsuario, 
+                          'class' => 'showModalButton btn btn-warning btnAquarium'
                         ]);
                     },
                     'update'=>function($url,$model){
                         return Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
                         [
-                          'value' => Url::to(['user/update','id'=>$model->id_usuario]), 
-                          'title' => 'Modificar especialista: '.$model->nombre_usuario, 
+                          'value' => Url::to(['user/update','id'=>$model->idUsuario]), 
+                          'title' => 'Modificar especialista: '.$model->nombreUsuario, 
                           'class' => 'showModalButton btn btn-primary btnAquarium'
                         ]);
                     },
                     'delete' => function($url, $model){
-                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id_usuario], [
-                            'class' => 'btn btn-danger btnAquarium',
-                            'data' => [
-                                'data-pjax' => '0',
-                                'confirm' => '¿Está seguro de querer dar de baja el usuario "'.$model->nombre_usuario.'"?',
-                                'method' => 'post',
-                            ],
-                        ]);
+                        if($model->activo==0){
+                            return Html::a('<span class="glyphicon glyphicon-arrow-up"></span>', ['change-state', 'id' => $model->idUsuario], [
+                                'class' => 'btn btn-success btnAquarium',
+                                'data' => [
+                                    'data-pjax' => '0',
+                                    'confirm' => '¿Está seguro de querer dar de alta el usuario "'.$model->nombreUsuario.'"?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        }else{
+                            return Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', ['change-state', 'id' => $model->idUsuario], [
+                                'class' => 'btn btn-danger btnAquarium',
+                                'data' => [
+                                    'data-pjax' => '0',
+                                    'confirm' => '¿Está seguro de querer dar de baja el usuario "'.$model->nombreUsuario.'"?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        }
                     }
                 ]
             ],

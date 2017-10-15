@@ -6,25 +6,15 @@ use yii\widgets\Pjax;
 use derekisbusy\panel\PanelWidget;
 use yii\bootstrap\Modal;
 use kartik\tabs\TabsX;
+use rmrevin\yii\fontawesome\FA;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
 $this->title = $acuario->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Acuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-    Modal::begin([
-        'id'=>'pModal', 
-        'size'=>'modal-md',
-        'closeButton'=>[],
-        'header'=> Yii::$app->session->get('modalTitle'),
-        'headerOptions'=> ['class'=>'h3 text-center'],
-        ]);
-    
-        echo '<div class="contenidoModal"></div>';
-        
-    Modal::end();
-
 ?>
 
 <div id="jumboIdAcuario" class="jumbotron">
@@ -51,27 +41,43 @@ $this->params['breadcrumbs'][] = $this->title;
           '</p>
           <br>
 
-          <label>Espacio disponible: </label> <span>'.$acuario->espaciodisponible.'</span>
+          <label>Espacio disponible: </label> <span>'.$acuario->espacioDisponible.'</span>
           <br><br>
           
       </div>' ;
  
 
 
+
         $items = [
           [
-              'label'=>'<i class="glyphicon glyphicon-home"></i> Home',
+              'label'=>FA::icon('info')->size(FA::SIZE_LARGE).' Información',
               'content'=>$content1,
-              //'linkOptions'=>['data-url'=>\yii\helpers\Url::to(['/acuarium/tab'])],
-              'active'=>true
+            //   'active'=>true
           ],
           [
-              'label'=>'<i class="glyphicon glyphicon-user"></i> Condiciones ambientales',
-              'content'=>''
+              'label'=>FA::icon('thermometer-3')->size(FA::SIZE_LARGE).' Condiciones ambientales',
+              'content'=>'<div class="row">
+                            <div class="col-lg-12" align="center">'.
+                                $this->render('_gauges',['condiciones'=>$condiciones])
+                            .'</div>
+                            </div>
+                            <div class="row">
+                            <div class="col-lg-12" align="center">'.
+                                Html::button(FA::icon('check-square-o')->size(FA::SIZE_LARGE).' Nuevo control', 
+                                [
+                                    'value' => Url::to(['']), 
+                                    'title' => 'Nuevo control', 
+                                    'class' => 'showModalButton btn btn-primary',
+                                    'style'=>['width'=>'70%']
+                                ])
+                            .'</div>
+                          </div>',
+              'active'=>true,
           ],
           [
-            'label'=>'<i class="glyphicon glyphicon-user"></i> Población',
-            'content'=>''
+            'label'=>FA::icon('pie-chart')->size(FA::SIZE_LARGE).' Población',
+            'content'=>$this->render('_population',['especies'=>$especies,'porcentajes'=>$porcentajes]),
           ],
         ];
 
@@ -87,3 +93,31 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 
+  <!-- Calendario -->
+  <div class="col-lg-6">
+      <div class="row">
+        <div id="pieChart" class="col-lg-12" align="center">
+        <?= yii2fullcalendar\yii2fullcalendar::widget([
+            'id'=>'calendar',
+            'defaultView'=>'basicDay',
+            'header'=>[
+                'left'=>'prev,next today',
+                'center'=>'title',
+                'right'=>'basicDay,agendaWeek,month'
+            ],
+            'options' => [
+                'lang' => 'es',
+            ],
+            'events' => $acuario->events,
+        ]);
+        ?>
+      </div>
+    </div>
+  </div>
+
+  <?php 
+  if(Yii::$app->user->can('administrarTareas')){
+    echo '<div id="btnDetail" class="col-lg-2">'
+          .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',['class'=>'btn btn-success']).
+      '</div>';
+  }

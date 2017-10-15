@@ -5,18 +5,18 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "validaciones".
+ * This is the model class for table "VALIDACION".
  *
- * @property integer $idvalidacion
- * @property string $fechahora
- * @property string $observacion
- * @property integer $planificacion_idplanificacion
- * @property integer $usuario_idusuario
- * @property string $motivo_rechazo_idmotivo_rechazo
+ * @property integer $idVALIDACION
+ * @property string $FECHAHORA
+ * @property string $OBSERVACION
+ * @property string $MOTIVO_RECHAZO_idMotivoRechazo
+ * @property integer $PLANIFICACION_idPlanificacion
+ * @property integer $USUARIO_idUsuario
  *
- * @property MotivosRechazo $motivoRechazoIdmotivoRechazo
- * @property Planificaciones $planificacionIdplanificacion
- * @property Usuarios $usuarioIdusuario
+ * @property MOTIVORECHAZO $mOTIVORECHAZOIdMotivoRechazo
+ * @property PLANIFICACION $pLANIFICACIONIdPlanificacion
+ * @property USUARIO $uSUARIOIdUsuario
  */
 class Validation extends \yii\db\ActiveRecord
 {
@@ -25,7 +25,7 @@ class Validation extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'validaciones';
+        return 'VALIDACION';
     }
 
     /**
@@ -34,14 +34,14 @@ class Validation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fechahora'], 'safe'],
-            [['planificacion_idplanificacion', 'usuario_idusuario', 'motivo_rechazo_idmotivo_rechazo'], 'required'],
-            [['planificacion_idplanificacion', 'usuario_idusuario'], 'integer'],
-            [['observacion'], 'string', 'max' => 200],
-            [['motivo_rechazo_idmotivo_rechazo'], 'string', 'max' => 45],
-            [['motivo_rechazo_idmotivo_rechazo'], 'exist', 'skipOnError' => true, 'targetClass' => MotivosRechazo::className(), 'targetAttribute' => ['motivo_rechazo_idmotivo_rechazo' => 'idmotivo_rechazo']],
-            [['planificacion_idplanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Planificaciones::className(), 'targetAttribute' => ['planificacion_idplanificacion' => 'idplanificacion']],
-            [['usuario_idusuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_idusuario' => 'id_usuario']],
+            [['FECHAHORA'], 'safe'],
+            [['MOTIVO_RECHAZO_idMotivoRechazo', 'PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario'], 'required'],
+            [['PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario'], 'integer'],
+            [['OBSERVACION'], 'string', 'max' => 200],
+            [['MOTIVO_RECHAZO_idMotivoRechazo'], 'string', 'max' => 45],
+            [['MOTIVO_RECHAZO_idMotivoRechazo'], 'exist', 'skipOnError' => true, 'targetClass' => MOTIVORECHAZO::className(), 'targetAttribute' => ['MOTIVO_RECHAZO_idMotivoRechazo' => 'idMotivoRechazo']],
+            [['PLANIFICACION_idPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => PLANIFICACION::className(), 'targetAttribute' => ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']],
+            [['USUARIO_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => USUARIO::className(), 'targetAttribute' => ['USUARIO_idUsuario' => 'idUsuario']],
         ];
     }
 
@@ -51,36 +51,36 @@ class Validation extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idvalidacion' => 'Idvalidacion',
-            'fechahora' => 'Fechahora',
-            'observacion' => 'Observacion',
-            'planificacion_idplanificacion' => 'Planificacion Idplanificacion',
-            'usuario_idusuario' => 'Usuario Idusuario',
-            'motivo_rechazo_idmotivo_rechazo' => 'Motivo Rechazo Idmotivo Rechazo',
+            'idVALIDACION' => 'Id Validacion',
+            'FECHAHORA' => 'Fechahora',
+            'OBSERVACION' => 'Observacion',
+            'MOTIVO_RECHAZO_idMotivoRechazo' => 'Motivo  Rechazo Id Motivo Rechazo',
+            'PLANIFICACION_idPlanificacion' => 'Planificacion Id Planificacion',
+            'USUARIO_idUsuario' => 'Usuario Id Usuario',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMotivoRechazoIdmotivoRechazo()
+    public function getMOTIVORECHAZOIdMotivoRechazo()
     {
-        return $this->hasOne(MotivosRechazo::className(), ['idmotivo_rechazo' => 'motivo_rechazo_idmotivo_rechazo']);
+        return $this->hasOne(MOTIVORECHAZO::className(), ['idMotivoRechazo' => 'MOTIVO_RECHAZO_idMotivoRechazo']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPlanificacionIdplanificacion()
+    public function getPLANIFICACIONIdPlanificacion()
     {
-        return $this->hasOne(Planificaciones::className(), ['idplanificacion' => 'planificacion_idplanificacion']);
+        return $this->hasOne(PLANIFICACION::className(), ['idPlanificacion' => 'PLANIFICACION_idPlanificacion']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUsuarioIdusuario()
+    public function getUSUARIOIdUsuario()
     {
-        return $this->hasOne(Usuarios::className(), ['id_usuario' => 'usuario_idusuario']);
+        return $this->hasOne(USUARIO::className(), ['idUsuario' => 'USUARIO_idUsuario']);
     }
 }

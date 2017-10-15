@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "90cabffe3a7b4d8a75c18da0ed3b1745",
+    "content-hash": "bba5fafdd264949a5b8e8f2bdf32a139",
     "packages": [
         {
             "name": "2amigos/yii2-date-time-picker-widget",
@@ -677,7 +677,7 @@
                 "delocker",
                 "yii2"
             ],
-            "time": "2015-10-05 23:33:01"
+            "time": "2015-10-05T23:33:01+00:00"
         },
         {
             "name": "evgeniyrru/yii2-slick",
@@ -1001,7 +1001,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-08-29 13:04:56"
+            "time": "2017-08-29T13:04:56+00:00"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -1256,7 +1256,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2017-09-22 15:47:48"
+            "time": "2017-09-22T15:47:48+00:00"
         },
         {
             "name": "kartik-v/yii2-tabs-x",
@@ -1361,7 +1361,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-11-24 17:29:45"
+            "time": "2016-11-24T17:29:45+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-touchspin",
@@ -1705,6 +1705,50 @@
             "time": "2017-01-11T14:05:47+00:00"
         },
         {
+            "name": "scotthuangzl/yii2-google-chart",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ScottHuangZL/yii2-google-chart.git",
+                "reference": "6bd68466030af8a931b34d2ceacf0a498da5b9a0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ScottHuangZL/yii2-google-chart/zipball/6bd68466030af8a931b34d2ceacf0a498da5b9a0",
+                "reference": "6bd68466030af8a931b34d2ceacf0a498da5b9a0",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "scotthuangzl\\googlechart\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Scott Huang",
+                    "email": "zhiliang.huang@gmail.com"
+                }
+            ],
+            "description": "A wraper for google chart",
+            "keywords": [
+                "extension",
+                "google chart",
+                "hzl",
+                "scott huang",
+                "widget",
+                "yii2"
+            ],
+            "time": "2015-06-11T12:13:00+00:00"
+        },
+        {
             "name": "softark/yii2-dual-listbox",
             "version": "dev-master",
             "source": {
@@ -1747,7 +1791,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2017-06-27 04:47:12"
+            "time": "2017-06-27T04:47:12+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4823,7 +4867,8 @@
         "kartik-v/yii2-builder": 20,
         "kartik-v/yii2-widget-activeform": 20,
         "reportico/yii2-reportico": 20,
-        "softark/yii2-dual-listbox": 20
+        "softark/yii2-dual-listbox": 20,
+        "scotthuangzl/yii2-google-chart": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

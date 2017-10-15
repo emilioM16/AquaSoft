@@ -5,15 +5,15 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "notificaciones".
+ * This is the model class for table "NOTIFICACION".
  *
- * @property integer $idnotificacion
- * @property string $fechahora
- * @property integer $tarea_idtarea
- * @property string $origen_notificacion_idorigen_notificacion
+ * @property integer $idNOTIFICACION
+ * @property string $fechaHora
+ * @property string $ORIGEN_NOTIFICACION_idOrigenNotificacion
+ * @property integer $TAREA_idTarea
  *
- * @property OrigenNotificacion $origenNotificacionIdorigenNotificacion
- * @property Tareas $tareaIdtarea
+ * @property ORIGENNOTIFICACION $oRIGENNOTIFICACIONIdOrigenNotificacion
+ * @property TAREA $tAREAIdTarea
  */
 class Notification extends \yii\db\ActiveRecord
 {
@@ -22,7 +22,7 @@ class Notification extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'notificaciones';
+        return 'NOTIFICACION';
     }
 
     /**
@@ -31,12 +31,12 @@ class Notification extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fechahora'], 'safe'],
-            [['tarea_idtarea', 'origen_notificacion_idorigen_notificacion'], 'required'],
-            [['tarea_idtarea'], 'integer'],
-            [['origen_notificacion_idorigen_notificacion'], 'string', 'max' => 45],
-            [['origen_notificacion_idorigen_notificacion'], 'exist', 'skipOnError' => true, 'targetClass' => OrigenNotificacion::className(), 'targetAttribute' => ['origen_notificacion_idorigen_notificacion' => 'idorigen_notificacion']],
-            [['tarea_idtarea'], 'exist', 'skipOnError' => true, 'targetClass' => Tareas::className(), 'targetAttribute' => ['tarea_idtarea' => 'idtarea']],
+            [['fechaHora'], 'safe'],
+            [['ORIGEN_NOTIFICACION_idOrigenNotificacion', 'TAREA_idTarea'], 'required'],
+            [['TAREA_idTarea'], 'integer'],
+            [['ORIGEN_NOTIFICACION_idOrigenNotificacion'], 'string', 'max' => 45],
+            [['ORIGEN_NOTIFICACION_idOrigenNotificacion'], 'exist', 'skipOnError' => true, 'targetClass' => ORIGENNOTIFICACION::className(), 'targetAttribute' => ['ORIGEN_NOTIFICACION_idOrigenNotificacion' => 'idOrigenNotificacion']],
+            [['TAREA_idTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TAREA::className(), 'targetAttribute' => ['TAREA_idTarea' => 'idTarea']],
         ];
     }
 
@@ -46,26 +46,26 @@ class Notification extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idnotificacion' => 'Idnotificacion',
-            'fechahora' => 'Fechahora',
-            'tarea_idtarea' => 'Tarea Idtarea',
-            'origen_notificacion_idorigen_notificacion' => 'Origen Notificacion Idorigen Notificacion',
+            'idNOTIFICACION' => 'Id Notificacion',
+            'fechaHora' => 'Fecha Hora',
+            'ORIGEN_NOTIFICACION_idOrigenNotificacion' => 'Origen  Notificacion Id Origen Notificacion',
+            'TAREA_idTarea' => 'Tarea Id Tarea',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrigenNotificacionIdorigenNotificacion()
+    public function getORIGENNOTIFICACIONIdOrigenNotificacion()
     {
-        return $this->hasOne(OrigenNotificacion::className(), ['idorigen_notificacion' => 'origen_notificacion_idorigen_notificacion']);
+        return $this->hasOne(ORIGENNOTIFICACION::className(), ['idOrigenNotificacion' => 'ORIGEN_NOTIFICACION_idOrigenNotificacion']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTareaIdtarea()
+    public function getTAREAIdTarea()
     {
-        return $this->hasOne(Tareas::className(), ['idtarea' => 'tarea_idtarea']);
+        return $this->hasOne(TAREA::className(), ['idTarea' => 'TAREA_idTarea']);
     }
 }

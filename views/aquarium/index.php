@@ -20,12 +20,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="acuario-index">
-    <?php Pjax::begin(['id'=>'idacuario']); ?>
+    <?php Pjax::begin(['id'=>'idAcuario']); ?>
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php 
-        if(Yii::$app->session->get('user.role')!='especialista'){
+        if(Yii::$app->user->can('crearAcuario')){
             
          echo   '<p>'
                 .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar acuario', 

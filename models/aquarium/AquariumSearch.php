@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\aquarium\Aquarium;
+use app\models\aquarium\UserAquariums;
 
 /**
  * AquariumSearch represents the model behind the search form about `app\models\Aquarium`.
@@ -18,7 +19,7 @@ class AquariumSearch extends Aquarium
     public function rules()
     {
         return [
-            [['idacuario', 'espaciodisponible', 'activo'], 'integer'],
+            [['idAcuario', 'espacioDisponible', 'activo'], 'integer'],
             [['nombre', 'descripcion'], 'safe'],
         ];
     }
@@ -41,8 +42,14 @@ class AquariumSearch extends Aquarium
      */
     public function search($params)
     {
-        $query = Aquarium::find();
-
+        $rol = Yii::$app->user->identity->getRole(Yii::$app->user->identity->idUsuario)->roleName;
+        if($rol != 'administrador'){
+            $query = Aquarium::find()
+                    ->joinWith('userAquariums')
+                    ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario]);
+        }else{
+            $query = Aquarium::find();
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -59,8 +66,8 @@ class AquariumSearch extends Aquarium
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idacuario' => $this->idacuario,
-            'espaciodisponible' => $this->espaciodisponible,
+            'idAcuario' => $this->idAcuario,
+            'espacioDisponible' => $this->espacioDisponible,
             'activo' => $this->activo,
         ]);
 

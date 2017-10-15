@@ -15,13 +15,13 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'idacuario') ?>
+    <?= $form->field($model, 'idAcuario') ?>
 
     <?= $form->field($model, 'nombre') ?>
 
     <?= $form->field($model, 'descripcion') ?>
 
-    <?= $form->field($model, 'espaciodisponible') ?>
+    <?= $form->field($model, 'espacioDisponible') ?>
 
     <?= $form->field($model, 'activo') ?>
 
