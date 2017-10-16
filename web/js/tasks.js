@@ -17,4 +17,11 @@ $(document).on('change','#selectSpecie',function(){
            $("#inputs").html("Error. Contacte al administrador");
        }
      });
-})
+});
+
+
+$(document).on('click','#addBtn',function(){
+    $('.tsInput').each(function(){
+        alert($(this).val());
+    });
+});

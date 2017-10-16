@@ -26,6 +26,7 @@ class Aquarium extends \yii\db\ActiveRecord
 {
 
     public $events = [];
+    public $maxQuantity = 0; 
     /**
      * @inheritdoc
      */

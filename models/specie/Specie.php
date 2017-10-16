@@ -131,6 +131,7 @@ class Specie extends \yii\db\ActiveRecord
     }
 
 
+
     public function getCompatibleAquariums(){
         $searchModel  = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -142,6 +143,8 @@ class Specie extends \yii\db\ActiveRecord
             }else{ //si hay espacio, se evalúan las condiciones ambientales//                    
                 if(!$this->validConditions($aquarium)){ //las condiciones ambientales del acuario NO son adecuadas para la especie seleccionada//
                     unset($aquariums[$key]); //elimina el item del arreglo//
+                }else{
+                    $aquariums[$key]->maxQuantity = floor($aquarium->espacioDisponible / $this->minEspacio);
                 }
             }
         }

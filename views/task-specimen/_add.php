@@ -37,28 +37,10 @@ use yii\widgets\Pjax;
                     ],
 
                 ]);
-
-                // echo $form->field($model, 'EJEMPLAR_especie_idEspecie')->widget(Select2::classname(), [
-                //     'id'=>'selectSpecie',
-                //     'data' => ArrayHelper::map($species, 'idEspecie', 'nombre'),
-                //     'options'=>[
-                //         'placeholder'=>'Seleccione una especie...',
-                //     ]
-                // ]);
-                //         yii::error(\yii\helpers\VarDumper::dumpAsString());
-                // echo $form->field($model, 'EJEMPLAR_acuario_idAcuario')->widget(DepDrop::classname(), [
-                //     'type'=>DepDrop::TYPE_SELECT2,
-                //     // 'options'=>['id'=>'selectAquarium'],
-                //     'pluginOptions'=>[
-                //         'depends'=>['selectSpecie'],
-                //         'placeholder'=>'Seleccione un acuario...',
-                //         'url'=>Url::to(['/task-specimen/select-aquarium'])
-                //     ]
-                // ]);
                 ?>
                 </div>
 
-                <div id="inputs">
+                <div id="inputs" class="col-lg-12">
                 </div>
  
 
