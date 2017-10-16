@@ -13,6 +13,10 @@ use yii\web\response;
 
 use app\models\aquarium\Aquarium;
 use yii\helpers\ArrayHelper;
+
+
+
+//$session = Yii::$app->session;
 /**
  * PlanningController implements the CRUD actions for Planning model.
  */
@@ -60,24 +64,24 @@ class PlanningController extends Controller
         ]);
     }
 
-    public function actionCalendar()
+    public function actionCalendar() //FUNCIONA, GUARDA LA PLANIFICION Y VA A LA PANTALLA DE CALENDARIO
     {
 
       $model = new Planning();
       $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
 
-
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           return $this->redirect(['calendar', 'id' => $model->idPlanificacion]);
+      if ($model->load(Yii::$app->request->post())) {
+            $formattedDate = date("Y-m-d",strtotime($model->anioMes));
+            $model->anioMes = $formattedDate;
+              if($model->save()){
+                return $this->render('calendar',['model' => $model]);
+              }
        } else {
           return $this->render('calendar', [
               'model' => $model,
               'aquariums'=>$aquariums
-
           ]);
-
       }
-
     }
 
     /**

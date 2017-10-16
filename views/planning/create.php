@@ -9,14 +9,18 @@ use yii\helpers\Html;
 $this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
 // $this->params['breadcrumbs'][] = ['label' => $model->idPlanificacion, 'url' => ['view', 'id' => $model->idPlanificacion]];
 $this->params['breadcrumbs'][] = 'Crear';
+
+
+
 ?>
 <div class="planning-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+
     <?= $this->render('_form', [
         'model' => $model,
-        'aquariums'=>$aquariums
+        'aquariums'=>$aquariums,
     ]) ?>
 
 </div>

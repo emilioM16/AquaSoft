@@ -15,7 +15,7 @@ use kartik\builder\Form;
 use  kartik\datecontrol\Module ;
 use  kartik\datecontrol\DateControl ;
 
-
+use kartik\date\DatePicker;
 /* @var $this yii\web\View */
 /* @var $model app\models\planning\Planning */
 
@@ -50,40 +50,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                   'maxlength'=>true,
                               ]
                           ],
-                          // 'anioMes'=>[
-                          //     'type'=>Form::INPUT_WIDGET,
-                          //     'widgetClass'=>'kartik\date\DatePicker',
-                          //     'options'=>[
-                          //
-                          //     ],
-                          //     'convertFormat'=>false,
-                          //     'pluginOptions' => [
-                          //     'format' => 'yyyy-MM-dd',
-                          //     ' pluginOptions ' => [ ' language ' => ' ru ' , ' endDate ' => ' 31-12-1999 ' , ' format ' => ' php: dmY ' ,
-                          //     'todayHighlight' => true
-                          //
-                          //   ]
-                          //   ]
-                          // ],
 
                           'anioMes'=>[
                            'type'=>Form::INPUT_WIDGET,
                            'widgetClass'=>'kartik\date\DatePicker',
-                           'convertFormat' => true,
-        'pluginOptions' => [
-            'language' => 'ru',
-            'endDate' => '31-12-1999',
-            'format' => 'php:d-m-Y',
-            'autoclose' => true,
-            'startView' => 'decade',
-        ]
-                        ],
+                           'options'=>[
+                             'name' => 'check_date',
+                             'removeButton' => false,
+                             'pluginOptions' => [
+                                 'autoclose'=>true,
+                                 'format' => 'dd-mm-yyyy',
+                                //  'minViewMode'=>'months',
+                             ]
+                           ]
+                          ],
 
-
-                              'ACUARIO_USUARIO_acuario_idAcuario'=>[
-                              'type'=>Form::INPUT_WIDGET,
-                              'widgetClass'=>'kartik\select2\Select2',
-                              'options'=>['data'=>$aquariums],
+                          'ACUARIO_USUARIO_acuario_idAcuario'=>[
+                            'type'=>Form::INPUT_WIDGET,
+                            'widgetClass'=>'kartik\select2\Select2',
+                            'options'=>['data'=>$aquariums],
 
                            ],
                            'actions'=>[
@@ -95,12 +80,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                            'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                                        ])
                            ]
-
-
                       ]
                   ]);
-
-                        ?>
+                  ?>
 
                   </div>
                     <?php ActiveForm::end(); ?>

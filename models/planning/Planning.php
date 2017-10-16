@@ -102,45 +102,27 @@ class Planning extends \yii\db\ActiveRecord
     /////////////////////////////////////////////////////////////////////////////////////////////
     public function validatePlanning()
     { //metodo que valida la inexistencia de una planificacion para ese mes y ese acuario
-      //ExistValidator:
-      // $planificaciones = Planning::find()->all(); //tomo todas las planificaciones
-      // yii::error(\yii\helpers\VarDumper::dumpAsString($planificaciones));
-      // foreach ($planificaciones as $plani) { // recorro la lista de planificaciones
-      //   //if ($planis->anioMes == $unAñoMes && $planis->Acuario== $unAcuario) {
-      //     if ($planis->anioMes == $unAñoMes) {
+
+      // //ExistValidator:
+      //  $planificaciones = Planning::find()->all(); //tomo todas las planificaciones
+      //   yii::error(\yii\helpers\VarDumper::dumpAsString($planificaciones));
+      //   foreach ($planificaciones as $plani) { // recorro la lista de planificaciones
       //
-      //       $this->addError($attribute,"La planificacion ya existe para este mes y con este acuario");
-      //       return false;
+      //       if ($planis->anioMes == $unAñoMes && $planis->Acuario== $unAcuario) {
       //
-      //       return $this->render('calendarTask', [
-      //         //  'model' => $this->findModel($id),
-      //       ]);
-
-
-        //}
-      //}
+      //           if ($planis->anioMes == $unAñoMes) {
+      //
+      //             $this->addError($attribute,"La planificacion ya existe para este mes y con este acuario");
+      //             return false;
+      //
+      //             return $this->render('calendarTask', [
+      //               //  'model' => $this->findModel($id),
+      //             ]);
+      //   }
+      // }
     }
-    /////////////////////////////////////////////////////////////////////////////////////////////
-    public function registerPlanning($titulo, $anioMes, $idAcuario)
-      //AGREGAR ATRIBUTOS DE ENTRADA
-    {
-    // cambia el estado de la planificacion creada a 'SinVerificar'
-    //guarda la planificacion en la tabla 'PLANIFICACIONES'
 
 
-    // $valido=  this->validarPlanificacion();
-    //
-    //       if ($valido) {
-    //         //es valida la registra
-    //       }
-    //       else {
-    //         //ya aviso antes que no es valida
-    //       }
-    //
-
-
-
-    }
     /////////////////////////////////////////////////////////////////////////////////////////////
     public function unauthorizedPlanning(){
       //devuelve las planificaciones que no fueron autorizadas
@@ -151,7 +133,7 @@ class Planning extends \yii\db\ActiveRecord
 
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     public function authorizePlanning(){ //
