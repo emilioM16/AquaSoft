@@ -73,7 +73,7 @@ class PlanningController extends Controller
       if ($model->load(Yii::$app->request->post())) {
             $formattedDate = date("Y-m-d",strtotime($model->anioMes));
             $model->anioMes = $formattedDate;
-              if($model->save()){
+              if($model->save()){ //ACÁ FIJATE QUE AL REFRESCAR LA PÁGINA VUELVE A GUARDAR EN LA BASE LA PLANIFICACIÓN DE VUELTA//
                 return $this->render('calendar',['model' => $model]);
               }
        } else {
