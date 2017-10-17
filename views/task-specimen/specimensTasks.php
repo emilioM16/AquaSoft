@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $items = [
         [
             'label'=>Html::img('@web/img/fishadd.svg',['class'=>'icon']).' Incorporar',
-            'content'=>$this->render('_add',['species'=>$species,'model'=>$model]),
+            'content'=>$this->render('_add',['species'=>$species]),
             'active'=>true
         ],
         [

@@ -12,6 +12,9 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 /* @var $form yii\widgets\ActiveForm */
+if (isset($q)){
+    print_r($q);
+}
 ?>
 <div id="cont">
 

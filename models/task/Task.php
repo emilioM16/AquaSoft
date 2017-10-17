@@ -166,9 +166,9 @@ class Task extends \yii\db\ActiveRecord
     }
 
     
-    public function beforeSave($insert){
-        $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
-        $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion);
-        return parent::beforeSave($insert);
-    }
+    // public function beforeSave($insert){
+    //     $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
+    //     $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion);
+    //     return parent::beforeSave($insert);
+    // }
 }

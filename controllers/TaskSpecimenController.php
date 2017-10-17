@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\task\Task;
 use app\models\task\TaskSpecimen;
 use app\models\task\TaskSpecimenSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
 use app\models\aquarium\Aquarium;
-
-
 use app\models\specie\Specie;
+use yii\db\Expression;
+use yii\base\Exception;
 
 /**
  * TaskSpecimenController implements the CRUD actions for TaskSpecimen model.
@@ -141,7 +141,7 @@ class TaskSpecimenController extends Controller
         return $this->render('specimensTasks',
                     [
                         'species'=>$species,
-                        'model'=>$model
+                        // 'model'=>$model
                     ]);
     }
 
@@ -153,5 +153,55 @@ class TaskSpecimenController extends Controller
                                 ['compatibleAquariums'=>$compatibleAquariums]);
     }
 
+
+    public function actionAddSpecimens(){
+        if(isset($_POST['data'])){
+            $data = json_decode(Yii::$app->request->post('data'));
+            yii::error(\yii\helpers\VarDumper::dumpAsString($data));
+            $quantities = $data->quantities;
+            $specie = $data->specie;
+            
+            // $task = new Task();                 
+            // $task->titulo = 'Incorporación de ejemplares';
+            // $task->descripcion = 'Esta tarea fue creada a través del menú de ejemplares';
+            // $task->USUARIO_idUsuario = 1;
+            // // foreach ($quantities as $aquarium => $quantity) {  
+            //     $task->fechaHoraInicio = new Expression('NOW()');
+            //     $task->fechaHoraFin = new Expression('NOW()');
+            //     $task->fechaHoraRealizacion = new Expression('NOW()');
+            //     $task->ACUARIO_idAcuario = 2;
+            //     $task->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
+            //     $task->save();
+            // // $taskSpecimen = TaskSpecimen::findModel();
+
+            $transaction = Yii::$app->db->beginTransaction();
+            try{ 
+                // $task = new Task();                 
+                // $task->titulo = 'Incorporación de ejemplares';
+                // $task->descripcion = 'Esta tarea fue creada a través del menú de ejemplares';
+                // $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+                foreach ($quantities as $aquarium => $quantity) { 
+                    $task = new Task();                 
+                    $task->titulo = 'Incorporación de ejemplares';
+                    $task->descripcion = 'Esta tarea fue creada a través del menú de ejemplares';
+                    $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+                    $task->fechaHoraInicio = new Expression('NOW()');
+                    $task->fechaHoraFin = new Expression('NOW()');
+                    $task->fechaHoraRealizacion = new Expression('NOW()');
+                    $task->ACUARIO_idAcuario = $aquarium;
+                    $task->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
+                    if(!$task->save()){ //si se guarda la tarea, adiciona la cantidad introducida y la guarda//
+                        throw new Exception('Ocurrió un error al guardar la información.');                        
+                    }
+                }
+                $transaction->commit();
+            }catch (Exception $e){
+                $transaction->rollback();
+            }
+        }else{
+            return $this->renderAjax('p',['q'=>$quantities]); 
+        }
+    }
+    
 
 }

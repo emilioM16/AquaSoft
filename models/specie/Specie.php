@@ -94,6 +94,7 @@ class Specie extends \yii\db\ActiveRecord
         return $this->hasMany(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('EJEMPLAR', ['especie_idEspecie' => 'idEspecie']);
     }
 
+    
     public static function calculatePorcentageBySpecie($quantity){
         $porcentages = [];
         foreach ($quantity as $key => $value) {

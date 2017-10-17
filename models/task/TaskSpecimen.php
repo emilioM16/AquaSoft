@@ -73,4 +73,9 @@ class TaskSpecimen extends \yii\db\ActiveRecord
     }
 
 
+    public function addSpecimens($quantity){
+
+    }
+
+
 }

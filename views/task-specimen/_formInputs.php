@@ -12,7 +12,8 @@ use kartik\alert\Alert;
                     echo '<div class="form-group col-lg-3 form-center">
                             <label class="text-center">'.$aquarium->nombre.'</label>'
                                 .TouchSpin::widget([
-                                    'name' => 'touchspinAquarium',
+                                    'id'=>$aquarium->idAcuario,
+                                    'name' => $aquarium->nombre,
                                     'pluginOptions' => [
                                         'buttonup_class' => 'btn btn-primary', 
                                         'buttondown_class' => 'btn btn-danger', 
