@@ -40,6 +40,7 @@ use app\models\user\User;
  */
 class Task extends \yii\db\ActiveRecord
 {
+    private $isPlanned = true;
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
@@ -47,7 +48,10 @@ class Task extends \yii\db\ActiveRecord
         // Si es no planificada seteo con la fecha actual
         $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
         if ($idPlanificacion == -1)
+        {
+            $this->isPlanned = false;
             $this->fechaHoraInicio = date('Y-m-d H:i:s');
+        }
         else
             $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
     }
@@ -66,7 +70,7 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'fechaHoraInicio', 'fechaHoraFin', 'TIPO_TAREA_idTipoTarea'], 'required'],
+            [['titulo', 'TIPO_TAREA_idTipoTarea'], 'required'],
             [['fechaHoraInicio', 'fechaHoraFin', 'fechaHoraRealizacion'], 'safe'],
             [['PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario', 'ACUARIO_idAcuario'], 'integer'],
             [['titulo', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
@@ -184,5 +188,9 @@ class Task extends \yii\db\ActiveRecord
         // $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion); A esto lo comento porque creo que no manejamos esos atributos (la hora está incluida en los parámetros de fechaHoraInicio y Fin)
         $this->fechaHoraFin = date('Y-m-d H:i:s',strtotime($this->fechaHoraInicio)+$this->duracion);
         return parent::beforeSave($insert);
+    }
+
+    public function isPlanned(){
+        return $this->isPlanned;
     }
 }

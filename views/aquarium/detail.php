@@ -15,19 +15,6 @@ use yii\helpers\Url;
 $this->title = $acuario->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Acuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
-    Modal::begin([
-        'id'=>'pModal', 
-        'size'=>'modal-md',
-        'closeButton'=>[],
-        'header'=> Yii::$app->session->get('modalTitle'),
-        'headerOptions'=> ['class'=>'h3 text-center'],
-        ]);
-    
-        echo '<div class="contenidoModal"></div>';
-        
-    Modal::end();
-
 ?>
 
 <div id="jumboIdAcuario" class="jumbotron">
@@ -102,8 +89,9 @@ function(calEvent, jsEvent, view) {
         },
     success: function(response){
         $('#modalContent').html(response);
-        $('#modalHeader').html('<h2 class="modalTitle">Registrar tarea</h2>');
-        $('#xModal').modal('show');
+        $('#modalTitle').html('Registrar tarea');
+        // $('#modalHeader').html('Registrar tarea');
+        $('#modal').modal('show');
         }
     });
   // change the border color just for fun
@@ -111,18 +99,15 @@ function(calEvent, jsEvent, view) {
 }
 EOF;
 
-Modal::begin([
-    'id'=>'xModal', 
-    'size'=>'modal-md',
-    'headerOptions' => ['id' => 'modalHeader'],
-    'closeButton'=>[],
-    'footer'=>
-        Html::button(FA::icon('save')->size(FA::SIZE_LARGE).' Guardar', ['class' => 'btn btn-success']).
-        Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger','data-dismiss'=>'modal'])
-    
-    ]);
-    echo '<div id="modalContent"></div>';
-Modal::end();
+// Modal::begin([
+//     'header' => '<h2 class="modalTitle"></h2>',
+//     'closeButton'=>[],    
+//     'headerOptions' => ['id' => 'modal_Header'],
+//     'id'=>'xModal',
+//     'size'=>'modal-md'  
+//     ]);
+//     echo '<div id="modal_Content"></div>';
+// Modal::end();
 ?>
 
   <!-- Calendario -->

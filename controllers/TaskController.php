@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\task\Task;
 use app\models\task\TaskSearch;
+use app\models\task\TaskType;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,7 +66,7 @@ class TaskController extends Controller
     public function actionCreate($idAcuario, $idPlanificacion = -1, $fecha = '0')
     {
         $model = new Task();
-        
+        $taskTypes = TaskType::find()->all();
         $model->inicialice($idAcuario, $idPlanificacion, $fecha);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -73,11 +74,13 @@ class TaskController extends Controller
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('create',[
-                    'model'=>$model
+                    'model'=>$model,
+                    'taskTypes'=>$taskTypes
                 ]);
             }else{
                 return $this->render('create',[
-                    'model'->$model
+                    'model'=>$model,
+                    'taskTypes'=>$taskTypes
                 ]);
             }
         }
@@ -130,11 +133,11 @@ class TaskController extends Controller
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('execute',[
-                    'tarea'=>$model
+                    'model'=>$model
                 ]);
             }else{
                 return $this->render('execute',[
-                    'tarea'=>$model
+                    'model'=>$model
                 ]);
             }
         }

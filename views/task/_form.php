@@ -6,6 +6,7 @@ use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use yii\helpers\Url;
 use rmrevin\yii\fontawesome\FA;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\task\Task */
@@ -14,16 +15,16 @@ use rmrevin\yii\fontawesome\FA;
 
 <div class="task-form">
     <?php 
-
     $taskId =-1;
 
     if ($model->idTarea!==null){
         $taskId = $model->idTarea;
     }
+
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            'validationUrl'=> Url::toRoute(['task/validation','id'=>$taskId]), 
+            // 'validationUrl'=> Url::toRoute(['task/validation','id'=>$taskId]), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
         echo Form::widget([
@@ -35,6 +36,7 @@ use rmrevin\yii\fontawesome\FA;
                     'type'=>Form::INPUT_TEXT,
                     'options'=>[
                         'placeholder'=>'Ingrese el titulo',
+                        'readonly' => false,
                         'maxlength'=>true,
                     ]
                 ]
@@ -54,6 +56,22 @@ use rmrevin\yii\fontawesome\FA;
                 ]
             ]
         ]);
+        if (!$model->isPlanned())
+            echo 'Para probar';
+        else {
+        echo Form::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'columns'=>1,
+            'attributes'=>[
+                'tipoTarea'=>[
+                    'type'=>Form::INPUT_WIDGET,
+                    'widgetClass'=>'kartik\select2\Select2',
+                    'options'=>['data'=>ArrayHelper::map($taskTypes,'idTipoTarea','idTipoTarea')]
+                    ]
+            ]
+        ]);
+    }
         echo Form::widget([
             'model'=>$model,
             'form'=>$form,

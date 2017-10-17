@@ -232,6 +232,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
     
 <?php
 Modal::begin([ //Modal utilizado en todo el sitio//
+    'header' => '<h2 id="modalTitle"></h2>',    
     'closeButton'=>[],
     'headerOptions' => ['id' => 'modalHeader'],
     'id' => 'modal',
