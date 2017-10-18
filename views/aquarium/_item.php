@@ -28,7 +28,7 @@ use rmrevin\yii\fontawesome\FA;
                   echo  Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
                         [
                           'value' => Url::to(['aquarium/update','idAcuario'=>$model->idAcuario]), 
-                          'title' => 'Modificar acuario '.$model->nombre, 
+                          'titles' => 'Modificar acuario '.$model->nombre, 
                           'class' => 'showModalButton btn btn-primary btnAquarium',
                         ]);
               }

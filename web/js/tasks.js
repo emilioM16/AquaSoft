@@ -3,6 +3,7 @@ $(document).ready(function(){
 });
 
 
+//CORRESPONDIENTES A INCORPORAR EJEMPLARES//
 $(document).on('change','#selectSpecie',function(){
     var data_id = $(this).val();
     $.ajax({
@@ -21,7 +22,8 @@ $(document).on('change','#selectSpecie',function(){
 });
 
 
-$(document).on('click','#addBtn',function(){
+
+$(document).on('click','#addBtn',function(){ 
     var inputsData = new Object();
     var selectedSpecie = '';
     var selectedSpecie = $('#selectSpecie').val();
@@ -47,3 +49,5 @@ $(document).on('click','#addBtn',function(){
         }
       });
 });
+
+

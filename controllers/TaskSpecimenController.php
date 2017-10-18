@@ -12,8 +12,6 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\aquarium\Aquarium;
 use app\models\specie\Specie;
-use yii\db\Expression;
-use yii\base\Exception;
 
 /**
  * TaskSpecimenController implements the CRUD actions for TaskSpecimen model.
@@ -35,20 +33,6 @@ class TaskSpecimenController extends Controller
         ];
     }
 
-    /**
-     * Lists all TaskSpecimen models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        // $searchModel = new TaskSpecimenSearch();
-        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        // return $this->render('index', [
-        //     'searchModel' => $searchModel,
-        //     'dataProvider' => $dataProvider,
-        // ]);
-    }
 
     /**
      * Displays a single TaskSpecimen model.
@@ -162,86 +146,10 @@ class TaskSpecimenController extends Controller
             $quantities = json_decode($data->quantities,true);
             $idSpecie = $data->specie;
             $specie = Specie::findOne($idSpecie);
-
-            try{ 
-                foreach ($quantities as $idAquarium => $quantity) { 
-                    $transaction = Yii::$app->db->beginTransaction();
-                    
-                    $aquarium = Aquarium::findOne($idAquarium);
-
-                    if($specie->validConditions($aquarium)){ //si las condiciones son válidas, calcula la cantidad de espacio requerido para su validación//
-
-                        $totalQuantity = $specie->minEspacio * $quantity; //calcula la cantidad total de espacio necesaria//
-
-                        if($aquarium->espacioDisponible >= $totalQuantity){ //si hay espacio suficiente en el acuario, actualiza el espacio disponible y guarda las tareas// 
-
-                            $aquarium->espacioDisponible = $aquarium->espacioDisponible - $totalQuantity; //actualiza el espacio disponible del acuario//
-
-                            if($aquarium->save()){
-
-                                $task = new Task();                 
-                                $task->titulo = 'Incorporación de ejemplares';
-                                $task->descripcion = 'Esta tarea fue creada a través del menú de ejemplares';
-                                $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
-                                $task->fechaHoraInicio = new Expression('NOW()');
-                                $task->fechaHoraFin = new Expression('NOW()');
-                                $task->fechaHoraRealizacion = new Expression('NOW()');
-                                $task->ACUARIO_idAcuario = $idAquarium;
-                                $task->TIPO_TAREA_idTipoTarea = 'Incorporar ejemplares';
-
-                                if($task->save()){ //si se guarda la tarea, adiciona la cantidad introducida y la guarda//
-
-
-                                    $taskSpecimen = new TaskSpecimen();
-                                    $taskSpecimen->TAREA_idTarea = $task->idTarea;
-                                    $taskSpecimen->EJEMPLAR_especie_idEspecie = $idSpecie;
-                                    $taskSpecimen->EJEMPLAR_acuario_idAcuario = $idAquarium;
-                                    $taskSpecimen->cantidad = $quantity;
-
-                                    if($taskSpecimen->save()){ //si se guarda la tarea, actualiza la cantidad disponible del acuario//
-                                        
-                                        $specimen = Specimen::getSpecimen($idAquarium, $idSpecie);
-
-                                        if($specimen==null){
-                                            $specimen = new Specimen();
-                                            $specimen->especie_idEspecie = $idSpecie;
-                                            $specimen->acuario_idAcuario = $idAquarium;
-                                            $specimen->cantidad = $quantity;
-                                        }else{
-                                            $specimen->cantidad = $quantity + $specimen->cantidad;
-                                        }
-                                        
-                                        if($specimen->save()){
-                                            $transaction->commit();
-                                        }else{
-                                            throw new Exception('Ocurrió un error al guardar la información.');          
-                                        }
-                                    }else{
-                                        throw new Exception('Ocurrió un error al guardar la información.');                        
-                                    }
-                                }else{
-                                    throw new Exception('Ocurrió un error al guardar la información.');                        
-                                }
-                            }else{
-                                throw new Exception('Ocurrió un error al guardar la información.');         
-                            }
-                        }else{ //si no hay espacio suficiente muestra un mensaje//
-                            Yii::$app->session->setFlash('error', "No hay espacio suficiente en el acuario".$aquarium->nombre.'.');                            
-                        }
-                    }else{
-
-                    }
-                } //fin del FOR//
-                Yii::$app->session->setFlash('success', "Los ejemplares se incorporaron correctamente a el/los acuario/s seleccionado/s.");
-                return $this->renderAjax('_alert');
-            }catch (Exception $e){
-                $transaction->rollback();
-                Yii::$app->session->setFlash('error', $e);
-            }
-            return $this->renderAjax('_alert');
-            // return $this->renderAjax('p',['q'=>$actualQuantity]); 
+            TaskSpecimen::addSpecimens($quantities,$specie);
+            return $this->renderAjax('_alert'); 
         }else{
-            // return $this->renderAjax('p',['q'=>$actualQuantity]); 
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al realizar la operación. Intente nuevamente.");            
         }
     }
     
