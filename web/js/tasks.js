@@ -12,6 +12,7 @@ $(document).on('change','#selectSpecie',function(){
        dataType: "html",
        success: function(response){
           $("#inputs").html(response);
+          $("#alert").html('');
        },
        error:function(){
            $("#inputs").html("Error. Contacte al administrador");
@@ -40,7 +41,7 @@ $(document).on('click','#addBtn',function(){
         data: {data : JSON.stringify({quantities: JSON.stringify(inputsData),specie: selectedSpecie})},
         dataType: "html",
         success: function(response){
-           $("#inputs").html(response);
+           $("#alert").html(response);
         },
         error: function(xhr,err){
             alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);

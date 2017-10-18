@@ -105,7 +105,7 @@ class Specie extends \yii\db\ActiveRecord
 
 
 
-    private function validConditions($aquarium){ //evalúa las condiciones ambientales de un determinado acuario//
+    public function validConditions($aquarium){ //evalúa las condiciones ambientales de un determinado acuario//
         $actualConditions = $aquarium->getActualConditions();
         
         if(($this->minPH <= $actualConditions['ph']) && ($actualConditions['ph'] <= $this->maxPH)){ 

@@ -46,7 +46,8 @@ if (isset($q)){
                 <div id="inputs" class="col-lg-12">
                 </div>
  
-
+                <div id="alert" class='col-lg-9'>
+                </div>
             </div>
         </div>
 
