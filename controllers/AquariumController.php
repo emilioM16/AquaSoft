@@ -75,7 +75,7 @@ class AquariumController extends Controller
     public function actionCreate()
     {
         $model = new Aquarium();
-
+        $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
@@ -96,7 +96,7 @@ class AquariumController extends Controller
     public function actionUpdate($idAcuario)
     {
         $model = $this->findModel($idAcuario);
-
+        $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {

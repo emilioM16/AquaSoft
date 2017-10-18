@@ -78,13 +78,17 @@ class TaskSpecimen extends \yii\db\ActiveRecord
 
     }
 
-    public static function getLastQuantity($idAquarium,$idSpecie){
+    public static function getLastQuantity($idAquarium,$idSpecie){ //obtiene, si existe, la última cantidad de ejemplares que hay en un acuario de una especie determinada//
         $lastTask =  TaskSpecimen::find()
                     ->where(['EJEMPLAR_especie_idEspecie'=>$idSpecie])
                     ->andWhere(['EJEMPLAR_acuario_idAcuario'=>$idAquarium])
                     ->orderBy(['idTareaEjemplar'=>SORT_DESC])
                     ->one();
-        return $lastTask->cantidad;
+        if($lastTask!=null){
+            return $lastTask->cantidad;
+        }else{
+            return null;
+        }
     }
 
 }
