@@ -3,6 +3,7 @@
 namespace app\models\task;
 
 use Yii;
+// use Yii\helpers\VarDumper;
 use app\models\aquarium\Aquarium;
 use app\models\conditions\EnviromentalConditions;
 use app\models\notification\Notification;
@@ -41,6 +42,7 @@ use app\models\user\User;
 class Task extends \yii\db\ActiveRecord
 {
     private $isPlanned = true;
+    public $duracion;
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
@@ -89,8 +91,8 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             'idTarea' => 'Id Tarea',
-            'titulo' => 'Titulo',
-            'descripcion' => 'Descripcion',
+            'titulo' => 'Título',
+            'descripcion' => 'Descripción',
             'fechaHoraInicio' => 'Fecha Hora Inicio',
             'fechaHoraFin' => 'Fecha Hora Fin',
             'fechaHoraRealizacion' => 'Fecha Hora Realizacion',
@@ -98,6 +100,7 @@ class Task extends \yii\db\ActiveRecord
             'USUARIO_idUsuario' => 'Usuario Id Usuario',
             'ACUARIO_idAcuario' => 'Acuario Id Acuario',
             'TIPO_TAREA_idTipoTarea' => 'Tipo  Tarea Id Tipo Tarea',
+            'duracion' => 'Duración'
         ];
     }
 
@@ -184,10 +187,15 @@ class Task extends \yii\db\ActiveRecord
     
     public function beforeSave($insert){
         // strtotime Convierte una descripción de fecha/hora textual en una fecha Unix (el número de segundos desde el 1 de Enero del 1970 00:00:00 UTC)
-        $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
+        // $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
         // $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion); A esto lo comento porque creo que no manejamos esos atributos (la hora está incluida en los parámetros de fechaHoraInicio y Fin)
-        $this->fechaHoraFin = date('Y-m-d H:i:s',strtotime($this->fechaHoraInicio)+$this->duracion);
+        $this->fechaHoraFin = date('Y-m-d H:i:s',strtotime($this->fechaHoraInicio)+strtotime($this->duracion));
+        $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
         return parent::beforeSave($insert);
+    }
+
+    public function actualizarDuracion(){
+        $this->duracion = date('h:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio));
     }
 
     public function isPlanned(){

@@ -36,7 +36,9 @@
         "softark/yii2-dual-listbox": "dev-master",
         "scotthuangzl/yii2-google-chart": "dev-master",
         "kartik-v/yii2-widget-select2": "@dev",
-                "kartik-v/yii2-widget-datepicker": "@dev"
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "kartik-v/yii2-widget-datetimepicker": "*",
+        "kartik-v/yii2-widget-timepicker": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
