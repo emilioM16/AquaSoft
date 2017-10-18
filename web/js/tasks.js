@@ -23,10 +23,10 @@ $(document).on('change','#selectSpecie',function(){
 $(document).on('click','#addBtn',function(){
     var inputsData = new Object();
     var selectedSpecie = '';
+    var selectedSpecie = $('#selectSpecie').val();
     $('.tsInput').each(function(){
         var aquariumID = $(this).attr('id');
         var aquariumValue = $(this).val();
-        var selectedSpecie = $('#selectSpecie').val();
         if(aquariumValue!=0){
         inputsData[aquariumID] = aquariumValue;
         }    
@@ -37,7 +37,7 @@ $(document).on('click','#addBtn',function(){
     $.ajax({
         url: "task-specimen/add-specimens",
         type: "POST",
-        data: {data : JSON.stringify({quantities: inputsData,specie: selectedSpecie})},
+        data: {data : JSON.stringify({quantities: JSON.stringify(inputsData),specie: selectedSpecie})},
         dataType: "html",
         success: function(response){
            $("#inputs").html(response);

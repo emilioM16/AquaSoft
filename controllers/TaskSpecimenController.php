@@ -157,29 +157,11 @@ class TaskSpecimenController extends Controller
     public function actionAddSpecimens(){
         if(isset($_POST['data'])){
             $data = json_decode(Yii::$app->request->post('data'));
-            yii::error(\yii\helpers\VarDumper::dumpAsString($data));
-            $quantities = $data->quantities;
+            $quantities = json_decode($data->quantities,true);
             $specie = $data->specie;
-            
-            // $task = new Task();                 
-            // $task->titulo = 'Incorporación de ejemplares';
-            // $task->descripcion = 'Esta tarea fue creada a través del menú de ejemplares';
-            // $task->USUARIO_idUsuario = 1;
-            // // foreach ($quantities as $aquarium => $quantity) {  
-            //     $task->fechaHoraInicio = new Expression('NOW()');
-            //     $task->fechaHoraFin = new Expression('NOW()');
-            //     $task->fechaHoraRealizacion = new Expression('NOW()');
-            //     $task->ACUARIO_idAcuario = 2;
-            //     $task->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
-            //     $task->save();
-            // // $taskSpecimen = TaskSpecimen::findModel();
 
             $transaction = Yii::$app->db->beginTransaction();
             try{ 
-                // $task = new Task();                 
-                // $task->titulo = 'Incorporación de ejemplares';
-                // $task->descripcion = 'Esta tarea fue creada a través del menú de ejemplares';
-                // $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
                 foreach ($quantities as $aquarium => $quantity) { 
                     $task = new Task();                 
                     $task->titulo = 'Incorporación de ejemplares';
@@ -189,8 +171,20 @@ class TaskSpecimenController extends Controller
                     $task->fechaHoraFin = new Expression('NOW()');
                     $task->fechaHoraRealizacion = new Expression('NOW()');
                     $task->ACUARIO_idAcuario = $aquarium;
-                    $task->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
-                    if(!$task->save()){ //si se guarda la tarea, adiciona la cantidad introducida y la guarda//
+                    $task->TIPO_TAREA_idTipoTarea = 'Incorporar ejemplares';
+                    if($task->save()){ //si se guarda la tarea, adiciona la cantidad introducida y la guarda//
+                        $actualQuantity = TaskSpecimen::getLastQuantity(2,$specie);
+                        $taskSpecimen = new TaskSpecimen();
+                        $taskSpecimen->TAREA_idTarea = $task->idTarea;
+                        $taskSpecimen->EJEMPLAR_especie_idEspecie = $specie;
+                        $taskSpecimen->EJEMPLAR_acuario_idAcuario = $aquarium;
+                        if($actualQuantity!=null){
+                            $taskSpecimen->cantidad = $quantity + $actualQuantity;
+                        }else{
+                            $taskSpecimen->cantidad = $quantity;
+                        }
+                        $taskSpecimen->save(false);
+                    }else{
                         throw new Exception('Ocurrió un error al guardar la información.');                        
                     }
                 }
@@ -199,7 +193,7 @@ class TaskSpecimenController extends Controller
                 $transaction->rollback();
             }
         }else{
-            return $this->renderAjax('p',['q'=>$quantities]); 
+            return $this->renderAjax('p',['q'=>$data]); 
         }
     }
     

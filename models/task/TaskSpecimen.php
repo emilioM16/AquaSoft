@@ -12,6 +12,7 @@ use app\models\task\Task;
 /**
  * This is the model class for table "TAREA_EJEMPLAR".
  *
+ * @property integer $idTareaEjemplar
  * @property integer $TAREA_idTarea
  * @property integer $EJEMPLAR_especie_idEspecie
  * @property integer $EJEMPLAR_acuario_idAcuario
@@ -77,5 +78,13 @@ class TaskSpecimen extends \yii\db\ActiveRecord
 
     }
 
+    public static function getLastQuantity($idAquarium,$idSpecie){
+        $lastTask =  TaskSpecimen::find()
+                    ->where(['EJEMPLAR_especie_idEspecie'=>$idSpecie])
+                    ->andWhere(['EJEMPLAR_acuario_idAcuario'=>$idAquarium])
+                    ->orderBy(['idTareaEjemplar'=>SORT_DESC])
+                    ->one();
+        return $lastTask->cantidad;
+    }
 
 }
