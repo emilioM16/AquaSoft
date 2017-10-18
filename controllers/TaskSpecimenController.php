@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\task\Task;
 use app\models\task\TaskSpecimen;
+use app\models\specimen\Specimen;
 use app\models\task\TaskSpecimenSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -155,17 +156,17 @@ class TaskSpecimenController extends Controller
 
 
     
-    public function actionAddSpecimens(){
+    public function actionAddSpecimens(){ //se encarga de la incorporación de ejemplares//
         if(isset($_POST['data'])){
             $data = json_decode(Yii::$app->request->post('data'));
             $quantities = json_decode($data->quantities,true);
             $idSpecie = $data->specie;
             $specie = Specie::findOne($idSpecie);
 
-            $transaction = Yii::$app->db->beginTransaction();
             try{ 
                 foreach ($quantities as $idAquarium => $quantity) { 
-
+                    $transaction = Yii::$app->db->beginTransaction();
+                    
                     $aquarium = Aquarium::findOne($idAquarium);
 
                     if($specie->validConditions($aquarium)){ //si las condiciones son válidas, calcula la cantidad de espacio requerido para su validación//
@@ -190,44 +191,57 @@ class TaskSpecimenController extends Controller
 
                                 if($task->save()){ //si se guarda la tarea, adiciona la cantidad introducida y la guarda//
 
-                                    $actualQuantity = TaskSpecimen::getLastQuantity($idAquarium,$idSpecie);
+
                                     $taskSpecimen = new TaskSpecimen();
                                     $taskSpecimen->TAREA_idTarea = $task->idTarea;
                                     $taskSpecimen->EJEMPLAR_especie_idEspecie = $idSpecie;
                                     $taskSpecimen->EJEMPLAR_acuario_idAcuario = $idAquarium;
+                                    $taskSpecimen->cantidad = $quantity;
 
-                                    if($actualQuantity==null){
-                                        $taskSpecimen->cantidad = $quantity;
+                                    if($taskSpecimen->save()){ //si se guarda la tarea, actualiza la cantidad disponible del acuario//
+                                        
+                                        $specimen = Specimen::getSpecimen($idAquarium, $idSpecie);
+
+                                        if($specimen==null){
+                                            $specimen = new Specimen();
+                                            $specimen->especie_idEspecie = $idSpecie;
+                                            $specimen->acuario_idAcuario = $idAquarium;
+                                            $specimen->cantidad = $quantity;
+                                        }else{
+                                            $specimen->cantidad = $quantity + $specimen->cantidad;
+                                        }
+                                        
+                                        if($specimen->save()){
+                                            $transaction->commit();
+                                        }else{
+                                            throw new Exception('Ocurrió un error al guardar la información.');          
+                                        }
                                     }else{
-                                        $taskSpecimen->cantidad = $quantity + $actualQuantity;
+                                        throw new Exception('Ocurrió un error al guardar la información.');                        
                                     }
-                                
-                                    $taskSpecimen->save(); //ACA HAY UN PROBLEMA!!! NO GUARDA PARA OTRO ACUARIO QUE NO SEA EL A02!! //
-                                    // if($taskSpecimen->save()){ //si se guarda la tarea, actualiza la cantidad disponible del acuario//
-                                    //     $transaction->commit();
-                                    // }else{
-                                    //     throw new Exception('Ocurrió un error al guardar asdasdla información.');                        
-                                    // }
                                 }else{
                                     throw new Exception('Ocurrió un error al guardar la información.');                        
                                 }
+                            }else{
+                                throw new Exception('Ocurrió un error al guardar la información.');         
                             }
                         }else{ //si no hay espacio suficiente muestra un mensaje//
-                            
+                            Yii::$app->session->setFlash('error', "No hay espacio suficiente en el acuario".$aquarium->nombre.'.');                            
                         }
+                    }else{
+
                     }
-                }
-                $transaction->commit();
+                } //fin del FOR//
                 Yii::$app->session->setFlash('success', "Los ejemplares se incorporaron correctamente a el/los acuario/s seleccionado/s.");
                 return $this->renderAjax('_alert');
             }catch (Exception $e){
                 $transaction->rollback();
                 Yii::$app->session->setFlash('error', $e);
             }
-            // return $this->renderAjax('_alert');
-            return $this->renderAjax('p',['q'=>$quantities]); 
+            return $this->renderAjax('_alert');
+            // return $this->renderAjax('p',['q'=>$actualQuantity]); 
         }else{
-            // return $this->renderAjax('p',['q'=>$data]); 
+            // return $this->renderAjax('p',['q'=>$actualQuantity]); 
         }
     }
     

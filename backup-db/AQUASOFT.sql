@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 12-10-2017 a las 00:32:43
+-- Tiempo de generación: 18-10-2017 a las 16:27:17
 -- Versión del servidor: 5.7.19-0ubuntu0.17.04.1
 -- Versión de PHP: 7.0.22-0ubuntu0.17.04.1
 
@@ -87,10 +87,11 @@ CREATE TABLE `ACUARIO` (
 --
 
 INSERT INTO `ACUARIO` (`idAcuario`, `nombre`, `descripcion`, `espacioDisponible`, `capacidadMaxima`, `activo`) VALUES
-(1, 'A01', '', 100, 100, 0),
-(2, 'A02', '', 100, 100, 1),
-(3, 'A04', '', 100, 100, 1),
-(4, 'A05', '', 200, 200, 0);
+(1, 'A01', '', 0, 100, 1),
+(2, 'A02', '', 90, 100, 1),
+(3, 'A04', '', 0, 100, 1),
+(4, 'A05', '', 200, 200, 0),
+(5, 'A10', '', 100, 100, 1);
 
 -- --------------------------------------------------------
 
@@ -110,6 +111,7 @@ CREATE TABLE `ACUARIO_USUARIO` (
 
 INSERT INTO `ACUARIO_USUARIO` (`acuario_idAcuario`, `usuario_idUsuario`) VALUES
 (2, 17),
+(3, 17),
 (3, 19),
 (3, 20),
 (3, 21),
@@ -242,12 +244,23 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/gii/default/index', 2, NULL, NULL, NULL, 1506560367, 1506560367),
 ('/gii/default/preview', 2, NULL, NULL, NULL, 1506560367, 1506560367),
 ('/gii/default/view', 2, NULL, NULL, NULL, 1506560367, 1506560367),
+('/planning/*', 2, NULL, NULL, NULL, 1508202666, 1508202666),
 ('/reportico/*', 2, NULL, NULL, NULL, 1507510668, 1507510668),
 ('/site/error', 2, NULL, NULL, NULL, 1506560372, 1506560372),
 ('/site/index', 2, NULL, NULL, NULL, 1506560373, 1506560373),
 ('/site/login', 2, NULL, NULL, NULL, 1506560373, 1506560373),
 ('/site/logout', 2, NULL, NULL, NULL, 1506560373, 1506560373),
 ('/specimen/index', 2, NULL, NULL, NULL, 1507778641, 1507778641),
+('/task-specimen/add-specimens', 2, NULL, NULL, NULL, 1508170849, 1508170849),
+('/task-specimen/get-aquariums', 2, NULL, NULL, NULL, 1508027696, 1508027696),
+('/task-specimen/specimens-tasks', 2, NULL, NULL, NULL, 1507914487, 1507914487),
+('/task/create', 2, NULL, NULL, NULL, 1507833798, 1507833798),
+('/task/delete', 2, NULL, NULL, NULL, 1507833798, 1507833798),
+('/task/get-aquariums', 2, NULL, NULL, NULL, 1507850218, 1507850218),
+('/task/index', 2, NULL, NULL, NULL, 1507833798, 1507833798),
+('/task/specimens-tasks', 2, NULL, NULL, NULL, 1507837645, 1507837645),
+('/task/update', 2, NULL, NULL, NULL, 1507833798, 1507833798),
+('/task/view', 2, NULL, NULL, NULL, 1507833798, 1507833798),
 ('/user-aquarium/create', 2, NULL, NULL, NULL, 1507216030, 1507216030),
 ('/user-aquarium/delete', 2, NULL, NULL, NULL, 1507216031, 1507216031),
 ('/user-aquarium/index', 2, NULL, NULL, NULL, 1507216030, 1507216030),
@@ -375,6 +388,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('administrador', '/gii/default/index'),
 ('administrador', '/gii/default/preview'),
 ('administrador', '/gii/default/view'),
+('administrador', '/planning/*'),
 ('administrador', '/reportico/*'),
 ('administrador', '/site/error'),
 ('encargado', '/site/error'),
@@ -389,6 +403,16 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('encargado', '/site/logout'),
 ('especialista', '/site/logout'),
 ('verEjemplares', '/specimen/index'),
+('administrador', '/task-specimen/add-specimens'),
+('administrador', '/task-specimen/get-aquariums'),
+('administrador', '/task-specimen/specimens-tasks'),
+('administrador', '/task/create'),
+('administrador', '/task/delete'),
+('administrador', '/task/get-aquariums'),
+('administrador', '/task/index'),
+('administrador', '/task/specimens-tasks'),
+('administrador', '/task/update'),
+('administrador', '/task/view'),
 ('administrador', '/user-aquarium/create'),
 ('administrador', '/user-aquarium/delete'),
 ('administrador', '/user-aquarium/index'),
@@ -459,7 +483,9 @@ CREATE TABLE `CONDICION_AMBIENTAL` (
 
 INSERT INTO `CONDICION_AMBIENTAL` (`idCondicionAmbiental`, `ph`, `temperatura`, `salinidad`, `lux`, `CO2`, `acuario_idAcuario`, `tarea_idTarea`) VALUES
 (1, 11.2, 32, 35.6, 40, 20, 2, 3),
-(2, 34, 40, 22, 67, 24, 2, 4);
+(2, 3, 41, 15, 67, 2, 2, 4),
+(3, 3, 41, 14, 69, 1.7, 3, 5),
+(4, 4, 44, 15, 65, 2, 1, 6);
 
 -- --------------------------------------------------------
 
@@ -480,7 +506,8 @@ CREATE TABLE `EJEMPLAR` (
 
 INSERT INTO `EJEMPLAR` (`especie_idEspecie`, `acuario_idAcuario`, `cantidad`) VALUES
 (1, 2, 40),
-(2, 2, 20);
+(2, 2, 35),
+(2, 3, 9);
 
 -- --------------------------------------------------------
 
@@ -513,7 +540,10 @@ CREATE TABLE `ESPECIE` (
 
 INSERT INTO `ESPECIE` (`idEspecie`, `nombre`, `descripcion`, `minPH`, `maxPH`, `minTemp`, `maxTemp`, `minSalinidad`, `maxSalinidad`, `minLux`, `maxLux`, `minEspacio`, `minCO2`, `maxCO2`, `activo`) VALUES
 (1, 'Payaso', NULL, 2, 5, 10, 20, 4, 5, 50, 100, 2, 19, 30, 1),
-(2, 'Globo', NULL, 2, 5, 40, 45, 13, 20, 60, 70, 10, 1.6, 2.4, 1);
+(2, 'Globo', NULL, 2, 5, 40, 45, 13, 20, 60, 70, 10, 1.6, 2.4, 1),
+(3, 'Carpín dorado', 'El carpín dorado, carpa dorada o mejor conocido como pez dorado es una especie de pez de agua dulce de la familia Cyprinidae.', 4, 7, 10, 15, 4, 8, 57, 67, 4, 1, 2, 1),
+(4, 'Pez beta', 'El luchador de Siam también conocido como pez beta, es una especie de pez de agua dulce de la familia de los laberíntidos, aunque antes fue clasificado erróneamente entre los Anabantidae.', 1, 3, 30, 35, 2, 5, 10, 29, 15, 11, 13, 1),
+(5, 'Guppy', 'El guppy, lebistes o pez millón es un pez ovovivíparo de agua dulce procedente de Sudamérica que habita en zonas de corriente baja de ríos, lagos y charcas.', 7, 8.5, 17, 28, 2, 5, 40, 60, 3, 3, 5.5, 1);
 
 -- --------------------------------------------------------
 
@@ -680,7 +710,53 @@ CREATE TABLE `PLANIFICACION` (
 
 INSERT INTO `PLANIFICACION` (`idPlanificacion`, `titulo`, `anioMes`, `fechaHoraCreacion`, `activo`, `ACUARIO_USUARIO_acuario_idAcuario`, `ACUARIO_USUARIO_usuario_idUsuario`, `ESTADO_PLANIFICACION_idEstadoPlanificacion`) VALUES
 (1, 'Planificación especial', '2017-10-18', '2017-10-08 01:12:29', 1, 2, 20, 'Aprobado'),
-(2, '', '2017-10-17', '2017-10-08 17:37:04', 1, 3, 19, 'Aprobado');
+(2, '', '2017-10-17', '2017-10-08 17:37:04', 1, 3, 19, 'Aprobado'),
+(3, 'Planificación especial A01', '2017-11-08', '2017-10-15 19:56:59', 1, 1, 19, 'no autorizada'),
+(4, 'ease', '2017-10-19', '2017-10-16 22:20:50', 1, 1, 21, 'SinVerificar'),
+(5, 'ease', '2017-10-19', '2017-10-16 22:20:55', 1, 1, 21, 'SinVerificar'),
+(6, 'ease', '2017-10-19', '2017-10-16 22:21:44', 1, 1, 21, 'SinVerificar'),
+(7, 'ease', '2017-10-19', '2017-10-16 22:22:13', 1, 1, 21, 'SinVerificar'),
+(8, 'ease', '2017-10-19', '2017-10-16 22:25:09', 1, 1, 21, 'SinVerificar'),
+(9, 'ease', '2017-10-19', '2017-10-16 22:27:15', 1, 1, 21, 'SinVerificar'),
+(10, 'ease', '2017-10-19', '2017-10-16 22:54:28', 1, 1, 21, 'SinVerificar'),
+(11, 'ease', '2017-10-19', '2017-10-16 22:55:11', 1, 1, 21, 'SinVerificar'),
+(12, 'ease', '2017-10-19', '2017-10-16 22:55:26', 1, 1, 21, 'SinVerificar'),
+(13, 'ease', '2017-10-19', '2017-10-16 22:55:55', 1, 1, 21, 'SinVerificar'),
+(14, 'ease', '2017-10-19', '2017-10-16 23:00:09', 1, 1, 21, 'SinVerificar'),
+(15, 'ease', '2017-10-19', '2017-10-16 23:00:50', 1, 1, 21, 'SinVerificar'),
+(16, 'ease', '2017-10-19', '2017-10-16 23:01:17', 1, 1, 21, 'SinVerificar'),
+(17, 'ease', '2017-10-19', '2017-10-16 23:02:02', 1, 1, 21, 'SinVerificar'),
+(18, 'ease', '2017-10-19', '2017-10-16 23:02:29', 1, 1, 21, 'SinVerificar'),
+(19, 'ease', '2017-10-19', '2017-10-16 23:02:50', 1, 1, 21, 'SinVerificar'),
+(20, 'ease', '2017-10-19', '2017-10-16 23:06:51', 1, 1, 21, 'SinVerificar'),
+(21, 'ease', '2017-10-19', '2017-10-16 23:08:01', 1, 1, 21, 'SinVerificar'),
+(22, 'ease', '2017-10-19', '2017-10-16 23:08:51', 1, 1, 21, 'SinVerificar'),
+(23, 'ease', '2017-10-19', '2017-10-16 23:10:22', 1, 1, 21, 'SinVerificar'),
+(24, 'ease', '2017-10-19', '2017-10-16 23:11:16', 1, 1, 21, 'SinVerificar'),
+(25, 'ease', '2017-10-19', '2017-10-16 23:12:16', 1, 1, 21, 'SinVerificar'),
+(26, 'ease', '2017-10-19', '2017-10-16 23:12:30', 1, 1, 21, 'SinVerificar'),
+(27, 'ease', '2017-10-19', '2017-10-16 23:14:14', 1, 1, 21, 'SinVerificar'),
+(28, 'ease', '2017-10-19', '2017-10-16 23:16:21', 1, 1, 21, 'SinVerificar'),
+(29, 'ease', '2017-10-19', '2017-10-16 23:16:54', 1, 1, 21, 'SinVerificar'),
+(30, 'ease', '2017-10-19', '2017-10-16 23:18:15', 1, 1, 21, 'SinVerificar'),
+(31, 'asd', '2017-10-03', '2017-10-16 23:26:32', 1, 4, 21, 'SinVerificar'),
+(32, 'asd', '2017-10-03', '2017-10-16 23:27:56', 1, 4, 21, 'SinVerificar'),
+(33, 'asd', '2017-10-03', '2017-10-16 23:28:08', 1, 4, 21, 'SinVerificar'),
+(34, 'asd', '2017-10-03', '2017-10-16 23:28:21', 1, 4, 21, 'SinVerificar'),
+(35, 'asd', '2017-10-03', '2017-10-16 23:28:43', 1, 4, 21, 'SinVerificar'),
+(36, 'asd', '2017-10-03', '2017-10-16 23:29:56', 1, 4, 21, 'SinVerificar'),
+(37, 'asd', '2017-10-03', '2017-10-16 23:31:36', 1, 4, 21, 'SinVerificar'),
+(38, 'asd', '2017-10-03', '2017-10-16 23:31:49', 1, 4, 21, 'SinVerificar'),
+(39, 'asd', '2017-10-03', '2017-10-16 23:32:01', 1, 4, 21, 'SinVerificar'),
+(40, 'asdas', '2017-12-19', '2017-10-16 23:32:18', 1, 1, 21, 'SinVerificar'),
+(41, 'asdas', '2017-12-19', '2017-10-16 23:32:27', 1, 1, 21, 'SinVerificar'),
+(42, 'sda', '2017-09-18', '2017-10-16 23:32:40', 1, 2, 21, 'SinVerificar'),
+(43, 'sda', '2017-09-18', '2017-10-16 23:34:36', 1, 2, 21, 'SinVerificar'),
+(44, 'sda', '2017-09-18', '2017-10-16 23:35:12', 1, 2, 21, 'SinVerificar'),
+(45, 'sda', '2017-09-18', '2017-10-16 23:35:45', 1, 2, 21, 'SinVerificar'),
+(46, 'sda', '2017-09-18', '2017-10-16 23:36:01', 1, 2, 21, 'SinVerificar'),
+(47, 'sda', '2017-09-18', '2017-10-16 23:36:05', 1, 2, 21, 'SinVerificar'),
+(48, 'sda', '2017-09-18', '2017-10-16 23:36:12', 1, 2, 21, 'SinVerificar');
 
 -- --------------------------------------------------------
 
@@ -731,7 +807,78 @@ INSERT INTO `TAREA` (`idTarea`, `titulo`, `descripcion`, `fechaHoraInicio`, `fec
 (1, 'Mantenimiento ', NULL, '2017-10-08 10:00:00', '2017-10-08 11:00:00', '2017-10-08 10:21:00', 1, 20, 2, 'Reparación'),
 (2, 'Limpiar tanque', NULL, '2017-10-08 09:00:00', '2017-10-08 12:00:00', '2017-10-08 13:00:00', 1, 20, 2, 'Limpieza'),
 (3, 'Control', NULL, '2017-10-10 15:00:00', '2017-10-10 15:30:00', NULL, 1, 1, 2, 'Controlar acuario'),
-(4, 'Control ', NULL, '2017-10-10 13:00:00', '2017-10-10 15:00:00', NULL, 1, 1, 2, 'Controlar acuario');
+(4, 'Control ', NULL, '2017-10-10 13:00:00', '2017-10-10 15:00:00', NULL, 1, 1, 2, 'Controlar acuario'),
+(5, 'Control', NULL, '2017-10-15 07:37:00', '2017-10-15 10:00:00', '2017-10-15 09:00:00', 2, 19, 3, 'Controlar acuario'),
+(6, 'Control A01', NULL, '2017-10-16 09:00:00', '2017-10-16 11:00:00', '2017-10-16 09:05:00', 3, 19, 1, 'Controlar acuario'),
+(7, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 17:11:25', '2017-10-17 17:11:25', '2017-10-17 17:11:25', NULL, 1, 2, 'Controlar acuario'),
+(8, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 17:11:42', '2017-10-17 17:11:42', '2017-10-17 17:11:42', NULL, 1, 2, 'Controlar acuario'),
+(9, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 14:12:21', '2017-10-17 17:12:21', '2017-10-17 17:12:21', NULL, 1, 2, 'Controlar acuario'),
+(10, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:06:28', '2017-10-17 15:06:28', '2017-10-17 15:06:28', NULL, 1, 2, 'Controlar acuario'),
+(11, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:06:42', '2017-10-17 15:06:42', '2017-10-17 15:06:42', NULL, 1, 2, 'Controlar acuario'),
+(12, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:07:56', '2017-10-17 15:07:56', '2017-10-17 15:07:56', NULL, 1, 3, 'Controlar acuario'),
+(13, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:08:33', '2017-10-17 15:08:33', '2017-10-17 15:08:33', NULL, 1, 1, 'Controlar acuario'),
+(14, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:08:33', '2017-10-17 15:08:33', '2017-10-17 15:08:33', NULL, 1, 3, 'Controlar acuario'),
+(15, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:09:27', '2017-10-17 15:09:27', '2017-10-17 15:09:27', NULL, 1, 1, 'Controlar acuario'),
+(16, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:09:36', '2017-10-17 15:09:36', '2017-10-17 15:09:36', NULL, 1, 1, 'Controlar acuario'),
+(17, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:09:36', '2017-10-17 15:09:36', '2017-10-17 15:09:36', NULL, 1, 3, 'Controlar acuario'),
+(18, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 15:18:32', '2017-10-17 15:18:32', '2017-10-17 15:18:32', NULL, 1, 2, 'Controlar acuario'),
+(22, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 20:01:05', '2017-10-17 20:01:05', '2017-10-17 20:01:05', NULL, 1, 1, 'Incorporar ejemplares'),
+(23, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:21:31', '2017-10-17 22:21:31', '2017-10-17 22:21:31', NULL, 1, 2, 'Incorporar ejemplares'),
+(25, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:33:56', '2017-10-17 22:33:56', '2017-10-17 22:33:56', NULL, 1, 1, 'Incorporar ejemplares'),
+(26, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:33:56', '2017-10-17 22:33:56', '2017-10-17 22:33:56', NULL, 1, 3, 'Incorporar ejemplares'),
+(27, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:35:09', '2017-10-17 22:35:09', '2017-10-17 22:35:09', NULL, 1, 1, 'Incorporar ejemplares'),
+(28, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:35:09', '2017-10-17 22:35:09', '2017-10-17 22:35:09', NULL, 1, 3, 'Incorporar ejemplares'),
+(29, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:35:39', '2017-10-17 22:35:39', '2017-10-17 22:35:39', NULL, 1, 1, 'Incorporar ejemplares'),
+(30, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:35:39', '2017-10-17 22:35:39', '2017-10-17 22:35:39', NULL, 1, 3, 'Incorporar ejemplares'),
+(31, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:37:31', '2017-10-17 22:37:31', '2017-10-17 22:37:31', NULL, 1, 2, 'Incorporar ejemplares'),
+(32, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:38:13', '2017-10-17 22:38:13', '2017-10-17 22:38:13', NULL, 1, 2, 'Incorporar ejemplares'),
+(33, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:44:19', '2017-10-17 22:44:19', '2017-10-17 22:44:19', NULL, 1, 1, 'Incorporar ejemplares'),
+(34, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:44:19', '2017-10-17 22:44:19', '2017-10-17 22:44:19', NULL, 1, 3, 'Incorporar ejemplares'),
+(35, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 22:45:07', '2017-10-17 22:45:07', '2017-10-17 22:45:07', NULL, 1, 2, 'Incorporar ejemplares'),
+(38, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 23:56:14', '2017-10-17 23:56:14', '2017-10-17 23:56:14', NULL, 1, 2, 'Incorporar ejemplares'),
+(41, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-17 23:59:49', '2017-10-17 23:59:49', '2017-10-17 23:59:49', NULL, 1, 2, 'Incorporar ejemplares'),
+(42, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 00:00:48', '2017-10-18 00:00:48', '2017-10-18 00:00:48', NULL, 1, 2, 'Incorporar ejemplares'),
+(43, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 00:01:05', '2017-10-18 00:01:05', '2017-10-18 00:01:05', NULL, 1, 2, 'Incorporar ejemplares'),
+(44, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 00:02:15', '2017-10-18 00:02:15', '2017-10-18 00:02:15', NULL, 1, 2, 'Incorporar ejemplares'),
+(45, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 00:38:04', '2017-10-18 00:38:04', '2017-10-18 00:38:04', NULL, 1, 2, 'Incorporar ejemplares'),
+(46, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:18:19', '2017-10-18 02:18:19', '2017-10-18 02:18:19', NULL, 1, 2, 'Incorporar ejemplares'),
+(47, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:23:41', '2017-10-18 02:23:41', '2017-10-18 02:23:41', NULL, 1, 2, 'Incorporar ejemplares'),
+(48, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:24:19', '2017-10-18 02:24:19', '2017-10-18 02:24:19', NULL, 1, 2, 'Incorporar ejemplares'),
+(49, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:24:41', '2017-10-18 02:24:41', '2017-10-18 02:24:41', NULL, 1, 2, 'Incorporar ejemplares'),
+(50, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:25:07', '2017-10-18 02:25:07', '2017-10-18 02:25:07', NULL, 1, 2, 'Incorporar ejemplares'),
+(51, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:27:20', '2017-10-18 02:27:20', '2017-10-18 02:27:20', NULL, 1, 2, 'Incorporar ejemplares'),
+(52, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:27:27', '2017-10-18 02:27:27', '2017-10-18 02:27:27', NULL, 1, 2, 'Incorporar ejemplares'),
+(53, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:28:24', '2017-10-18 02:28:24', '2017-10-18 02:28:24', NULL, 1, 2, 'Incorporar ejemplares'),
+(54, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:28:27', '2017-10-18 02:28:27', '2017-10-18 02:28:27', NULL, 1, 2, 'Incorporar ejemplares'),
+(55, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:28:46', '2017-10-18 02:28:46', '2017-10-18 02:28:46', NULL, 1, 2, 'Incorporar ejemplares'),
+(59, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:29:43', '2017-10-18 02:29:43', '2017-10-18 02:29:43', NULL, 1, 2, 'Incorporar ejemplares'),
+(62, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:33:19', '2017-10-18 02:33:19', '2017-10-18 02:33:19', NULL, 1, 2, 'Incorporar ejemplares'),
+(68, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:49:42', '2017-10-18 02:49:42', '2017-10-18 02:49:42', NULL, 1, 2, 'Incorporar ejemplares'),
+(73, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:53:09', '2017-10-18 02:53:09', '2017-10-18 02:53:09', NULL, 1, 2, 'Incorporar ejemplares'),
+(74, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:55:05', '2017-10-18 02:55:05', '2017-10-18 02:55:05', NULL, 1, 2, 'Incorporar ejemplares'),
+(78, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:57:52', '2017-10-18 02:57:52', '2017-10-18 02:57:52', NULL, 1, 2, 'Incorporar ejemplares'),
+(79, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 02:58:04', '2017-10-18 02:58:04', '2017-10-18 02:58:04', NULL, 1, 2, 'Incorporar ejemplares'),
+(82, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 03:01:24', '2017-10-18 03:01:24', '2017-10-18 03:01:24', NULL, 1, 2, 'Incorporar ejemplares'),
+(83, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 03:05:06', '2017-10-18 03:05:06', '2017-10-18 03:05:06', NULL, 1, 2, 'Incorporar ejemplares'),
+(84, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 03:05:13', '2017-10-18 03:05:13', '2017-10-18 03:05:13', NULL, 1, 3, 'Incorporar ejemplares'),
+(85, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 03:05:56', '2017-10-18 03:05:56', '2017-10-18 03:05:56', NULL, 1, 3, 'Incorporar ejemplares'),
+(91, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:40:35', '2017-10-18 14:40:35', '2017-10-18 14:40:35', NULL, 1, 3, 'Incorporar ejemplares'),
+(92, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:41:03', '2017-10-18 14:41:03', '2017-10-18 14:41:03', NULL, 1, 3, 'Incorporar ejemplares'),
+(93, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:42:38', '2017-10-18 14:42:38', '2017-10-18 14:42:38', NULL, 1, 3, 'Incorporar ejemplares'),
+(94, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:43:09', '2017-10-18 14:43:09', '2017-10-18 14:43:09', NULL, 1, 3, 'Incorporar ejemplares'),
+(95, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:46:04', '2017-10-18 14:46:04', '2017-10-18 14:46:04', NULL, 1, 3, 'Incorporar ejemplares'),
+(96, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:46:31', '2017-10-18 14:46:31', '2017-10-18 14:46:31', NULL, 1, 2, 'Incorporar ejemplares'),
+(97, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:46:31', '2017-10-18 14:46:31', '2017-10-18 14:46:31', NULL, 1, 3, 'Incorporar ejemplares'),
+(98, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:48:23', '2017-10-18 14:48:23', '2017-10-18 14:48:23', NULL, 1, 2, 'Incorporar ejemplares'),
+(99, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:48:23', '2017-10-18 14:48:23', '2017-10-18 14:48:23', NULL, 1, 3, 'Incorporar ejemplares'),
+(100, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:53:33', '2017-10-18 14:53:33', '2017-10-18 14:53:33', NULL, 1, 2, 'Incorporar ejemplares'),
+(101, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 14:53:34', '2017-10-18 14:53:34', '2017-10-18 14:53:34', NULL, 1, 3, 'Incorporar ejemplares'),
+(102, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 15:16:36', '2017-10-18 15:16:36', '2017-10-18 15:16:36', NULL, 1, 2, 'Incorporar ejemplares'),
+(103, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 15:17:18', '2017-10-18 15:17:18', '2017-10-18 15:17:18', NULL, 1, 2, 'Incorporar ejemplares'),
+(104, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 15:22:22', '2017-10-18 15:22:22', '2017-10-18 15:22:22', NULL, 1, 2, 'Incorporar ejemplares'),
+(105, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 15:23:20', '2017-10-18 15:23:20', '2017-10-18 15:23:20', NULL, 1, 2, 'Incorporar ejemplares'),
+(106, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 15:25:06', '2017-10-18 15:25:06', '2017-10-18 15:25:06', NULL, 1, 2, 'Incorporar ejemplares'),
+(107, 'Incorporación de ejemplares', 'Esta tarea fue creada a través del menú de ejemplares', '2017-10-18 15:26:06', '2017-10-18 15:26:06', '2017-10-18 15:26:06', NULL, 1, 2, 'Incorporar ejemplares');
 
 -- --------------------------------------------------------
 
@@ -741,11 +888,36 @@ INSERT INTO `TAREA` (`idTarea`, `titulo`, `descripcion`, `fechaHoraInicio`, `fec
 
 DROP TABLE IF EXISTS `TAREA_EJEMPLAR`;
 CREATE TABLE `TAREA_EJEMPLAR` (
+  `idTareaEjemplar` bigint(20) UNSIGNED NOT NULL,
   `TAREA_idTarea` int(11) NOT NULL,
   `EJEMPLAR_especie_idEspecie` int(11) NOT NULL,
   `EJEMPLAR_acuario_idAcuario` int(11) NOT NULL,
   `cantidad` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `TAREA_EJEMPLAR`
+--
+
+INSERT INTO `TAREA_EJEMPLAR` (`idTareaEjemplar`, `TAREA_idTarea`, `EJEMPLAR_especie_idEspecie`, `EJEMPLAR_acuario_idAcuario`, `cantidad`) VALUES
+(39, 85, 2, 3, 2),
+(42, 91, 2, 3, 1),
+(43, 92, 2, 3, 1),
+(44, 93, 2, 3, 1),
+(45, 94, 2, 3, 1),
+(46, 95, 2, 3, 2),
+(47, 96, 2, 2, 2),
+(48, 97, 2, 3, 1),
+(49, 98, 2, 2, 2),
+(50, 99, 2, 3, 1),
+(51, 100, 2, 2, 2),
+(52, 101, 2, 3, 1),
+(53, 102, 2, 2, 1),
+(54, 103, 2, 2, 1),
+(55, 104, 2, 2, 1),
+(56, 105, 2, 2, 1),
+(57, 106, 2, 2, 2),
+(58, 107, 2, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -817,7 +989,7 @@ INSERT INTO `USUARIO` (`idUsuario`, `nombre`, `apellido`, `nombreUsuario`, `emai
 (17, 'Lía', 'Moreno', 'lmoreno', 'lia@gmail.com', '$2y$13$3aPnTqFnsbSkQv5IBLXYdeTJyQDANwupouovndDWVGLf4LNVjZ/LW', 1),
 (19, 'Juan', 'Perez', 'jperez', 'jose@gmail.com', '$2y$13$C4UFjDiUbStLBTsXabBPf.3ph3WWTtmc.IrjdUcTzzw.lFC9PfkLO', 1),
 (20, 'Pepe', 'Pepe', 'pepepe', 'pepe@gmail.com', '$2y$13$gfrKWdTCQRXFlOsg5hXlKuyW6IrM5DM051xmFFXEi8hVYkySxfhQ6', 1),
-(21, 'Jose', 'Jose', 'jjose', 'jjose@gmail.com', '$2y$13$FeEAncLmU15ZHAOXDNGReuwToJoI4WEIAJ3CqZMmx1BNHe2/gkwK.', 1),
+(21, 'Jose', 'Jose', 'jjose', 'jjose@gmail.com', '$2y$13$FeEAncLmU15ZHAOXDNGReuwToJoI4WEIAJ3CqZMmx1BNHe2/gkwK.', 0),
 (22, 'Pedro', 'Sanchez', 'psanchez', 'psanchez@gmail.com', '$2y$13$5bP2SXI6yKK2wP1UJTXkIOoJxuhxho7BbbTCH9Rxz1DWFeFAvXvg2', 0);
 
 -- --------------------------------------------------------
@@ -988,9 +1160,11 @@ ALTER TABLE `TAREA`
 -- Indices de la tabla `TAREA_EJEMPLAR`
 --
 ALTER TABLE `TAREA_EJEMPLAR`
-  ADD PRIMARY KEY (`TAREA_idTarea`,`EJEMPLAR_especie_idEspecie`,`EJEMPLAR_acuario_idAcuario`),
+  ADD PRIMARY KEY (`idTareaEjemplar`),
+  ADD UNIQUE KEY `idTareaEjemplar` (`idTareaEjemplar`),
   ADD KEY `fk_TAREA_has_EJEMPLAR_EJEMPLAR1_idx` (`EJEMPLAR_especie_idEspecie`,`EJEMPLAR_acuario_idAcuario`),
-  ADD KEY `fk_TAREA_has_EJEMPLAR_TAREA1_idx` (`TAREA_idTarea`);
+  ADD KEY `fk_TAREA_has_EJEMPLAR_TAREA1_idx` (`TAREA_idTarea`),
+  ADD KEY `EJEMPLAR_acuario_idAcuario` (`EJEMPLAR_acuario_idAcuario`);
 
 --
 -- Indices de la tabla `TIPO_TAREA`
@@ -1027,17 +1201,17 @@ ALTER TABLE `VALIDACION`
 -- AUTO_INCREMENT de la tabla `ACUARIO`
 --
 ALTER TABLE `ACUARIO`
-  MODIFY `idAcuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idAcuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `CONDICION_AMBIENTAL`
 --
 ALTER TABLE `CONDICION_AMBIENTAL`
-  MODIFY `idCondicionAmbiental` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idCondicionAmbiental` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `ESPECIE`
 --
 ALTER TABLE `ESPECIE`
-  MODIFY `idEspecie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idEspecie` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `INSUMO`
 --
@@ -1057,7 +1231,7 @@ ALTER TABLE `NOTIFICACION`
 -- AUTO_INCREMENT de la tabla `PLANIFICACION`
 --
 ALTER TABLE `PLANIFICACION`
-  MODIFY `idPlanificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idPlanificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT de la tabla `ROL`
 --
@@ -1067,7 +1241,12 @@ ALTER TABLE `ROL`
 -- AUTO_INCREMENT de la tabla `TAREA`
 --
 ALTER TABLE `TAREA`
-  MODIFY `idTarea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idTarea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+--
+-- AUTO_INCREMENT de la tabla `TAREA_EJEMPLAR`
+--
+ALTER TABLE `TAREA_EJEMPLAR`
+  MODIFY `idTareaEjemplar` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
@@ -1174,8 +1353,9 @@ ALTER TABLE `TAREA`
 -- Filtros para la tabla `TAREA_EJEMPLAR`
 --
 ALTER TABLE `TAREA_EJEMPLAR`
-  ADD CONSTRAINT `fk_TAREA_has_EJEMPLAR_EJEMPLAR1` FOREIGN KEY (`EJEMPLAR_especie_idEspecie`,`EJEMPLAR_acuario_idAcuario`) REFERENCES `EJEMPLAR` (`especie_idEspecie`, `acuario_idAcuario`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_TAREA_has_EJEMPLAR_TAREA1` FOREIGN KEY (`TAREA_idTarea`) REFERENCES `TAREA` (`idTarea`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `TAREA_EJEMPLAR_ibfk_1` FOREIGN KEY (`EJEMPLAR_acuario_idAcuario`) REFERENCES `ACUARIO` (`idAcuario`),
+  ADD CONSTRAINT `fk_tarea_ejemplar_especie` FOREIGN KEY (`EJEMPLAR_especie_idEspecie`) REFERENCES `ESPECIE` (`idEspecie`),
+  ADD CONSTRAINT `fk_tarea_ejemplar_tarea` FOREIGN KEY (`TAREA_idTarea`) REFERENCES `TAREA` (`idTarea`);
 
 --
 -- Filtros para la tabla `VALIDACION`

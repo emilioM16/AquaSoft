@@ -18,12 +18,6 @@ if (isset($q)){
 ?>
 <div id="cont">
 
-    <!-- <?php $form = ActiveForm::begin(
-        [
-
-        ]
-    ); ?> -->
-
         <div class="row">
 
             <div  class="col-lg-12">
@@ -45,12 +39,12 @@ if (isset($q)){
 
                 <div id="inputs" class="col-lg-12">
                 </div>
- 
-                <div id="alert" class='col-lg-9'>
-                </div>
             </div>
         </div>
 
-    <!-- <?php ActiveForm::end(); ?> -->
+        <div class="row">
+            <div id="alert" class='col-lg-9 form-center'>
+            </div>
+        </div>
 
 </div>

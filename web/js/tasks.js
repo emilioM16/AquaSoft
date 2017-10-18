@@ -31,9 +31,6 @@ $(document).on('click','#addBtn',function(){
         if(aquariumValue!=0){
         inputsData[aquariumID] = aquariumValue;
         }    
-        // $.each(inputsData,function(i,val){
-        //     alert(i+'->'+val);
-        // });
     });
     $.ajax({
         url: "task-specimen/add-specimens",
@@ -41,7 +38,8 @@ $(document).on('click','#addBtn',function(){
         data: {data : JSON.stringify({quantities: JSON.stringify(inputsData),specie: selectedSpecie})},
         dataType: "html",
         success: function(response){
-           $("#alert").html(response);
+            $("#inputs").html('');
+            $("#alert").html(response);
         },
         error: function(xhr,err){
             alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
