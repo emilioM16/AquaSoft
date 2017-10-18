@@ -34,31 +34,31 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
     $notifications = 
 
-        '<div class="alert text-justify " role="alert">
+        '<div class="alert alert-menu text-justify " role="alert">
         '. FA::icon("info")->size(FA::SIZE_LARGE).'  Se ha registrado una <strong>nueva planificación</strong> para el acuario A01 
         </div>
         <hr class="hrNotif">
-        <div class="alert text-justify" role="alert">
+        <div class="alert text-justify alert-menu" role="alert">
         '. FA::icon("warning")->size(FA::SIZE_LARGE).' <strong>¡Peligro!</strong> Las condiciones ambientales  del acuario AS03 se encuentran fuera de los umbrales.
         </div>
         <hr class="hrNotif">
-        <div class="alert" role="alert">
+        <div class="alert alert-menu" role="alert">
             ...
         </div>
         <hr class="hrNotif">
-        <div class="alert " role="alert">
+        <div class="alert alert-menu " role="alert">
             ...
         </div>
         <hr class="hrNotif">
-        <div class="alert text-justify" role="alert">
+        <div class="alert alert-menu text-justify" role="alert">
         '. FA::icon("warning")->size(FA::SIZE_LARGE).' <strong>¡Peligro!</strong> Las condiciones ambientales del acuario AS03 se encuentran fuera de los umbrales.
         </div>
         <hr class="hrNotif">
-        <div class="alert " role="alert">
+        <div class="alert alert-menu " role="alert">
             ...
         </div>
         <hr class="hrNotif">
-        <div class="alert " role="alert">
+        <div class="alert alert-menu " role="alert">
           ...
         </div>';
 
@@ -94,7 +94,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
             //SOLO PARA ESPECIALISTA
             ['label'=>file_get_contents("img/fishIcon4.svg"),
-                'url'=>['specimen/'],
+                'url'=>[Url::toRoute('task-specimen/specimens-tasks')],
                 'visible'=>Yii::$app->user->can('verEjemplares'),
                 'options'=>[
                     'data-toggle'=>'tooltip',

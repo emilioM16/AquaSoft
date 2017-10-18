@@ -46,9 +46,11 @@ class AquariumSearch extends Aquarium
         if($rol != 'administrador'){
             $query = Aquarium::find()
                     ->joinWith('userAquariums')
-                    ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario]);
+                    ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario])
+                    ->andWhere(['activo'=>1]);
         }else{
-            $query = Aquarium::find();
+            $query = Aquarium::find()
+                    ->andWhere(['activo'=>1]);
         }
         // add conditions that should always apply here
 

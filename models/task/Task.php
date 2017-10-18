@@ -3,6 +3,14 @@
 namespace app\models\task;
 
 use Yii;
+use app\models\aquarium\Aquarium;
+use app\models\conditions\Conditions;
+use app\models\notification\Notification;
+use app\models\planning\Planning;
+// use app\models\specie;
+use app\models\specimen\Specimen;
+use app\models\supply\Supply;
+use app\models\user\User;
 
 /**
  * This is the model class for table "TAREA".
@@ -17,17 +25,18 @@ use Yii;
  * @property integer $USUARIO_idUsuario
  * @property integer $ACUARIO_idAcuario
  * @property string $TIPO_TAREA_idTipoTarea
- *
- * @property CONDICIONAMBIENTAL[] $cONDICIONAMBIENTALs
- * @property INSUMOTAREA[] $iNSUMOTAREAs
- * @property INSUMO[] $iNSUMOIdInsumos
- * @property NOTIFICACION[] $nOTIFICACIONs
- * @property ACUARIO $aCUARIOIdAcuario
- * @property TIPOTAREA $tIPOTAREAIdTipoTarea
- * @property PLANIFICACION $pLANIFICACIONIdPlanificacion
- * @property USUARIO $uSUARIOIdUsuario
- * @property TAREAEJEMPLAR[] $tAREAEJEMPLARs
- * @property EJEMPLAR[] $eJEMPLAREspecieIdEspecies
+
+ * @property EnviromentalConditions[] $condicionesAmbientales
+ * @property TaskSupply[] $insumosTarea
+ * @property Notification[] $notificaciones
+ * @property Aquarium $acuario
+ * @property TaskType $tipoTarea
+ * @property Planning $planificacion
+ * @property User $usuarioRealiza
+ * @property TaskSpecimen[] $movimientos
+ 
+ * @property Supply[] $insumos
+ * @property Specimen[] $ejemplares
  */
 class Task extends \yii\db\ActiveRecord
 {
@@ -50,10 +59,10 @@ class Task extends \yii\db\ActiveRecord
             [['PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario', 'ACUARIO_idAcuario'], 'integer'],
             [['titulo', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [['ACUARIO_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => ACUARIO::className(), 'targetAttribute' => ['ACUARIO_idAcuario' => 'idAcuario']],
-            [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TIPOTAREA::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
-            [['PLANIFICACION_idPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => PLANIFICACION::className(), 'targetAttribute' => ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']],
-            [['USUARIO_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => USUARIO::className(), 'targetAttribute' => ['USUARIO_idUsuario' => 'idUsuario']],
+            [['ACUARIO_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['ACUARIO_idAcuario' => 'idAcuario']],
+            [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
+            [['PLANIFICACION_idPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Planning::className(), 'targetAttribute' => ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']],
+            [['USUARIO_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['USUARIO_idUsuario' => 'idUsuario']],
         ];
     }
 
@@ -79,87 +88,91 @@ class Task extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCONDICIONAMBIENTALs()
+    public function getCondicionesAmbientales()
     {
-        return $this->hasMany(CONDICIONAMBIENTAL::className(), ['tarea_idTarea' => 'idTarea']);
+        return $this->hasMany(EnviromentalConditions::className(), ['tarea_idTarea' => 'idTarea']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getINSUMOTAREAs()
+    public function getInsumoTareas()
     {
-        return $this->hasMany(INSUMOTAREA::className(), ['TAREA_idTarea' => 'idTarea']);
+        return $this->hasMany(TaskSupply::className(), ['TAREA_idTarea' => 'idTarea']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getINSUMOIdInsumos()
+    public function getInsumos()
     {
-        return $this->hasMany(INSUMO::className(), ['idInsumo' => 'INSUMO_idInsumo'])->viaTable('INSUMO_TAREA', ['TAREA_idTarea' => 'idTarea']);
+        return $this->hasMany(Supply::className(), ['idInsumo' => 'INSUMO_idInsumo'])->viaTable('INSUMO_TAREA', ['TAREA_idTarea' => 'idTarea']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getNOTIFICACIONs()
+    public function getNotificaciones()
     {
-        return $this->hasMany(NOTIFICACION::className(), ['TAREA_idTarea' => 'idTarea']);
+        return $this->hasMany(Notification::className(), ['TAREA_idTarea' => 'idTarea']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getACUARIOIdAcuario()
+    public function getAcuario()
     {
-        return $this->hasOne(ACUARIO::className(), ['idAcuario' => 'ACUARIO_idAcuario']);
+        return $this->hasOne(Aquarium::className(), ['idAcuario' => 'ACUARIO_idAcuario']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTIPOTAREAIdTipoTarea()
+    public function getTipoTarea()
     {
-        return $this->hasOne(TIPOTAREA::className(), ['idTipoTarea' => 'TIPO_TAREA_idTipoTarea']);
+        return $this->hasOne(TaskType::className(), ['idTipoTarea' => 'TIPO_TAREA_idTipoTarea']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPLANIFICACIONIdPlanificacion()
+    public function getPlanificacion()
     {
-        return $this->hasOne(PLANIFICACION::className(), ['idPlanificacion' => 'PLANIFICACION_idPlanificacion']);
+        return $this->hasOne(Planning::className(), ['idPlanificacion' => 'PLANIFICACION_idPlanificacion']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUSUARIOIdUsuario()
+    public function getUsuarioRealiza()
     {
-        return $this->hasOne(USUARIO::className(), ['idUsuario' => 'USUARIO_idUsuario']);
+        return $this->hasOne(User::className(), ['idUsuario' => 'USUARIO_idUsuario']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTAREAEJEMPLARs()
+    public function getMovimientos()
     {
-        return $this->hasMany(TAREAEJEMPLAR::className(), ['TAREA_idTarea' => 'idTarea']);
+        return $this->hasMany(TaskSpecimen::className(), ['TAREA_idTarea' => 'idTarea']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEJEMPLAREspecieIdEspecies()
+    public function getEjemplares()
     {
-        return $this->hasMany(EJEMPLAR::className(), ['especie_idEspecie' => 'EJEMPLAR_especie_idEspecie', 'acuario_idAcuario' => 'EJEMPLAR_acuario_idAcuario'])->viaTable('TAREA_EJEMPLAR', ['TAREA_idTarea' => 'idTarea']);
+        return $this->hasMany(Specimen::className(), ['especie_idEspecie' => 'EJEMPLAR_especie_idEspecie', 'acuario_idAcuario' => 'EJEMPLAR_acuario_idAcuario'])->viaTable('TAREA_EJEMPLAR', ['TAREA_idTarea' => 'idTarea']);
     }
 
+    // public static function getLastTask($taskType){
+    //     return find()
+    //             ->
+    // }
     
-    public function beforeSave($insert){
-        $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
-        $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion);
-        return parent::beforeSave($insert);
-    }
+    // public function beforeSave($insert){
+    //     $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
+    //     $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion);
+    //     return parent::beforeSave($insert);
+    // }
 }

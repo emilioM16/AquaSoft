@@ -4,14 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use rmrevin\yii\fontawesome\FA;
 ?>
-<?php if($model->activo==1){?>
   <div id="acuario" class="acuarios col-sm-6 col-md-4 col-lg-2">
     <div class="thumbnail">
       <img src="/img/itemAcuario.jpg">
       <div class="caption">
         <h3><?=$model->nombre?></h3>
         <?php 
-          if (!isset($model->id_condiciones_ambientales)){
+          if (!isset($model->id_condiciones_ambientales)){ //CORREGIR! 
            echo "<p><span class='label label-danger'>Habitat no cargado</span></p>";
           };
         ?>
@@ -29,7 +28,7 @@ use rmrevin\yii\fontawesome\FA;
                   echo  Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
                         [
                           'value' => Url::to(['aquarium/update','idAcuario'=>$model->idAcuario]), 
-                          'title' => 'Modificar acuario '.$model->nombre, 
+                          'titles' => 'Modificar acuario '.$model->nombre, 
                           'class' => 'showModalButton btn btn-primary btnAquarium',
                         ]);
               }
@@ -69,4 +68,3 @@ use rmrevin\yii\fontawesome\FA;
       </div>
     </div>
   </div>
-  <?php } ?>

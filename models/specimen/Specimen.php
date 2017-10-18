@@ -85,4 +85,15 @@ class Specimen extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Task::className(), ['idTarea' => 'TAREA_idTarea'])->viaTable('TAREA_EJEMPLAR', ['EJEMPLAR_especie_idEspecie' => 'especie_idEspecie', 'EJEMPLAR_acuario_idAcuario' => 'acuario_idAcuario']);
     }
+
+
+    public static function getSpecimen($idAquarium,$idSpecie){ //obtiene, si existe, la última cantidad de ejemplares que hay en un acuario de una especie determinada//
+        $specimen =  Specimen::find()
+                    ->where(['especie_idEspecie'=>$idSpecie])
+                    ->andWhere(['acuario_idAcuario'=>$idAquarium])
+                    // ->orderBy(['idTareaEjemplar'=>SORT_DESC])
+                    ->one();
+        return $specimen;
+    }
+
 }

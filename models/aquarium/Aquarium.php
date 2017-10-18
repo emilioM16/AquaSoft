@@ -26,6 +26,7 @@ class Aquarium extends \yii\db\ActiveRecord
 {
 
     public $events = [];
+    public $maxQuantity = 0; 
     /**
      * @inheritdoc
      */
@@ -124,7 +125,10 @@ class Aquarium extends \yii\db\ActiveRecord
     }
 
     public function beforeSave($insert){
-        $this->espacioDisponible = $this->capacidadMaxima;
+        if(($this->scenario=='create')||($this->scenario=='update')){
+            $this->espacioDisponible = $this->capacidadMaxima;
+      
+        }
         return parent::beforeSave($insert);
     }
 
