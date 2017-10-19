@@ -6,7 +6,7 @@ use yii\widgets\Pjax;
 use yii\data\ArrayDataProvider;
 use rmrevin\yii\fontawesome\FA;
 use kartik\tabs\TabsX;
-
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SearchConditions */
@@ -23,39 +23,61 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row specimensOptions form-center">
     
-    <?php
-
-    $items = [
-        [
-            'label'=>Html::img('@web/img/fishadd.svg',['class'=>'icon']).' Incorporar',
-            'content'=>$this->render('_add',['species'=>$species]),
-            'active'=>true
-        ],
-        [
-            'label'=>Html::img('@web/img/fishtransfer.svg',['class'=>'icon']).' Transferir',
-            'content'=>$this->render('_transfer'),
-        ],
-        [
-            'label'=>Html::img('@web/img/fishremove.svg',['class'=>'icon']).' Quitar',
-            'content'=>$this->render('_remove'),
-        ],
-    ];
-              
-
-
-
-    echo TabsX::widget([
-        'id'=>'specimensTabs',
-        'items'=>$items,
-        'position'=>TabsX::POS_ABOVE,
-        'align'=>TabsX::ALIGN_CENTER,
-        'bordered'=>true,
-        'encodeLabels'=>false
-    ]);
-
-    ?>
-    </div>
-    </div>
+        <div class="col-lg-12"> 
+             
+ 
+            <div class="col-lg-4 "> 
+                <?= Html::button(Html::img( 
+                    '@web/img/fishadd.svg', 
+                    [ 
+                        'class'=>'img-responsive',                     
+                        'data-toggle'=>'tooltip', 
+                        'data-placement'=>'bottom', 
+                        'title'=>'Incorporar', 
+                    ]), 
+                    [
+                    'value' => Url::to(['task-specimen/add-view']), 
+                    'title' => 'Incorporar ejemplares', 
+                    'class' => 'showModalButton btn btn-default btnSpecimen',
+                    ]) 
+                ?> 
+            </div> 
+ 
+            <div class="col-lg-4 "> 
+                <?= Html::button(Html::img( 
+                    '@web/img/fishtransfer.svg', 
+                    [ 
+                        'class'=>'img-responsive', 
+                        'data-toggle'=>'tooltip', 
+                        'data-placement'=>'bottom', 
+                        'title'=>'Transferir', 
+                    ]), 
+                    [
+                    'value' => Url::to(['task-specimen/']), 
+                    'title' => 'Transferir ejemplares', 
+                    'class' => 'showModalButton btn btn-default btnSpecimen',
+                    ]) 
+                ?> 
+            </div> 
+ 
+            <div class="col-lg-4"> 
+                <?= Html::button(Html::img( 
+                    '@web/img/fishremove.svg', 
+                    [ 
+                        'class'=>'img-responsive', 
+                        'data-toggle'=>'tooltip', 
+                        'data-placement'=>'bottom', 
+                        'title'=>'Quitar', 
+                    ]), 
+                    [
+                    'value' => Url::to(['task-specimen/']), 
+                    'title' => 'Quitar ejemplares', 
+                    'class' => 'showModalButton btn btn-default btnSpecimen',
+                    ]) 
+                ?> 
+            </div> 
+        </div> 
+    </div> 
 
 
 </div>

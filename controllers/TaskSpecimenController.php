@@ -120,14 +120,17 @@ class TaskSpecimenController extends Controller
         }
     }
 
-    public function actionSpecimensTasks(){
+    public function actionAddView(){ //renderiza la vista de incorporar ejemplares
         $model = new TaskSpecimen();
         $species = Specie::find()->all();
-        return $this->render('specimensTasks',
-                    [
-                        'species'=>$species,
-                        // 'model'=>$model
-                    ]);
+        return $this->renderAjax('_add',['species'=>$species]);
+    }
+
+    
+    public function actionSpecimensTasks(){
+        // $model = new TaskSpecimen();
+        // $species = Specie::find()->all();
+        return $this->render('specimensTasks');
     }
 
 
@@ -135,9 +138,10 @@ class TaskSpecimenController extends Controller
         $selectedSpecie = Specie::findOne($id); //obtiene los datos de la especie seleccionada//
         $compatibleAquariums = $selectedSpecie->getCompatibleAquariums(); //le pide a la especie seleccionada todos los acuarios que sean compatibles con ella//
         return $this->renderAjax('_formInputs',
-                                ['compatibleAquariums'=>$compatibleAquariums]);
+                                [
+                                    'compatibleAquariums'=>$compatibleAquariums,
+                                ]);
     }
-
 
     
     public function actionAddSpecimens(){ //se encarga de la incorporación de ejemplares//
@@ -153,5 +157,18 @@ class TaskSpecimenController extends Controller
         }
     }
     
+
+    public function actionRemoveSpecimens(){ //se encarga de remover ejemplares//
+        if(isset($_POST['data'])){
+            $data = json_decode(Yii::$app->request->post('data'));
+            $quantities = json_decode($data->quantities,true);
+            $idSpecie = $data->specie;
+            $specie = Specie::findOne($idSpecie);
+            TaskSpecimen::addSpecimens($quantities,$specie);
+            return $this->renderAjax('_alert'); 
+        }else{
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al realizar la operación. Intente nuevamente.");            
+        }
+    }
 
 }

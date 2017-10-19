@@ -32,7 +32,7 @@ use kartik\alert\Alert;
                 }
                 echo '<div class="col-lg-12" align="center">
                         <div class="col-lg-6">'.Html::button(FA::icon("check")->size(FA::SIZE_LARGE).' Aceptar',['id'=>'addBtn','class'=>'btn btn-success']).'</div>
-                        <div class="col-lg-6">'.Html::button(FA::icon("times")->size(FA::SIZE_LARGE).' Cancelar',['class'=>'btn btn-danger']).'</div>
+                        <div class="col-lg-6">'.Html::button(FA::icon("times")->size(FA::SIZE_LARGE).' Cancelar',['class'=>'btn btn-danger','data-dismiss'=>'modal']).'</div>
                     </div>';
                 }else{ //si no hay acuarios compatibles 
                     echo '<div class="col-lg-9 form-center">'

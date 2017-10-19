@@ -1,12 +1,26 @@
 .fishImg{
     border: 3px solid #00A8FF;
     /* width: 45%; */
-    height: auto;
+    height: 40%;
     border-radius: 10px;
     box-shadow: 0 0 10px 1px;
     /* margin-left: 23%; */
     margin-right: auto;
 }
+
+.btnSpecimen{
+    transition: 300ms;
+    background-color: #FFF7DF;
+    border-color: black;
+    box-shadow: 0 0 0 1px;
+}
+
+.btnSpecimen:hover{
+    background-color: #32B6E6;
+    box-shadow: 0 0 0 5px;
+    transition: 300ms;
+}
+
 
 .fishImg:hover{
     filter: drop-shadow();
@@ -14,7 +28,7 @@
 }
 
 .specimensOptions{
-    width: 40%;
+    width: 55%;
 }
 
 .option{
