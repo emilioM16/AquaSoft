@@ -120,28 +120,41 @@ class TaskSpecimenController extends Controller
         }
     }
 
-    public function actionAddView(){ //renderiza la vista de incorporar ejemplares
+    public function actionAddRemove($taskType){ //renderiza la vista de incorporar ejemplares
         $model = new TaskSpecimen();
         $species = Specie::find()->all();
-        return $this->renderAjax('_add',['species'=>$species]);
+        return $this->renderAjax('_addRemove',
+                                [
+                                    'species'=>$species,
+                                    'taskType'=>$taskType
+                                ]);
     }
 
     
     public function actionSpecimensTasks(){
-        // $model = new TaskSpecimen();
-        // $species = Specie::find()->all();
         return $this->render('specimensTasks');
     }
 
 
-    public function actionGetAquariums($id){ //llamado por ajax en la sección de incorporar ejemplares// 
+    public function actionGetAquariums($id, $taskType){ //llamado por ajax en la sección de incorporar y remover ejemplares// 
         $selectedSpecie = Specie::findOne($id); //obtiene los datos de la especie seleccionada//
-        $compatibleAquariums = $selectedSpecie->getCompatibleAquariums(); //le pide a la especie seleccionada todos los acuarios que sean compatibles con ella//
-        return $this->renderAjax('_formInputs',
-                                [
-                                    'compatibleAquariums'=>$compatibleAquariums,
-                                ]);
+        if($taskType == 'add'){ //en caso que la tarea sea incorporar//
+            $compatibleAquariums = $selectedSpecie->getCompatibleAquariums(); //le pide a la especie seleccionada todos los acuarios que sean compatibles con ella//
+            return $this->renderAjax('_formInputs',
+                                    [
+                                        'aquariums'=>$compatibleAquariums,
+                                        'taskType'=>'add'
+                                    ]);
+        }else{ //la tarea es remover//
+            $availableAquariums = $selectedSpecie->getAvailableAquariums();
+            return $this->renderAjax('_formInputs',
+                                    [
+                                        'aquariums'=>$availableAquariums,
+                                        'taskType'=>'remove'
+                                    ]);
+        }
     }
+
 
     
     public function actionAddSpecimens(){ //se encarga de la incorporación de ejemplares//
@@ -164,7 +177,7 @@ class TaskSpecimenController extends Controller
             $quantities = json_decode($data->quantities,true);
             $idSpecie = $data->specie;
             $specie = Specie::findOne($idSpecie);
-            TaskSpecimen::addSpecimens($quantities,$specie);
+            TaskSpecimen::removeSpecimens($quantities,$specie);
             return $this->renderAjax('_alert'); 
         }else{
             return Yii::$app->session->setFlash('error', "Ocurrió un error al realizar la operación. Intente nuevamente.");            

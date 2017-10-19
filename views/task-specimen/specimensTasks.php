@@ -8,6 +8,7 @@ use rmrevin\yii\fontawesome\FA;
 use kartik\tabs\TabsX;
 use yii\helpers\Url;
 
+use app\models\aquarium\Aquarium;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SearchConditions */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -36,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'title'=>'Incorporar', 
                     ]), 
                     [
-                    'value' => Url::to(['task-specimen/add-view']), 
+                    'value' => Url::to(['task-specimen/add-remove','taskType'=>'Add']), 
                     'title' => 'Incorporar ejemplares', 
                     'class' => 'showModalButton btn btn-default btnSpecimen',
                     ]) 
@@ -70,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'title'=>'Quitar', 
                     ]), 
                     [
-                    'value' => Url::to(['task-specimen/']), 
+                    'value' => Url::to(['task-specimen/add-remove','taskType'=>'Remove']), 
                     'title' => 'Quitar ejemplares', 
                     'class' => 'showModalButton btn btn-default btnSpecimen',
                     ]) 
@@ -78,6 +79,4 @@ $this->params['breadcrumbs'][] = $this->title;
             </div> 
         </div> 
     </div> 
-
-
 </div>

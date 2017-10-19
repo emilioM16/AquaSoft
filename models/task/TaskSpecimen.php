@@ -167,13 +167,13 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                 
                 $aquarium = Aquarium::findOne($idAquarium);
 
-                if($specie->validConditions($aquarium)){ //si las condiciones son válidas, calcula la cantidad de espacio requerido para su validación//
+                // if($specie->validConditions($aquarium)){ //si las condiciones son válidas, calcula la cantidad de espacio requerido para su validación//
 
                     $totalQuantity = $specie->minEspacio * $quantity; //calcula la cantidad total de espacio necesaria//
 
-                    if($aquarium->espacioDisponible >= $totalQuantity){ //si hay espacio suficiente en el acuario, actualiza el espacio disponible y guarda las tareas// 
+                    if($aquarium->getQuantity($specie->idEspecie) <= $totalQuantity){ //si hay ejemplares suficientes que remover del acuario, actualiza el espacio disponible y guarda las tareas// 
 
-                        $aquarium->espacioDisponible = $aquarium->espacioDisponible - $totalQuantity; //actualiza el espacio disponible del acuario//
+                        $aquarium->espacioDisponible = $aquarium->espacioDisponible + $totalQuantity; //actualiza el espacio disponible del acuario//
 
                         if($aquarium->save()){
 
@@ -185,7 +185,7 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                             $task->fechaHoraFin = new Expression('NOW()');
                             $task->fechaHoraRealizacion = new Expression('NOW()');
                             $task->ACUARIO_idAcuario = $idAquarium;
-                            $task->TIPO_TAREA_idTipoTarea = 'Incorporar ejemplares';
+                            $task->TIPO_TAREA_idTipoTarea = 'Quitar ejemplares';
 
                             if($task->save()){ //si se guarda la tarea, adiciona la cantidad introducida y la guarda//
 
@@ -194,20 +194,20 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                                 $taskSpecimen->TAREA_idTarea = $task->idTarea;
                                 $taskSpecimen->EJEMPLAR_especie_idEspecie = $specie->idEspecie;
                                 $taskSpecimen->EJEMPLAR_acuario_idAcuario = $idAquarium;
-                                $taskSpecimen->cantidad = $quantity;
+                                $taskSpecimen->cantidad = $quantity * (-1);
 
                                 if($taskSpecimen->save()){ //si se guarda la tarea, actualiza la cantidad disponible del acuario//
                                     
                                     $specimen = Specimen::getSpecimen($idAquarium, $specie->idEspecie);
 
-                                    if($specimen==null){
-                                        $specimen = new Specimen();
-                                        $specimen->especie_idEspecie = $specie->idEspecie;
-                                        $specimen->acuario_idAcuario = $idAquarium;
-                                        $specimen->cantidad = $quantity;
-                                    }else{
-                                        $specimen->cantidad = $quantity + $specimen->cantidad;
-                                    }
+                                    // if($specimen==null){
+                                    //     $specimen = new Specimen();
+                                    //     $specimen->especie_idEspecie = $specie->idEspecie;
+                                    //     $specimen->acuario_idAcuario = $idAquarium;
+                                    //     $specimen->cantidad = $quantity;
+                                    // }else{
+                                    $specimen->cantidad = $specimen->cantidad - $quantity;
+                                    // }
                                     
                                     if($specimen->save()){
                                         $transaction->commit();
@@ -228,13 +228,13 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                                                     Es posible que la disponibilidad de espacio para uno o varios de los acuarios seleccionados haya cambiado. 
                                                     Intente nuevamente. ");                            
                     }
-                }else{
-                    return Yii::$app->session->setFlash('error', "Ocurrió un error al realizar la operación. 
-                    Es posible que la disponibilidad de espacio para uno o varios de los acuarios seleccionados haya cambiado. 
-                    Intente nuevamente. ");          
-                }
+                // }else{
+                //     return Yii::$app->session->setFlash('error', "Ocurrió un error al realizar la operación. 
+                //     Es posible que la disponibilidad de espacio para uno o varios de los acuarios seleccionados haya cambiado. 
+                //     Intente nuevamente. ");          
+                // }
             } //fin del FOR//
-            return Yii::$app->session->setFlash('success', "Los ejemplares se incorporaron correctamente a el/los acuario/s seleccionado/s.");
+            return Yii::$app->session->setFlash('success', "Los ejemplares se quitaron correctamente de los acuarios seleccionados.");
         }catch (Exception $e){
             $transaction->rollback();
             return Yii::$app->session->setFlash('error', $e);

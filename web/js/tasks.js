@@ -4,12 +4,12 @@ $(document).ready(function(){
 
 
 //CORRESPONDIENTES A INCORPORAR EJEMPLARES//
-$(document).on('change','#selectSpecie',function(){
+$(document).on('change','#selectSpecieAdd',function(){
     var data_id = $(this).val();
     $.ajax({
        url: "task-specimen/get-aquariums",
        type: "GET",
-       data: {id : data_id},
+       data: {id : data_id,taskType:'add'},
        dataType: "html",
        success: function(response){
           $("#inputs").html(response);
@@ -26,7 +26,7 @@ $(document).on('change','#selectSpecie',function(){
 $(document).on('click','#addBtn',function(){ 
     var inputsData = new Object();
     var selectedSpecie = '';
-    var selectedSpecie = $('#selectSpecie').val();
+    var selectedSpecie = $('#selectSpecieAdd').val();
     $('.tsInput').each(function(){
         var aquariumID = $(this).attr('id');
         var aquariumValue = $(this).val();
@@ -55,16 +55,16 @@ $(document).on('click','#addBtn',function(){
 $(document).on('change','#selectSpecieRemove',function(){
     var data_id = $(this).val();
     $.ajax({
-       url: "task-specimen/get-aquariums-r",
+       url: "task-specimen/get-aquariums",
        type: "GET",
-       data: {id : data_id},
+       data: {id : data_id,taskType:'remove'},
        dataType: "html",
        success: function(response){
-          $("#inputsRemove").html(response);
-          $("#alertRemove").html('');
+          $("#inputs").html(response);
+          $("#alert").html('');
        },
        error:function(){
-           $("#inputsRemove").html("Error. Contacte al administrador");
+           $("#inputs").html("Error. Contacte al administrador");
        }
      });
 });
@@ -88,8 +88,8 @@ $(document).on('click','#removeBtn',function(){
         data: {data : JSON.stringify({quantities: JSON.stringify(inputsData),specie: selectedSpecie})},
         dataType: "html",
         success: function(response){
-            $("#inputsRemove").html('');
-            $("#alertRemove").html(response);
+            $("#inputs").html('');
+            $("#alert").html(response);
         },
         error: function(xhr,err){
             alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);

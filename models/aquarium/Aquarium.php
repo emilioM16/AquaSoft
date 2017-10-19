@@ -182,4 +182,16 @@ class Aquarium extends \yii\db\ActiveRecord
         return $species;
     }
 
+
+    public function getQuantity($idSpecie){
+        $specimen = Specimen::find()
+                    ->where(['acuario_idAcuario'=>$this->idAcuario])
+                    ->andWhere(['especie_idEspecie'=>$idSpecie])
+                    ->one();
+        if($specimen!=null){
+            return $specimen->cantidad;
+        }else{
+            return 0;
+        }
+    }
 }

@@ -132,7 +132,7 @@ class Specie extends \yii\db\ActiveRecord
     }
 
 
-
+    //Obtiene los acuarios que son compatibles con la especie actual//
     public function getCompatibleAquariums(){
         $searchModel  = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -150,6 +150,25 @@ class Specie extends \yii\db\ActiveRecord
             }
         }
         $aquariums = array_values($aquariums); //vuelve a asignar los indices a los elementos//
+        return $aquariums;
+    }
+
+
+
+    public function getAvailableAquariums(){
+        $searchModel  = new AquariumSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $aquariums = $dataProvider->getModels();
+
+        foreach ($aquariums as $key => $aquarium) {
+            $aquariumQuantity = $aquarium->getQuantity($this->idEspecie);
+            if($aquariumQuantity <= 0 ){ // verifica que exista un registro en la tabla ejemplares y que  //
+                unset($aquariums[$key]);
+            }else{
+                $aquariums[$key]->maxQuantity = $aquariumQuantity;
+            }
+        }
+        $aquariums = array_values($aquariums);
         return $aquariums;
     }
 
