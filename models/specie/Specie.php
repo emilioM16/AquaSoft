@@ -165,7 +165,7 @@ class Specie extends \yii\db\ActiveRecord
             if($aquariumQuantity <= 0 ){ // verifica que exista un registro en la tabla ejemplares y que  //
                 unset($aquariums[$key]);
             }else{
-                $aquariums[$key]->maxQuantity = $aquariumQuantity;
+                $aquariums[$key]->maxQuantity = floor($aquariumQuantity / $this->minEspacio);
             }
         }
         $aquariums = array_values($aquariums);

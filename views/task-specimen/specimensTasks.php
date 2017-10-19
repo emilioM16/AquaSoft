@@ -8,7 +8,6 @@ use rmrevin\yii\fontawesome\FA;
 use kartik\tabs\TabsX;
 use yii\helpers\Url;
 
-use app\models\aquarium\Aquarium;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\SearchConditions */
 /* @var $dataProvider yii\data\ActiveDataProvider */

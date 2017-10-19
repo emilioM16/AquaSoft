@@ -34,6 +34,9 @@ use yii\helpers\Url;
                 </div>
 
                 <div id="inputs" class="col-lg-12">
+                    <div class="col-lg-12" align="center">
+                        <div class="col-lg-12"><?= Html::button(FA::icon("times")->size(FA::SIZE_LARGE).' Cancelar',['class'=>'btn btn-danger','data-dismiss'=>'modal'])?></div>
+                    </div>
                 </div>
             </div>
         </div>

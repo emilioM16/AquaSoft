@@ -171,7 +171,7 @@ class TaskSpecimen extends \yii\db\ActiveRecord
 
                     $totalQuantity = $specie->minEspacio * $quantity; //calcula la cantidad total de espacio necesaria//
 
-                    if($aquarium->getQuantity($specie->idEspecie) <= $totalQuantity){ //si hay ejemplares suficientes que remover del acuario, actualiza el espacio disponible y guarda las tareas// 
+                    if($aquarium->getQuantity($specie->idEspecie) >= $totalQuantity){ //si hay ejemplares suficientes que remover del acuario, actualiza el espacio disponible y guarda las tareas// 
 
                         $aquarium->espacioDisponible = $aquarium->espacioDisponible + $totalQuantity; //actualiza el espacio disponible del acuario//
 
@@ -206,7 +206,7 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                                     //     $specimen->acuario_idAcuario = $idAquarium;
                                     //     $specimen->cantidad = $quantity;
                                     // }else{
-                                    $specimen->cantidad = $specimen->cantidad - $quantity;
+                                    $specimen->cantidad = $specimen->cantidad - $totalQuantity;
                                     // }
                                     
                                     if($specimen->save()){
