@@ -71,12 +71,32 @@ class PlanningController extends Controller
       $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
 
       if ($model->load(Yii::$app->request->post())) {
+
             $formattedDate = date("Y-m-d",strtotime($model->anioMes));
-            $model->anioMes = $formattedDate;
-              if($model->save()){ //ACÁ FIJATE QUE AL REFRESCAR LA PÁGINA VUELVE A GUARDAR EN LA BASE LA PLANIFICACIÓN DE VUELTA//
-                return $this->render('calendar',['model' => $model]);
-              }
-       } else {
+
+            if ($model->validatePlanning($formattedDate,$model->ACUARIO_USUARIO_acuario_idAcuario)) {
+
+              // $this->addError("La planificacion ya existe para este mes y con este acuario");
+
+              $model->anioMes = $formattedDate;
+
+                if($model->save()){
+                  return $this->render('calendar',['model' => $model]);
+                }
+
+            }
+            else{
+              return $this->render('create', [
+                  'model' => $model,
+                  'aquariums'=>$aquariums
+
+              ]);
+
+
+            //muestra el mensaje y vuelve a cargar la pagina
+            }
+       }
+      else {
           return $this->render('calendar', [
               'model' => $model,
               'aquariums'=>$aquariums
@@ -97,9 +117,9 @@ class PlanningController extends Controller
 
 
         $model = new Planning();
-        $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
-
-
+        // $aquariumss = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+        yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->user->identity->getAquariums()));
+        $aquariums = [2=>'A02',3=>'a04'];
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPlanificacion]);
         } else {

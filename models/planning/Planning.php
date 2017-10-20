@@ -100,26 +100,18 @@ class Planning extends \yii\db\ActiveRecord
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
-    public function validatePlanning()
-    { //metodo que valida la inexistencia de una planificacion para ese mes y ese acuario
+    public function validatePlanning($unMes, $idAcua)
+    {
+      $marca = true;
+       $planificaciones = Planning::find()->where(['ACUARIO_USUARIO_acuario_idAcuario' => $idAcua])->all();
 
-      // //ExistValidator:
-      //  $planificaciones = Planning::find()->all(); //tomo todas las planificaciones
-      //   yii::error(\yii\helpers\VarDumper::dumpAsString($planificaciones));
-      //   foreach ($planificaciones as $plani) { // recorro la lista de planificaciones
-      //
-      //       if ($planis->anioMes == $unAñoMes && $planis->Acuario== $unAcuario) {
-      //
-      //           if ($planis->anioMes == $unAñoMes) {
-      //
-      //             $this->addError($attribute,"La planificacion ya existe para este mes y con este acuario");
-      //             return false;
-      //
-      //             return $this->render('calendarTask', [
-      //               //  'model' => $this->findModel($id),
-      //             ]);
-      //   }
-      // }
+        foreach ($planificaciones as $plani) {
+
+                 if ($plani->anioMes == $unMes) {
+                   $marca = false;
+                }
+       }
+       return $marca;
     }
 
 
@@ -163,6 +155,7 @@ class Planning extends \yii\db\ActiveRecord
       $this->activo = 1;
       $this->ESTADO_PLANIFICACION_idEstadoPlanificacion ='SinVerificar';
       $this->ACUARIO_USUARIO_usuario_idUsuario=21;
+    //  $this->validatePlanning('anioMes','ACUARIO_USUARIO_acuario_idAcuario');
 
       return parent::beforeSave($insert);
 

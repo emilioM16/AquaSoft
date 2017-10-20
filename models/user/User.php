@@ -98,7 +98,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     */
     public function getAquariums()
     {
-                // yii::error(\yii\helpers\VarDumper::dumpAsString($this->getRole()));
           if ($this->getRole()=='administrador') {
             return Aquarium::find()->all();
           }else {
