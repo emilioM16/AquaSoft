@@ -138,6 +138,7 @@ class TaskSpecimenController extends Controller
                                 ]);
     }
     
+
     public function actionSpecimensTasks(){
         return $this->render('specimensTasks');
     }
@@ -145,21 +146,16 @@ class TaskSpecimenController extends Controller
 
     public function actionGetAquariums($id, $taskType){ //llamado por ajax en la sección de incorporar y remover ejemplares// 
         $selectedSpecie = Specie::findOne($id); //obtiene los datos de la especie seleccionada//
-        if($taskType == 'add'){ //en caso que la tarea sea incorporar//
-            $compatibleAquariums = $selectedSpecie->getCompatibleAquariums(); //le pide a la especie seleccionada todos los acuarios que sean compatibles con ella//
-            return $this->renderAjax('_formInputs',
-                                    [
-                                        'aquariums'=>$compatibleAquariums,
-                                        'taskType'=>'add'
-                                    ]);
+        if(($taskType == 'add') || ($taskType == 'transfer')){ //en caso que la tarea sea incorporar//
+            $aquariums = $selectedSpecie->getCompatibleAquariums(); //le pide a la especie seleccionada todos los acuarios que sean compatibles con ella//
         }else{ //la tarea es remover//
-            $availableAquariums = $selectedSpecie->getAvailableAquariums();
-            return $this->renderAjax('_formInputs',
-                                    [
-                                        'aquariums'=>$availableAquariums,
-                                        'taskType'=>'remove'
-                                    ]);
+            $aquariums = $selectedSpecie->getAvailableAquariums();
         }
+        return $this->renderAjax('_formInputs',
+        [
+            'aquariums'=>$aquariums,
+            'taskType'=>$taskType
+        ]);
     }
 
 
@@ -192,7 +188,7 @@ class TaskSpecimenController extends Controller
     }
 
 
-    public function actionGetAvailableAquariums(){
+    public function actionGetAvailableAquariums(){ //obtiene los acuarios disponibles de origen para la transferencia // 
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];

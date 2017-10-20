@@ -99,13 +99,16 @@ $(document).on('click','#removeBtn',function(){
 });
 
 
+
+
+
 //CORRESPONDIENTES A TRANSFERIR EJEMPLARES//
 $(document).on('change','#selectOriginAquarium',function(){
     var data_id = $(this).val();
     $.ajax({
        url: "task-specimen/get-aquariums",
        type: "GET",
-       data: {id : data_id,taskType:'add'},
+       data: {id : data_id,taskType:'transfer'},
        dataType: "html",
        success: function(response){
           $("#inputs").html(response);

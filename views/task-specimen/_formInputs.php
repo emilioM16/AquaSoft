@@ -39,7 +39,7 @@ use kartik\alert\Alert;
                     .Alert::widget([
                         'type' => Alert::TYPE_DANGER,
                         'icon' => 'glyphicon glyphicon-remove-sign',
-                        'body' => 'No existen acuarios aptos para la especie seleccionada.',
+                        'body' => 'No existen acuarios disponibles para la especie seleccionada.',
                         'showSeparator' => true,
                         'delay' => 0,
                         'closeButton'=>false,
