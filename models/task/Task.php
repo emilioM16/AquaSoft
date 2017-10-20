@@ -12,6 +12,7 @@ use app\models\planning\Planning;
 use app\models\specimen\Specimen;
 use app\models\supply\Supply;
 use app\models\user\User;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "TAREA".
@@ -41,18 +42,18 @@ use app\models\user\User;
  */
 class Task extends \yii\db\ActiveRecord
 {
-    private $isPlanned = true;
-    public $duracion;
+    public $duracion = 0;
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
         $this->ACUARIO_idAcuario = $idAcuario;
         // Si es no planificada seteo con la fecha actual
-        $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
+        // $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
         if ($idPlanificacion == -1)
         {
-            $this->isPlanned = false;
             $this->fechaHoraInicio = date('Y-m-d H:i:s');
+            // $this->fechaHoraInicio = '2017-10-15';
+            // $this->fechaHoraInicio = new Expression('NOW()');
         }
         else
             $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
@@ -72,7 +73,7 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'TIPO_TAREA_idTipoTarea'], 'required'],
+            [['titulo', 'TIPO_TAREA_idTipoTarea', 'duracion'], 'required'],
             [['fechaHoraInicio', 'fechaHoraFin', 'fechaHoraRealizacion'], 'safe'],
             [['PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario', 'ACUARIO_idAcuario'], 'integer'],
             [['titulo', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
@@ -186,19 +187,29 @@ class Task extends \yii\db\ActiveRecord
 
     
     public function beforeSave($insert){
-        // strtotime Convierte una descripción de fecha/hora textual en una fecha Unix (el número de segundos desde el 1 de Enero del 1970 00:00:00 UTC)
-        // $this->duracion = strtotime($this->duracion)-strtotime("00:00:00");
-        // $this->hora_fin = date("H:i:s",strtotime($this->hora_inicio)+$this->duracion); A esto lo comento porque creo que no manejamos esos atributos (la hora está incluida en los parámetros de fechaHoraInicio y Fin)
-        $this->fechaHoraFin = date('Y-m-d H:i:s',strtotime($this->fechaHoraInicio)+strtotime($this->duracion));
+        if (!isset($this->fechaHoraFin))
+            $this->calcularFechaFin();      
         $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
         return parent::beforeSave($insert);
     }
 
+    /// Este método es llamado cuando se traen los datos de la base    
     public function actualizarDuracion(){
-        $this->duracion = date('h:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio));
+        // tener en cuenta que la H tiene que estar en mayúsculas para permitirle ingresar entre 1 y 23 horas. Si está en h permite sólo de 1 a 12
+        $this->duracion = date('H:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio));
+    }
+
+    /// este método calcula la fecha de fin en base a la duración (atributo)
+    public function calcularFechaFin(){
+        $h = date("H", strtotime($this->duracion));
+        $m = date("i", strtotime($this->duracion));         
+        $this->fechaHoraFin = strtotime ("+{$h} hour", strtotime($this->fechaHoraInicio)) ; // sumo horas
+        $this->fechaHoraFin = strtotime ("+{$m} minute", strtotime($this->fechaHoraInicio)) ; // sumo minutos
+
+        $this->fechaHoraFin = date('Y-m-d H:i:s', strtotime($this->fechaHoraFin));
     }
 
     public function isPlanned(){
-        return $this->isPlanned;
+        return (isset($this->PLANIFICACION_idPlanificacion));
     }
 }

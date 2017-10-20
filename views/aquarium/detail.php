@@ -98,16 +98,6 @@ function(calEvent, jsEvent, view) {
   $(this).css('border-color', 'red');
 }
 EOF;
-
-// Modal::begin([
-//     'header' => '<h2 class="modalTitle"></h2>',
-//     'closeButton'=>[],    
-//     'headerOptions' => ['id' => 'modal_Header'],
-//     'id'=>'xModal',
-//     'size'=>'modal-md'  
-//     ]);
-//     echo '<div id="modal_Content"></div>';
-// Modal::end();
 ?>
 
   <!-- Calendario -->
@@ -146,7 +136,6 @@ EOF;
                 [
                    'value' => Url::to([
                       'task/create',
-                      'view'=>'view',/*'aquarium/detail';*/
                       'idAcuario'=>$acuario->idAcuario,
                       // 'idPlanificacion'=>-1, // esto significa que es no planificada
                       // 'fecha'=>date("Y-m-d") // hoy

@@ -27,6 +27,8 @@ use yii\helpers\ArrayHelper;
             'validationUrl'=> Url::toRoute(['task/validation','id'=>$taskId]), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
+        // echo field($model, 'fechaHoraInicio', ['readonly' => true]);
+
         echo Form::widget([
             'model'=>$model,
             'form'=>$form,
@@ -62,7 +64,7 @@ use yii\helpers\ArrayHelper;
             'form'=>$form,
             'columns'=>2,
             'attributes'=>[
-                'tipoTarea'=>[
+                'TIPO_TAREA_idTipoTarea'=>[
                     'type'=>Form::INPUT_WIDGET,
                     'widgetClass'=>'kartik\select2\Select2',
                     'options'=>['data'=>ArrayHelper::map($taskTypes,'idTipoTarea','idTipoTarea')]
@@ -103,6 +105,9 @@ use yii\helpers\ArrayHelper;
                 ]
             ]
         ]);
+    $form->field($model, 'fechaHoraInicio')->textInput(['hidden' => true]);
+    // $form->field($model, 'PLANIFICACION_idPlanificacion')->textInput(['hidden' => true]);
+    // $form->field($model, 'ACUARIO_idAcuario')->textInput(['hidden' => true]);
     ActiveForm::end();
     ?>
 

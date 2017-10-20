@@ -147,7 +147,7 @@ class Aquarium extends \yii\db\ActiveRecord
         {
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $task->idTarea;
-            $event->title = $task->titulo;
+            $event->title = 'Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
             $event->start = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraInicio));
             $event->end = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraFin));
             // $task->nonstandard = [
