@@ -117,9 +117,9 @@ class PlanningController extends Controller
 
 
         $model = new Planning();
-        // $aquariumss = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
-        yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->user->identity->getAquariums()));
-        $aquariums = [2=>'A02',3=>'a04'];
+        $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+        // yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->user->identity->getAquariums()));
+        // $aquariums = [2=>'A02',3=>'a04'];
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPlanificacion]);
         } else {

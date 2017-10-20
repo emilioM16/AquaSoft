@@ -8,6 +8,7 @@ use app\models\AuthAssignment;
 use app\models\aquarium\UserAquariums;
 use yii\base\Exception;
 use app\models\aquarium\Aquarium;
+use app\models\aquarium\AquariumSearch;
 /**
  * This is the model class for table "usuarios".
  *
@@ -101,7 +102,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
           if ($this->getRole()=='administrador') {
             return Aquarium::find()->all();
           }else {
-            return $this->hasMany(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('acuarios_usuarios', ['usuario_idUsuario' => 'idUsuario']);
+            $searchModel = new AquariumSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            return $dataProvider->getModels();
           }
 
 
