@@ -155,14 +155,14 @@ class Specie extends \yii\db\ActiveRecord
 
 
 
-    public function getAvailableAquariums(){
+    public function getAvailableAquariums(){ //retorna los acuarios que contengan al menos un ejemplar de la especie seleccionada// 
         $searchModel  = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $aquariums = $dataProvider->getModels();
 
         foreach ($aquariums as $key => $aquarium) {
             $aquariumQuantity = $aquarium->getQuantity($this->idEspecie);
-            if($aquariumQuantity <= 0 ){ // verifica que exista un registro en la tabla ejemplares y que  //
+            if($aquariumQuantity <= 0 ){ // verifica que exista un registro en la tabla ejemplares y que exista al menos un ejemplar en el acuario //
                 unset($aquariums[$key]);
             }else{
                 $aquariums[$key]->maxQuantity = floor($aquariumQuantity / $this->minEspacio);

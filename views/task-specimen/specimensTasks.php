@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'title'=>'Transferir', 
                     ]), 
                     [
-                    'value' => Url::to(['task-specimen/']), 
+                    'value' => Url::to(['task-specimen/transfer']), 
                     'title' => 'Transferir ejemplares', 
                     'class' => 'showModalButton btn btn-default btnSpecimen',
                     ]) 
@@ -74,6 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'title' => 'Quitar ejemplares', 
                     'class' => 'showModalButton btn btn-default btnSpecimen',
                     ]) 
+                    
                 ?> 
             </div> 
         </div> 

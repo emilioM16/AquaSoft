@@ -12,7 +12,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\aquarium\Aquarium;
 use app\models\specie\Specie;
-
+use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 /**
  * TaskSpecimenController implements the CRUD actions for TaskSpecimen model.
  */
@@ -121,7 +122,6 @@ class TaskSpecimenController extends Controller
     }
 
     public function actionAddRemove($taskType){ //renderiza la vista de incorporar ejemplares
-        $model = new TaskSpecimen();
         $species = Specie::find()->all();
         return $this->renderAjax('_addRemove',
                                 [
@@ -130,6 +130,13 @@ class TaskSpecimenController extends Controller
                                 ]);
     }
 
+    public function actionTransfer(){
+        $species = Specie::find()->all();
+        return $this->renderAjax('_transfer',
+                                [
+                                    'species'=>$species,
+                                ]);
+    }
     
     public function actionSpecimensTasks(){
         return $this->render('specimensTasks');
@@ -182,6 +189,24 @@ class TaskSpecimenController extends Controller
         }else{
             return Yii::$app->session->setFlash('error', "Ocurrió un error al realizar la operación. Intente nuevamente.");            
         }
+    }
+
+
+    public function actionGetAvailableAquariums(){
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $specieId = $parents[0];
+                $specie = Specie::findOne($specieId);
+                $aquariums= ArrayHelper::map($specie->getAvailableAquariums(),'idAcuario','nombre');
+                foreach ($aquariums as $id => $nombre) {
+                    $out[] = ['id'=>$id, 'name'=>$nombre];
+                }
+                return Json::encode(['output'=>$out, 'selected'=>'']);
+            }
+        }
+        return Json::encode(['output'=>'', 'selected'=>'']);
     }
 
 }
