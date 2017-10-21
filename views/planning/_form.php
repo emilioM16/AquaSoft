@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                              'pluginOptions' => [
                                  'autoclose'=>true,
                                  'format' => 'dd-mm-yyyy',
-                                //  'minViewMode'=>'months',
+                                 'minViewMode'=>'months',
                              ]
                            ]
                           ],

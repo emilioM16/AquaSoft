@@ -29,11 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'anioMes',
             'fechaHoraCreacion',
             'activo',
-            // 'ACUARIO_USUARIO_acuario_idAcuario',
+            'ACUARIO_USUARIO_acuario_idAcuario',
             // 'ACUARIO_USUARIO_usuario_idUsuario',
             // 'ESTADO_PLANIFICACION_idEstadoPlanificacion',
 
             ['class' => 'yii\grid\ActionColumn'],
+            
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

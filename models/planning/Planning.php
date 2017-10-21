@@ -102,14 +102,19 @@ class Planning extends \yii\db\ActiveRecord
     /////////////////////////////////////////////////////////////////////////////////////////////
     public function validatePlanning($unMes, $idAcua)
     {
-      $marca = true;
+       $marca = true;
        $planificaciones = Planning::find()->where(['ACUARIO_USUARIO_acuario_idAcuario' => $idAcua])->all();
+       $fechaActual = date('Y-m-01');
+       yii::error(\yii\helpers\VarDumper::dumpAsString($fechaActual));
+
+
 
         foreach ($planificaciones as $plani) {
 
-                 if ($plani->anioMes == $unMes) {
+                 if ($plani->anioMes == $unMes or $unMes < $fechaActual) {
                    $marca = false;
                 }
+                  yii::error(\yii\helpers\VarDumper::dumpAsString($unMes));
        }
        return $marca;
     }
