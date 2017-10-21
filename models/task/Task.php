@@ -28,7 +28,7 @@ use yii\db\Expression;
  * @property integer $ACUARIO_idAcuario
  * @property string $TIPO_TAREA_idTipoTarea
 
- * @property EnviromentalConditions[] $condicionesAmbientales
+ * @property EnviromentalConditions $condicionAmbiental
  * @property TaskSupply[] $insumosTarea
  * @property Notification[] $notificaciones
  * @property Aquarium $acuario
@@ -108,10 +108,20 @@ class Task extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCondicionesAmbientales()
+    public function getCondicionAmbiental()
     {
-        return $this->hasMany(EnviromentalConditions::className(), ['tarea_idTarea' => 'idTarea']);
+        return $this->hasOne(CondicionAmbiental::className(), ['tarea_idTarea' => 'idTarea']);
     }
+
+    // public function getActualConditions(){ //obtiene las condiciones ambientales actuales del acuario//
+    //     $conditions = EnviromentalConditions::find()
+    //                     ->asArray()
+    //                     ->select(['temperatura','ph','salinidad','lux','CO2'])
+    //                     ->where(['tarea_idTarea' => $this->idTarea])
+    //                     ->orderBy(['idCondicionAmbiental'=>SORT_DESC])
+    //                     ->one();
+    //     return $conditions;
+    // }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -196,7 +206,7 @@ class Task extends \yii\db\ActiveRecord
     /// Este método es llamado cuando se traen los datos de la base    
     public function actualizarDuracion(){
         // tener en cuenta que la H tiene que estar en mayúsculas para permitirle ingresar entre 1 y 23 horas. Si está en h permite sólo de 1 a 12
-        $this->duracion = date('H:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio));
+        // $this->duracion = date('H:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio));
     }
 
     /// este método calcula la fecha de fin en base a la duración (atributo)
@@ -211,5 +221,10 @@ class Task extends \yii\db\ActiveRecord
 
     public function isPlanned(){
         return (isset($this->PLANIFICACION_idPlanificacion));
+    }
+
+
+    public function wasExecuted(){
+        return (isset($this->fechaHoraRealizacion));
     }
 }

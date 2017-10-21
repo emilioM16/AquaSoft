@@ -69,43 +69,17 @@ class TaskController extends Controller
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
         $taskTypes = TaskType::find()->all();
-        // $model = $this->task;
-        // $view = Yii::$app->request->post('view');
-        // $idAcuario = Yii::$app->request->post('ACUARIO_idAcuario');
-        // $idPlanificacion = Yii::$app->request->post('PLANIFICACION_idPlanificacion');
-        // $fechaInicio = Yii::$app->request->post('fechaHoraInicio');
-        // if ($model->load(Yii::$app->request->post()))
-            // yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));
-        // yii::error(\yii\helpers\VarDumper::dumpAsString(
-        //         ' - idTarea: ' . $model->idTarea . 
-        //         ' - titulo: ' . $model->titulo . 
-        //         ' - descripcion: ' . $model->descripcion . 
-        //         ' - fechaHoraInicio: ' . $model->ACUARIO_idAcuario . 
-        //         ' - fechaHoraFin: ' . $model->fechaHoraFin) . 
-        //         ' - fechaHoraRealizacion: ' . $model->fechaHoraRealizacion . 
-        //         ' - idPlanificacion: ' . $model->PLANIFICACION_idPlanificacion . 
-        //         ' - USUARIO_idUsuario: ' . $model->USUARIO_idUsuario . 
-        //         ' - ACUARIO_idAcuario: ' . $model->ACUARIO_idAcuario . 
-        //         ' - TIPO_TAREA_idTipoTarea: ' . $model->TIPO_TAREA_idTipoTarea);
-        //     else
-        // yii::error(\yii\helpers\VarDumper::dumpAsString($idAcuario . ' - ' . $idPlanificacion . ' - ' . $fechaInicio));
-        // $mypost = $model->load(Yii::$app->request->post());
-        // return $this->redirect([$view, 'id' => $model->idTarea]);
-        // $model->load(Yii::$app->request->post());
-    //     if ($model->load(Yii::$app->request->post()))
-    //         {
-    //     yii::error(\yii\helpers\VarDumper::dumpAsString($model));
-    //     yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));
-    //     yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->referrer));
-    // }
         if (($model->load(Yii::$app->request->post())) && $model->save()) {
             // return $this->redirect(Yii::$app->request->referrer);
             // return $this->renderAjax('//..task/execute',[
             //         'model'=>$model,
             //         'taskTypes'=>$taskTypes
             //     ]);
-            Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
-            // $this->actionExecute($model->idTarea);
+            unset($_POST);
+            $_POST['idTarea'] = $model->idTarea;
+            if (!$model->isPlanned())
+                Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
+                // $this->actionExecute($model->idTarea);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('create',[
@@ -113,7 +87,6 @@ class TaskController extends Controller
                     'taskTypes'=>$taskTypes
                 ]);
             }else{
-                // yii::error(\yii\helpers\VarDumper::dumpAsString('hizo load: '. $model->ACUARIO_idAcuario . ' - ' . $model->PLANIFICACION_idPlanificacion . ' - ' . $model->fechaHoraInicio . ' - ' . $view));
                 return $this->render('create',[
                     'model'=>$model,
                     'taskTypes'=>$taskTypes
@@ -173,24 +146,30 @@ class TaskController extends Controller
     {    
         // if (isset($_POST['idTarea']))   
         // {
-            $idTarea = Yii::$app->request->post('idTarea');
         // } 
         
+        $idTarea = Yii::$app->request->post('idTarea');
         $model = $this->findModel($idTarea);
-
-        yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idTarea]);
-        } else {
-            if (Yii::$app->request->isAjax){
-                return $this->renderAjax('execute',[
-                    'model'=>$model
-                ]);
-            }else{
-                return $this->render('execute',[
-                    'model'=>$model
-                ]);
+        $vista = $this->getViewTaskType($model->TIPO_TAREA_idTipoTarea);
+        if (!$model->wasExecuted())
+        {
+            yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));      
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $this->redirect(Yii::$app->request->referrer);
+                // return $this->renderAjax($vista,[
+                    // 'model'=>$model
+                // ]);
+            } 
+            else {
+                if (Yii::$app->request->isAjax){
+                    return $this->renderAjax($vista,[
+                        'model'=>$model
+                    ]);
+                }else{
+                    return $this->render($vista,[
+                        'model'=>$model
+                    ]);
+                }
             }
         }
     }
@@ -221,6 +200,28 @@ class TaskController extends Controller
             Yii::$app->response->format = 'json';
             return ActiveForm::validate($model);
         }        
+    }
+
+    private function getViewTaskType($taskType){
+        switch ($taskType) {
+            case 'Controlar acuario':
+                return 'control';
+                break;
+            case 'Alimentación':
+            case 'Limpieza':
+            case 'Reparación':
+                return 'maintenance';
+                break;
+            case 'Incorporar ejemplares':
+                return ''; // ver si se puede reutilizar las pantalla de Melo
+                break;
+            case 'Transferir ejemplares':
+                return ''; // ver si se puede reutilizar las pantalla de Melo
+                break;
+            default:
+                # code...
+                break;
+        }
     }
 
 }
