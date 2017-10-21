@@ -127,8 +127,11 @@ class Aquarium extends \yii\db\ActiveRecord
     }
 
     public function beforeSave($insert){
-        $this->activo = !$this->activo; // esto es porqeu el check, si no marcás nada, te devuelve un cero.
-        $this->espacioDisponible = $this->capacidadMaxima;
+         if(($this->scenario=='create')||($this->scenario=='update')){
+            $this->espacioDisponible = $this->capacidadMaxima;
+            if($this->scenario=='create')
+                $this->activo = !$this->activo; // esto es porqeu el check, si no marcás nada, te devuelve un cero.
+        }
         return parent::beforeSave($insert);
     }
 
