@@ -55,11 +55,11 @@ $this->title= 'Sistema de gestión AquaSoft';
         <?php
           echo Html::a(
             Html::img('@web/img/calendar.png',['class'=>'img-circle img-responsive']),
-            ['planification/']
+            ['planning/']
           );
         ?>
         <div  class="imgFooter text-center"> Planificaciones </div>
-      </div>      
+      </div>
     </div>
 
     <div class="col-lg-3">
@@ -68,9 +68,9 @@ $this->title= 'Sistema de gestión AquaSoft';
           <h3 class="panel-title text-center">Notificaciones</h3>
         </div>
         <div class="panel-body">
-         
+
         <div class="alert alert-info" role="alert">
-          Se ha registrado una <a href="#" class="alert-link"><strong>nueva planificación</strong></a> para el acuario A01 
+          Se ha registrado una <a href="#" class="alert-link"><strong>nueva planificación</strong></a> para el acuario A01
         </div>
         <div class="alert alert-danger" role="alert">
           <strong>¡Peligro!</strong> Las <a href="#" class="alert-link">condiciones ambientales </a> del acuario AS03 se encuentran fuera de los umbrales.
@@ -88,7 +88,6 @@ $this->title= 'Sistema de gestión AquaSoft';
         </div>
       </div>
     </div>
-    
+
   </div>
 </div>
-

@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\task\TaskSearch */
+/* @var $searchModel app\models\planning\PlanningSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tasks';
+$this->title = 'Planificaciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="task-index">
+<div class="planning-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Task', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Nueva planificacion', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,18 +24,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'idTarea',
+            'idPlanificacion',
             'titulo',
-            'descripcion',
-            'fechaHoraInicio',
-            'fechaHoraFin',
-            // 'fechaHoraRealizacion',
-            // 'PLANIFICACION_idPlanificacion',
-            // 'USUARIO_idUsuario',
-            // 'ACUARIO_idAcuario',
-            // 'TIPO_TAREA_idTipoTarea',
+            'anioMes',
+            'fechaHoraCreacion',
+            'activo',
+            'ACUARIO_USUARIO_acuario_idAcuario',
+            // 'ACUARIO_USUARIO_usuario_idUsuario',
+            // 'ESTADO_PLANIFICACION_idEstadoPlanificacion',
 
             ['class' => 'yii\grid\ActionColumn'],
+            
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

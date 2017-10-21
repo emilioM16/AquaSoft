@@ -29,7 +29,7 @@ use rmrevin\yii\fontawesome\FA;
         echo Form::widget([
             'model'=>$model,
             'form'=>$form,
-            'columns'=>3,
+            'columns'=>2,
             'attributes'=>[
                 'nombre'=>[
                     'type'=>Form::INPUT_TEXT,
@@ -43,11 +43,6 @@ use rmrevin\yii\fontawesome\FA;
                     'options'=>[
                         'placeholder'=>'Ingrese la capacidad',
                     ]
-                ],
-                'activo'=>[
-                    'type'=>Form::INPUT_RADIO_LIST,
-                    'items'=>[1=>'Activo',0=>'Inactivo'],
-                    'options'=>['inline'=>true]
                 ]
             ]
         ]);
@@ -62,6 +57,21 @@ use rmrevin\yii\fontawesome\FA;
                         'placeholder'=>'Ingrese una descripción',
                         'maxlength'=>true,
                     ]
+                ]
+            ]
+        ]);
+        echo Form::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'columns'=>2,
+            'attributes'=>[
+                'activo'=>[
+                    'label'=>'Inactivo',
+                    'type'=>Form::INPUT_CHECKBOX,
+                    'items'=>[0=>'Inactivo'],
+                    // 'options'=>[
+                    //     'float'=>'right'
+                    // ]
                 ],
                 'actions'=>[
                     'type'=>Form::INPUT_RAW,

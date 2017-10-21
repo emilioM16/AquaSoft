@@ -21,13 +21,13 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/login.css',
         'css/aquariums.css',
-        'css/planifications.css',
+        'css/planning.css',
         'css/specimens.css',
     ];
     public $js = [
         'js/aquariums.js',
         'js/site.js',
-        'js/planifications.js',
+        'js/planning.js',
         'js/specialists.js',
         'js/tasks.js'
     ];

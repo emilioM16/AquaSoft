@@ -40,6 +40,18 @@ use app\models\user\User;
  */
 class Task extends \yii\db\ActiveRecord
 {
+
+    public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
+    {
+        $this->ACUARIO_idAcuario = $idAcuario;
+        // Si es no planificada seteo con la fecha actual
+        $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
+        if ($idPlanificacion == -1)
+            $this->fechaHoraInicio = date('Y-m-d H:i:s');
+        else
+            $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
+    }
+
     /**
      * @inheritdoc
      */

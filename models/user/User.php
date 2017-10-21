@@ -8,6 +8,7 @@ use app\models\AuthAssignment;
 use app\models\aquarium\UserAquariums;
 use yii\base\Exception;
 use app\models\aquarium\Aquarium;
+use app\models\aquarium\AquariumSearch;
 /**
  * This is the model class for table "usuarios".
  *
@@ -54,10 +55,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['nombre', 'apellido', 'nombreUsuario', 'email', 'contrasenia','contrasenia_repeat'], 'string', 'max' => 45],
             [['contrasenia_repeat'], 'compare', 'compareAttribute'=>'contrasenia','message'=>'Las contraseñas deben ser iguales'],
             ['email','email','message'=>'El email ingresado no es válido'],
-            [ ['nombreUsuario', 'email'], 'unique', 'when' => function ($model, $attribute) { 
-                return $model->{$attribute} !== static::findOne(['idUsuario'=>$model->idUsuario])->$attribute; }, 
+            [ ['nombreUsuario', 'email'], 'unique', 'when' => function ($model, $attribute) {
+                return $model->{$attribute} !== static::findOne(['idUsuario'=>$model->idUsuario])->$attribute; },
                 'on' => 'update',
-                'message'=>'El {attribute} ingresado ya existe'], //en caso de ser una modificación de datos 
+                'message'=>'El {attribute} ingresado ya existe'], //en caso de ser una modificación de datos
             [['nombreUsuario', 'email'], 'unique', 'on' => 'create', 'message'=>'El {attribute} ingresado ya existe'], //en caso de crear un nuevo especialista
             ['assignedAquariumsIds', 'each', 'rule' => [
                 'exist', 'targetClass' => Aquarium::className(), 'targetAttribute' => 'idAcuario'
@@ -98,9 +99,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     */
     public function getAquariums()
     {
-        return $this->hasMany(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('acuarios_usuarios', ['usuario_idUsuario' => 'idUsuario']);
-    }
+          if ($this->getRole()=='administrador') {
+            return Aquarium::find()->all();
+          }else {
+            $searchModel = new AquariumSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            return $dataProvider->getModels();
+          }
 
+
+        }
     /**
     * @return \yii\db\ActiveQuery
     */
@@ -133,7 +141,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasMany(Validation::className(), ['usuario_idUsuario' => 'idUsuario']);
     }
 
-    
+
     public static function findIdentity($id){
         return static::findOne(['idUsuario' => $id]);
     }
@@ -152,7 +160,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         $this->oldPassword = $this->contrasenia;
     }
 
-    
+
     public function beforeSave($insert) { //antes de almacenar la contrasenia  la hashea
         if((isset($this->contrasenia))&&($this->oldPassword!=$this->contrasenia)){
             $this->contrasenia  = Yii::$app->security->generatePasswordHash($this->contrasenia);
@@ -165,21 +173,21 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->getPrimaryKey();
     }
 
-  
+
     public function getAuthKey(){
 
     }
 
-    public static function getRole($id){
+    public static function getRole(){
         // if user can have only one role
-        return current( \Yii::$app->authManager->getAssignments($id) );
+        return current( \Yii::$app->authManager->getAssignments(Yii::$app->user->identity->idUsuario))->roleName;
     }
 
 
     public function validateAuthKey($authKey){
 
     }
-  
+
     public static function findIdentityByAccessToken($token, $type = null){
         return static::findOne(['access_token'=>$token]);
     }
@@ -201,7 +209,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
                 $ua = new UserAquariums();
                 $ua->usuario_idUsuario = $this->idUsuario;
                 $ua->acuario_idAcuario = $aqId;
-                $ua->save(); 
+                $ua->save();
             }
         }
     }
@@ -210,7 +218,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         $authModel = new AuthAssignment();
         $transaction = Yii::$app->db->beginTransaction();
         try{
-            $this->activo = 1; 
+            $this->activo = 1;
             if($this->load(Yii::$app->request->post()) && $this->save()){//si pasa las validaciones y se guarda el modelo user, guarda en authItem el rol y lo asocia. Caso contrario, se hace un rollback //
                 $authModel->item_name = 'especialista';
                 $authModel->user_id = strval($this->idUsuario);

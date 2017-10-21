@@ -5,9 +5,12 @@ namespace app\models\aquarium;
 use Yii;
 use yii\helpers\ArrayHelper;
 use app\models\task\Task;
+use app\models\aquarium\Aquarium;
+use app\models\aquarium\UserAquariums;
 use app\models\conditions\EnviromentalConditions;
-use app\models\specie\Specie;
 use app\models\specimen\Specimen;
+use app\models\specie\Specie;
+
 
 /**
  * This is the model class for table "acuarios".
@@ -45,10 +48,10 @@ class Aquarium extends \yii\db\ActiveRecord
             [['capacidadMaxima', 'espacioDisponible', 'activo'], 'integer'],
             [['nombre'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [ ['nombre'], 'unique', 'when' => function ($model, $attribute) { 
-                return $model->{$attribute} !== static::getAquarium($model->idAcuario)->$attribute; }, 
+            [ ['nombre'], 'unique', 'when' => function ($model, $attribute) {
+                return $model->{$attribute} !== static::getAquarium($model->idAcuario)->$attribute; },
                 'on' => 'update',
-                'message'=>'El nombre ingresado ya existe'], //en caso de ser una modificación de datos 
+                'message'=>'El nombre ingresado ya existe'], //en caso de ser una modificación de datos
             [['nombre'], 'unique', 'on' => 'create', 'message'=>'El nombre ingresado ya existe'], //en caso de crear un nuevo especialista
         ];
     }
@@ -127,8 +130,6 @@ class Aquarium extends \yii\db\ActiveRecord
     public function beforeSave($insert){
         if(($this->scenario=='create')||($this->scenario=='update')){
             $this->espacioDisponible = $this->capacidadMaxima;
-      
-        }
         return parent::beforeSave($insert);
     }
 
@@ -137,13 +138,13 @@ class Aquarium extends \yii\db\ActiveRecord
         $items = ArrayHelper::map($aquariums, 'idAcuario','nombre');
         return $items;
     }
-    
+
 
     public function loadEvents(){
 
         $tasks = $this->tasks;
-    
-        foreach ($tasks as $task) 
+
+        foreach ($tasks as $task)
         {
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $task->idTarea;

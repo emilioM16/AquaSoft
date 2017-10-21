@@ -1,17 +1,16 @@
 <?php
 
-namespace app\models\aquarium;
+namespace app\models\planning;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\aquarium\Aquarium;
-use app\models\aquarium\UserAquariums;
+use app\models\planning\Planning;
 
 /**
- * AquariumSearch represents the model behind the search form about `app\models\Aquarium`.
+ * PlanningSearch represents the model behind the search form about `app\models\planning\Planning`.
  */
-class AquariumSearch extends Aquarium
+class PlanningSearch extends Planning
 {
     /**
      * @inheritdoc
@@ -19,8 +18,8 @@ class AquariumSearch extends Aquarium
     public function rules()
     {
         return [
-            [['idAcuario', 'espacioDisponible', 'activo'], 'integer'],
-            [['nombre', 'descripcion'], 'safe'],
+            [['idPlanificacion', 'activo', 'ACUARIO_USUARIO_acuario_idAcuario', 'ACUARIO_USUARIO_usuario_idUsuario'], 'integer'],
+            [['titulo', 'anioMes', 'fechaHoraCreacion', 'ESTADO_PLANIFICACION_idEstadoPlanificacion'], 'safe'],
         ];
     }
 
@@ -42,16 +41,8 @@ class AquariumSearch extends Aquarium
      */
     public function search($params)
     {
-        $rol = Yii::$app->user->identity->getRole();
-        if($rol != 'administrador'){
-            $query = Aquarium::find()
-                    ->joinWith('userAquariums')
-                    ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario])
-                    ->andWhere(['activo'=>1]);
-        }else{
-            $query = Aquarium::find()
-                    ->andWhere(['activo'=>1]);
-        }
+        $query = Planning::find();
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -68,13 +59,16 @@ class AquariumSearch extends Aquarium
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idAcuario' => $this->idAcuario,
-            'espacioDisponible' => $this->espacioDisponible,
+            'idPlanificacion' => $this->idPlanificacion,
+            'anioMes' => $this->anioMes,
+            'fechaHoraCreacion' => $this->fechaHoraCreacion,
             'activo' => $this->activo,
+            'ACUARIO_USUARIO_acuario_idAcuario' => $this->ACUARIO_USUARIO_acuario_idAcuario,
+            'ACUARIO_USUARIO_usuario_idUsuario' => $this->ACUARIO_USUARIO_usuario_idUsuario,
         ]);
 
-        $query->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+        $query->andFilterWhere(['like', 'titulo', $this->titulo])
+            ->andFilterWhere(['like', 'ESTADO_PLANIFICACION_idEstadoPlanificacion', $this->ESTADO_PLANIFICACION_idEstadoPlanificacion]);
 
         return $dataProvider;
     }

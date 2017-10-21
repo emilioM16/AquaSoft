@@ -33,11 +33,15 @@
         "kartik-v/yii2-widget-activeform": "@dev",
         "yii2mod/yii2-sweet-alert": "*",
         "reportico/yii2-reportico": "dev-master",
+        "kartik-v/yii2-widget-datepicker": "@dev",
+        "kartik-v/yii2-widget-select2": "@dev",
         "softark/yii2-dual-listbox": "dev-master",
         "scotthuangzl/yii2-google-chart": "dev-master",
         "kartik-v/yii2-widget-select2": "@dev",
         "kartik-v/yii2-widget-depdrop": "@dev",
         "kartik-v/yii2-widget-alert": "*"
+        "kartik-v/yii2-datecontrol": "@dev",
+        "2amigos/yii2-date-picker-widget": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

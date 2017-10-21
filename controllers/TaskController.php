@@ -4,11 +4,11 @@ namespace app\controllers;
 
 use Yii;
 use app\models\task\Task;
-use app\models\task\TakSearch;
+use app\models\task\TaskSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\specie\Specie;
+use yii\widgets\ActiveForm;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -36,7 +36,7 @@ class TaskController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TakSearch();
+        $searchModel = new TaskSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -62,16 +62,24 @@ class TaskController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($idAcuario, $idPlanificacion = -1, $fecha = '0')
     {
         $model = new Task();
+        
+        $model->inicialice($idAcuario, $idPlanificacion, $fecha);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idTarea]);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->isAjax){
+                return $this->renderAjax('create',[
+                    'model'=>$model
+                ]);
+            }else{
+                return $this->render('create',[
+                    'model'->$model
+                ]);
+            }
         }
     }
 
@@ -108,6 +116,31 @@ class TaskController extends Controller
     }
 
     /**
+     * Execute an existing Task model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionExecute()
+    {        
+        $idTarea = Yii::$app->request->post('idTarea');
+        $model = $this->findModel($idTarea);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idTarea]);
+        } else {
+            if (Yii::$app->request->isAjax){
+                return $this->renderAjax('execute',[
+                    'tarea'=>$model
+                ]);
+            }else{
+                return $this->render('execute',[
+                    'tarea'=>$model
+                ]);
+            }
+        }
+    }
+
+    /**
      * Finds the Task model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
@@ -123,14 +156,15 @@ class TaskController extends Controller
         }
     }
 
-    // public function actionSpecimensTasks(){
-    //     $species = Specie::find()->all();
-    //     return $this->render('specimensTasks',
-    //                    ['species'=>$species]);
-    // }
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
 
-    // public function actionGetAquariums($id){
-    //     // Yii::$app->response->format = 'json';
-    //     return $this->renderAjax('_formInputs');
-    // }
+        $model = new Task(['idTarea'=>$id]);
+
+        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+        {
+            Yii::$app->response->format = 'json';
+            return ActiveForm::validate($model);
+        }        
+    }
+
 }

@@ -159,8 +159,8 @@ class AquariumController extends Controller
         }
     }
 
-    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
-            
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación.
+
         if($id!=-1){ //solución horrible, no quedaba otra, mejorar si se puede a futuro
             $scenario = 'update';
         }else{
@@ -173,6 +173,6 @@ class AquariumController extends Controller
         {
             Yii::$app->response->format = 'json';
             return ActiveForm::validate($model);
-        }        
+        }
     }
 }

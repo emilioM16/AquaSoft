@@ -32,7 +32,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 <div class="wrap">
     <?php
 
-    $notifications = 
+    $notifications =
 
         '<div class="alert alert-menu text-justify " role="alert">
         '. FA::icon("info")->size(FA::SIZE_LARGE).'  Se ha registrado una <strong>nueva planificación</strong> para el acuario A01 
@@ -83,14 +83,14 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             ],
 
             ['label'=>FA::icon('calendar')->size(FA::SIZE_LARGE),
-                'url'=>['planification/'],
+                'url'=>['planning/'],
                 'options'=>[
                     'data-toggle'=>'tooltip',
                     'data-placement'=>'bottom',
                     'title'=>'Planificaciones'
                 ]
             ],
-            
+
 
             //SOLO PARA ESPECIALISTA
             ['label'=>file_get_contents("img/fishIcon4.svg"),
@@ -154,7 +154,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
         'encodeLabels'=>false,
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label'=>FA::icon('home')->size(FA::SIZE_LARGE), 
+            ['label'=>FA::icon('home')->size(FA::SIZE_LARGE),
                 'url'=>[Yii::$app->homeUrl],
                 'options'=>[
                     'data-toggle'=>'tooltip',
@@ -171,12 +171,12 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                     'options'=>[
                         'class'=>'popover-notif'
                     ],
-                    'toggleButton' => 
+                    'toggleButton' =>
                         [
                             'tag'=>'div',
                             'label'=>FA::icon('bell')->size(FA::SIZE_LARGE),'class'=>'nav-link '
                         ],
-                ]), 
+                ]),
             'url'=>null,
             'options'=>[
                 'id'=>'notificationButton',
@@ -185,14 +185,14 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                 'title'=>'Notificaciones',
                 ]
             ],
-            
+
 
 
             ['label'=>FA::icon('user')->size(FA::SIZE_LARGE).' '.Yii::$app->user->identity->apellido.', '. Yii::$app->user->identity->nombre,
                 'url'=>null,
             ],
 
-            ['label'=>FA::icon('question-circle')->size(FA::SIZE_LARGE), 
+            ['label'=>FA::icon('question-circle')->size(FA::SIZE_LARGE),
             'url'=>['site/help'],
             'options'=>[
                 'data-toggle'=>'tooltip',
@@ -202,8 +202,8 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             ],
 
 
-            
-            ['label'=>FA::icon('power-off')->size(FA::SIZE_LARGE), 
+
+            ['label'=>FA::icon('power-off')->size(FA::SIZE_LARGE),
                 'url'=>['site/logout'],
                 'linkOptions'=>[
                     'data-method'=>'post',
@@ -219,7 +219,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
     ]);
     NavBar::end();
     ?>
-    
+
     <div class="container col-lg-12">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
@@ -229,7 +229,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
         </div>
     </div>
 </div>
-    
+
 <?php
 Modal::begin([ //Modal utilizado en todo el sitio//
     'closeButton'=>[],
