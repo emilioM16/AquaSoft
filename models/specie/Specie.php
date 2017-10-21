@@ -159,7 +159,7 @@ class Specie extends \yii\db\ActiveRecord
         $searchModel  = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $aquariums = $dataProvider->getModels();
-
+        
         foreach ($aquariums as $key => $aquarium) {
             $aquariumQuantity = $aquarium->getQuantity($this->idEspecie);
             if($aquariumQuantity <= 0 ){ // verifica que exista un registro en la tabla ejemplares y que exista al menos un ejemplar en el acuario //

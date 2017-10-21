@@ -21,6 +21,7 @@ use kartik\depdrop\DepDrop;
 
             <div class="form-group col-lg-6 form-center" align="center">
                 <?php
+                //Select de especies//
                 echo '<label class="control-label">Especies</label>';
                 echo Select2::widget([
                     'id'=>'selectSpecie', 
@@ -31,17 +32,32 @@ use kartik\depdrop\DepDrop;
                     ],
 
                 ]);
+                //Select de acuario de origen//
                 echo '<label class="control-label">Acuario de origen </label>';
                 echo DepDrop::widget([
-                    'name' => 'aquarium',
+                    'name' => 'originAquarium',
                     'type'=>DepDrop::TYPE_SELECT2,
                     'options' => [
                         'id'=>'selectOriginAquarium',
                     ],
                     'pluginOptions' => [
-                        'placeholder'=>'Seleccione un acuario...',
+                        'placeholder'=>'Seleccione un acuario de origen...',
                         'depends'=>['selectSpecie'],
-                        'url' => Url::to(['/task-specimen/get-available-aquariums'])
+                        'url' => Url::to(['/task-specimen/get-origin-aquariums'])
+                    ]
+                ]);
+                //Select de acuario de destino//
+                echo '<label class="control-label">Acuario de destino </label>';
+                echo DepDrop::widget([
+                    'name' => 'destinationAquarium',
+                    'type'=>DepDrop::TYPE_SELECT2,
+                    'options' => [
+                        'id'=>'selectDestinationAquarium',
+                    ],
+                    'pluginOptions' => [
+                        'placeholder'=>'Seleccione un acuario de destino...',
+                        'depends'=>['selectSpecie','selectOriginAquarium'],
+                        'url' => Url::to(['/task-specimen/get-destination-aquariums'])
                     ]
                 ]);
                 ?>

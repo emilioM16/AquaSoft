@@ -103,21 +103,22 @@ $(document).on('click','#removeBtn',function(){
 
 
 //CORRESPONDIENTES A TRANSFERIR EJEMPLARES//
-$(document).on('change','#selectOriginAquarium',function(){
-    var data_id = $(this).val();
-    $.ajax({
-       url: "task-specimen/get-aquariums",
-       type: "GET",
-       data: {id : data_id,taskType:'transfer'},
-       dataType: "html",
-       success: function(response){
-          $("#inputs").html(response);
-          $("#alert").html('');
-       },
-       error:function(){
-           $("#inputs").html("Error. Contacte al administrador");
-       }
-     });
+$(document).on('change','#selectDestinationAquarium',function(){
+    // var selectedSpecieId = $('#selectSpecie').val();
+    // var originAquariumId = $('#').val();
+    // $.ajax({
+    //    url: "task-specimen/get-destination-aquariums",
+    //    type: "GET",
+    //    data: {originId : originAquariumId,specieId: selectedSpecieId,taskType:'transfer'},
+    //    dataType: "html",
+    //    success: function(response){
+    //       $("#inputs").html(response);
+    //       $("#alert").html('');
+    //    },
+    //    error:function(){
+    //        $("#inputs").html("Error. Contacte al administrador");
+    //    }
+    //  });
 });
 
 

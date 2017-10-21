@@ -188,7 +188,8 @@ class TaskSpecimenController extends Controller
     }
 
 
-    public function actionGetAvailableAquariums(){ //obtiene los acuarios disponibles de origen para la transferencia // 
+    //TRANSFERIR EJEMPLARES//
+    public function actionGetOriginAquariums(){ //obtiene los acuarios disponibles de origen para la transferencia // 
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
@@ -198,6 +199,30 @@ class TaskSpecimenController extends Controller
                 $aquariums= ArrayHelper::map($specie->getAvailableAquariums(),'idAcuario','nombre');
                 foreach ($aquariums as $id => $nombre) {
                     $out[] = ['id'=>$id, 'name'=>$nombre];
+                }
+                return Json::encode(['output'=>$out, 'selected'=>'']);
+            }
+        }
+        return Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+
+    //TRANSFERIR EJEMPLARES//
+
+    public function actionGetDestinationAquariums() {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $ids = $_POST['depdrop_parents'];
+            $specieId = empty($ids[0]) ? null : $ids[0];
+            $originAquariumId = empty($ids[1]) ? null : $ids[1];
+            if ($originAquariumId != null) {
+                $specie = Specie::findOne($specieId);
+                $aquariums= ArrayHelper::map($specie->getCompatibleAquariums(),'idAcuario','nombre');
+                foreach ($aquariums as $id => $nombre) {
+                    yii::error(\yii\helpers\VarDumper::dumpAsString($id.' '.$originAquariumId));
+                    if($id != $originAquariumId){
+                        $out[] = ['id'=>$id, 'name'=>$nombre];
+                    }
                 }
                 return Json::encode(['output'=>$out, 'selected'=>'']);
             }
