@@ -219,7 +219,6 @@ class TaskSpecimenController extends Controller
                 $specie = Specie::findOne($specieId);
                 $aquariums= ArrayHelper::map($specie->getCompatibleAquariums(),'idAcuario','nombre');
                 foreach ($aquariums as $id => $nombre) {
-                    yii::error(\yii\helpers\VarDumper::dumpAsString($id.' '.$originAquariumId));
                     if($id != $originAquariumId){
                         $out[] = ['id'=>$id, 'name'=>$nombre];
                     }
@@ -228,6 +227,28 @@ class TaskSpecimenController extends Controller
             }
         }
         return Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
+
+    public function actionGetDestinationAquariumData($originId, $destinationId, $specieId){
+        $aquariums = [];
+        $originAquarium = Aquarium::findOne(['idAcuario'=>$originId]);
+        $destinationAquarium = Aquarium::findOne(['idAcuario'=>$destinationId]);
+        $specie = Specie::findOne($specieId);
+        $originAquariumQuantity = $originAquarium->getQuantity($specieId);
+        $originAquariumTotalQuantity = $originAquariumQuantity * $specie->minEspacio;
+
+        if($destinationAquarium->espacioDisponible < $originAquariumTotalQuantity){
+            $destinationAquarium->maxQuantity = floor($aquarium->espacioDisponible / $specie->minEspacio);
+        }else{
+            $destinationAquarium->maxQuantity = $originAquariumQuantity;
+        }
+        $aquariums[] = $destinationAquarium;
+        return $this->renderAjax('_formInputs',
+        [
+            'aquariums'=>$aquariums,
+            'taskType'=>'transfer'
+        ]);
     }
 
 }

@@ -116,24 +116,9 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                                 }else{
                                     $specimen->cantidad = $quantity + $specimen->cantidad;
                                 }
-                                // $taskSpecimen = new TaskSpecimen();
-                                // $taskSpecimen->TAREA_idTarea = $task->idTarea;
-                                // $taskSpecimen->EJEMPLAR_especie_idEspecie = $specie->idEspecie;
-                                // $taskSpecimen->EJEMPLAR_acuario_idAcuario = $idAquarium;
-                                // $taskSpecimen->cantidad = $quantity;
 
                                 if($specimen->save()){ //si se guarda la tarea, actualiza la cantidad disponible del acuario//
                                     
-                                    // $specimen = Specimen::getSpecimen($idAquarium, $specie->idEspecie);
-
-                                    // if($specimen==null){
-                                    //     $specimen = new Specimen();
-                                    //     $specimen->especie_idEspecie = $specie->idEspecie;
-                                    //     $specimen->acuario_idAcuario = $idAquarium;
-                                    //     $specimen->cantidad = $quantity;
-                                    // }else{
-                                    //     $specimen->cantidad = $quantity + $specimen->cantidad;
-                                    // }
                                     $taskSpecimen = new TaskSpecimen();
                                     $taskSpecimen->TAREA_idTarea = $task->idTarea;
                                     $taskSpecimen->EJEMPLAR_especie_idEspecie = $specie->idEspecie;
