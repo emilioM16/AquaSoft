@@ -279,48 +279,33 @@ class TaskSpecimen extends \yii\db\ActiveRecord
 
                                             if($destinationAquarium->save()){
 
-                                                // $task = new Task();                 
-                                                // $task->titulo = 'Incorporación de ejemplares';
-                                                // $task->descripcion = 'Esta tarea fue creada a través de la sección de ejemplares';
-                                                // $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
-                                                // $task->fechaHoraInicio = new Expression('NOW()');
-                                                // $task->fechaHoraFin = new Expression('NOW()');
-                                                // $task->fechaHoraRealizacion = new Expression('NOW()');
-                                                // $task->ACUARIO_idAcuario = $idAquarium;
-                                                // $task->TIPO_TAREA_idTipoTarea = 'Incorporar ejemplares';
+                                                $specimen = Specimen::getSpecimen($idAquarium, $specie->idEspecie);
+                                                
+                                                if($specimen==null){
+                                                    $specimen = new Specimen();
+                                                    $specimen->especie_idEspecie = $specie->idEspecie;
+                                                    $specimen->acuario_idAcuario = $idAquarium;
+                                                    $specimen->cantidad = $quantity;
+                                                }else{
+                                                    $specimen->cantidad = $quantity + $specimen->cantidad;
+                                                }
 
-                                                // if($task->save()){ //si se guarda la tarea, adiciona la cantidad introducida y la guarda//
-
-                                                    $specimen = Specimen::getSpecimen($idAquarium, $specie->idEspecie);
+                                                if($specimen->save()){ //si se guarda la tarea, actualiza la cantidad disponible del acuario//
                                                     
-                                                    if($specimen==null){
-                                                        $specimen = new Specimen();
-                                                        $specimen->especie_idEspecie = $specie->idEspecie;
-                                                        $specimen->acuario_idAcuario = $idAquarium;
-                                                        $specimen->cantidad = $quantity;
-                                                    }else{
-                                                        $specimen->cantidad = $quantity + $specimen->cantidad;
-                                                    }
+                                                    $taskSpecimen = new TaskSpecimen();
+                                                    $taskSpecimen->TAREA_idTarea = $task->idTarea;
+                                                    $taskSpecimen->EJEMPLAR_especie_idEspecie = $specie->idEspecie;
+                                                    $taskSpecimen->EJEMPLAR_acuario_idAcuario = $idAquarium;
+                                                    $taskSpecimen->cantidad = $quantity;
 
-                                                    if($specimen->save()){ //si se guarda la tarea, actualiza la cantidad disponible del acuario//
-                                                        
-                                                        $taskSpecimen = new TaskSpecimen();
-                                                        $taskSpecimen->TAREA_idTarea = $task->idTarea;
-                                                        $taskSpecimen->EJEMPLAR_especie_idEspecie = $specie->idEspecie;
-                                                        $taskSpecimen->EJEMPLAR_acuario_idAcuario = $idAquarium;
-                                                        $taskSpecimen->cantidad = $quantity;
-
-                                                        if($taskSpecimen->save()){
-                                                            $transaction->commit();
-                                                        }else{
-                                                            throw new Exception('Ocurrió un error al guardar la información.');          
-                                                        }
+                                                    if($taskSpecimen->save()){
+                                                        $transaction->commit();
                                                     }else{
-                                                        throw new Exception('Ocurrió un error al guardar la información.');                        
+                                                        throw new Exception('Ocurrió un error al guardar la información.');          
                                                     }
-                                                // }else{
-                                                //     throw new Exception('Ocurrió un error al guardar la información.');                        
-                                                // }
+                                                }else{
+                                                    throw new Exception('Ocurrió un error al guardar la información.');                        
+                                                }
                                             }else{
                                                 throw new Exception('Ocurrió un error al guardar la información.');         
                                             }

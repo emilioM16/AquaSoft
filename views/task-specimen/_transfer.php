@@ -72,7 +72,8 @@ use kartik\depdrop\DepDrop;
     </div>
 
     <div class="row">
-        <div id="alert" class='col-lg-9 form-center'>
+        <div id="alert" class='alert-specimens col-lg-9 form-center'>
+        
         </div>
     </div>
 </div>

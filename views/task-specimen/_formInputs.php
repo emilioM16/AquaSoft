@@ -7,9 +7,10 @@ use kartik\alert\Alert;
              
              <?php
             if(!empty($aquariums)){ //si hay acuarios compatibles
+                echo '<div id="inputsWell" class="well col-lg-6 form-center">
+                    <p id="wellTitle" class="text-center">Acuarios disponibles</p><hr class="divider">';
                 foreach ($aquariums as $key => $aquarium) {
-        
-                    echo '<div class="form-group col-lg-3 form-center">
+                    echo '<div class="form-group input col-lg-7 form-center">
                             <label class="text-center">'.$aquarium->nombre.'</label>'
                                 .TouchSpin::widget([
                                     'id'=>$aquarium->idAcuario,
@@ -30,7 +31,8 @@ use kartik\alert\Alert;
                                 ]).
                         '</div>';
                 }
-                echo '<div class="col-lg-12" align="center">
+                echo '</div> 
+                    <div class="col-lg-12" align="center">
                         <div class="col-lg-6">'.Html::button(FA::icon("check")->size(FA::SIZE_LARGE).' Aceptar',['id'=>$taskType.'Btn','class'=>'btn btn-success']).'</div>
                         <div class="col-lg-6">'.Html::button(FA::icon("times")->size(FA::SIZE_LARGE).' Cancelar',['class'=>'btn btn-danger','data-dismiss'=>'modal']).'</div>
                     </div>';

@@ -51,5 +51,23 @@
 #wellTitle{
     font-size: 16px;
     font-weight: bold;
-    padding-bottom: 3%;
+    padding-bottom: 1%;
+}
+
+.alert-specimens, #inputs{
+    margin-top: 15px;
+}
+
+#inputsWell{
+    margin-bottom: 15px;
+}
+
+.input{
+    margin-bottom: 4%;
+}
+
+.divider{
+    margin-top: 4px;
+    margin-bottom: 10px;
+    border-color: rgb(20.2%, 63.5%, 94.5%);
 }
