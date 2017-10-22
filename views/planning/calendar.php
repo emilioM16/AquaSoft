@@ -2,12 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use rmrevin\yii\fontawesome\FA;
+use yii\widgets\Pjax;
+use derekisbusy\panel\PanelWidget;
 use yii\bootstrap\Modal;
+use kartik\tabs\TabsX;
+use rmrevin\yii\fontawesome\FA;
+use yii\helpers\Url;
 use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\planning\Planning */
+/* @var $model app\models\Acuario */
+
 
 $this->title = $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Planificacion nueva', 'url' => ['index']];
@@ -20,37 +25,46 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo $model->idPlanificacion ?><br>
 
 
+<div class="row content">
+  <div class="col-lg-12">
 
-<!-- arreglo de sesiones que trae la Planificacion
-calendario -->
+
 
 <?php
 
 $JSEventClick = <<<EOF
-    function(calEvent, jsEvent, view) {
-    alert('Event: ' + calEvent.title);
-    alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-    alert('View: ' + view.name);
-    // change the border color just for fun
-    $(this).css('border-color', 'red');
-    }
+function(calEvent, jsEvent, view) {
+  $.ajax({
+    type: 'POST',
+    url: "/task/create",
+    data: 'idTarea=' + calEvent.id,
+    dataType: 'html',
+    error: function(xhr){
+        alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
+        },
+    success: function(response){
+        $('#modalContent').html(response);
+        $('#modalTitle').html('Registrar tarea');
+        // $('#modalHeader').html('Registrar tarea');
+        $('#modal').modal('show');
+        }
+    });
+  // change the border color just for fun
+  $(this).css('border-color', 'red');
+}
 EOF;
-
-
 $JSCode = <<<EOF
     function(start, end) {
     var date = $('#calendar').fullCalendar('getDate');
     alert(start);
-    $('div.modal-header').html('<h4 class="text-center"> Registrar tarea para el ' + start.format('dddd D, MMMM YYYY')+'</h4>');
-    $('#pModal').modal();
+
     }
 EOF;
- //EN ESTA FUNCION, AL QUERER REGISTRAR LA TAREA HAY QUE TOMAR EL VALOR start QUE ES EL QUE TIENE LA FECHA DEL DIA SELECCIONADO//
 ?>
 
 <script type="text/javascript"> //Este es el código que permite que se muestre el calendario seteandole la fecha//
     window.onload = function(){
-    var monthYear = <?php echo json_encode($model->anioMes) ?> 
+    var monthYear = <?php echo json_encode($model->anioMes) ?>
     var date = new Date(monthYear);
     var month = date.getMonth();
     var year = date.getFullYear();
@@ -58,57 +72,58 @@ EOF;
     };
 </script>
 
-<div id="pCalendar" class="row">
-<div class="col-lg-12">
-    <div class="col-lg-6 form-center">
-        <?= \yii2fullcalendar\yii2fullcalendar::widget([
+
+  <!-- Calendario -->
+  <div id="pCalendar" class="row">
+  <div class="col-lg-12">
+      <div class="col-lg-6 form-center">
+
+
+
+        <?= yii2fullcalendar\yii2fullcalendar::widget([
             'id'=>'calendar',
             'defaultView'=>'month',
             'header'=>[
                 'left'=>'',
                 'center'=>'title',
-                'right'=>'',
-            ],
-            'clientOptions'=>[
-                'selectable' => true,
-                'selectHelper' => true,
-                'editable' => false,
-                'fixedWeekCount'=>false,
-                'showNonCurrentDates'=>false,
-               'select' => new JsExpression($JSCode),
-               'eventClick' => new JsExpression($JSEventClick),
-                'defaultDate' => date('d-m-Y'),
-                'firstDay'=>1,
+                'right'=>''
             ],
             'options' => [
                 'lang' => 'es',
             ],
-            // 'events' => $events,
+        //    'events' => $acuario->events,
+            'clientOptions' => [
+
+                'language' => 'fa',
+                'eventLimit' => TRUE,
+                'fixedWeekCount' => false,
+                 //'dayClick'=>new \yii\web\JsExpression($JSEventClick),
+                  'select' => new JsExpression($JSCode),
+                 'dayClick'=>new \yii\web\JsExpression($JSCode),
+                'eventClick'=>new \yii\web\JsExpression($JSEventClick),
+
+            ],
         ]);
-
-        Modal::begin([
-            'id'=>'pModal',
-            'size'=>'modal-md',
-            'closeButton'=>[],
-            'footer'=>
-                Html::button(FA::icon('save')->size(FA::SIZE_LARGE).' Guardar', ['class' => 'btn btn-success']).
-                Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger','data-dismiss'=>'modal'])
-        
-            ]);
-        
-          //  echo '<div class="contenidoModal">'.$this->render('_form').'</div>';
-        
-        Modal::end();
-
         ?>
-        <div id="pButtons" class="form-group">
-            <?= Html::button(FA::icon('save')->size(FA::SIZE_LARGE).' Guardar', ['class' => 'btn btn-success']) ?>
-            <?= Html::a(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar', ['index'] ,['class' => 'btn btn-danger']) ?>
-        </div>
+      </div>
     </div>
-</div>
-</div>
-
-
+  </div>
 
 </div>
+
+  <?php
+  // if(Yii::$app->user->can('administrarTareas')){
+  //   echo '<div id="btnDetail" class="col-lg-2">'
+  //     .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',
+  //               [
+  //                  'value' => Url::to([
+  //                     'task/create',
+  //                   //  'idAcuario'=>$acuario->idAcuario,
+  //                     // 'idPlanificacion'=>-1, // esto significa que es no planificada
+  //                     // 'fecha'=>date("Y-m-d") // hoy
+  //                   ]),
+  //                 'title' => 'Agregar tarea no planificada',
+  //                 'class' => 'showModalButton btn btn-success'
+  //               ]).
+  //   '</div>';
+  // }
