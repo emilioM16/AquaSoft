@@ -229,8 +229,8 @@ class TaskSpecimenController extends Controller
         return Json::encode(['output'=>'', 'selected'=>'']);
     }
 
-
-    public function actionGetDestinationAquariumData($originId, $destinationId, $specieId){
+    //TRANSFERIR  EJEMPLARES//
+    public function actionGetDestinationAquariumData($originId, $destinationId, $specieId){//obtiene todos los aquarios de destino//
         $aquariums = [];
         $originAquarium = Aquarium::findOne(['idAcuario'=>$originId]);
         $destinationAquarium = Aquarium::findOne(['idAcuario'=>$destinationId]);
@@ -249,6 +249,22 @@ class TaskSpecimenController extends Controller
             'aquariums'=>$aquariums,
             'taskType'=>'transfer'
         ]);
+    }
+
+
+    //TRANSFERIR EJEMPLARES//
+    public function actionTransferSpecimens(){
+        if(isset($_POST['data'])){
+            $data = json_decode(Yii::$app->request->post('data'));
+            $quantities = json_decode($data->quantities,true);
+            $originAquarium = $data->originId;
+            $idSpecie = $data->specie;
+            $specie = Specie::findOne($idSpecie);
+            TaskSpecimen::transferSpecimens($quantities,$specie,$originAquarium);
+            return $this->renderAjax('_alert'); 
+        }else{
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al realizar la operación. Intente nuevamente.");            
+        }
     }
 
 }

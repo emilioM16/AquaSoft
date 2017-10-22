@@ -126,19 +126,18 @@ $(document).on('change','#selectDestinationAquarium',function(){
 
 $(document).on('click','#transferBtn',function(){ 
     var inputsData = new Object();
-    var selectedSpecie = '';
-    var selectedSpecie = $('#selectSpecieAdd').val();
-    $('.tsInput').each(function(){
-        var aquariumID = $(this).attr('id');
-        var aquariumValue = $(this).val();
-        if(aquariumValue!=0){
-        inputsData[aquariumID] = aquariumValue;
-        }    
-    });
+    // var selectedSpecie = '';
+    var selectedSpecie = $('#selectSpecie').val();
+    var originAquariumId = $('#selectOriginAquarium').val();
+    var aquariumID = $('.tsInput').attr('id');
+    var aquariumValue = $('.tsInput').val();
+    if(aquariumValue!=0){
+    inputsData[aquariumID] = aquariumValue;    
+    }
     $.ajax({
-        url: "task-specimen/add-specimens",
+        url: "task-specimen/transfer-specimens",
         type: "POST",
-        data: {data : JSON.stringify({quantities: JSON.stringify(inputsData),specie: selectedSpecie})},
+        data: {data : JSON.stringify({quantities: JSON.stringify(inputsData),specie: selectedSpecie, originId: originAquariumId})},
         dataType: "html",
         success: function(response){
             $("#inputs").html('');
