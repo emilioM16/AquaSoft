@@ -1,12 +1,26 @@
 .fishImg{
     border: 3px solid #00A8FF;
     /* width: 45%; */
-    height: auto;
+    height: 40%;
     border-radius: 10px;
     box-shadow: 0 0 10px 1px;
     /* margin-left: 23%; */
     margin-right: auto;
 }
+
+.btnSpecimen{
+    transition: 300ms;
+    background-color: #FFF7DF;
+    border-color: black;
+    box-shadow: 0 0 0 1px;
+}
+
+.btnSpecimen:hover{
+    background-color: #32B6E6;
+    box-shadow: 0 0 0 5px;
+    transition: 300ms;
+}
+
 
 .fishImg:hover{
     filter: drop-shadow();
@@ -14,7 +28,7 @@
 }
 
 .specimensOptions{
-    width: 40%;
+    width: 55%;
 }
 
 .option{
@@ -37,5 +51,23 @@
 #wellTitle{
     font-size: 16px;
     font-weight: bold;
-    padding-bottom: 3%;
+    padding-bottom: 1%;
+}
+
+.alert-specimens, #inputs{
+    margin-top: 15px;
+}
+
+#inputsWell{
+    margin-bottom: 15px;
+}
+
+.input{
+    margin-bottom: 4%;
+}
+
+.divider{
+    margin-top: 4px;
+    margin-bottom: 10px;
+    border-color: rgb(20.2%, 63.5%, 94.5%);
 }

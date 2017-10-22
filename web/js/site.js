@@ -5,6 +5,8 @@ $(function () {
     })
 })
 
+$('#modal').removeAttr('tabindex');
+
 $(document).ready(function() {
     $('.carousel').carousel({
       interval: 6000
@@ -16,12 +18,12 @@ $(document).ready(function() {
         if ($('#modal').data('bs.modal').isShown) {
             $('#modal').find('#modalContent')
                     .load($(this).attr('value'));
-            document.getElementById('modalHeader').innerHTML = '<h4>' + $(this).attr('title') + '</h4>';
+            document.getElementById('modalTitle').innerHTML = $(this).attr('title');
         } else {
             $('#modal').modal('show')
                     .find('#modalContent')
                     .load($(this).attr('value'));
-            document.getElementById('modalHeader').innerHTML = '<h4 class="modalTitle">' + $(this).attr('title') + '</h4>';
+            document.getElementById('modalTitle').innerHTML = $(this).attr('title') ;
         }
     });
 });
