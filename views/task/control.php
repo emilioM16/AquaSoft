@@ -1,14 +1,15 @@
 <?php
 
+use yii\base\Model; 
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use rmrevin\yii\fontawesome\FA;
 
-/* @var $this yii\web\View */
+/* @var $this yii\web\View\Task */
 /* @var $model app\models\task\Task */
-/* @var $condicionesAmbientales app\models\conditions\EnviromentalConditions */
-$condicionesAmbientales = $model->condicionAmbiental;
+/* @var $model->condicionAmbiental app\models\condition\EnviromentalConditions */
+
 $this->title = 'Tarea: ' . $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->idTarea, 'url' => ['view', 'id' => $model->idTarea]];
@@ -20,7 +21,8 @@ $this->params['breadcrumbs'][] = 'Execute';
 
     <?php
         $form = ActiveForm::begin([
-            'id'=>$condicionesAmbientales->formName(),
+            'id'=>$model->formName(),
+            // 'id'=>'UnIdCualquiera',
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
             // 'validationUrl'=> Url::toRoute(['task/validationExecute','id'=>$taskId]), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
@@ -29,7 +31,7 @@ $this->params['breadcrumbs'][] = 'Execute';
         echo $form->field($model, 'titulo')->staticInput();
         
         echo Form::widget([
-            'model'=>$condicionesAmbientales,
+            'model'=>$model->condicionAmbiental,
             'form'=>$form,
             'columns'=>2,
             'attributes'=>[
@@ -70,21 +72,9 @@ $this->params['breadcrumbs'][] = 'Execute';
                 ]
             ]
         ]);
-        // echo TouchSpin::widget([
-        //                         'name' => 't4',
-        //                         'pluginOptions' => [
-        //                             'buttonup_class' => 'btn btn-primary', 
-        //                             'buttondown_class' => 'btn btn-danger', 
-        //                             'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
-        //                             'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
-        //                         ],
-        //                         'options'=>[
-        //                             'class'=>'input-sm',
-        //                             'readonly'=>true
-        //                         ]
-        //                     ]);
+
          echo Form::widget([     // nesting attributes together (without labels for children)
-            'model'=>$model,
+            'model'=>$model->condicionAmbiental,
             'form'=>$form,
             'columns'=>1,
             'attributes'=>[
@@ -104,23 +94,9 @@ $this->params['breadcrumbs'][] = 'Execute';
                     ]
             ]
         ]);
-        // echo Form::widget([
-        //     'model'=>$model,
-        //     'form'=>$form,
-        //     'columns'=>1,
-        //     'attributes'=>[
-        //         'CO2'=>[
-        //             'type'=>Form::INPUT_TEXT,
-        //             // 'options'=>[
-        //             //     // 'placeholder'=>'Ingrese el titulo',
-        //             //     'maxlength'=>true,
-        //             // ]                    
-        //         ]
-        //     ]
-        // ]);
 
         echo Form::widget([
-            'model'=>$model,
+            'model'=>$model->condicionAmbiental,
             'form'=>$form,
             'columns'=>1,
             'attributes'=>[
@@ -137,7 +113,12 @@ $this->params['breadcrumbs'][] = 'Execute';
                 ]
             ]
         ]);
-        // TODO: AGREGAR EL RESTO DE LOS CAMPOS
+
+        // la idea de esto es mostrar todos los insumos asociados al tipo de tarea. A esta lista la obtendría de $model->tipoTarea->insumos
+        $this->render('_supply', [
+        'model' => $model,
+            ]); // fruta
+
     ActiveForm::end();
     ?> 
 

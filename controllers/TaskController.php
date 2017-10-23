@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
+use yii\base\Model; 
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -68,7 +69,7 @@ class TaskController extends Controller
     {
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
-        
+
         $taskTypes = TaskType::find()->all();
         if (($model->load(Yii::$app->request->post())) && $model->save()) {
             // return $this->redirect(Yii::$app->request->referrer);
@@ -76,13 +77,16 @@ class TaskController extends Controller
             //         'model'=>$model,
             //         'taskTypes'=>$taskTypes
             //     ]);
-            unset($_POST);
-            $_POST['idTarea'] = $model->idTarea;
-            if (!$model->isPlanned()){
-                // si es no planificada tengo que desplegar la ventana para que la realice
-                Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
-            }else 
+
+            // DESCOMENTAR DE ACÁ EN ADELANTE PARA ENLAZAR LA CREACIÓN DE LA TAREA NO PLANIFICADA CON LA EJECUCIÓN DE LA MISMA **********************************************************************
+            // unset($_POST);
+            // $_POST['idTarea'] = $model->idTarea;
+            // if (!$model->isPlanned()){
+            //     // si es no planificada tengo que desplegar la ventana para que la realice
+            //     Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
+            // }else 
                 // retorna a la página que la llamó
+            // ************************************************************************************************************************************************************
                 return $this->redirect(Yii::$app->request->referrer);
         } else {
             if (Yii::$app->request->isAjax){
@@ -160,18 +164,39 @@ class TaskController extends Controller
             yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));      
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 $this->redirect(Yii::$app->request->referrer);
-                // return $this->renderAjax($vista,[
-                    // 'model'=>$model
-                // ]);
             } 
             else {
                 if (Yii::$app->request->isAjax){
+                    // if ($vista === 'control'){
+                    //    return $this->renderAjax($vista,[
+                    //     'model'=>$model->condicionAmbiental,
+                    //     ]); 
+                    // }
+                    // else
+                    // {
+                    //    return $this->renderAjax($vista,[
+                    //     'model'=>$model->InsumoTareas,
+                    //     ]);  
+                    // }
                     return $this->renderAjax($vista,[
-                        'model'=>$model
-                    ]);
+                        'model'=>$model,
+                        ]);
+                    
                 }else{
+                    // if ($vista === 'control'){
+                    //    return $this->render($vista,[
+                    //     'model'=>$model->condicionAmbiental,
+                    //     ]); 
+                    // }
+                    // else
+                    // {
+                    //    return $this->render($vista,[
+                    //     'model'=>$model->InsumoTareas,                        
+                    //     ]);  
+                    // }
+                    
                     return $this->render($vista,[
-                        'model'=>$model
+                        'model'=>$model,
                     ]);
                 }
             }
