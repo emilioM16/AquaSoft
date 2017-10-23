@@ -1,8 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\models\supply;
 
 use Yii;
+use app\models\supply\TaskSupply;
+use app\models\supply\TaskType;
+use app\models\task\Task;
 
 /**
  * This is the model class for table "INSUMO".
@@ -14,9 +17,9 @@ use Yii;
  * @property integer $activo
  * @property string $TIPO_TAREA_idTipoTarea
  *
- * @property TIPOTAREA $tIPOTAREAIdTipoTarea
- * @property INSUMOTAREA[] $iNSUMOTAREAs
- * @property TAREA[] $tAREAIdTareas
+ * @property TaskType $tIPOTAREAIdTipoTarea
+ * @property TasksSupply[] $iNSUMOTAREAs
+ * @property Task[] $tAREAIdTareas
  */
 class Supply extends \yii\db\ActiveRecord
 {
@@ -38,7 +41,7 @@ class Supply extends \yii\db\ActiveRecord
             [['stock', 'activo'], 'integer'],
             [['nombre', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TIPOTAREA::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
+            [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
         ];
     }
 
@@ -62,7 +65,7 @@ class Supply extends \yii\db\ActiveRecord
      */
     public function getTIPOTAREAIdTipoTarea()
     {
-        return $this->hasOne(TIPOTAREA::className(), ['idTipoTarea' => 'TIPO_TAREA_idTipoTarea']);
+        return $this->hasOne(TaskType::className(), ['idTipoTarea' => 'TIPO_TAREA_idTipoTarea']);
     }
 
     /**
@@ -70,7 +73,7 @@ class Supply extends \yii\db\ActiveRecord
      */
     public function getINSUMOTAREAs()
     {
-        return $this->hasMany(INSUMOTAREA::className(), ['INSUMO_idInsumo' => 'idInsumo']);
+        return $this->hasMany(TasksSupply::className(), ['INSUMO_idInsumo' => 'idInsumo']);
     }
 
     /**
@@ -78,6 +81,6 @@ class Supply extends \yii\db\ActiveRecord
      */
     public function getTAREAIdTareas()
     {
-        return $this->hasMany(TAREA::className(), ['idTarea' => 'TAREA_idTarea'])->viaTable('INSUMO_TAREA', ['INSUMO_idInsumo' => 'idInsumo']);
+        return $this->hasMany(Task::className(), ['idTarea' => 'TAREA_idTarea'])->viaTable('INSUMO_TAREA', ['INSUMO_idInsumo' => 'idInsumo']);
     }
 }
