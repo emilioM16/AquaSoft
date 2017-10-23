@@ -3,7 +3,7 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=AQUASOFT',
-    'username' => 'lia',
+    'username' => 'root',
     'password' => 'emilio1892',
     'charset' => 'utf8',
 ];

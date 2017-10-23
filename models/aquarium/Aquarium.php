@@ -130,6 +130,7 @@ class Aquarium extends \yii\db\ActiveRecord
     public function beforeSave($insert){
         if(($this->scenario=='create')||($this->scenario=='update')){
             $this->espacioDisponible = $this->capacidadMaxima;
+        }
         return parent::beforeSave($insert);
     }
 
@@ -195,4 +196,18 @@ class Aquarium extends \yii\db\ActiveRecord
             return 0;
         }
     }
+
+
+    public function getQuantityBySpecieGreaterCero(){ //obtiene las especies para este acuario, en donde las cantidades sean mayor a 0//
+        $species = Specie::find()
+                    ->asArray()
+                    ->select(['idEspecie','nombre','cantidad'])
+                    ->joinWith('specimens')
+                    ->where(['acuario_idAcuario'=>$this->idAcuario])
+                    ->andWhere(['>', 'cantidad', 0])
+                    ->all();
+        return $species;
+    }
+
+
 }

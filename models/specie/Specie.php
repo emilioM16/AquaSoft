@@ -155,7 +155,7 @@ class Specie extends \yii\db\ActiveRecord
 
 
 
-    public function getAvailableAquariums(){ //retorna los acuarios que contengan al menos un ejemplar de la especie seleccionada// 
+    public static function getAvailableAquariums(){ //retorna los acuarios que contengan al menos un ejemplar de la especie seleccionada// 
         $searchModel  = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $aquariums = $dataProvider->getModels();
@@ -171,5 +171,7 @@ class Specie extends \yii\db\ActiveRecord
         $aquariums = array_values($aquariums);
         return $aquariums;
     }
+
+
 
 }
