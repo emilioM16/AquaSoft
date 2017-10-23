@@ -10,7 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
-use yii\base\Model; 
+use yii\base\Model;
 
 /**
  * TaskController implements the CRUD actions for Task model.
@@ -84,7 +84,7 @@ class TaskController extends Controller
             // if (!$model->isPlanned()){
             //     // si es no planificada tengo que desplegar la ventana para que la realice
             //     Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
-            // }else 
+            // }else
                 // retorna a la página que la llamó
             // ************************************************************************************************************************************************************
                 return $this->redirect(Yii::$app->request->referrer);
@@ -151,50 +151,50 @@ class TaskController extends Controller
      */
     // public function actionExecute($idTarea = '')
     public function actionExecute()
-    {    
-        // if (isset($_POST['idTarea']))   
+    {
+        // if (isset($_POST['idTarea']))
         // {
-        // } 
-        
+        // }
+
         $idTarea = Yii::$app->request->post('idTarea');
         $model = $this->findModel($idTarea);
         $vista = $this->getViewTaskType($model->TIPO_TAREA_idTipoTarea);
         if (!$model->wasExecuted())
         {
-            yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));      
+            yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 $this->redirect(Yii::$app->request->referrer);
-            } 
+            }
             else {
                 if (Yii::$app->request->isAjax){
                     // if ($vista === 'control'){
                     //    return $this->renderAjax($vista,[
                     //     'model'=>$model->condicionAmbiental,
-                    //     ]); 
+                    //     ]);
                     // }
                     // else
                     // {
                     //    return $this->renderAjax($vista,[
                     //     'model'=>$model->InsumoTareas,
-                    //     ]);  
+                    //     ]);
                     // }
                     return $this->renderAjax($vista,[
                         'model'=>$model,
                         ]);
-                    
+
                 }else{
                     // if ($vista === 'control'){
                     //    return $this->render($vista,[
                     //     'model'=>$model->condicionAmbiental,
-                    //     ]); 
+                    //     ]);
                     // }
                     // else
                     // {
                     //    return $this->render($vista,[
-                    //     'model'=>$model->InsumoTareas,                        
-                    //     ]);  
+                    //     'model'=>$model->InsumoTareas,
+                    //     ]);
                     // }
-                    
+
                     return $this->render($vista,[
                         'model'=>$model,
                     ]);
@@ -213,7 +213,7 @@ class TaskController extends Controller
     protected function findModel($id)
     {
         if (($model = Task::findOne($id)) !== null) {
-            $model->ActualizarDuracion(); 
+            $model->ActualizarDuracion();
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

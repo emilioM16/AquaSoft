@@ -18,6 +18,8 @@ $this->title = $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Planificacion nueva', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
+
+
 ?>
 <div class="planning-calendar">
 
@@ -28,7 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row content">
   <div class="col-lg-12">
 
+<script type="text/javascript">
+var idAcua = "<?php echo $model->ACUARIO_USUARIO_acuario_idAcuario; ?>";
+var idPlan = "<?php echo $model->idPlanificacion ; ?>";
 
+
+</script>
 
 <?php
 
@@ -36,9 +43,9 @@ $JSEventClick = <<<EOF
 function(calEvent, jsEvent, view) {
   alert(calEvent);
   $.ajax({
-    type: 'POST',
+    type: 'GET',
     url: "/task/create",
-    data: idTarea= + calEvent.id,
+    data: 'idAcuario='+idAcua+'&idPlanificacion='+idPlan+'&fechaInicio='+($.format.date(calEvent.start, 'YYYY-MM-dd')),
     dataType: 'html',
     error: function(xhr){
         alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
@@ -51,8 +58,7 @@ function(calEvent, jsEvent, view) {
         $('#modal').modal('show');
         }
     });
-  // change the border color just for fun
-  $(this).css('border-color', 'red');
+
 }
 EOF;
 $JSCode = <<<EOF
@@ -102,7 +108,7 @@ EOF;
                  //'dayClick'=>new \yii\web\JsExpression($JSEventClick),
                 //  'select' => new JsExpression($JSCode),
                  'dayClick'=>new \yii\web\JsExpression($JSEventClick),
-                'eventClick'=>new \yii\web\JsExpression($JSEventClick),
+              //  'eventClick'=>new \yii\web\JsExpression($JSEventClick),
 
             ],
         ]);
