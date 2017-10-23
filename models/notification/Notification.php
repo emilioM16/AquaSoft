@@ -1,8 +1,12 @@
 <?php
 
-namespace app\models;
+namespace app\models\notification;
 
 use Yii;
+use rmrevin\yii\fontawesome\FA;
+use app\models\task\Task;
+use app\models\aquarium\Aquarium;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "NOTIFICACION".
@@ -68,4 +72,27 @@ class Notification extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TAREA::className(), ['idTarea' => 'TAREA_idTarea']);
     }
+
+    public static function getNotificaciones()
+    {   
+        $row='';
+        $noti = Notification::find()->all();
+        foreach ($noti as $key)
+         {
+            $tarea = Task::findOne($key->TAREA_idTarea);
+            $acu = Aquarium::findOne($tarea->ACUARIO_idAcuario);
+
+            if ($key->ORIGEN_NOTIFICACION_idOrigenNotificacion == 'Tarea no realizada')
+            {
+                $row .= '<p class="alert alert-info " role="alert">'.FA::icon("info")->size(FA::SIZE_LARGE).' <strong>¡Atención! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.' de tipo '.$tarea->TIPO_TAREA_idTipoTarea.' en el acuario '.$acu->nombre;
+                    '</p>'.'<hr class="hrNotif">';
+            }
+            else
+            {
+                 $row .= '<p class="alert alert-danger text-justify " role="alert">'.FA::icon("warning")->size(FA::SIZE_LARGE).'<strong>¡Peligro! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.' en el registro de una tarea de '.$tarea->titulo.' en el acuario '.$acu->nombre;
+                          '</p>'.'<hr class="hrNotif">';
+            } 
+         }
+        return $row;
+    } 
 }

@@ -61,7 +61,7 @@ $this->title= 'Sistema de gestión AquaSoft';
       </div>      
     </div>
 
-    <div class="col-lg-3">
+    <!-- <div class="col-lg-3">
       <div id="panelNotif" class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title text-center">Notificaciones</h3>
@@ -86,7 +86,7 @@ $this->title= 'Sistema de gestión AquaSoft';
 
         </div>
       </div>
-    </div>
+    </div> -->
     
   </div>
 </div>
