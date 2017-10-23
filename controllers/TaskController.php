@@ -5,16 +5,19 @@ namespace app\controllers;
 use Yii;
 use app\models\task\Task;
 use app\models\task\TaskSearch;
+use app\models\task\TaskType;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
+use yii\base\Model; 
 
 /**
  * TaskController implements the CRUD actions for Task model.
  */
 class TaskController extends Controller
 {
+    private $task;
     /**
      * @inheritdoc
      */
@@ -62,22 +65,39 @@ class TaskController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($idAcuario=0, $idPlanificacion = -1, $fecha = '0')
+    public function actionCreate($idAcuario, $idPlanificacion = -1, $fechaInicio = '0')
     {
         $model = new Task();
+        $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
 
-        $model->inicialice($idAcuario, $idPlanificacion, $fecha);
+        $taskTypes = TaskType::find()->all();
+        if (($model->load(Yii::$app->request->post())) && $model->save()) {
+            // return $this->redirect(Yii::$app->request->referrer);
+            // return $this->renderAjax('//..task/execute',[
+            //         'model'=>$model,
+            //         'taskTypes'=>$taskTypes
+            //     ]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idTarea]);
+            // DESCOMENTAR DE ACÁ EN ADELANTE PARA ENLAZAR LA CREACIÓN DE LA TAREA NO PLANIFICADA CON LA EJECUCIÓN DE LA MISMA **********************************************************************
+            // unset($_POST);
+            // $_POST['idTarea'] = $model->idTarea;
+            // if (!$model->isPlanned()){
+            //     // si es no planificada tengo que desplegar la ventana para que la realice
+            //     Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
+            // }else 
+                // retorna a la página que la llamó
+            // ************************************************************************************************************************************************************
+                return $this->redirect(Yii::$app->request->referrer);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('create',[
-                    'model'=>$model
+                    'model'=>$model,
+                    'taskTypes'=>$taskTypes
                 ]);
             }else{
                 return $this->render('create',[
-                    'model'->$model
+                    'model'=>$model,
+                    'taskTypes'=>$taskTypes
                 ]);
             }
         }
@@ -89,16 +109,25 @@ class TaskController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($view, $idTarea)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($idTarea);
+        $taskTypes = TaskType::find()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idTarea]);
+            return $this->redirect([$view, 'id' => $model->idTarea]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->request->isAjax){
+                return $this->renderAjax('update',[
+                    'model'=>$model,
+                    'taskTypes'=>$taskTypes
+                ]);
+            }else{
+                return $this->render('update',[
+                    'model'=>$model,
+                    'taskTypes'=>$taskTypes
+                ]);
+            }
         }
     }
 
@@ -120,22 +149,56 @@ class TaskController extends Controller
      * @param integer $id
      * @return mixed
      */
+    // public function actionExecute($idTarea = '')
     public function actionExecute()
-    {
+    {    
+        // if (isset($_POST['idTarea']))   
+        // {
+        // } 
+        
         $idTarea = Yii::$app->request->post('idTarea');
         $model = $this->findModel($idTarea);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idTarea]);
-        } else {
-            if (Yii::$app->request->isAjax){
-                return $this->renderAjax('execute',[
-                    'tarea'=>$model
-                ]);
-            }else{
-                return $this->render('execute',[
-                    'tarea'=>$model
-                ]);
+        $vista = $this->getViewTaskType($model->TIPO_TAREA_idTipoTarea);
+        if (!$model->wasExecuted())
+        {
+            yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));      
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $this->redirect(Yii::$app->request->referrer);
+            } 
+            else {
+                if (Yii::$app->request->isAjax){
+                    // if ($vista === 'control'){
+                    //    return $this->renderAjax($vista,[
+                    //     'model'=>$model->condicionAmbiental,
+                    //     ]); 
+                    // }
+                    // else
+                    // {
+                    //    return $this->renderAjax($vista,[
+                    //     'model'=>$model->InsumoTareas,
+                    //     ]);  
+                    // }
+                    return $this->renderAjax($vista,[
+                        'model'=>$model,
+                        ]);
+                    
+                }else{
+                    // if ($vista === 'control'){
+                    //    return $this->render($vista,[
+                    //     'model'=>$model->condicionAmbiental,
+                    //     ]); 
+                    // }
+                    // else
+                    // {
+                    //    return $this->render($vista,[
+                    //     'model'=>$model->InsumoTareas,                        
+                    //     ]);  
+                    // }
+                    
+                    return $this->render($vista,[
+                        'model'=>$model,
+                    ]);
+                }
             }
         }
     }
@@ -150,6 +213,7 @@ class TaskController extends Controller
     protected function findModel($id)
     {
         if (($model = Task::findOne($id)) !== null) {
+            $model->ActualizarDuracion(); 
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -164,6 +228,28 @@ class TaskController extends Controller
         {
             Yii::$app->response->format = 'json';
             return ActiveForm::validate($model);
+        }
+    }
+
+    private function getViewTaskType($taskType){
+        switch ($taskType) {
+            case 'Controlar acuario':
+                return 'control';
+                break;
+            case 'Alimentación':
+            case 'Limpieza':
+            case 'Reparación':
+                return 'maintenance';
+                break;
+            case 'Incorporar ejemplares':
+                return ''; // ver si se puede reutilizar las pantalla de Melo
+                break;
+            case 'Transferir ejemplares':
+                return ''; // ver si se puede reutilizar las pantalla de Melo
+                break;
+            default:
+                # code...
+                break;
         }
     }
 

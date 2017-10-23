@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title= 'Sistema de gestión AquaSoft';
  ?>
@@ -28,8 +29,8 @@ $this->title= 'Sistema de gestión AquaSoft';
         </div>
       </div>
 
-      <?php
-    //   if (Yii::$app->user->identity->role==0){
+      <?php 
+    if (Yii::$app->user->can('verEspecialistas')){
 
         echo  '<div class="col-lg-4">'
             .Html::a(
@@ -38,16 +39,16 @@ $this->title= 'Sistema de gestión AquaSoft';
               )
             .'<div  class="imgFooter text-center"> Especialistas </div>
           </div>';
-    //   }else{
+      }else{
 
         echo '<div class="col-lg-4">'
            .Html::a(
             Html::img('@web/img/fish.png',['class'=>'img-circle ']),
-            ['census/']
+            [Url::toRoute('task-specimen/specimens-tasks')]
           )
             .'<div  class="imgFooter text-center"> Ejemplares </div>
           </div>';
-    //   }
+      }
       ?>
 
       <div class="col-lg-4">

@@ -39,10 +39,8 @@ class AquariumController extends Controller
     public function actionIndex()
     {
         $user = User::findOne(Yii::$app->user->identity->idUsuario);
-        // yii::error(\yii\helpers\VarDumper::dumpAsString($user));
         $searchModel = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -77,7 +75,7 @@ class AquariumController extends Controller
     public function actionCreate()
     {
         $model = new Aquarium();
-
+        $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
@@ -98,7 +96,7 @@ class AquariumController extends Controller
     public function actionUpdate($idAcuario)
     {
         $model = $this->findModel($idAcuario);
-
+        $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
