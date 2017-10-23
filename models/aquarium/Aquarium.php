@@ -128,8 +128,11 @@ class Aquarium extends \yii\db\ActiveRecord
     }
 
     public function beforeSave($insert){
-        if(($this->scenario=='create')||($this->scenario=='update')){
+         if(($this->scenario=='create')||($this->scenario=='update')){
             $this->espacioDisponible = $this->capacidadMaxima;
+            if($this->scenario=='create')
+                $this->activo = !$this->activo; // esto es porqeu el check, si no marcás nada, te devuelve un cero.
+        }
         return parent::beforeSave($insert);
     }
 
@@ -148,7 +151,7 @@ class Aquarium extends \yii\db\ActiveRecord
         {
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $task->idTarea;
-            $event->title = $task->titulo;
+            $event->title = '[' . $task->TIPO_TAREA_idTipoTarea . '] Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
             $event->start = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraInicio));
             $event->end = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraFin));
             // $task->nonstandard = [

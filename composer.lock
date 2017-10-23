@@ -772,7 +772,7 @@
                 "delocker",
                 "yii2"
             ],
-            "time": "2015-10-05 23:33:01"
+            "time": "2015-10-05T23:33:01+00:00"
         },
         {
             "name": "evgeniyrru/yii2-slick",
@@ -1143,7 +1143,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-08-29 13:04:56"
+            "time": "2017-08-29T13:04:56+00:00"
         },
         {
             "name": "kartik-v/yii2-datecontrol",
@@ -1450,7 +1450,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2017-09-22 15:47:48"
+            "time": "2017-09-22T15:47:48+00:00"
         },
         {
             "name": "kartik-v/yii2-tabs-x",
@@ -1555,7 +1555,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-11-24 17:29:45"
+            "time": "2016-11-24T17:29:45+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-alert",
@@ -2142,7 +2142,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2017-06-27 04:47:12"
+            "time": "2017-06-27T04:47:12+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
