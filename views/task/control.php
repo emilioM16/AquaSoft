@@ -7,7 +7,8 @@ use rmrevin\yii\fontawesome\FA;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\task\Task */
-
+/* @var $condicionesAmbientales app\models\conditions\EnviromentalConditions */
+$condicionesAmbientales = $model->condicionAmbiental;
 $this->title = 'Tarea: ' . $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->idTarea, 'url' => ['view', 'id' => $model->idTarea]];
@@ -19,7 +20,7 @@ $this->params['breadcrumbs'][] = 'Execute';
 
     <?php
         $form = ActiveForm::begin([
-            'id'=>$model->formName(),
+            'id'=>$condicionesAmbientales->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
             // 'validationUrl'=> Url::toRoute(['task/validationExecute','id'=>$taskId]), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
@@ -28,7 +29,7 @@ $this->params['breadcrumbs'][] = 'Execute';
         echo $form->field($model, 'titulo')->staticInput();
         
         echo Form::widget([
-            'model'=>$model,
+            'model'=>$condicionesAmbientales,
             'form'=>$form,
             'columns'=>2,
             'attributes'=>[
@@ -49,7 +50,7 @@ $this->params['breadcrumbs'][] = 'Execute';
             ]
         ]);
         echo Form::widget([
-            'model'=>$model,
+            'model'=>$model->condicionAmbiental,
             'form'=>$form,
             'columns'=>2,
             'attributes'=>[

@@ -68,6 +68,7 @@ class TaskController extends Controller
     {
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
+        
         $taskTypes = TaskType::find()->all();
         if (($model->load(Yii::$app->request->post())) && $model->save()) {
             // return $this->redirect(Yii::$app->request->referrer);
@@ -77,9 +78,12 @@ class TaskController extends Controller
             //     ]);
             unset($_POST);
             $_POST['idTarea'] = $model->idTarea;
-            if (!$model->isPlanned())
+            if (!$model->isPlanned()){
+                // si es no planificada tengo que desplegar la ventana para que la realice
                 Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
-                // $this->actionExecute($model->idTarea);
+            }else 
+                // retorna a la página que la llamó
+                return $this->redirect(Yii::$app->request->referrer);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('create',[

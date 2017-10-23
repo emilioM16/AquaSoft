@@ -43,20 +43,17 @@ use yii\db\Expression;
 class Task extends \yii\db\ActiveRecord
 {
     public $duracion = 0;
+    public $horaInicio;
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
         $this->ACUARIO_idAcuario = $idAcuario;
-        // Si es no planificada seteo con la fecha actual
-        // $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
-        if ($idPlanificacion == -1)
+        if ($idPlanificacion !== -1)
         {
-            $this->fechaHoraInicio = date('Y-m-d H:i:s');
-            // $this->fechaHoraInicio = '2017-10-15';
-            // $this->fechaHoraInicio = new Expression('NOW()');
-        }
-        else
+            $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
             $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
+        }
+            
     }
 
     /**
@@ -73,7 +70,7 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'TIPO_TAREA_idTipoTarea', 'duracion'], 'required'],
+            [['titulo', 'TIPO_TAREA_idTipoTarea','horaInicio', 'duracion'], 'required'],
             [['fechaHoraInicio', 'fechaHoraFin', 'fechaHoraRealizacion'], 'safe'],
             [['PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario', 'ACUARIO_idAcuario'], 'integer'],
             [['titulo', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
@@ -101,7 +98,8 @@ class Task extends \yii\db\ActiveRecord
             'USUARIO_idUsuario' => 'Usuario Id Usuario',
             'ACUARIO_idAcuario' => 'Acuario Id Acuario',
             'TIPO_TAREA_idTipoTarea' => 'Tipo  Tarea Id Tipo Tarea',
-            'duracion' => 'Duración'
+            'duracion' => 'Duración',
+            'horaInicio' => 'Hora inicio'
         ];
     }
 
@@ -110,7 +108,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getCondicionAmbiental()
     {
-        return $this->hasOne(CondicionAmbiental::className(), ['tarea_idTarea' => 'idTarea']);
+        return $this->hasOne(EnviromentalConditions::className(), ['tarea_idTarea' => 'idTarea']);
     }
 
     // public function getActualConditions(){ //obtiene las condiciones ambientales actuales del acuario//
@@ -197,6 +195,10 @@ class Task extends \yii\db\ActiveRecord
 
     
     public function beforeSave($insert){
+        // Primero verifico si se ha ingresado una hora de inicio. Si es así, debo actualizar la fechaHoraInicio con la hora ingresada
+        if (!isset($this->fechaHoraFin))
+            $this->setearHoraInicio();
+        // Luego calculo la fecha de fin
         if (!isset($this->fechaHoraFin))
             $this->calcularFechaFin();      
         $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
@@ -206,7 +208,20 @@ class Task extends \yii\db\ActiveRecord
     /// Este método es llamado cuando se traen los datos de la base    
     public function actualizarDuracion(){
         // tener en cuenta que la H tiene que estar en mayúsculas para permitirle ingresar entre 1 y 23 horas. Si está en h permite sólo de 1 a 12
-        // $this->duracion = date('H:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio));
+        $this->duracion = date('H:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio));
+    }
+
+    /// este método setea la fechaHora de inicio en base a la hora de inicio (atributo) ingresada
+    public function setearHoraInicio(){
+        // $h = date("H", strtotime($this->horaInicio));
+        $this->descripcion = $this->horaInicio . ' - ' . $this->duracion;
+        $h = intval(substr($this->horaInicio, 0,2));
+        $m = intval(substr($this->horaInicio, 3,2));
+        // $m = date("i", strtotime($this->horaInicio));
+        $date=date_create();
+        // VER por qué no me toma la duración!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        date_time_set($date,$h,$m);
+        $this->fechaHoraInicio = date_format($date,"Y-m-d H:i:s");
     }
 
     /// este método calcula la fecha de fin en base a la duración (atributo)

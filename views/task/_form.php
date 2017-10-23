@@ -62,13 +62,38 @@ use yii\helpers\ArrayHelper;
         echo Form::widget([     // nesting attributes together (without labels for children)
             'model'=>$model,
             'form'=>$form,
-            'columns'=>2,
+            'columns'=>1,
             'attributes'=>[
                 'TIPO_TAREA_idTipoTarea'=>[
                     'type'=>Form::INPUT_WIDGET,
                     'widgetClass'=>'kartik\select2\Select2',
                     'options'=>['data'=>ArrayHelper::map($taskTypes,'idTipoTarea','idTipoTarea')]
-                    ],
+                    ]
+            ]
+        ]);
+
+        echo Form::widget([     // nesting attributes together (without labels for children)
+            'model'=>$model,
+            'form'=>$form,
+            'columns'=>2,
+            'attributes'=>[
+                'horaInicio'=>[
+                           'type'=>Form::INPUT_WIDGET,
+                           'widgetClass'=>'kartik\time\TimePicker',
+                           'options'=>[
+                               'name' => 'DTPhoraInicio',
+                               'pluginOptions' => [
+                                    // 'defaultTime'=> '00:00 PM',
+                                    'showMeridian' => false,
+                                    'showSeconds' => false,
+                                    'minuteStep' => 10
+                                    ],
+                               'addonOptions' => [
+                                    'asButton' => true,
+                                    'buttonOptions' => ['class' => 'btn btn-info']
+                                    ]
+                                ]
+                          ],
                 'duracion'=>[
                            'type'=>Form::INPUT_WIDGET,
                            'widgetClass'=>'kartik\time\TimePicker',
