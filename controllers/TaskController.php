@@ -62,10 +62,10 @@ class TaskController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($idAcuario, $idPlanificacion = -1, $fecha = '0')
+    public function actionCreate($idAcuario=0, $idPlanificacion = -1, $fecha = '0')
     {
         $model = new Task();
-        
+
         $model->inicialice($idAcuario, $idPlanificacion, $fecha);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -121,7 +121,7 @@ class TaskController extends Controller
      * @return mixed
      */
     public function actionExecute()
-    {        
+    {
         $idTarea = Yii::$app->request->post('idTarea');
         $model = $this->findModel($idTarea);
 
@@ -156,7 +156,7 @@ class TaskController extends Controller
         }
     }
 
-    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación.
 
         $model = new Task(['idTarea'=>$id]);
 
@@ -164,7 +164,7 @@ class TaskController extends Controller
         {
             Yii::$app->response->format = 'json';
             return ActiveForm::validate($model);
-        }        
+        }
     }
 
 }

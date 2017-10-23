@@ -34,13 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $JSEventClick = <<<EOF
 function(calEvent, jsEvent, view) {
+  alert(calEvent);
   $.ajax({
     type: 'POST',
     url: "/task/create",
-    data: 'idTarea=' + calEvent.id,
+    data: idTarea= + calEvent.id,
     dataType: 'html',
     error: function(xhr){
         alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
+        alert("responseText: "+xhr.responseText);
         },
     success: function(response){
         $('#modalContent').html(response);
@@ -98,8 +100,8 @@ EOF;
                 'eventLimit' => TRUE,
                 'fixedWeekCount' => false,
                  //'dayClick'=>new \yii\web\JsExpression($JSEventClick),
-                  'select' => new JsExpression($JSCode),
-                 'dayClick'=>new \yii\web\JsExpression($JSCode),
+                //  'select' => new JsExpression($JSCode),
+                 'dayClick'=>new \yii\web\JsExpression($JSEventClick),
                 'eventClick'=>new \yii\web\JsExpression($JSEventClick),
 
             ],
@@ -112,6 +114,10 @@ EOF;
 </div>
 
   <?php
+
+
+//  yii::error(\yii\helpers\VarDumper::dumpAsString(calEvent.id));
+
   // if(Yii::$app->user->can('administrarTareas')){
   //   echo '<div id="btnDetail" class="col-lg-2">'
   //     .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',
