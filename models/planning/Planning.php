@@ -167,5 +167,20 @@ class Planning extends \yii\db\ActiveRecord
 
     }
 
+//     public function validateOverlay($idTarea, $HoraInicio, $HoraFin, $diaTarea){
+//        $tareasAsociadas= $this->getTAREAs();
+//        //tomar las tareas que tienen el mismo dia
+//        foreach ($$tareasAsociadas as $unaTarea) {
+//
+//          if (($HoraInicio < $unaTarea->horaInicio and $HoraInicio >= $unaTarea->horaInicio) or ($horaFin > $unaTarea->horaInicio and $horaFin > $unaTarea ->horaInicio)) {
+//             //si cumple esta condicion existe suporposicion de tareas por lo tanto no se puede crear
+//            yii::error(\yii\helpers\VarDumper::dumpAsString('la tarea se superpone'));
+//        }
+// 
+//
+//     }
+//
+//
+// }
 
 }

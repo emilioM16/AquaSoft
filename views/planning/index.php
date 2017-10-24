@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\planning\PlanningSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -18,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Nueva planificacion', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -35,8 +36,18 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'ESTADO_PLANIFICACION_idEstadoPlanificacion',
 
             ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{view}{update}{delete}{checkdate}',
+                'template'=>'{acept}{refuse}{view}{update}{delete}',
                 'buttons' => [
+
+                  'acept'=>function($url,$model){
+                      return Html::button('<span class="glyphicons glyphicons-ok-sign"></span>',
+                      [
+                         'value' => Url::to(['planning/autorized','id'=>$model->idPlanificacion]),
+                        'title' => 'Información de la planificacion',
+                        'class' => 'showModalButton btn btn-warning btnAquarium'
+                      ]);
+                  },
+
                     'view'=>function($url,$model){
                         return Html::button('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>',
                         [

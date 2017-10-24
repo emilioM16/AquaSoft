@@ -220,6 +220,17 @@ class PlanningController extends Controller
 
     }
 
+    public function actionAutorized($id)
+    {
+      //debe cargar vista con planificacion y tareas solo en lectura
+      //sin embargo con el boton aceptar y rechazar habilitado
+      //presina el boton vuelve al index
+        yii::error(\yii\helpers\VarDumper::dumpAsString('hola'));
+        //$this->findModel($id);
+
+      //  return $this->redirect(['index']);
+    }
+
 
 
 

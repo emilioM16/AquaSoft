@@ -45,7 +45,7 @@ function(calEvent, jsEvent, view) {
   $.ajax({
     type: 'GET',
     url: "/task/create",
-    data: 'idAcuario='+idAcua+'&idPlanificacion='+idPlan+'&fechaInicio='+($.format.date(calEvent.start, 'YYYY-MM-dd')),
+    data: 'idAcuario='+idAcua+'&idPlanificacion='+idPlan+'&fechaInicio=',
     dataType: 'html',
     error: function(xhr){
         alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
