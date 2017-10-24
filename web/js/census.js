@@ -5,5 +5,17 @@ $(document).on('change','#selectCensusAquarium',function(){
 
 $(document).on('click','#acceptBtn',function(){ 
     var selectedAquarium = $('#selectCensusAquarium').val();
-    alert(selectedAquarium);
+    $.ajax({
+        url: "census/get-census-data",
+        type: "GET",
+        data: {idAquarium: selectedAquarium},
+        dataType: "html",
+        success: function(response){
+            alert('funciona');
+        },
+        error: function(xhr,err){
+            alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+            alert("responseText: "+xhr.responseText);
+        }
+      });
 });
