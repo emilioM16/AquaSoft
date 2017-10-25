@@ -47,7 +47,7 @@ class Census
                     if(in_array($specie->nombre,$as)){
                         $data[$aquarium->nombre][$aqSpecie['nombre']] = (int)$aqSpecie['cantidad']; 
                     }else{
-                        $data[$aquarium->nombre][$specieNotFound] = 0;
+                        $data[$aquarium->nombre][$specieNotFound] = null;
                     }
                 }
             }

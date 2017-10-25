@@ -199,17 +199,4 @@ class Aquarium extends \yii\db\ActiveRecord
         }
     }
 
-
-    public function getQuantityBySpecieGreaterCero(){ //obtiene las especies para este acuario, en donde las cantidades sean mayor a 0//
-        $species = Specie::find()
-                    ->asArray()
-                    ->select(['idEspecie','nombre','cantidad'])
-                    ->joinWith('specimens')
-                    ->where(['acuario_idAcuario'=>$this->idAcuario])
-                    ->andWhere(['>', 'cantidad', 0])
-                    ->all();
-        return $species;
-    }
-
-
 }

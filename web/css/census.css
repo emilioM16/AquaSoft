@@ -1,3 +1,17 @@
 #acceptBtn{
     margin-top: 5%;
 }
+
+#chart{
+    margin-top: 4%;
+}
+
+.highcharts-pie-series .highcharts-point {
+	stroke: #EDE;
+	stroke-width: 2px;
+}
+.highcharts-pie-series .highcharts-data-label-connector {
+	stroke: silver;
+	stroke-dasharray: 2, 2;
+	stroke-width: 2px;
+}
