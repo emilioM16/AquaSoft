@@ -35,32 +35,44 @@ class Census
         $aquariums = $dataProvider->getModels();
         $data = [];
         $species = Specie::find()->select(['nombre'])->all();
-
+        $speciesCensusData = [];
         foreach ($aquariums as $key => $aquarium) {
-            // yii::error(\yii\helpers\VarDumper::dumpAsString($aquarium->nombre));
             $aquariumSpecies = $aquarium->getQuantityBySpecie(); //obtiene las especies que posee el acuario actual//
+            yii::error(\yii\helpers\VarDumper::dumpAsString($speciesCensusData));
             foreach ($aquariumSpecies as $key => $aqSpecie) {
+
+                if(!array_key_exists($aqSpecie['nombre'],$speciesCensusData)){
+                    $speciesCensusData[$aqSpecie['nombre']] = (int)$aqSpecie['cantidad'];
+                }else{
+                    $speciesCensusData[$aqSpecie['nombre']] = $speciesCensusData[$aqSpecie['nombre']] +  (int)$aqSpecie['cantidad'];
+                }
+
+
                 $specieNotFound = '';
                 foreach ($species as $key => $specie) {
                     $specieNotFound = $specie->nombre;
                     $as = ArrayHelper::map($aquariumSpecies, 'idEspecie','nombre');
                     if(in_array($specie->nombre,$as)){
-                        $data[$aquarium->nombre][$aqSpecie['nombre']] = (int)$aqSpecie['cantidad']; 
+                        $data[0][$aquarium->nombre][$aqSpecie['nombre']] = (int)$aqSpecie['cantidad'];
+
                     }else{
-                        $data[$aquarium->nombre][$specieNotFound] = null;
+                        $data[0][$aquarium->nombre][$specieNotFound] = null;
                     }
                 }
             }
         }
+        yii::error(\yii\helpers\VarDumper::dumpAsString($speciesCensusData));
+        $data[1]=$speciesCensusData;
         return $data;
     }
 
 
     public static function getFormattedData(){
         $originalData = static::getAllAquariumsData();
+        $generalData = $originalData[0];
         $categories = [];
         $series = [];
-        foreach ($originalData as $aquariumName => $aquariumData) {
+        foreach ($generalData as $aquariumName => $aquariumData) {
 
             $categories[] = $aquariumName;
 
@@ -85,6 +97,7 @@ class Census
         $series = array_values($series);
         $censusData[] = $categories;
         $censusData[] = $series;
+        $censusData[] = $originalData[1];
         return $censusData;
     }
 

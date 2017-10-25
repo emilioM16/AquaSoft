@@ -16,6 +16,7 @@ class CensusController extends Controller
     public function actionIndex()
      {
         $aquariums = Census::getAvailableAquariums();
+        $data =Census::getAllAquariumsData();
         array_unshift($aquariums,['idAcuario'=>0,'nombre'=>'Todos']);
         return $this->render('index',
                             [

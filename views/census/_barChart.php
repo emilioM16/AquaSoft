@@ -3,7 +3,7 @@ use yii\web\JsExpression;
 use miloschuman\highcharts\Highcharts;
 ?>
 
-<div class="col-lg-4 form-center">
+<div id="bar" class="col-lg-12 form-center">
 <?php
                 // echo Highcharts=>=>widget([
                 //     'options'=>[
@@ -52,7 +52,7 @@ use miloschuman\highcharts\Highcharts;
             'options'=>[
                 'chart'=> [
                     'type'=> 'column',
-                    'renderTo' => 'chart'
+                    'renderTo' => 'bar'
                 ],
                 'title'=> [
                     'text'=> 'Cantidad de ejemplares por acuario'
@@ -104,5 +104,33 @@ use miloschuman\highcharts\Highcharts;
                 ],
                 'series'=> $data[1],
             ]
-        ])
-            ?>
+        ]);
+        ?>
+</div>
+                
+        <div id="pie" class="col-lg-12">
+        <?php 
+        echo Highcharts::widget([
+                'options'=>[
+                    'chart'=> [
+                        'type'=> 'pie',
+                        'renderTo'=>'pie' //MUY IMPORTANTE PARA QUE EL GRÁFICO SE MUESTRE EN EL CONTENEDOR CORRECTO!//
+                    ],
+                    'title'=>[
+                        'text'=> 'Cantidades por especie'
+                    ],
+                    'credits'=>[
+                        'enabled'=>false
+                    ],     
+                    'series'=> [[
+                        'type'=> 'pie',
+                        'allowPointSelect'=> true,
+                        'keys'=> ['name', 'y', 'selected', 'sliced'],
+                        'data'=> $data[2],
+                        'showInLegend'=> true
+                    ]]
+                ]
+            ]);
+        
+        ?>
+        </div>
