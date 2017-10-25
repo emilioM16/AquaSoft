@@ -109,4 +109,22 @@ class EnviromentalConditions extends \yii\db\ActiveRecord
 
         // } 
     }
+
+    public static function getSuffix($name){
+        switch ($name) {
+            case 'temperatura':
+                return '°C';
+                break;
+            case 'ph':
+                return '';
+            case 'CO2':
+                return 'mg/l';
+            case 'salinidad':
+                return 'g/L';
+            case 'lux':
+                return 'lx';
+            default:
+                break;
+        }
+    }
 }
