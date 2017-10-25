@@ -90,8 +90,6 @@ use miloschuman\highcharts\Highcharts;
                 'tooltip'=> [
                     'formatter' => new JsExpression(
                                         'function(){ return "<b>"+this.series.name+":"+ this.point.y+"</b><br>Total: "+this.point.stackTotal; }'),
-                    'headerFormat'=> new JsExpression('function(){return point.x;}'),
-                    'pointFormat'=> new JsExpression('function(){return series.name;}'),
                 ],
                 'plotOptions'=> [
                     'column'=> [
@@ -108,29 +106,34 @@ use miloschuman\highcharts\Highcharts;
         ?>
 </div>
                 
-        <div id="pie" class="col-lg-12">
-        <?php 
-        echo Highcharts::widget([
-                'options'=>[
-                    'chart'=> [
-                        'type'=> 'pie',
-                        'renderTo'=>'pie' //MUY IMPORTANTE PARA QUE EL GRÁFICO SE MUESTRE EN EL CONTENEDOR CORRECTO!//
-                    ],
-                    'title'=>[
-                        'text'=> 'Cantidades por especie'
-                    ],
-                    'credits'=>[
-                        'enabled'=>false
-                    ],     
-                    'series'=> [[
-                        'type'=> 'pie',
-                        'allowPointSelect'=> true,
-                        'keys'=> ['name', 'y', 'selected', 'sliced'],
-                        'data'=> $data[2],
-                        'showInLegend'=> true
-                    ]]
-                ]
-            ]);
-        
-        ?>
-        </div>
+<div id="pieAllSpecies" class="col-lg-12">
+<?php 
+echo Highcharts::widget([
+        'options'=>[
+            'chart'=> [
+                'height'=>'550',
+                'type'=> 'pie',
+                'renderTo'=>'pieAllSpecies' //MUY IMPORTANTE PARA QUE EL GRÁFICO SE MUESTRE EN EL CONTENEDOR CORRECTO!//
+            ],
+            'title'=>[
+                'text'=> 'Total de ejemplares por especie'
+            ],
+            'credits'=>[
+                'enabled'=>false
+            ],
+            'tooltip'=> [
+                'formatter' => new JsExpression(
+                                    'function(){ return "<b>"+this.point.name+"<br>Cantidad:"+ this.point.y;}'),
+            ],    
+            'series'=> [[
+                'type'=> 'pie',
+                'allowPointSelect'=> true,
+                'keys'=> ['name', 'y', 'selected', 'sliced'],
+                'data'=> $speciesData,
+                'showInLegend'=> true
+            ]]
+        ]
+    ]);
+
+?>
+</div>

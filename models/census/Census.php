@@ -7,7 +7,8 @@ use app\models\aquarium\Aquarium;
 use app\models\aquarium\AquariumSearch;
 use app\models\specie\Specie;
 use yii\helpers\ArrayHelper;
-
+use yii\db\Expression;
+use app\models\specimen\Specimen;
 
 class Census
 {
@@ -28,6 +29,22 @@ class Census
     }
 
 
+    public static function getAllSpeciesQuantities(){
+        $specimenTable = Specimen::tableName();
+        $specieTable = Specie::tableName();
+        $speciesCensus = Specie::find()
+                        ->asArray()
+                        ->select(['nombre',new Expression('SUM(cantidad) as total')])
+                        ->innerJoin($specimenTable, 'especie_idEspecie=idEspecie')
+                        ->groupBy('nombre')
+                        ->all();
+        $data = [];
+        foreach ($speciesCensus as $key => $value) {
+            $data[]= [$value['nombre'],(int)$value['total']];
+        }
+        return $data;
+    }
+
 
     public static function getAllAquariumsData(){
         $searchModel  = new AquariumSearch();
@@ -35,44 +52,31 @@ class Census
         $aquariums = $dataProvider->getModels();
         $data = [];
         $species = Specie::find()->select(['nombre'])->all();
-        $speciesCensusData = [];
+
         foreach ($aquariums as $key => $aquarium) {
             $aquariumSpecies = $aquarium->getQuantityBySpecie(); //obtiene las especies que posee el acuario actual//
-            yii::error(\yii\helpers\VarDumper::dumpAsString($speciesCensusData));
             foreach ($aquariumSpecies as $key => $aqSpecie) {
-
-                if(!array_key_exists($aqSpecie['nombre'],$speciesCensusData)){
-                    $speciesCensusData[$aqSpecie['nombre']] = (int)$aqSpecie['cantidad'];
-                }else{
-                    $speciesCensusData[$aqSpecie['nombre']] = $speciesCensusData[$aqSpecie['nombre']] +  (int)$aqSpecie['cantidad'];
-                }
-
-
                 $specieNotFound = '';
                 foreach ($species as $key => $specie) {
                     $specieNotFound = $specie->nombre;
                     $as = ArrayHelper::map($aquariumSpecies, 'idEspecie','nombre');
                     if(in_array($specie->nombre,$as)){
-                        $data[0][$aquarium->nombre][$aqSpecie['nombre']] = (int)$aqSpecie['cantidad'];
-
+                        $data[$aquarium->nombre][$aqSpecie['nombre']] = (int)$aqSpecie['cantidad']; 
                     }else{
-                        $data[0][$aquarium->nombre][$specieNotFound] = null;
+                        $data[$aquarium->nombre][$specieNotFound] = null;
                     }
                 }
             }
         }
-        yii::error(\yii\helpers\VarDumper::dumpAsString($speciesCensusData));
-        $data[1]=$speciesCensusData;
         return $data;
     }
 
 
     public static function getFormattedData(){
         $originalData = static::getAllAquariumsData();
-        $generalData = $originalData[0];
         $categories = [];
         $series = [];
-        foreach ($generalData as $aquariumName => $aquariumData) {
+        foreach ($originalData as $aquariumName => $aquariumData) {
 
             $categories[] = $aquariumName;
 
@@ -97,7 +101,6 @@ class Census
         $series = array_values($series);
         $censusData[] = $categories;
         $censusData[] = $series;
-        $censusData[] = $originalData[1];
         return $censusData;
     }
 

@@ -15,6 +15,7 @@ class CensusController extends Controller
 
     public function actionIndex()
      {
+        $specieCensus = Census::getAllSpeciesQuantities();
         $aquariums = Census::getAvailableAquariums();
         $data =Census::getAllAquariumsData();
         array_unshift($aquariums,['idAcuario'=>0,'nombre'=>'Todos']);
@@ -28,8 +29,10 @@ class CensusController extends Controller
     public function actionShowCensus($idAquarium){
         if($idAquarium == 0){ //seleccionó todos los acuarios//
             $censusData = Census::getFormattedData(); 
+            $specieCensus = Census::getAllSpeciesQuantities();
             return $this->renderAjax('_barChart',[
                                         'data'=>$censusData,
+                                        'speciesData' => $specieCensus
                                     ]);           
         }else{
             $aquarium = Aquarium::findOne(['idAcuario'=>$idAquarium]);

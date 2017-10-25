@@ -1,5 +1,6 @@
 <?php 
 use miloschuman\highcharts\Highcharts;
+use yii\web\JsExpression;
 ?>
 <div id="pie" class="col-lg-12">
 <?php 
@@ -7,6 +8,7 @@ echo Highcharts::widget([
         'options'=>[
             'chart'=> [
                 'type'=> 'pie',
+                'height'=>'550',
                 'renderTo'=>'pie' //MUY IMPORTANTE PARA QUE EL GRÁFICO SE MUESTRE EN EL CONTENEDOR CORRECTO!//
             ],
             'title'=>[
@@ -14,7 +16,11 @@ echo Highcharts::widget([
             ],
             'credits'=>[
                 'enabled'=>false
-            ],     
+            ],
+            'tooltip'=> [
+                'formatter' => new JsExpression(
+                                    'function(){ return "<b>"+this.point.name+"<br>Cantidad:"+ this.point.y;}'),
+            ],   
             'series'=> [[
                 'type'=> 'pie',
                 'allowPointSelect'=> true,
