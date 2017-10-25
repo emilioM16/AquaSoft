@@ -46,28 +46,28 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div id="chart" class="col-lg-12">
             <?php
-                $data = [
-                            [
-                                'A01',
-                                'A02',
-                                'A04',
-                                'A05'
-                            ],
-                            [
-                                [
-                                    'name'=>'Globo',
-                                    'data'=>[3,0,5,10]
-                                ],
-                                [
-                                    'name'=>'Payaso',
-                                    'data'=>[33,4,51]
-                                ],
-                                [
-                                    'name'=>'Carpín dorado',
-                                    'data'=>[12,3,8,9]
-                                ]
-                            ]
-                        ];
+                // $data = [
+                //             [
+                //                 'A01',
+                //                 'A02',
+                //                 'A04',
+                //                 'A05'
+                //             ],
+                //             [
+                //                 [
+                //                     'name'=>'Globo',
+                //                     'data'=>[3,0,5,10]
+                //                 ],
+                //                 [
+                //                     'name'=>'Payaso',
+                //                     'data'=>[33,4,51]
+                //                 ],
+                //                 [
+                //                     'name'=>'Carpín dorado',
+                //                     'data'=>[12,3,8,9]
+                //                 ]
+                //             ]
+                //         ];
 
                 
                 echo Highcharts::widget([
