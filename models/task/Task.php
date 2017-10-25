@@ -71,6 +71,8 @@ class Task extends \yii\db\ActiveRecord
     {
         return [
             [['titulo', 'TIPO_TAREA_idTipoTarea','horaInicio', 'duracion'], 'required'],
+            [['horaInicio'],'validarFechaHoraInicio'],
+            [['duracion'],'validarFechaHoraFin'],
             [['fechaHoraInicio', 'fechaHoraFin', 'fechaHoraRealizacion'], 'safe'],
             [['PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario', 'ACUARIO_idAcuario'], 'integer'],
             [['titulo', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
@@ -102,6 +104,46 @@ class Task extends \yii\db\ActiveRecord
             'horaInicio' => 'Hora inicio'
         ];
     }
+
+    /**
+     * valida la hora de inicio
+     **/
+    public function validarFechaHoraInicio($attribute, $params){
+        if ($this->isPlanned()){
+            // armo la fecha de inicio en base a la fecha que seleccionó del calendario y hora de inicio que ha ingresado
+            $fechaInicioTemp = date_create_from_format("Y-m-d H:i:s",$this->fechaHoraInicio);
+            $h = intval(substr($attribute, 0,2));
+            $m = intval(substr($attribute, 3,2));
+            date_time_set($fechaInicioTemp,$h,$m);
+            // valido la superposicion de tareas
+            $valida = $this->validarSuperposicionFI($fechaInicioTemp); // LIA *********************************************
+            if ($valida){
+                $this->fechaHoraInicio = date_format($fechaInicioTemp,"Y-m-d H:i:s");
+            } else{
+                $this->addError($attribute, 'La hora se superpone con otra tarea');
+            }
+        }
+    }
+
+    /**
+     * valida la duración
+     **/
+    public function validarFechaHoraFin(){
+        if ($this->isPlanned()){
+            // armo la fecha de fin en base a la fecha que seleccionó del calendario y duración que ha ingresado
+            $fechaFinTemp = date_create_from_format("Y-m-d H:i:s",$this->fechaHoraInicio);
+            $h = intval(substr($attribute, 0,2));
+            $m = intval(substr($attribute, 3,2));
+            date_time_set($fechaFinTemp, date_format($fechaFinTemp,"H") + $h, date_format($fechaFinTemp,"i") + $m);
+            // valido la superposicion de tareas
+            $valida = $this->validarSuperposicionFF($fechaFinTemp); // LIA *********************************************
+            if ($valida){
+                $this->fechaHoraInicio = date_format($fechaFinTemp,"Y-m-d H:i:s");
+            } else{
+                $this->addError($attribute, 'La hora se superpone con otra tarea');
+            }
+        }
+     }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -207,7 +249,14 @@ class Task extends \yii\db\ActiveRecord
 
     /// Este método es llamado cuando se traen los datos de la base    
     public function actualizarDuracion(){
-        // tener en cuenta que la H tiene que estar en mayúsculas para permitirle ingresar entre 1 y 23 horas. Si está en h permite sólo de 1 a 12
+        // tener en cuenta que la H tiene que estar en mayúsculas para permitirle ingresar entre 1 y 23 horas. Si está en h permite sólo de 1 a 12 
+        $this->duracion = date('H:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio)); 
+    }
+
+    /// Este método es llamado cuando se traen los datos de la base    
+    public function actualizarHoraInicio(){
+        // tener en cuenta que la H tiene que estar en mayúsculas para permitirle ingresar entre 1 y 23 horas. Si está en h permite sólo de 1 a 12 
+        $this->horaInicio = date('H:i' ,strtotime($this->fechaHoraInicio)); 
     }
 
     /// este método setea la fechaHora de inicio en base a la hora de inicio (atributo) ingresada por el usuario

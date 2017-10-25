@@ -157,49 +157,58 @@ class TaskController extends Controller
         // } 
         
         $idTarea = Yii::$app->request->post('idTarea');
-        $model = $this->findModel($idTarea);
-        $vista = $this->getViewTaskType($model->TIPO_TAREA_idTipoTarea);
-        if (!$model->wasExecuted())
+        $modelTask = $this->findModel($idTarea);
+        if (!$modelTask->wasExecuted())
         {
-            yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));      
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                $this->redirect(Yii::$app->request->referrer);
-            } 
-            else {
-                if (Yii::$app->request->isAjax){
-                    // if ($vista === 'control'){
-                    //    return $this->renderAjax($vista,[
-                    //     'model'=>$model->condicionAmbiental,
-                    //     ]); 
-                    // }
-                    // else
-                    // {
-                    //    return $this->renderAjax($vista,[
-                    //     'model'=>$model->InsumoTareas,
-                    //     ]);  
-                    // }
-                    return $this->renderAjax($vista,[
-                        'model'=>$model,
-                        ]);
+            yii::error('MODELTASK: '.\yii\helpers\VarDumper::dumpAsString($modelTask));
+            yii::error('POST: '.Yii::$app->request->referrer);  
+            // obtengo la vista de acuerdo al tipo de tarea
+            $this->redirectViewTaskType($modelTask);
+
+            // $modelSupply = new Supply(); // no sé si necesitaré esto
+            // if ($vista === 'control')
+            // {
+            //     // instancio las condiciones ambientales
+            //     $modelSend = new EnviromentalConditions();
+            // }     
+            // if ($modelTask->load(Yii::$app->request->post()) && $modelTask->save()) {
+            //     $this->redirect(Yii::$app->request->referrer);
+            // } 
+            // else {
+            //     if (Yii::$app->request->isAjax){
+            //         // if ($vista === 'control'){
+            //         //    return $this->renderAjax($vista,[
+            //         //     'modelTask'=>$modelTask->condicionAmbiental,
+            //         //     ]); 
+            //         // }
+            //         // else
+            //         // {
+            //         //    return $this->renderAjax($vista,[
+            //         //     'modelTask'=>$modelTask->InsumoTareas,
+            //         //     ]);  
+            //         // }
+            //         return $this->renderAjax($vista,[
+            //             'model'=> $modelSend,
+            //             ]);
                     
-                }else{
-                    // if ($vista === 'control'){
-                    //    return $this->render($vista,[
-                    //     'model'=>$model->condicionAmbiental,
-                    //     ]); 
-                    // }
-                    // else
-                    // {
-                    //    return $this->render($vista,[
-                    //     'model'=>$model->InsumoTareas,                        
-                    //     ]);  
-                    // }
+            //     }else{
+            //         // if ($vista === 'control'){
+            //         //    return $this->render($vista,[
+            //         //     'modelTask'=>$modelTask->condicionAmbiental,
+            //         //     ]); 
+            //         // }
+            //         // else
+            //         // {
+            //         //    return $this->render($vista,[
+            //         //     'modelTask'=>$modelTask->InsumoTareas,                        
+            //         //     ]);  
+            //         // }
                     
-                    return $this->render($vista,[
-                        'model'=>$model,
-                    ]);
-                }
-            }
+            //         return $this->render($vista,[
+            //             'model'=> $modelSend,
+            //         ]);
+            //     }
+            // }
         }
     }
 
@@ -214,6 +223,7 @@ class TaskController extends Controller
     {
         if (($model = Task::findOne($id)) !== null) {
             $model->ActualizarDuracion(); 
+            $model->ActualizarHoraInicio(); 
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -231,15 +241,18 @@ class TaskController extends Controller
         }        
     }
 
-    private function getViewTaskType($taskType){
+    private function redirectViewTaskType($task){
+        $taskType = $task->TIPO_TAREA_idTipoTarea;
         switch ($taskType) {
             case 'Controlar acuario':
-                return 'control';
+                // return 'control';
+                return $this->redirect(['../conditions/control', 'idTarea' => $task->idTarea]);     
                 break;
             case 'Alimentación':
             case 'Limpieza':
             case 'Reparación':
-                return 'maintenance';
+                // return 'maintenance';
+                return $this->redirect(['../taskSupply/addRemoveSupply', 'idTarea' => $task->idTarea]);   
                 break;
             case 'Incorporar ejemplares':
                 return ''; // ver si se puede reutilizar las pantalla de Melo
@@ -251,6 +264,7 @@ class TaskController extends Controller
                 # code...
                 break;
         }
+        
     }
 
 }
