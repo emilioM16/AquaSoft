@@ -198,4 +198,5 @@ class Aquarium extends \yii\db\ActiveRecord
             return 0;
         }
     }
+
 }

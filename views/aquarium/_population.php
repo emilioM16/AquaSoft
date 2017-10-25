@@ -43,8 +43,8 @@ if($porcentajes!=[]){
                         'alpha'=>45,
                         'beta'=>0,
                         'credits'=>false
+                        ],
                     ],
-                ],
                 'title' => [
                     'text' => 'Ocupación'
                     ],

@@ -143,9 +143,13 @@ $(document).on('change','#selectDestinationAquarium',function(){
         $("#alert").html('');          
         $("#modalContent").animate({"height":totalHeight+'px'},200,'linear');
        },
-       error:function(){
-           $("#inputs").html("Error. Contacte al administrador");
-       }
+    //    error:function(){
+    //        $("#inputs").html("Error. Contacte al administrador");
+    //    }
+    error: function(xhr,err){
+        alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+        alert("responseText: "+xhr.responseText);
+    }
      });
 });
 

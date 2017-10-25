@@ -222,6 +222,8 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
     <div class="container col-lg-12">
         <?= Breadcrumbs::widget([
+            'homeLink' => ['label' => 'Inicio',
+            'url' => Yii::$app->getHomeUrl()],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <div class="col-lg-12">

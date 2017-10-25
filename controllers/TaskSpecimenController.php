@@ -239,7 +239,7 @@ class TaskSpecimenController extends Controller
         $originAquariumTotalQuantity = $originAquariumQuantity * $specie->minEspacio;
 
         if($destinationAquarium->espacioDisponible < $originAquariumTotalQuantity){
-            $destinationAquarium->maxQuantity = floor($aquarium->espacioDisponible / $specie->minEspacio);
+            $destinationAquarium->maxQuantity = floor($destinationAquarium->espacioDisponible / $specie->minEspacio);
         }else{
             $destinationAquarium->maxQuantity = $originAquariumQuantity;
         }

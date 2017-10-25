@@ -23,13 +23,15 @@ class AppAsset extends AssetBundle
         'css/aquariums.css',
         'css/planning.css',
         'css/specimens.css',
+        'css/census.css',
     ];
     public $js = [
         'js/aquariums.js',
         'js/site.js',
         'js/planning.js',
         'js/specialists.js',
-        'js/tasks.js'
+        'js/tasks.js',
+        'js/census.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -98,6 +98,7 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                             $task->titulo = 'Incorporación de ejemplares';
                             $task->descripcion = 'Esta tarea fue creada a través de la sección de ejemplares';
                             $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+                            $task->horaInicio = '00:00';
                             $task->fechaHoraInicio = new Expression('NOW()');
                             $task->fechaHoraFin = new Expression('NOW()');
                             $task->fechaHoraRealizacion = new Expression('NOW()');
@@ -180,6 +181,7 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                         $task->descripcion = 'Esta tarea fue creada a través de la sección de ejemplares';
                         $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
                         $task->fechaHoraInicio = new Expression('NOW()');
+                        $task->horaInicio = '00:00';
                         $task->fechaHoraFin = new Expression('NOW()');
                         $task->fechaHoraRealizacion = new Expression('NOW()');
                         $task->ACUARIO_idAcuario = $idAquarium;
@@ -249,6 +251,7 @@ class TaskSpecimen extends \yii\db\ActiveRecord
                         $task->descripcion = 'Esta tarea fue creada a través de la sección de ejemplares';
                         $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
                         $task->fechaHoraInicio = new Expression('NOW()');
+                        $task->horaInicio = '00:00';
                         $task->fechaHoraFin = new Expression('NOW()');
                         $task->fechaHoraRealizacion = new Expression('NOW()');
                         $task->ACUARIO_idAcuario = $originId;
