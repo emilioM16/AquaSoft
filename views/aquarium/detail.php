@@ -89,13 +89,11 @@ function(calEvent, jsEvent, view) {
         },
     success: function(response){
         $('#modalContent').html(response);
-        $('#modalTitle').html('Registrar tarea');
-        // $('#modalHeader').html('Registrar tarea');
+        $('#modalTitle').html('Realizar tarea');
+        // $('#modalHeader').html('Realizar tarea');
         $('#modal').modal('show');
         }
     });
-  // change the border color just for fun
-  $(this).css('border-color', 'red');
 }
 EOF;
 ?>

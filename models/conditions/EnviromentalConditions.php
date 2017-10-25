@@ -24,12 +24,28 @@ use app\models\task\Task;
  */
 class EnviromentalConditions extends \yii\db\ActiveRecord
 {
+    public $maxPh;
+    public $minPh;
+    public $maxTemp;
+    public $minTemp;
+    public $maxSal;
+    public $minSal;
+    public $maxLux;
+    public $minLux;
+    public $maxCO2;
+    public $minCO2;
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'CONDICION_AMBIENTAL';
+    }
+
+    public function inicialice($idTarea, $idAcuario){
+        $this->tarea_idTarea = $idTarea;
+        $this->acuario_idAcuario = $idAcuario;
+        $this->loadValuesMaxMin();
     }
 
     /**
@@ -77,5 +93,20 @@ class EnviromentalConditions extends \yii\db\ActiveRecord
     public function getTareaIdTarea()
     {
         return $this->hasOne(Task::className(), ['idTarea' => 'tarea_idTarea']);
+    }
+
+    public function loadValuesMaxMin(){
+        // $species = Specie::find()
+        //             ->asArray()
+        //             ->select(['idEspecie','nombre','cantidad'])
+        //             ->joinWith('specimens')
+        //             ->where(['acuario_idAcuario'=>$this->acuario_idAcuario])
+        //             ->all();
+        // foreach ($species as $specie) {
+        //     # code...d
+        // }
+        // if ($acuario !== null){
+
+        // } 
     }
 }
