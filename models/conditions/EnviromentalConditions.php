@@ -10,9 +10,9 @@ use app\models\task\Task;
 /**
  * This is the model class for table "CONDICION_AMBIENTAL".
  *
- * @property integer $idCondicionAmbiental
- * @property double $ph
+ * @property integer $idCondicionAmbiental 
  * @property double $temperatura
+ * @property double $ph
  * @property double $salinidad
  * @property double $lux
  * @property double $CO2

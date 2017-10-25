@@ -153,15 +153,6 @@ class Task extends \yii\db\ActiveRecord
         return $this->hasOne(EnviromentalConditions::className(), ['tarea_idTarea' => 'idTarea']);
     }
 
-    // public function getActualConditions(){ //obtiene las condiciones ambientales actuales del acuario//
-    //     $conditions = EnviromentalConditions::find()
-    //                     ->asArray()
-    //                     ->select(['temperatura','ph','salinidad','lux','CO2'])
-    //                     ->where(['tarea_idTarea' => $this->idTarea])
-    //                     ->orderBy(['idCondicionAmbiental'=>SORT_DESC])
-    //                     ->one();
-    //     return $conditions;
-    // }
 
     /**
      * @return \yii\db\ActiveQuery

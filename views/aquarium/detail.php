@@ -29,13 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-lg-4">
     <?php
       $content1 =
-      
-      '<div class="col-lg-12">  
+
+      '<div class="col-lg-12">
 
           <label>Nombre del acuario: </label> <span>'.$acuario->nombre.'</span>
           <br><br>
 
-          <p class="text-justify">       
+          <p class="text-justify">
             <label>Descripción:</label>'
               .$acuario->descripcion.
           '</p>
@@ -43,25 +43,41 @@ $this->params['breadcrumbs'][] = $this->title;
 
           <label>Espacio disponible: </label> <span>'.$acuario->espacioDisponible.'</span>
           <br><br>
-          
+
       </div>' ;
- 
+
+
 
 
         $items = [
           [
-              'label'=>'<i class="glyphicon glyphicon-home"></i> Home',
+              'label'=>FA::icon('info')->size(FA::SIZE_LARGE).' Información',
               'content'=>$content1,
-              //'linkOptions'=>['data-url'=>\yii\helpers\Url::to(['/acuarium/tab'])],
-              'active'=>true
+            //   'active'=>true
           ],
           [
-              'label'=>'<i class="glyphicon glyphicon-user"></i> Condiciones ambientales',
-              'content'=>''
+              'label'=>FA::icon('thermometer-3')->size(FA::SIZE_LARGE).' Condiciones ambientales',
+              'content'=>'<div class="row">
+                            <div class="col-lg-12" align="center">'.
+                                $this->render('_gauges',['condiciones'=>$condiciones])
+                            .'</div>
+                            </div>
+                            <div class="row">
+                            <div class="col-lg-12" align="center">'.
+                                Html::button(FA::icon('check-square-o')->size(FA::SIZE_LARGE).' Nuevo control',
+                                [
+                                    'value' => Url::to(['']),
+                                    'title' => 'Nuevo control',
+                                    'class' => 'showModalButton btn btn-primary',
+                                    'style'=>['width'=>'70%']
+                                ])
+                            .'</div>
+                          </div>',
+              'active'=>true,
           ],
           [
-            'label'=>'<i class="glyphicon glyphicon-user"></i> Población',
-            'content'=>''
+            'label'=>FA::icon('pie-chart')->size(FA::SIZE_LARGE).' Población',
+            'content'=>$this->render('_population',['especies'=>$especies,'porcentajes'=>$porcentajes]),
           ],
         ];
 
@@ -127,7 +143,7 @@ EOF;
     </div>
   </div>
 
-  <?php 
+  <?php
   if(Yii::$app->user->can('administrarTareas')){
     echo '<div id="btnDetail" class="col-lg-2">'
       .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada', 

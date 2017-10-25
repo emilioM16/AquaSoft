@@ -17,7 +17,7 @@ $config = [
                     'userClassName' => 'app\models\user\User',
                     'idField'=>'id_usuario',
                     'usernameField' => 'nombreUsuario',
-                    'searchClass'=>'app\models\user\UserSearch',
+                    'searchClass'=>'app\models\user\UserSearchAll',
                 ],
             ],
         ],
@@ -83,6 +83,7 @@ $config = [
             'rules' => [
                 'login'=>'site/login',
                 'logout'=>'site/logout',
+                'specimens'=>'task-specimen/specimens-tasks'
             ],
         ],
     ],

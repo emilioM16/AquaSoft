@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
+use app\models\specie\Specie;
+use app\models\user\User;
 
 /**
  * AquariumController implements the CRUD actions for Aquarium model.
@@ -36,9 +38,9 @@ class AquariumController extends Controller
      */
     public function actionIndex()
     {
+        $user = User::findOne(Yii::$app->user->identity->idUsuario);
         $searchModel = new AquariumSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -52,7 +54,6 @@ class AquariumController extends Controller
      */
     public function actionView($idAcuario)
     {
-        yii::error(\yii\helpers\VarDumper::dumpAsString($idAcuario));
         $model = $this->findModel($idAcuario);
 
         if (Yii::$app->request->isAjax){
@@ -74,7 +75,7 @@ class AquariumController extends Controller
     public function actionCreate()
     {
         $model = new Aquarium();
-
+        $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
@@ -95,7 +96,7 @@ class AquariumController extends Controller
     public function actionUpdate($idAcuario)
     {
         $model = $this->findModel($idAcuario);
-
+        $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
@@ -124,22 +125,21 @@ class AquariumController extends Controller
         $model = $this->findModel($idAcuario);
         $model->activo = 0;
         $model->save();
-        // $this->findModel($idAcuario)->delete();
-
         return $this->redirect(['index']);
     }
 
     public function actionDetail($idAcuario)
     {
-        // $idAcuario = Yii::$app->request->post('idAcuario');
-        // $usuarios_nombreUsuario = Yii::$app->request->post('usuarios_nombreUsuario');
-        // $idCondiciones = Yii::$app->request->post('idCondiciones');
-
         $model = $this->findModel($idAcuario);
         $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
-
+        $actualConditions = $model->getActualConditions();
+        $species = $model->getQuantityBySpecie();
+        $speciesPorcentages = Specie::calculatePorcentageBySpecie($species);
         return $this->render('detail', [
             'acuario'=>$model,
+            'condiciones'=>$actualConditions,
+            'especies'=>$species,
+            'porcentajes'=>$speciesPorcentages
             ]);
     }
 
@@ -159,8 +159,8 @@ class AquariumController extends Controller
         }
     }
 
-    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
-            
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación.
+
         if($id!=-1){ //solución horrible, no quedaba otra, mejorar si se puede a futuro
             $scenario = 'update';
         }else{
@@ -173,6 +173,6 @@ class AquariumController extends Controller
         {
             Yii::$app->response->format = 'json';
             return ActiveForm::validate($model);
-        }        
+        }
     }
 }

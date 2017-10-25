@@ -1,9 +1,12 @@
 <?php
 
-namespace app\models;
+namespace app\models\specimen;
 
 use Yii;
-
+use app\models\aquarium\Aquarium;
+use app\models\specie\Specie;
+use app\models\task\Task;
+use app\models\task\TaskSpecimen;
 /**
  * This is the model class for table "EJEMPLAR".
  *
@@ -11,10 +14,10 @@ use Yii;
  * @property integer $acuario_idAcuario
  * @property integer $cantidad
  *
- * @property ACUARIO $acuarioIdAcuario
- * @property ESPECIE $especieIdEspecie
- * @property TAREAEJEMPLAR[] $tAREAEJEMPLARs
- * @property TAREA[] $tAREAIdTareas
+ * @property Aquarium $acuarioIdAcuario
+ * @property Specie $especieIdEspecie
+ * @property TaskSpecimen[] $tAREAEJEMPLARs
+ * @property Task[] $tAREAIdTareas
  */
 class Specimen extends \yii\db\ActiveRecord
 {
@@ -34,8 +37,8 @@ class Specimen extends \yii\db\ActiveRecord
         return [
             [['especie_idEspecie', 'acuario_idAcuario', 'cantidad'], 'required'],
             [['especie_idEspecie', 'acuario_idAcuario', 'cantidad'], 'integer'],
-            [['acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => ACUARIO::className(), 'targetAttribute' => ['acuario_idAcuario' => 'idAcuario']],
-            [['especie_idEspecie'], 'exist', 'skipOnError' => true, 'targetClass' => ESPECIE::className(), 'targetAttribute' => ['especie_idEspecie' => 'idEspecie']],
+            [['acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['acuario_idAcuario' => 'idAcuario']],
+            [['especie_idEspecie'], 'exist', 'skipOnError' => true, 'targetClass' => Specie::className(), 'targetAttribute' => ['especie_idEspecie' => 'idEspecie']],
         ];
     }
 
@@ -56,7 +59,7 @@ class Specimen extends \yii\db\ActiveRecord
      */
     public function getAcuarioIdAcuario()
     {
-        return $this->hasOne(ACUARIO::className(), ['idAcuario' => 'acuario_idAcuario']);
+        return $this->hasOne(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario']);
     }
 
     /**
@@ -64,7 +67,7 @@ class Specimen extends \yii\db\ActiveRecord
      */
     public function getEspecieIdEspecie()
     {
-        return $this->hasOne(ESPECIE::className(), ['idEspecie' => 'especie_idEspecie']);
+        return $this->hasOne(Specie::className(), ['idEspecie' => 'especie_idEspecie']);
     }
 
     /**
@@ -72,7 +75,7 @@ class Specimen extends \yii\db\ActiveRecord
      */
     public function getTAREAEJEMPLARs()
     {
-        return $this->hasMany(TAREAEJEMPLAR::className(), ['EJEMPLAR_especie_idEspecie' => 'especie_idEspecie', 'EJEMPLAR_acuario_idAcuario' => 'acuario_idAcuario']);
+        return $this->hasMany(TaskSpecimen::className(), ['EJEMPLAR_especie_idEspecie' => 'especie_idEspecie', 'EJEMPLAR_acuario_idAcuario' => 'acuario_idAcuario']);
     }
 
     /**
@@ -80,6 +83,17 @@ class Specimen extends \yii\db\ActiveRecord
      */
     public function getTAREAIdTareas()
     {
-        return $this->hasMany(TAREA::className(), ['idTarea' => 'TAREA_idTarea'])->viaTable('TAREA_EJEMPLAR', ['EJEMPLAR_especie_idEspecie' => 'especie_idEspecie', 'EJEMPLAR_acuario_idAcuario' => 'acuario_idAcuario']);
+        return $this->hasMany(Task::className(), ['idTarea' => 'TAREA_idTarea'])->viaTable('TAREA_EJEMPLAR', ['EJEMPLAR_especie_idEspecie' => 'especie_idEspecie', 'EJEMPLAR_acuario_idAcuario' => 'acuario_idAcuario']);
     }
+
+
+    public static function getSpecimen($idAquarium,$idSpecie){ //obtiene, si existe, la última cantidad de ejemplares que hay en un acuario de una especie determinada//
+        $specimen =  Specimen::find()
+                    ->where(['especie_idEspecie'=>$idSpecie])
+                    ->andWhere(['acuario_idAcuario'=>$idAquarium])
+                    // ->orderBy(['idTareaEjemplar'=>SORT_DESC])
+                    ->one();
+        return $specimen;
+    }
+
 }

@@ -1,9 +1,13 @@
 <?php
 
-namespace app\models;
+namespace app\models\specie;
 
 use Yii;
+use app\models\specimen\Specimen;
+use app\models\aquarium\Aquarium;
 
+
+use app\models\aquarium\AquariumSearch;
 /**
  * This is the model class for table "ESPECIE".
  *
@@ -23,8 +27,8 @@ use Yii;
  * @property double $maxCO2
  * @property integer $activo
  *
- * @property EJEMPLAR[] $eJEMPLARs
- * @property ACUARIO[] $acuarioIdAcuarios
+ * @property Specimen[] $eJEMPLARs
+ * @property Aquarium[] $acuarioIdAcuarios
  */
 class Specie extends \yii\db\ActiveRecord
 {
@@ -77,9 +81,9 @@ class Specie extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEJEMPLARs()
+    public function getSpecimens()
     {
-        return $this->hasMany(EJEMPLAR::className(), ['especie_idEspecie' => 'idEspecie']);
+        return $this->hasMany(Specimen::className(), ['especie_idEspecie' => 'idEspecie']);
     }
 
     /**
@@ -87,6 +91,87 @@ class Specie extends \yii\db\ActiveRecord
      */
     public function getAcuarioIdAcuarios()
     {
-        return $this->hasMany(ACUARIO::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('EJEMPLAR', ['especie_idEspecie' => 'idEspecie']);
+        return $this->hasMany(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario'])->viaTable('EJEMPLAR', ['especie_idEspecie' => 'idEspecie']);
     }
+
+    
+    public static function calculatePorcentageBySpecie($quantity){
+        $porcentages = [];
+        foreach ($quantity as $key => $value) {
+            $porcentages[] = [$value['nombre'],(int)$value['cantidad']];
+        }
+        return $porcentages;
+    }
+
+
+
+    public function validConditions($aquarium){ //evalúa las condiciones ambientales de un determinado acuario//
+        $actualConditions = $aquarium->getActualConditions();
+        
+        if(($this->minPH <= $actualConditions['ph']) && ($actualConditions['ph'] <= $this->maxPH)){ 
+            if(($this->minTemp <= $actualConditions['temperatura']) && ($actualConditions['temperatura'] <= $this->maxTemp)){
+                if(($this->minSalinidad <= $actualConditions['salinidad']) && ($actualConditions['salinidad'] <= $this->maxSalinidad)){
+                    if(($this->minLux <= $actualConditions['lux']) && ($actualConditions['lux'] <= $this->maxLux)){
+                        if(($this->minCO2 <= $actualConditions['CO2']) && ($actualConditions['CO2'] <= $this->maxCO2)){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+
+    //Obtiene los acuarios que son compatibles con la especie actual//
+    public function getCompatibleAquariums(){
+        $searchModel  = new AquariumSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $aquariums = $dataProvider->getModels();
+
+        foreach ($aquariums as $key => $aquarium) {
+            if($aquarium->espacioDisponible < $this->minEspacio){ //si el espacio no es sufiente, se descarta ese acuario//
+                unset($aquariums[$key]); //elimina el item del arreglo//
+            }else{ //si hay espacio, se evalúan las condiciones ambientales//                    
+                if(!$this->validConditions($aquarium)){ //las condiciones ambientales del acuario NO son adecuadas para la especie seleccionada//
+                    unset($aquariums[$key]); //elimina el item del arreglo//
+                }else{
+                    $aquariums[$key]->maxQuantity = floor($aquarium->espacioDisponible / $this->minEspacio);
+                }
+            }
+        }
+        $aquariums = array_values($aquariums); //vuelve a asignar los indices a los elementos//
+        return $aquariums;
+    }
+
+
+
+    public function getAvailableAquariums(){ //retorna los acuarios que contengan al menos un ejemplar de la especie seleccionada// 
+        $searchModel  = new AquariumSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $aquariums = $dataProvider->getModels();
+        
+        foreach ($aquariums as $key => $aquarium) {
+            $aquariumQuantity = $aquarium->getQuantity($this->idEspecie);
+            if($aquariumQuantity <= 0 ){ // verifica que exista un registro en la tabla ejemplares y que exista al menos un ejemplar en el acuario //
+                unset($aquariums[$key]);
+            }else{
+                $aquariums[$key]->maxQuantity = $aquariumQuantity;
+            }
+        }
+        $aquariums = array_values($aquariums);
+        return $aquariums;
+    }
+
+
+
 }

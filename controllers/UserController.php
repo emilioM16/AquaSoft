@@ -38,6 +38,9 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+        // $model = $this->findModel(17);
+        // $model->activo =1;
+        // yii::error(\yii\helpers\VarDumper::dumpAsString($model->save(false)));
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -118,10 +121,10 @@ class UserController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionChangeState($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $model->changeActiveState();
         return $this->redirect(['index']);
     }
 
@@ -142,16 +145,11 @@ class UserController extends Controller
     }
 
     public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
-
-     
-        
         if($id!=-1){ //solución horrible, no quedaba otra, mejorar si se puede a futuro
             $scenario = 'update';
         }else{
             $scenario = 'create';
         }
-
-        yii::error(\yii\helpers\VarDumper::dumpAsString($scenario));
         $model = new User(['scenario'=>$scenario,'idUsuario'=>$id]);
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))

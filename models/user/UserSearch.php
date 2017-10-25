@@ -41,7 +41,10 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = User::find() //obtiene solamente los especialistas de la tabla usuario//
+                ->joinWith(['authAssignments'])
+                ->select(['*'])
+                ->where(['item_name'=>'especialista']);
 
         // add conditions that should always apply here
 

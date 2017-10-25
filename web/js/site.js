@@ -5,6 +5,8 @@ $(function () {
     })
 })
 
+$('#modal').removeAttr('tabindex');
+
 $(document).ready(function() {
     $('.carousel').carousel({
       interval: 6000
@@ -21,7 +23,7 @@ $(document).ready(function() {
             $('#modal').modal('show')
                     .find('#modalContent')
                     .load($(this).attr('value'));
-            document.getElementById('modalTitle').innerHTML = $(this).attr('title');
+            document.getElementById('modalTitle').innerHTML = $(this).attr('title') ;
         }
     });
 });

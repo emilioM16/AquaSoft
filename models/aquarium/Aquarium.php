@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 use app\models\task\Task;
 use app\models\aquarium\Aquarium;
 use app\models\aquarium\UserAquariums;
-use app\models\condition\EnviromentalConditions;
+use app\models\conditions\EnviromentalConditions;
 use app\models\specimen\Specimen;
 use app\models\specie\Specie;
 
@@ -29,6 +29,7 @@ class Aquarium extends \yii\db\ActiveRecord
 {
 
     public $events = [];
+    public $maxQuantity = 0; 
     /**
      * @inheritdoc
      */
@@ -47,10 +48,10 @@ class Aquarium extends \yii\db\ActiveRecord
             [['capacidadMaxima', 'espacioDisponible', 'activo'], 'integer'],
             [['nombre'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [ ['nombre'], 'unique', 'when' => function ($model, $attribute) { 
-                return $model->{$attribute} !== static::getAquarium($model->idAcuario)->$attribute; }, 
+            [ ['nombre'], 'unique', 'when' => function ($model, $attribute) {
+                return $model->{$attribute} !== static::getAquarium($model->idAcuario)->$attribute; },
                 'on' => 'update',
-                'message'=>'El nombre ingresado ya existe'], //en caso de ser una modificación de datos 
+                'message'=>'El nombre ingresado ya existe'], //en caso de ser una modificación de datos
             [['nombre'], 'unique', 'on' => 'create', 'message'=>'El nombre ingresado ya existe'], //en caso de crear un nuevo especialista
         ];
     }
@@ -109,7 +110,7 @@ class Aquarium extends \yii\db\ActiveRecord
      */
     public function getSpecies()
     {
-        return $this->hasMany(Specie::className(), ['idespecie' => 'especie_idespecie'])->viaTable('ejemplares', ['acuario_idAcuario' => 'idAcuario']);
+        return $this->hasMany(Specie::className(), ['idEspecie' => 'especie_idEspecie'])->viaTable('EJEMPLAR', ['acuario_idAcuario' => 'idAcuario']);
     }
 
 
@@ -140,13 +141,13 @@ class Aquarium extends \yii\db\ActiveRecord
         $items = ArrayHelper::map($aquariums, 'idAcuario','nombre');
         return $items;
     }
-    
+
 
     public function loadEvents(){
 
         $tasks = $this->tasks;
-    
-        foreach ($tasks as $task) 
+
+        foreach ($tasks as $task)
         {
             $event = new \yii2fullcalendar\models\Event();
             $event->id = $task->idTarea;
@@ -161,6 +162,41 @@ class Aquarium extends \yii\db\ActiveRecord
             $this->events[] = $event;
         }
         return $this->events;
+    }
+
+
+    public function getActualConditions(){ //obtiene las condiciones ambientales actuales del acuario//
+        $conditions = EnviromentalConditions::find()
+                        ->asArray()
+                        ->select(['temperatura','ph','salinidad','lux','CO2'])
+                        ->where(['acuario_idAcuario'=>$this->idAcuario])
+                        ->orderBy(['idCondicionAmbiental'=>SORT_DESC])
+                        ->one();
+        return $conditions;
+    }
+
+
+    public function getQuantityBySpecie(){
+        $species = Specie::find()
+                    ->asArray()
+                    ->select(['idEspecie','nombre','cantidad'])
+                    ->joinWith('specimens')
+                    ->where(['acuario_idAcuario'=>$this->idAcuario])
+                    ->all();
+        return $species;
+    }
+
+
+    public function getQuantity($idSpecie){
+        $specimen = Specimen::find()
+                    ->where(['acuario_idAcuario'=>$this->idAcuario])
+                    ->andWhere(['especie_idEspecie'=>$idSpecie])
+                    ->one();
+        if($specimen!=null){
+            return $specimen->cantidad;
+        }else{
+            return 0;
+        }
     }
 
 }
