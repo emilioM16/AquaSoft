@@ -64,6 +64,13 @@ class PlanningController extends Controller
         ]);
     }
 
+    public function actionCheck($id)
+    {
+        return $this->render('check', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     public function actionCalendar() //FUNCIONA, GUARDA LA PLANIFICION Y VA A LA PANTALLA DE CALENDARIO
     {
 
@@ -227,8 +234,9 @@ class PlanningController extends Controller
       //presina el boton vuelve al index
         yii::error(\yii\helpers\VarDumper::dumpAsString('hola'));
         //$this->findModel($id);
-
-      //  return $this->redirect(['index']);
+          $model = $this->findModel($id);
+          $model->changeStatus('Aprobado');
+          return $this->redirect(['index']);
     }
 
 

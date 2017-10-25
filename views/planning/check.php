@@ -10,16 +10,16 @@ $this->title = $model->idPlanificacion;
 $this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="planning-view">
+<div class="planning-check">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->idPlanificacion], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->idPlanificacion], [
+        <?= Html::a('Autorizar', ['autorized', 'id' => $model->idPlanificacion], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Rechazar', ['autorized', 'id' => $model->idPlanificacion], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => '¿Esta seguro que desea eliminar esta planificacion?',
+                'confirm' => '¿Esta seguro que desea rechazar esta planificacion?',
                 'method' => 'post',
             ],
         ]) ?>
