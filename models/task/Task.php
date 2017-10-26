@@ -70,7 +70,7 @@ class Task extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'TIPO_TAREA_idTipoTarea','horaInicio', 'duracion'], 'required'],
+            [['titulo', 'TIPO_TAREA_idTipoTarea','horaInicio', 'duracion'], 'required','message'=>'Campo obligatorio'],
             [['horaInicio'],'validarFechaHoraInicio'],
             [['duracion'],'validarFechaHoraFin'],
             [['fechaHoraInicio', 'fechaHoraFin', 'fechaHoraRealizacion'], 'safe'],
@@ -99,9 +99,9 @@ class Task extends \yii\db\ActiveRecord
             'PLANIFICACION_idPlanificacion' => 'Planificacion Id Planificacion',
             'USUARIO_idUsuario' => 'Usuario Id Usuario',
             'ACUARIO_idAcuario' => 'Acuario Id Acuario',
-            'TIPO_TAREA_idTipoTarea' => 'Tipo  Tarea Id Tipo Tarea',
+            'TIPO_TAREA_idTipoTarea' => 'Tipo de tarea',
             'duracion' => 'Duración',
-            'horaInicio' => 'Hora inicio'
+            'horaInicio' => 'Hora de inicio'
         ];
     }
 

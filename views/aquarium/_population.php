@@ -62,7 +62,10 @@ if($porcentajes!=[]){
                         'format' => '<b>{point.name}</b>: {point.percentage:.1f} %',
                     ]
                   ]
-                      ],
+                ],
+                'credits'=>[
+                    'enabled'=>false
+                ],
                 'series' => [
                     [
                       'type'=>'pie',

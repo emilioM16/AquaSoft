@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e67d2db5cfa131046987107e398540ec",
+    "content-hash": "24b48aa0fd3e9220c64591c88b5c44d0",
     "packages": [
         {
             "name": "2amigos/yii2-date-picker-widget",
@@ -770,7 +770,7 @@
                 "delocker",
                 "yii2"
             ],
-            "time": "2015-10-05 23:33:01"
+            "time": "2015-10-05T23:33:01+00:00"
         },
         {
             "name": "evgeniyrru/yii2-slick",
@@ -1190,7 +1190,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-10-19 04:23:23"
+            "time": "2017-10-19T04:23:23+00:00"
         },
         {
             "name": "kartik-v/yii2-datecontrol",
@@ -1242,7 +1242,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2017-01-14 11:34:27"
+            "time": "2017-01-14T11:34:27+00:00"
         },
         {
             "name": "kartik-v/yii2-dialog",
@@ -1497,7 +1497,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2017-09-22 15:47:48"
+            "time": "2017-09-22T15:47:48+00:00"
         },
         {
             "name": "kartik-v/yii2-tabs-x",
@@ -1602,7 +1602,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-11-24 17:29:45"
+            "time": "2016-11-24T17:29:45+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-alert",
@@ -1711,7 +1711,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-06 06:18:08"
+            "time": "2017-09-06T06:18:08+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-depdrop",
@@ -1760,7 +1760,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-01-10 17:30:48"
+            "time": "2016-01-10T17:30:48+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-select2",
@@ -1813,7 +1813,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2017-09-04 15:30:52"
+            "time": "2017-09-04T15:30:52+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-timepicker",
@@ -2253,7 +2253,7 @@
                 "yii 2",
                 "yii2"
             ],
-            "time": "2017-06-27 04:47:12"
+            "time": "2017-06-27T04:47:12+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2308,6 +2308,55 @@
                 "mailer"
             ],
             "time": "2017-05-01T15:54:03+00:00"
+        },
+        {
+            "name": "unclead/yii2-multiple-input",
+            "version": "2.11.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/unclead/yii2-multiple-input.git",
+                "reference": "06bc83b0508b0a9ec9de8622d6cae2433d9bac45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/unclead/yii2-multiple-input/zipball/06bc83b0508b0a9ec9de8622d6cae2433d9bac45",
+                "reference": "06bc83b0508b0a9ec9de8622d6cae2433d9bac45",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7.*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "unclead\\multipleinput\\examples\\": "examples/",
+                    "unclead\\multipleinput\\": "src/",
+                    "unclead\\multipleinput\\tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Eugene Tupikov",
+                    "email": "unclead.nsk@gmail.com"
+                }
+            ],
+            "description": "Widget for handle multiple inputs for an attribute of Yii2 framework model",
+            "keywords": [
+                "yii2",
+                "yii2 array input",
+                "yii2 multiple field",
+                "yii2 multiple input",
+                "yii2 tabular input"
+            ],
+            "time": "2017-10-19T19:58:28+00:00"
         },
         {
             "name": "yii2mod/yii2-sweet-alert",

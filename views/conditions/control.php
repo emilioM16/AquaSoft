@@ -5,6 +5,8 @@ use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use rmrevin\yii\fontawesome\FA;
+use yii\helpers\Url;
+use unclead\multipleinput\MultipleInput;
 
 /* @var $this yii\web\View\Task */
 /* @var $modelTask app\models\task\Task */
@@ -17,12 +19,19 @@ $this->params['breadcrumbs'][] = 'Execute';
 <div class="task-control"> 
     
     <?php
+
+        $conditionId =-1;
+
+        if ($model->idCondicionAmbiental!==null){
+            $conditionId = $model->idCondicionAmbiental;
+        }
+
         echo "<h4>$this->title</h4>";
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
             // 'id'=>'UnIdCualquiera',
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            // 'validationUrl'=> Url::toRoute(['task/validationExecute','id'=>$taskId]), 
+            'validationUrl'=> Url::toRoute(['conditions/validation','id'=>$conditionId]), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
         // // SACAR UNO DE ESTOS (ARRIBA O ABAJO)
@@ -31,36 +40,47 @@ $this->params['breadcrumbs'][] = 'Execute';
         echo Form::widget([
             'model'=>$model,
             'form'=>$form,
-            'columns'=>2,
+            'columns'=>3,
             'attributes'=>[
                 'ph'=>[
                     'type'=>Form::INPUT_WIDGET,
                     'widgetClass'=>'kartik\touchspin\TouchSpin',
-                    'pluginOptions' => [
-                                    'buttonup_class' => 'btn btn-primary', 
-                                    'buttondown_class' => 'btn btn-danger', 
-                                    'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
-                                    'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
-                                ],
-                                'options'=>[
-                                    'class'=>'input-sm',
-                                    // 'readonly'=>true
-                                ]
+                    'options'=>[
+                        'class'=>'input-sm',
+                        'pluginOptions' => [
+                            'buttonup_class' => 'btn btn-primary', 
+                            'buttondown_class' => 'btn btn-danger', 
+                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
+                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
+                        ],
+                    ]
                 ],
                 'temperatura'=>[
                     'type'=>Form::INPUT_WIDGET,
                     'widgetClass'=>'kartik\touchspin\TouchSpin',
-                    'pluginOptions' => [
-                                    'buttonup_class' => 'btn btn-primary', 
-                                    'buttondown_class' => 'btn btn-danger', 
-                                    'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
-                                    'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
-                                ],
-                                'options'=>[
-                                    'class'=>'input-sm',
-                                    // 'readonly'=>true
-                                ]
-                ]
+                    'options'=>[
+                        'class'=>'input-sm',
+                        'pluginOptions' => [
+                            'buttonup_class' => 'btn btn-primary', 
+                            'buttondown_class' => 'btn btn-danger', 
+                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
+                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
+                        ],
+                    ]
+                ],
+                'salinidad'=>[
+                    'type'=>Form::INPUT_WIDGET,
+                    'widgetClass'=>'kartik\touchspin\TouchSpin',
+                    'options'=>[                                    
+                        'class'=>'input-sm',
+                        'pluginOptions' => [
+                            'buttonup_class' => 'btn btn-primary', 
+                            'buttondown_class' => 'btn btn-danger', 
+                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
+                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
+                        ],
+                    ]
+                ],
             ]
         ]);
         echo Form::widget([
@@ -68,61 +88,36 @@ $this->params['breadcrumbs'][] = 'Execute';
             'form'=>$form,
             'columns'=>2,
             'attributes'=>[
-                'salinidad'=>[
-                    'type'=>Form::INPUT_WIDGET,
-                    'widgetClass'=>'kartik\touchspin\TouchSpin',
-                    'pluginOptions' => [
-                                    'buttonup_class' => 'btn btn-primary', 
-                                    'buttondown_class' => 'btn btn-danger', 
-                                    'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
-                                    'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
-                                ],
-                                'options'=>[
-                                    'class'=>'input-sm',
-                                    // 'readonly'=>true
-                                ]
-                ],
                 'lux'=>[
                     'type'=>Form::INPUT_WIDGET,
                     'widgetClass'=>'kartik\touchspin\TouchSpin',
-                    'pluginOptions' => [
-                                    'buttonup_class' => 'btn btn-primary', 
-                                    'buttondown_class' => 'btn btn-danger', 
-                                    'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
-                                    'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>',
-                                    'initval' => 0.00,
-                                    'min' => 0,
-                                    'max' => 100,
-                                    'step' => 0.1,
-                                    'decimals' => 2,
-                                ],
-                                'options'=>[
-                                    'class'=>'input-sm',
-                                    // 'readonly'=>true
-                                ]
-                ]
-            ]
-        ]);
-
-         echo Form::widget([     // nesting attributes together (without labels for children)
-            'model'=>$model,
-            'form'=>$form,
-            'columns'=>1,
-            'attributes'=>[
+                    'options'=>[
+                        'class'=>'input-sm',
+                        'pluginOptions' => [
+                            'buttonup_class' => 'btn btn-primary', 
+                            'buttondown_class' => 'btn btn-danger', 
+                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
+                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>',
+                            // 'initval' => 0.00,
+                            'min' => 0,
+                            'max' => 10,
+                            'step' => 0.1,
+                            'decimals' => 2,
+                        ],
+                    ]
+                    ],
                 'CO2'=>[
                     'type'=>Form::INPUT_WIDGET,
                     'widgetClass'=>'kartik\touchspin\TouchSpin',
-                    'pluginOptions' => [                                    
-                                'buttonup_class' => 'btn btn-primary', 
-                                'buttondown_class' => 'btn btn-info', 
-                                'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
-                                'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
-                                ], 
-                                'options'=>[
-                                    'class'=>'input-sm',
-                                    // 'readonly'=>true
-                                ]
-                    ]
+                    'options'=>[
+                        'pluginOptions' => [                                    
+                            'buttonup_class' => 'btn btn-primary', 
+                            'buttondown_class' => 'btn btn-danger', 
+                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
+                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
+                        ], 
+                    ] 
+                ]
             ]
         ]);
 

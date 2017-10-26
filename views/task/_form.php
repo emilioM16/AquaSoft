@@ -67,8 +67,11 @@ use yii\helpers\ArrayHelper;
                 'TIPO_TAREA_idTipoTarea'=>[
                     'type'=>Form::INPUT_WIDGET,
                     'widgetClass'=>'kartik\select2\Select2',
-                    'options'=>['data'=>ArrayHelper::map($taskTypes,'idTipoTarea','idTipoTarea')]
-                    ]
+                    'options'=>[
+                            'data'=>ArrayHelper::map($taskTypes,'idTipoTarea','idTipoTarea'),
+                            'options'=>['placeholder' => 'Seleccione una especie...']
+                        ]
+                ]
             ]
         ]);
 

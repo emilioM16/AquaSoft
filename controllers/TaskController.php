@@ -211,6 +211,7 @@ class TaskController extends Controller
             // }
         }
     }
+    
 
     /**
      * Finds the Task model based on its primary key value.
@@ -230,7 +231,7 @@ class TaskController extends Controller
         }
     }
 
-    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación. 
 
         $model = new Task(['idTarea'=>$id]);
 
@@ -263,8 +264,13 @@ class TaskController extends Controller
             default:
                 # code...
                 break;
-        }
-        
+        }        
     }
+
+
+    public function actionNewControl(){
+        $this->renderAjax('_controlForm');
+    }
+
 
 }
