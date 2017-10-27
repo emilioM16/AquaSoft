@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Autorizar', ['autorized', 'id' => $model->idPlanificacion], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Rechazar', ['autorized', 'id' => $model->idPlanificacion], [
+        <?= Html::a('Rechazar', ['', 'id' => $model->idPlanificacion], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => '¿Esta seguro que desea rechazar esta planificacion?',

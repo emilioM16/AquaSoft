@@ -106,9 +106,6 @@ class Planning extends \yii\db\ActiveRecord
        $planificaciones = Planning::find()->where(['ACUARIO_USUARIO_acuario_idAcuario' => $idAcua])->all();
        $fechaActual = date('Y-m-01');
       // yii::error(\yii\helpers\VarDumper::dumpAsString($fechaActual));
-
-
-
         foreach ($planificaciones as $plani) {
 
                  if ($plani->anioMes == $unMes or $unMes < $fechaActual) {
@@ -118,6 +115,9 @@ class Planning extends \yii\db\ActiveRecord
        }
        return $marca;
     }
+
+
+
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,8 +141,8 @@ class Planning extends \yii\db\ActiveRecord
         //si [rechazo] cambia el estado a REchazada
         //solicita un motivo
           $this->changeStatus('Autorizada');
-
-
+          yii::error(\yii\helpers\VarDumper::dumpAsString('entro al autorizar'));
+          $this->update();
     }
 
     //activo es bajo de baja
@@ -166,21 +166,5 @@ class Planning extends \yii\db\ActiveRecord
 
 
     }
-
-//     public function validateOverlay($idTarea, $HoraInicio, $HoraFin, $diaTarea){
-//        $tareasAsociadas= $this->getTAREAs();
-//        //tomar las tareas que tienen el mismo dia
-//        foreach ($$tareasAsociadas as $unaTarea) {
-//
-//          if (($HoraInicio < $unaTarea->horaInicio and $HoraInicio >= $unaTarea->horaInicio) or ($horaFin > $unaTarea->horaInicio and $horaFin > $unaTarea ->horaInicio)) {
-//             //si cumple esta condicion existe suporposicion de tareas por lo tanto no se puede crear
-//            yii::error(\yii\helpers\VarDumper::dumpAsString('la tarea se superpone'));
-//        }
-// 
-//
-//     }
-//
-//
-// }
 
 }

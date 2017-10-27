@@ -41,11 +41,18 @@ var idPlan = "<?php echo $model->idPlanificacion ; ?>";
 
 $JSEventClick = <<<EOF
 function(calEvent, jsEvent, view) {
+
   alert(calEvent);
+  var dia = new Date(calEvent).toJSON().slice(0, 10).split("-").join("-");
+  var dia = (dia+' 00:00:00');
+  alert(dia);
+alert(typeof(dia));
+
+
   $.ajax({
     type: 'GET',
     url: "/task/create",
-    data: 'idAcuario='+idAcua+'&idPlanificacion='+idPlan+'&fechaInicio=',
+    data: 'idAcuario='+idAcua+'&idPlanificacion='+idPlan+'&fechaInicio=dia',
     dataType: 'html',
     error: function(xhr){
         alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);

@@ -66,6 +66,7 @@ class PlanningController extends Controller
 
     public function actionCheck($id)
     {
+    //  yii::error(\yii\helpers\VarDumper::dumpAsString('aaa'));
         return $this->render('check', [
             'model' => $this->findModel($id),
         ]);
@@ -229,14 +230,12 @@ class PlanningController extends Controller
 
     public function actionAutorized($id)
     {
-      //debe cargar vista con planificacion y tareas solo en lectura
-      //sin embargo con el boton aceptar y rechazar habilitado
-      //presina el boton vuelve al index
         yii::error(\yii\helpers\VarDumper::dumpAsString('hola'));
         //$this->findModel($id);
-          $model = $this->findModel($id);
-          $model->changeStatus('Aprobado');
-          return $this->redirect(['index']);
+        //  $model = $this->findModel($id);
+        //  $model->changeStatus('Aprobado');
+        //  $model->save();
+        return $this->redirect(['']);
     }
 
 

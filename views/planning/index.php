@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   '<span class="glyphicon glyphicon-check"></span>',
 
                   $url,
-                  [ 'planning/view'
+                  [ 'planning/check'
                   ]
               );
           },
