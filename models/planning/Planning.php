@@ -58,10 +58,10 @@ class Planning extends \yii\db\ActiveRecord
         return [
             'idPlanificacion' => 'Id Planificacion',
             'titulo' => 'Título',
-            'anioMes' => 'Anio Mes',
+            'anioMes' => 'Fecha',
             'fechaHoraCreacion' => 'Fecha Hora Creacion',
             'activo' => 'Activo',
-            'ACUARIO_USUARIO_acuario_idAcuario' => 'Acuarios',
+            'ACUARIO_USUARIO_acuario_idAcuario' => 'Acuario',
             'ACUARIO_USUARIO_usuario_idUsuario' => 'Acuario  Usuario Usuario Id Usuario',
             'ESTADO_PLANIFICACION_idEstadoPlanificacion' => 'Estado  Planificacion Id Estado Planificacion',
         ];
@@ -150,15 +150,17 @@ class Planning extends \yii\db\ActiveRecord
     public function changeStatus($oneState){ //FUNCIONA
       //SinVerificar//Aprobado//Rechazado
         $this->ESTADO_PLANIFICACION_idEstadoPlanificacion = $oneState;
-
-
+        return $this;
     }
 
     public function beforeSave($insert){ //FUNCIONA
       //idPlanificacion autogenerado
       //fechaHoraCreacion autogenerado
       $this->activo = 1;
-      $this->ESTADO_PLANIFICACION_idEstadoPlanificacion ='SinVerificar';
+      if ($this->ESTADO_PLANIFICACION_idEstadoPlanificacion == null) {
+        $this->ESTADO_PLANIFICACION_idEstadoPlanificacion ='SinVerificar';
+      }
+
       $this->ACUARIO_USUARIO_usuario_idUsuario=21;
     //  $this->validatePlanning('anioMes','ACUARIO_USUARIO_acuario_idAcuario');
 

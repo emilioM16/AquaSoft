@@ -161,6 +161,25 @@ class PlanningController extends Controller
         }
     }
 
+    public function actionAutorized($id)
+    {
+         $model = $this->findModel($id);
+         $model = $model->changeStatus('Aprobada');
+         $model->save();
+         return $this->redirect(['index']);
+    }
+
+    public function actionRefuse($id)
+    {
+         $model = $this->findModel($id);
+         $model = $model->changeStatus('Rechazada');
+         $model->save();// guarda el estado de PLANIFICACION
+         //solicita el motivo
+
+         
+         return $this->redirect(['index']);
+    }
+
     /**
      * Deletes an existing Planning model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -170,7 +189,6 @@ class PlanningController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
@@ -228,15 +246,7 @@ class PlanningController extends Controller
 
     }
 
-    public function actionAutorized($id)
-    {
-        yii::error(\yii\helpers\VarDumper::dumpAsString('hola'));
-        //$this->findModel($id);
-        //  $model = $this->findModel($id);
-        //  $model->changeStatus('Aprobado');
-        //  $model->save();
-        return $this->redirect(['']);
-    }
+
 
 
 
