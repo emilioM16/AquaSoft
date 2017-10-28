@@ -4,7 +4,7 @@ namespace app\models\supply;
 
 use Yii;
 use app\models\supply\TaskSupply;
-use app\models\supply\TaskType;
+use app\models\task\TaskType;
 use app\models\task\Task;
 
 /**
@@ -23,6 +23,9 @@ use app\models\task\Task;
  */
 class Supply extends \yii\db\ActiveRecord
 {
+
+    public $quantity;
+
     /**
      * @inheritdoc
      */
@@ -37,11 +40,19 @@ class Supply extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'stock', 'TIPO_TAREA_idTipoTarea'], 'required'],
+            [['stock', 'TIPO_TAREA_idTipoTarea'], 'required'],
             [['stock', 'activo'], 'integer'],
             [['nombre', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
             [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
+            [['quantity'],'required','when'=>function($model,$attribute){
+                return $model->nombre!='';},
+                'message'=>'Ingrese la cantidad para el insumo seleccionado'
+            ],
+            [['nombre'],'required','when'=>function($model,$attribute){
+                return $model->quantity!=0;},
+                'message'=>'Seleccione el insumo para la cantidad ingresada'
+            ],
         ];
     }
 

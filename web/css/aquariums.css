@@ -114,3 +114,12 @@
  #textCA{
      font-weight: bold;
  }
+
+
+.multiple-input-list{
+    width: 60% !important;
+}
+
+ table.multiple-input-list{
+    margin: auto !important;
+ }

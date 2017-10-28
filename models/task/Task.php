@@ -44,6 +44,9 @@ class Task extends \yii\db\ActiveRecord
 {
     public $duracion = 0;
     public $horaInicio;
+    // private $supplies;
+    private $conditions;
+
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {

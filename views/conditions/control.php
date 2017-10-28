@@ -22,13 +22,13 @@ $this->params['breadcrumbs'][] = 'Execute';
 
         $conditionId =-1;
 
-        if ($model->idCondicionAmbiental!==null){
-            $conditionId = $model->idCondicionAmbiental;
+        if ($conditionsModel->idCondicionAmbiental!==null){
+            $conditionId = $conditionsModel->idCondicionAmbiental;
         }
 
         echo "<h4>$this->title</h4>";
         $form = ActiveForm::begin([
-            'id'=>$model->formName(),
+            'id'=>$conditionsModel->formName(),
             // 'id'=>'UnIdCualquiera',
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
             'validationUrl'=> Url::toRoute(['conditions/validation','id'=>$conditionId]), 
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = 'Execute';
         // echo $form->field($model, 'titulo')->staticInput();
         
         echo Form::widget([
-            'model'=>$model,
+            'model'=>$conditionsModel,
             'form'=>$form,
             'columns'=>3,
             'attributes'=>[
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = 'Execute';
             ]
         ]);
         echo Form::widget([
-            'model'=>$model,
+            'model'=>$conditionsModel,
             'form'=>$form,
             'columns'=>2,
             'attributes'=>[
@@ -120,9 +120,20 @@ $this->params['breadcrumbs'][] = 'Execute';
                 ]
             ]
         ]);
-
+        
         echo Form::widget([
-            'model'=>$model,
+            'model'=>$supplyModel,
+            'form'=>$form,
+            'columns'=>1,
+            'attributes'=>[
+                ''
+            ]
+
+        ]);
+
+        
+        echo Form::widget([
+            'model'=>$conditionsModel,
             'form'=>$form,
             'columns'=>1,
             'attributes'=>[
@@ -130,15 +141,17 @@ $this->params['breadcrumbs'][] = 'Execute';
                     'type'=>Form::INPUT_RAW,
                     'value'=>'<div class="form-group" align="center">'.
                         Html::submitButton(
-                            $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Realizar',
+                            $conditionsModel->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Realizar',
                             [
-                                'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
+                                'class' => $conditionsModel->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                             ]).' '.
                         Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'])
                         .'</div>'
                 ]
             ]
         ]);
+
+
 
         // la idea de esto es mostrar todos los insumos asociados al tipo de tarea. A esta lista la obtendría de $model->tipoTarea->insumos
         // $this->renderAjax('../taskSupply/_supply', [
