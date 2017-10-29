@@ -8,7 +8,6 @@ use yii\bootstrap\Modal;
 use kartik\tabs\TabsX;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Url;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
@@ -66,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="col-lg-12" align="center">'.
                                 Html::button(FA::icon('check-square-o')->size(FA::SIZE_LARGE).' Nuevo control',
                                 [
-                                    'value' => Url::to(['task/control','idTarea'=>-1]),
+                                    'value' => Url::to(['task/control','idAcuario'=>$acuario->idAcuario,'idTarea'=>-1]),
                                     'title' => 'Nuevo control',
                                     'class' => 'showModalButton btn btn-primary',
                                     'style'=>['width'=>'70%']
@@ -144,6 +143,7 @@ EOF;
   </div>
 
   <?php
+
   if(Yii::$app->user->can('administrarTareas')){
     echo '<div id="btnDetail" class="col-lg-2">'
       .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada', 

@@ -7,7 +7,8 @@ use kartik\builder\Form;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Url;
 use unclead\multipleinput\TabularInput;
-
+use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
 /* @var $this yii\web\View\Task */
 /* @var $modelTask app\models\task\Task */
 /* @var $modelTask->condicionAmbiental app\models\condition\EnviromentalConditions */
@@ -20,6 +21,7 @@ use unclead\multipleinput\TabularInput;
     
     <?php
 
+        print_r($supplyModels);
         $conditionId =-1;
 
         if ($conditionsModel->idCondicionAmbiental!==null){
@@ -95,7 +97,6 @@ use unclead\multipleinput\TabularInput;
                             'buttondown_class' => 'btn btn-danger', 
                             'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
                             'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>',
-                            // 'initval' => 0.00,
                             'min' => 0,
                             'max' => 10,
                             'step' => 0.1,
@@ -132,15 +133,15 @@ use unclead\multipleinput\TabularInput;
             ],
             'columns' => [
                 [
-                    'name'  => 'nombre',
+                    'name'  => 'idInsumo',
                     'title' => 'Insumo',
-                    'type'  => \kartik\select2\Select2::className(),
+                    'type'  => Select2::className(),
                     'enableError' => true,
                     'options'=>[
+                        'data'=>$availableSupplies,
                         'pluginOptions'=>[
                             'id'=>'selectInsumo',
                             'width'=>'auto',
-                            'data' =>['Lavandina','Medidor de ph'],
                             'placeholder' => 'Seleccione un insumo...',
                         ]
                     ]
@@ -155,6 +156,8 @@ use unclead\multipleinput\TabularInput;
                             'verticalbuttons' => true,
                             'verticalupclass' => 'glyphicon glyphicon-plus',
                             'verticaldownclass' => 'glyphicon glyphicon-minus',
+                            'initval'=>1,
+                            'min'=>1,
                         ]
                     ]
                 ],

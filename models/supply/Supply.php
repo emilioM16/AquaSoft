@@ -41,7 +41,7 @@ class Supply extends \yii\db\ActiveRecord
     {
         return [
             [['stock', 'TIPO_TAREA_idTipoTarea'], 'required'],
-            [['stock', 'activo'], 'integer'],
+            [['stock', 'activo','idInsumo'], 'integer'],
             [['nombre', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
             [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
@@ -49,7 +49,7 @@ class Supply extends \yii\db\ActiveRecord
                 return $model->nombre!='';},
                 'message'=>'Ingrese la cantidad para el insumo seleccionado'
             ],
-            [['nombre'],'required','when'=>function($model,$attribute){
+            [['idInsumo'],'required','when'=>function($model,$attribute){
                 return $model->quantity!=0;},
                 'message'=>'Seleccione el insumo para la cantidad ingresada'
             ],
@@ -94,4 +94,5 @@ class Supply extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Task::className(), ['idTarea' => 'TAREA_idTarea'])->viaTable('INSUMO_TAREA', ['INSUMO_idInsumo' => 'idInsumo']);
     }
+
 }

@@ -13,6 +13,7 @@ use yii\widgets\ActiveForm;
 use yii\base\Model; 
 use app\models\conditions\EnviromentalConditions;
 use app\models\supply\Supply;
+use yii\helpers\ArrayHelper;
 /**
  * TaskController implements the CRUD actions for Task model.
  */
@@ -268,26 +269,42 @@ class TaskController extends Controller
     }
 
 
-    public function actionControl($idTarea)
+    public function actionControl($idAcuario, $idTarea)
     {
-        // $idTarea = Yii::$app->request->post('idTarea');
+        $task = new Task();
+
         if($idTarea==-1){ //es no planificada//
             $modelConditions = new EnviromentalConditions();
             $supplyModels = [new Supply()];
-            if ($modelConditions->load(Yii::$app->request->post()) && $modelConditions->save()) {
-                    $this->redirect(Yii::$app->request->referrer);
-                } 
-                else {
+            $count = count(Yii::$app->request->post('Supply', []));
+            
+            if (Model::loadMultiple($supplyModels, Yii::$app->request->post()) && $modelConditions->load(Yii::$app->request->post())) {
+                    yii::error(\yii\helpers\VarDumper::dumpAsString($supplyModels));
+                    $task->saveControl($modelConditions,$supplyModels);
+                    // // foreach ($supplyModels as $key => $supply) {
+                    // //     $supply->save();
+                    // // }
+                    return $this->renderAjax('p',[
+                        'supplies'=>$supplyModels
+                    ]); 
+            }
+            else {
+                $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);
+                $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
+                $availableSupplies[0] = 'Ninguno';
+                ksort($availableSupplies);
                     if (Yii::$app->request->isAjax){
                         return $this->renderAjax('_controlForm',[
                             'conditionsModel'=> $modelConditions,
-                            'supplyModels'=>$supplyModels
+                            'supplyModels'=>$supplyModels,
+                            'availableSupplies'=>$availableSupplies
                             ]);
                         
                     }else{
                         return $this->render('_controlForm',[
                             'conditionsModel'=> $modelConditions,
-                            'supplyModels'=>$supplyModels
+                            'supplyModels'=>$supplyModels,
+                            'availableSupplies'=>$availableSupplies
                         ]);
                     }
                 }

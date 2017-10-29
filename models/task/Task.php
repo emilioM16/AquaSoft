@@ -283,4 +283,9 @@ class Task extends \yii\db\ActiveRecord
     public function wasExecuted(){
         return (isset($this->fechaHoraRealizacion));
     }
+
+    
+    public function saveControl($conditions, $supplies){
+        
+    }
 }
