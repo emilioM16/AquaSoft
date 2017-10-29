@@ -23,9 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="planning-calendar">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php echo $model->idPlanificacion ?><br>
-
 
 <div class="row content">
   <div class="col-lg-12">
@@ -39,20 +36,14 @@ var idPlan = "<?php echo $model->idPlanificacion ; ?>";
 
 <?php
 
-$JSEventClick = <<<EOF
-function(calEvent, jsEvent, view) {
-
-  alert(calEvent);
-  var dia = new Date(calEvent).toJSON().slice(0, 10).split("-").join("-");
-  var dia = (dia+' 00:00:00');
-  alert(dia);
-alert(typeof(dia));
-
-
+$JSDayClick = <<<EOF
+function(date, jsEvent, view) {
   $.ajax({
     type: 'GET',
     url: "/task/create",
-    data: 'idAcuario='+idAcua+'&idPlanificacion='+idPlan+'&fechaInicio=dia',
+    data: 'idAcuario='+{$model->ACUARIO_USUARIO_acuario_idAcuario}
+          +'&idPlanificacion='+{$model->idPlanificacion}
+          +'&fechaInicio='+date.format(),
     dataType: 'html',
     error: function(xhr){
         alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
@@ -68,20 +59,33 @@ alert(typeof(dia));
 
 }
 EOF;
-$JSCode = <<<EOF
-    function(start, end) {
-    var date = $('#calendar').fullCalendar('getDate');
-    alert(start);
-
-    }
-EOF;
 ?>
+<div class="planning-check">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            //'idPlanificacion',
+            //'titulo',
+            'anioMes',
+            //'fechaHoraCreacion',
+            //'activo',
+            'ACUARIO_USUARIO_acuario_idAcuario',
+            //'ACUARIO_USUARIO_usuario_idUsuario',
+            //'ESTADO_PLANIFICACION_idEstadoPlanificacion',
+        ],
+    ])
+
+    ?>
+    </div>
 
 <script type="text/javascript"> //Este es el código que permite que se muestre el calendario seteandole la fecha//
     window.onload = function(){
-    var monthYear = <?php echo json_encode($model->anioMes) ?>
+    var monthYear = '<?php echo $model->anioMes ?>';
     var date = new Date(monthYear);
-    var month = date.getMonth();
+    var month = date.getMonth()+1;
     var year = date.getFullYear();
     $('#calendar').fullCalendar('gotoDate', new Date(year,month));
     };
@@ -106,7 +110,7 @@ EOF;
             'options' => [
                 'lang' => 'es',
             ],
-        //    'events' => $acuario->events,
+            'events' => $model->events,
             'clientOptions' => [
 
                 'language' => 'fa',
@@ -114,7 +118,7 @@ EOF;
                 'fixedWeekCount' => false,
                  //'dayClick'=>new \yii\web\JsExpression($JSEventClick),
                 //  'select' => new JsExpression($JSCode),
-                 'dayClick'=>new \yii\web\JsExpression($JSEventClick),
+                 'dayClick'=>new \yii\web\JsExpression($JSDayClick),
               //  'eventClick'=>new \yii\web\JsExpression($JSEventClick),
 
             ],
@@ -122,6 +126,47 @@ EOF;
         ?>
       </div>
     </div>
+  </div>
+  <div>
+        <br>
+              <?= Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
+                  'class' => 'btn btn-success',
+                  'data' => [
+                      'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                      'method' => 'post',
+                    ],
+                  ]) ?>
+
+
+
+                <?= Html::button('<span class="glyphicon glyphicon-remove"></span>',
+                        [
+                         'value' => Url::to(['refuse','id'=>$model->idPlanificacion]),
+                          'title' => 'Rechazar planificacion ',
+                          'class' => 'showModalButton btn btn-success'
+                        ]);
+
+             ?>
+  </div>
+  <div>
+          <br>
+                <?= Html::a('Finalizar', ['planning/index'], [
+                    'class' => 'btn btn-success',
+                    'data' => [
+                    //    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                        'method' => 'post',
+                      ],
+                ]) ?>
+  </div>
+  <div>
+          <br>
+                <?= Html::a('Volver al inicio', ['planning/index'], [
+                    'class' => 'btn btn-success',
+                    'data' => [
+                    //    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                        'method' => 'post',
+                      ],
+                ]) ?>
   </div>
 
 </div>

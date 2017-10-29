@@ -33,11 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'activo',
             'ACUARIO_USUARIO_acuario_idAcuario',
             // 'ACUARIO_USUARIO_usuario_idUsuario',
-            // 'ESTADO_PLANIFICACION_idEstadoPlanificacion',
+            'ESTADO_PLANIFICACION_idEstadoPlanificacion',
 
             [
       'class' => 'yii\grid\ActionColumn',
-      'template' => '{check} {view} {update} {delete}',
+      'template' => '{check} {down}{view} {update} ',
       'buttons' => [
           'check' => function ($url) {
               return Html::a(
@@ -48,6 +48,15 @@ $this->params['breadcrumbs'][] = $this->title;
                   ]
               );
           },
+          'down' => function ($url) {
+               return Html::a(
+                 '<span class="glyphicon glyphicon-trash"></span>',
+
+                $url,
+                ['planning/darBaja'
+                ]
+             );
+           }
       ],
   ],
 

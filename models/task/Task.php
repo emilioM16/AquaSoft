@@ -47,6 +47,7 @@ class Task extends \yii\db\ActiveRecord
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
+        $this->descripcion=$idAcuario.'--'.$idPlanificacion.'--'.$fechaInicio;
         $this->ACUARIO_idAcuario = $idAcuario;
         if ($idPlanificacion !== -1)
         {
@@ -230,9 +231,11 @@ class Task extends \yii\db\ActiveRecord
     public function beforeSave($insert){
         // Primero verifico si se ha ingresado una hora de inicio. Si es así, debo actualizar la fechaHoraInicio con la hora ingresada
         if (!isset($this->fechaHoraInicio))
-            $this->setearHoraInicio();
+            $this->fechaHoraInicio = date_format(date_create(),"Y-m-d H:i:s");
+        $this->setearHoraInicio();
         // Luego calculo la fecha de fin
         if (!isset($this->fechaHoraFin))
+          $this->fechaHoraFin = date_create($this->fechaHoraInicio);
             $this->calcularFechaFin();
         $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
         return parent::beforeSave($insert);
@@ -252,24 +255,30 @@ class Task extends \yii\db\ActiveRecord
 
     /// este método setea la fechaHora de inicio en base a la hora de inicio (atributo) ingresada por el usuario
     public function setearHoraInicio(){
-        $date=date_create();
+      //  $date=date_create();
         if (isset($this->horaInicio)){
+            $date= date_create($this->fechaHoraInicio);
             $h = intval(substr($this->horaInicio, 0,2));
             $m = intval(substr($this->horaInicio, 3,2));
             date_time_set($date,$h,$m);
+            $this->fechaHoraInicio = date_format($date,"Y-m-d H:i:s");
         }
-        $this->fechaHoraInicio = date_format($date,"Y-m-d H:i:s");
+        else
+        $this->fechaHoraInicio = date_format($this->fechaHoraInicio,"Y-m-d H:i:s");
     }
 
     /// este método calcula la fecha de fin en base a la duración (atributo)
     public function calcularFechaFin(){
-        $date =date_create($this->fechaHoraInicio);
+      //  $date =date_create($this->fechaHoraInicio);
         if (isset($this->duracion) && $this->duracion !== '00:00'){
+            $date =date_create( date_format($this->fechaHoraFin,"Y-m-d H:i:s"));
             $h = intval(substr($this->duracion, 0,2));
             $m = intval(substr($this->duracion, 3,2));
             date_time_set($date,date_format($date,"H") + $h, date_format($date,"i") + $m);
+              $this->fechaHoraFin = date_format($date,"Y-m-d H:i:s");
         }
-        $this->fechaHoraFin = date_format($date,"Y-m-d H:i:s");
+        else
+        $this->fechaHoraFin = date_format($this->fechaHoraFin,"Y-m-d H:i:s");
     }
 
     public function isPlanned(){

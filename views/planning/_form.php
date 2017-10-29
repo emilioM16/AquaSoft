@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   <?php
                   $form = ActiveForm::begin([
-                   'action' => ['planning/calendar'],
+                   //'action' => ['planning/calendar'],
                       'id'=>$model->formName(),
                       'type'=>ActiveForm::TYPE_VERTICAL]);
 
