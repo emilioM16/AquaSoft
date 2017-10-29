@@ -45,14 +45,16 @@ class Supply extends \yii\db\ActiveRecord
             [['nombre', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
             [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
-            [['quantity'],'required','when'=>function($model,$attribute){
-                return $model->idInsumo!='';},
-                'message'=>'Ingrese la cantidad para el insumo seleccionado'
-            ],
-            [['idInsumo'],'required','when'=>function($model,$attribute){
-                return $model->quantity!=0;},
-                'message'=>'Seleccione el insumo para la cantidad ingresada'
-            ],
+            // [['quantity'],'required','when'=>function($model,$attribute){
+            //     return $model->idInsumo!='';},
+            //     'message'=>'Ingrese la cantidad para el insumo seleccionado'
+            // ],
+            // [['idInsumo'],'required','when'=>function($model,$attribute){
+            //     return $model->quantity!=0;},
+            //     'message'=>'Seleccione el insumo para la cantidad ingresada'
+            // ],
+            [['quantity'],'required','message'=>'Ingrese una cantidad válida'],
+            [['idInsumo'],'required','message'=>'Seleccione el insumo'],
         ];
     }
 
