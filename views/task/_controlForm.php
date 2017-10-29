@@ -186,6 +186,6 @@ use kartik\select2\Select2;
         ]);
     ActiveForm::end();
     ?> 
-    
+    <div id="controlAlert"></div>
 
 </div>

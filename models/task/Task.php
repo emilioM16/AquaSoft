@@ -11,9 +11,10 @@ use app\models\planning\Planning;
 // use app\models\specie;
 use app\models\specimen\Specimen;
 use app\models\supply\Supply;
+use app\models\task\TaskSupply;
 use app\models\user\User;
 use yii\db\Expression;
-
+use yii\base\Exception;
 /**
  * This is the model class for table "TAREA".
  *
@@ -44,9 +45,6 @@ class Task extends \yii\db\ActiveRecord
 {
     public $duracion = 0;
     public $horaInicio;
-    // private $supplies;
-    private $conditions;
-
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
@@ -278,14 +276,62 @@ class Task extends \yii\db\ActiveRecord
     public function isPlanned(){
         return (isset($this->PLANIFICACION_idPlanificacion));
     }
-
+ 
 
     public function wasExecuted(){
         return (isset($this->fechaHoraRealizacion));
     }
 
+    private function createAndPopulateTask($taskType,$idAquarium){
+        $task = new Task();                 
+        $task->titulo = 'Control';
+        $task->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
+        $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+        $task->horaInicio = '00:00';
+        $task->fechaHoraInicio = new Expression('NOW()');
+        $task->fechaHoraFin = new Expression('NOW()');
+        $task->fechaHoraRealizacion = new Expression('NOW()');
+        $task->ACUARIO_idAcuario = $idAquarium;
+        $task->TIPO_TAREA_idTipoTarea = 'Controlar acuario'; 
+        return $task;
+    }
+
+
+    // private function validateConditions($idAquarium, $conditions){
+    //     $
+    // }
     
-    public function saveControl($conditions, $supplies){
-        
+    public function saveControl($conditions, $supplies, $idAquarium){
+        try{                
+            $transaction = Yii::$app->db->beginTransaction();
+            $task = $this->createAndPopulateTask('Controlar acuario', $idAquarium);
+            if($task->save(false)){
+                foreach ($supplies as $key => $supply) {
+                    yii::error(\yii\helpers\VarDumper::dumpAsString($supply->quantity));
+                    $updatedSupply = Supply::findOne($supply->idInsumo);
+                    $updatedSupply->stock = $updatedSupply->stock - $supply->quantity;
+
+                    if($updatedSupply->save(false)){
+                        $taskSupply = new TasksSupply();
+                        $taskSupply->INSUMO_idInsumo = $supply->idInsumo;
+                        $taskSupply->TAREA_idTarea = $task->idTarea;
+                        $taskSupply->cantidad = $supply->quantity;
+                        if($taskSupply->save(false)){
+                            $transaction->commit();
+                        }else{
+                            throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                        }
+                    }else{
+                        throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                    }
+                }
+                return Yii::$app->session->setFlash('success', "Los ejemplares se incorporaron correctamente a el/los acuario/s seleccionado/s.");
+            }else{
+                throw new Exception('Ocurrió un error al guardar la información.');                                                      
+            }
+
+        }catch(Exception $e){
+            $transaction->rollback();
+        }
     }
 }

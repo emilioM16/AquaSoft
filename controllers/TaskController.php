@@ -280,7 +280,7 @@ class TaskController extends Controller
             
             if (Model::loadMultiple($supplyModels, Yii::$app->request->post()) && $modelConditions->load(Yii::$app->request->post())) {
                     yii::error(\yii\helpers\VarDumper::dumpAsString($supplyModels));
-                    $task->saveControl($modelConditions,$supplyModels);
+                    $task->saveControl($modelConditions,$supplyModels,$idAcuario);
                     // // foreach ($supplyModels as $key => $supply) {
                     // //     $supply->save();
                     // // }
