@@ -306,23 +306,25 @@ class Task extends \yii\db\ActiveRecord
             $transaction = Yii::$app->db->beginTransaction();
             $task = $this->createAndPopulateTask('Controlar acuario', $idAquarium);
             if($task->save()){ //si guarda la tarea se actualiza el stock del insumo//
-                foreach ($supplies as $key => $supply) {
-                    yii::error(\yii\helpers\VarDumper::dumpAsString($supply->quantity));
-                    $updatedSupply = Supply::findOne($supply->idInsumo);
-                    $updatedSupply->stock = $updatedSupply->stock - $supply->quantity;
+                if(!empty($supplies)){
+                    foreach ($supplies as $key => $supply) {
+                        yii::error(\yii\helpers\VarDumper::dumpAsString($supply));
+                        $updatedSupply = Supply::findOne($supply->idInsumo);
+                        $updatedSupply->stock = $updatedSupply->stock - $supply->quantity;
 
-                    if($updatedSupply->save(false)){//si se actualiza el stock del insumo, se crea el registro en la tabla INSUMO_TAREA//
-                        $taskSupply = new TasksSupply();
-                        $taskSupply->INSUMO_idInsumo = $supply->idInsumo;
-                        $taskSupply->TAREA_idTarea = $task->idTarea;
-                        $taskSupply->cantidad = $supply->quantity;
-                        if($taskSupply->save()){//si guarda el registro en INSUMO_TAREA, se guardan las condiciones ambientales//
+                        if($updatedSupply->save(false)){//si se actualiza el stock del insumo, se crea el registro en la tabla INSUMO_TAREA//
+                            $taskSupply = new TasksSupply();
+                            $taskSupply->INSUMO_idInsumo = $supply->idInsumo;
+                            $taskSupply->TAREA_idTarea = $task->idTarea;
+                            $taskSupply->cantidad = $supply->quantity;
+                            if($taskSupply->save()){//si guarda el registro en INSUMO_TAREA, se guardan las condiciones ambientales//
 
+                            }else{
+                                throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                            }
                         }else{
                             throw new Exception('Ocurrió un error al guardar la información.');                                                      
                         }
-                    }else{
-                        throw new Exception('Ocurrió un error al guardar la información.');                                                      
                     }
                 }
                 $conditions->acuario_idAcuario = $idAquarium;

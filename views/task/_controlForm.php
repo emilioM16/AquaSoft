@@ -95,7 +95,6 @@ use kartik\select2\Select2;
                             'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
                             'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>',
                             'min' => 0,
-                            'max' => 10,
                             'step' => 0.1,
                             'decimals' => 2,
                         ],
@@ -122,6 +121,8 @@ use kartik\select2\Select2;
             'id'=>'id',
             'models' => $supplyModels,
             'max'=>6,
+            'allowEmptyList' => true,
+            'min'=>0,
             'attributeOptions' => [
                 'enableAjaxValidation'      => true,
                 'enableClientValidation'    => false,
@@ -154,7 +155,7 @@ use kartik\select2\Select2;
                             'verticalbuttons' => true,
                             'verticalupclass' => 'glyphicon glyphicon-plus',
                             'verticaldownclass' => 'glyphicon glyphicon-minus',
-                            'initval'=>1,
+                            // 'initval'=>0,
                             'min'=>1,
                         ]
                     ]

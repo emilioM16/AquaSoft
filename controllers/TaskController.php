@@ -281,7 +281,10 @@ class TaskController extends Controller
             for($i = 1; $i < $count; $i++) {
                 $supplyModels[] = new Supply();
             }
-            if (Model::loadMultiple($supplyModels, Yii::$app->request->post()) && $modelConditions->load(Yii::$app->request->post())) {
+            if ($modelConditions->load(Yii::$app->request->post())) {
+                    if(!Model::loadMultiple($supplyModels, Yii::$app->request->post())){
+                        $supplyModels = [];
+                    }
                     yii::error(\yii\helpers\VarDumper::dumpAsString($supplyModels));
                     $task->saveControl($modelConditions,$supplyModels,$idAcuario);
                    return $this->redirect(Yii::$app->request->referrer);
@@ -339,16 +342,22 @@ class TaskController extends Controller
     public function actionControlValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación. 
         
         $model = new EnviromentalConditions(['idCondicionAmbiental'=>$id]);
-
+        Yii::$app->response->format = 'json';
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
         {
+            if(Yii::$app->request->post('Supply')!=null){
             $supplies = Yii::$app->request->post('Supply',[]);
             foreach (array_keys($supplies) as $index) {
                 $models[$index] = new Supply();
             }
+            
+            // if(Model::loadMultiple($models, Yii::$app->request->post())){
             Model::loadMultiple($models, Yii::$app->request->post());
-            Yii::$app->response->format = 'json';
+
             return ActiveForm::validateMultiple($models);
+            }else{
+            return ActiveForm::validate($model);
+            }
         }        
     }
 
