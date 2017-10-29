@@ -32,7 +32,7 @@ class TasksSupply extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['INSUMO_idInsumo', 'TAREA_idTarea'], 'required'],
+            // [['INSUMO_idInsumo', 'TAREA_idTarea'], 'required'],
             [['INSUMO_idInsumo', 'TAREA_idTarea', 'cantidad'], 'integer'],
             [['INSUMO_idInsumo'], 'exist', 'skipOnError' => true, 'targetClass' => Supply::className(), 'targetAttribute' => ['INSUMO_idInsumo' => 'idInsumo']],
             [['TAREA_idTarea'], 'exist', 'skipOnError' => true, 'targetClass' => Task::className(), 'targetAttribute' => ['TAREA_idTarea' => 'idTarea']],

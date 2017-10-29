@@ -8,6 +8,9 @@ use yii\bootstrap\Modal;
 use kartik\tabs\TabsX;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Url;
+use kartik\alert\AlertBlock;
+use kartik\alert\Alert;
+use kartik\growl\Growl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
@@ -27,6 +30,42 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Panel de información -->
     <div class="col-lg-4">
     <?php
+    
+      echo AlertBlock::widget([
+        'useSessionFlash' => true,
+        'type' => AlertBlock::TYPE_GROWL,
+        'alertSettings' => [
+          'success' => [
+            'title' => 'Control satisfactorio',
+            'icon' => 'glyphicon glyphicon-ok-sign',
+            'showSeparator' => true,
+            'type' => Growl::TYPE_SUCCESS,
+            'pluginOptions' => [
+              'showProgressbar' => true,
+              'placement' => [
+                  'from' => 'top',
+                  'align' => 'center',
+              ]
+            ]
+          ],
+          'error' => [
+            'title' => 'Error',
+            'icon' => 'glyphicon glyphicon-exclamation-sign',
+            'showSeparator' => true,
+            'type' => Growl::TYPE_DANGER,
+            'pluginOptions' => [
+              'showProgressbar' => true,
+              'placement' => [
+                  'from' => 'top',
+                  'align' => 'center',
+              ]
+            ]
+          ]
+        ]
+
+
+        ]);
+      
       $content1 =
 
       '<div class="col-lg-12">

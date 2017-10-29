@@ -275,18 +275,16 @@ class TaskController extends Controller
 
         if($idTarea==-1){ //es no planificada//
             $modelConditions = new EnviromentalConditions();
-            $supplyModels = [new Supply()];
+     
             $count = count(Yii::$app->request->post('Supply', []));
-            
+            $supplyModels = [new Supply()];
+            for($i = 1; $i < $count; $i++) {
+                $supplyModels[] = new Supply();
+            }
             if (Model::loadMultiple($supplyModels, Yii::$app->request->post()) && $modelConditions->load(Yii::$app->request->post())) {
                     yii::error(\yii\helpers\VarDumper::dumpAsString($supplyModels));
                     $task->saveControl($modelConditions,$supplyModels,$idAcuario);
-                    // // foreach ($supplyModels as $key => $supply) {
-                    // //     $supply->save();
-                    // // }
-                    return $this->renderAjax('p',[
-                        'supplies'=>$supplyModels
-                    ]); 
+                   return $this->redirect(Yii::$app->request->referrer);
             }
             else {
                 $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);

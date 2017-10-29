@@ -13,15 +13,11 @@ use kartik\select2\Select2;
 /* @var $modelTask app\models\task\Task */
 /* @var $modelTask->condicionAmbiental app\models\condition\EnviromentalConditions */
 
-// $this->title = 'Tarea: Controlar acuario';
-// $this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
-// $this->params['breadcrumbs'][] = 'Execute';
 ?>
 <div class="task-control"> 
     
     <?php
 
-        print_r($supplyModels);
         $conditionId =-1;
 
         if ($conditionsModel->idCondicionAmbiental!==null){
@@ -40,6 +36,7 @@ use kartik\select2\Select2;
             'model'=>$conditionsModel,
             'form'=>$form,
             'columns'=>3,
+            'contentBefore'=> '<legend class="text-info"><small>Condiciones ambientales</small></legend>',
             'attributes'=>[
                 'ph'=>[
                     'type'=>Form::INPUT_WIDGET,
@@ -119,6 +116,7 @@ use kartik\select2\Select2;
             ]
         ]);
         
+ echo '<legend class="text-info"><small>Insumos utilizados</small></legend>';
         
     echo TabularInput::widget([
             'id'=>'id',
