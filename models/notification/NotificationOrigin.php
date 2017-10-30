@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\notification;
 
 use Yii;
 
@@ -47,6 +47,6 @@ class NotificationOrigin extends \yii\db\ActiveRecord
      */
     public function getNOTIFICACIONs()
     {
-        return $this->hasMany(NOTIFICACION::className(), ['ORIGEN_NOTIFICACION_idOrigenNotificacion' => 'idOrigenNotificacion']);
+        return $this->hasMany(Notification::className(), ['ORIGEN_NOTIFICACION_idOrigenNotificacion' => 'idOrigenNotificacion']);
     }
 }

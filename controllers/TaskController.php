@@ -285,9 +285,8 @@ class TaskController extends Controller
                     if(!Model::loadMultiple($supplyModels, Yii::$app->request->post())){
                         $supplyModels = [];
                     }
-                    yii::error(\yii\helpers\VarDumper::dumpAsString($supplyModels));
-                    $task->saveControl($modelConditions,$supplyModels,$idAcuario);
-                   return $this->redirect(Yii::$app->request->referrer);
+                $task->saveControl($modelConditions,$supplyModels,$idAcuario);
+                return $this->redirect(Yii::$app->request->referrer);
             }
             else {
                 $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);

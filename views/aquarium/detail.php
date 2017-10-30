@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Panel de información -->
     <div class="col-lg-4">
     <?php
-    
+
       echo AlertBlock::widget([
         'useSessionFlash' => true,
         'type' => AlertBlock::TYPE_GROWL,
@@ -53,7 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'icon' => 'glyphicon glyphicon-exclamation-sign',
             'showSeparator' => true,
             'type' => Growl::TYPE_DANGER,
+            'delay'=>0,
             'pluginOptions' => [
+              'delay'=>0,
               'showProgressbar' => true,
               'placement' => [
                   'from' => 'top',

@@ -171,7 +171,7 @@ use kartik\select2\Select2;
                 'actions'=>[
                     'type'=>Form::INPUT_RAW,
                     'value'=>'<div class="form-group" align="center">'.
-                        Html::submitButton(FA::icon('check')->size(FA::SIZE_LARGE).' Realizar',
+                        Html::submitButton(FA::icon('check')->size(FA::SIZE_LARGE).' Aceptar',
                             [
                                 'value'=>Url::to([
                                     'task/control'
