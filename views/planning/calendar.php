@@ -64,25 +64,27 @@ EOF;
 ?>
 <div class="planning-check">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            //'idPlanificacion',
             'titulo',
-            //'fechaHoraCreacion',
-            //'activo',
+            [
+            'attribute'=>'fechaHoraCreacion',
+            'format' => ['date','php:d-m-Y'] // dar formato hora
+            ],
             [
             'attribute' => 'ACUARIO_USUARIO_acuario_idAcuario',
             'value' => 'aCUARIOUSUARIOAcuarioIdAcuario',
             //agregar nombre acuario
             ],
-
-
-            //'ACUARIO_USUARIO_usuario_idUsuario',
-            //'ESTADO_PLANIFICACION_idEstadoPlanificacion',
-        ],
+            'ESTADO_PLANIFICACION_idEstadoPlanificacion',
+            '',
+            '',
+            '',
+            '',
+          ],
     ])
 
     ?>
@@ -136,7 +138,7 @@ EOF;
   </div>
   <div>
         <br>
-              <?= Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
+                <?= Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
                   'class' => 'glyphicon glyphicon-ok',
                   'data' => [
                       'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
@@ -148,8 +150,8 @@ EOF;
                           [
                            'value' => Url::to(['autorized','id'=>$model->idPlanificacion]),
                             'title' => 'Rechazar planificacion ',
-                            'class' => 'showModalButton btn btn-success'
-                            
+                            'class' => 'button btn btn-success'
+
                           ]);
 
                   ?>

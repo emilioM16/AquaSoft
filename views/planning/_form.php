@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="planning-create">
 
-  <?= Html::encode($this->title) ?>
 
   <div class="row">
   <div class="planning-form col-lg-12">

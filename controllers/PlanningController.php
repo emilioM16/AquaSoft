@@ -63,6 +63,7 @@ class PlanningController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+
     }
 
     public function actionCheck($id)

@@ -72,7 +72,7 @@ class TaskController extends Controller
           yii::error(\yii\helpers\VarDumper::dumpAsString($_POST));
 
         $taskTypes = TaskType::find()->all();
-        if (($model->load(Yii::$app->request->post())) && $model->save(false)) {
+        if (($model->load(Yii::$app->request->post())) && $model->save()) {
             // return $this->redirect(Yii::$app->request->referrer);
             // return $this->renderAjax('//..task/execute',[
             //         'model'=>$model,

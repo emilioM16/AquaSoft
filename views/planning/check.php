@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
 ?>
 <div class="planning-check">
 
-  <h1><?= Html::encode($this->title) ?></h1>
 
   <?= $this->render('calendar', [
       'model' => $model,

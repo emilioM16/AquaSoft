@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="planning-view">
 
-  <h1><?= Html::encode($this->title) ?></h1>
+
 
   <?= $this->render('calendar', [
       'model' => $model,

@@ -13,13 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="planning-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
 
         <?= Html::a('Nueva planificacion', ['create'], ['class' => 'btn btn-success']) ?>
-      
+
     </p>
 
 <?php Pjax::begin(); ?>    <?= GridView::widget([
@@ -62,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
           'down' => function ($url) {
                return Html::a(
                  '<span class="glyphicon glyphicon-trash"></span>',
+                  //agregar confirm
 
                 $url,
                 ['planning/down'
