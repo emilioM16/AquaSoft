@@ -17,7 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
+
         <?= Html::a('Nueva planificacion', ['create'], ['class' => 'btn btn-success']) ?>
+      
     </p>
 
 <?php Pjax::begin(); ?>    <?= GridView::widget([
@@ -28,10 +30,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
           //  'idPlanificacion',
             'titulo',
-            'anioMes',
-            'fechaHoraCreacion',
-            'activo',
-            'ACUARIO_USUARIO_acuario_idAcuario',
+            [
+            'attribute'=>'anioMes',
+            'format' => ['date','php:m-Y']
+            ],
+            [
+            'attribute'=>'fechaHoraCreacion',
+            'format' => ['date','php:d-m-Y']
+            ],
+            [
+            'attribute' => 'ACUARIO_USUARIO_acuario_idAcuario',
+            'value' => 'aCUARIOUSUARIOAcuarioIdAcuario.nombre',
+            ],
+            //'activo',
             // 'ACUARIO_USUARIO_usuario_idUsuario',
             'ESTADO_PLANIFICACION_idEstadoPlanificacion',
 
@@ -53,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                  '<span class="glyphicon glyphicon-trash"></span>',
 
                 $url,
-                ['planning/darBaja'
+                ['planning/down'
                 ]
              );
            }

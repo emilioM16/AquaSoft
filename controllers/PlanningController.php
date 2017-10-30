@@ -75,7 +75,9 @@ class PlanningController extends Controller
 
     public function actionDown($id)
         {
-         yii::error(\yii\helpers\VarDumper::dumpAsString('aaa'));
+          $model = $this->findModel($id);
+          $model = $model->giveLow();
+          return $this->redirect(['index']);
 
         }
 

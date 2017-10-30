@@ -62,11 +62,11 @@ class Planning extends \yii\db\ActiveRecord
             'idPlanificacion' => 'Id Planificacion',
             'titulo' => 'Título',
             'anioMes' => 'Fecha',
-            'fechaHoraCreacion' => 'Fecha Hora Creacion',
+            'fechaHoraCreacion' => 'Fecha creacion',
             'activo' => 'Activo',
             'ACUARIO_USUARIO_acuario_idAcuario' => 'Acuario',
             'ACUARIO_USUARIO_usuario_idUsuario' => 'Acuario  Usuario Usuario Id Usuario',
-            'ESTADO_PLANIFICACION_idEstadoPlanificacion' => 'Estado  Planificacion Id Estado Planificacion',
+            'ESTADO_PLANIFICACION_idEstadoPlanificacion' => 'Estado',
         ];
     }
 
@@ -181,10 +181,17 @@ class Planning extends \yii\db\ActiveRecord
         $this->ESTADO_PLANIFICACION_idEstadoPlanificacion = $oneState;
         return $this;
     }
+    public function giveLow(){
+
+        $this->activo = 0;
+        $this->save(false);
+    }
+
 
     public function beforeSave($insert){ //FUNCIONA
-
-      $this->activo = 1;
+      if (!isset($this->activo)) {
+        $this->activo = 1;
+      }
       if (!isset($this->ESTADO_PLANIFICACION_idEstadoPlanificacion)) {
         $this->ESTADO_PLANIFICACION_idEstadoPlanificacion ='SinVerificar';
       }

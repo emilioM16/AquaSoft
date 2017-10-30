@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="aquarium-view">
 
-    
+
 
     <div align="center">
     <?= DetailView::widget([

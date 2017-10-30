@@ -9,14 +9,16 @@ use kartik\tabs\TabsX;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Url;
 use yii\web\JsExpression;
+use app\models\planning;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
 
-$this->title = $model->titulo;
-$this->params['breadcrumbs'][] = ['label' => 'Planificacion nueva', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->title = $model->titulo;
+$this->params['breadcrumbs'][] = ['label' => 'Planificacion', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
 
 
 
@@ -68,11 +70,16 @@ EOF;
         'model' => $model,
         'attributes' => [
             //'idPlanificacion',
-            //'titulo',
-            'anioMes',
+            'titulo',
             //'fechaHoraCreacion',
             //'activo',
-            'ACUARIO_USUARIO_acuario_idAcuario',
+            [
+            'attribute' => 'ACUARIO_USUARIO_acuario_idAcuario',
+            'value' => 'aCUARIOUSUARIOAcuarioIdAcuario',
+            //agregar nombre acuario
+            ],
+
+
             //'ACUARIO_USUARIO_usuario_idUsuario',
             //'ESTADO_PLANIFICACION_idEstadoPlanificacion',
         ],
@@ -130,14 +137,22 @@ EOF;
   <div>
         <br>
               <?= Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
-                  'class' => 'btn btn-success',
+                  'class' => 'glyphicon glyphicon-ok',
                   'data' => [
                       'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
                       'method' => 'post',
                     ],
                   ]) ?>
 
+                  <?= Html::button('<span class="glyphicon glyphicon-ok"></span>',
+                          [
+                           'value' => Url::to(['autorized','id'=>$model->idPlanificacion]),
+                            'title' => 'Rechazar planificacion ',
+                            'class' => 'showModalButton btn btn-success'
+                            
+                          ]);
 
+                  ?>
 
                 <?= Html::button('<span class="glyphicon glyphicon-remove"></span>',
                         [
@@ -146,12 +161,12 @@ EOF;
                           'class' => 'showModalButton btn btn-success'
                         ]);
 
-             ?>
+                ?>
   </div>
   <div>
           <br>
                 <?= Html::a('Finalizar', ['planning/index'], [
-                    'class' => 'btn btn-success',
+                    'class' => 'btn btn-primary',
                     'data' => [
                     //    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
                         'method' => 'post',
@@ -161,13 +176,16 @@ EOF;
   <div>
           <br>
                 <?= Html::a('Volver al inicio', ['planning/index'], [
-                    'class' => 'btn btn-success',
+                    'class' => 'btn btn-primary',
                     'data' => [
                     //    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
                         'method' => 'post',
                       ],
                 ]) ?>
   </div>
+  <button type="button" class="btn btn-primary btn" action="planning/autorized">
+    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Autorizar
+  </button>
 
 </div>
 
