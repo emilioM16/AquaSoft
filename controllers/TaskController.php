@@ -11,13 +11,14 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\base\Model; 
-
+use app\models\conditions\EnviromentalConditions;
+use app\models\supply\Supply;
+use yii\helpers\ArrayHelper;
 /**
  * TaskController implements the CRUD actions for Task model.
  */
 class TaskController extends Controller
 {
-    private $task;
     /**
      * @inheritdoc
      */
@@ -211,6 +212,7 @@ class TaskController extends Controller
             // }
         }
     }
+    
 
     /**
      * Finds the Task model based on its primary key value.
@@ -230,7 +232,7 @@ class TaskController extends Controller
         }
     }
 
-    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación. 
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación. 
 
         $model = new Task(['idTarea'=>$id]);
 
@@ -263,8 +265,100 @@ class TaskController extends Controller
             default:
                 # code...
                 break;
-        }
-        
+        }        
     }
+
+
+    public function actionControl($idAcuario, $idTarea)
+    {
+        $task = new Task();
+
+        if($idTarea==-1){ //es no planificada//
+            $modelConditions = new EnviromentalConditions();
+     
+            $count = count(Yii::$app->request->post('Supply', []));
+            $supplyModels = [new Supply()];
+            for($i = 1; $i < $count; $i++) {
+                $supplyModels[] = new Supply();
+            }
+            if ($modelConditions->load(Yii::$app->request->post())) {
+                    if(!Model::loadMultiple($supplyModels, Yii::$app->request->post())){
+                        $supplyModels = [];
+                    }
+                $task->saveControl($modelConditions,$supplyModels,$idAcuario);
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            else {
+                $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);
+                $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
+                $availableSupplies[0] = 'Ninguno';
+                ksort($availableSupplies);
+                    if (Yii::$app->request->isAjax){
+                        return $this->renderAjax('_controlForm',[
+                            'conditionsModel'=> $modelConditions,
+                            'supplyModels'=>$supplyModels,
+                            'availableSupplies'=>$availableSupplies
+                            ]);
+                        
+                    }else{
+                        return $this->render('_controlForm',[
+                            'conditionsModel'=> $modelConditions,
+                            'supplyModels'=>$supplyModels,
+                            'availableSupplies'=>$availableSupplies
+                        ]);
+                    }
+                }
+        }else{ //la tarea es planificada
+            $modelTask = $this->findModel($idTarea);
+
+            if (!$modelTask->wasExecuted())
+            {
+                // sólo si la tarea no se ha ejecutado Y ES DE LA FECHA, inicializo las condiciones
+                $modelConditions = new EnviromentalConditions();
+                $modelConditions->inicialice($idTarea, $modelTask->ACUARIO_idAcuario);
+
+                if ($modelConditions->load(Yii::$app->request->post()) && $modelConditions->save()) {
+                // yii::error('POST: '.Yii::$app->request->referrer);
+                    $this->redirect(Yii::$app->request->referrer);
+                } 
+                else {
+                    if (Yii::$app->request->isAjax){
+                        return $this->renderAjax('control',[
+                            'conditionsModel'=> $modelConditions,
+                            ]);
+                        
+                    }else{
+                        return $this->render('control',[
+                            'conditionsModel'=> $modelConditions,
+                        ]);
+                    }
+                }
+            }
+        }
+    }
+
+
+    public function actionControlValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación. 
+        
+        $model = new EnviromentalConditions(['idCondicionAmbiental'=>$id]);
+        Yii::$app->response->format = 'json';
+        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+        {
+            if(Yii::$app->request->post('Supply')!=null){
+            $supplies = Yii::$app->request->post('Supply',[]);
+            foreach (array_keys($supplies) as $index) {
+                $models[$index] = new Supply();
+            }
+            
+            // if(Model::loadMultiple($models, Yii::$app->request->post())){
+            Model::loadMultiple($models, Yii::$app->request->post());
+
+            return ActiveForm::validateMultiple($models);
+            }else{
+            return ActiveForm::validate($model);
+            }
+        }        
+    }
+
 
 }

@@ -8,7 +8,9 @@ use yii\bootstrap\Modal;
 use kartik\tabs\TabsX;
 use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Url;
-
+use kartik\alert\AlertBlock;
+use kartik\alert\Alert;
+use kartik\growl\Growl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
@@ -28,6 +30,44 @@ $this->params['breadcrumbs'][] = $this->title;
     <!-- Panel de información -->
     <div class="col-lg-4">
     <?php
+
+      echo AlertBlock::widget([
+        'useSessionFlash' => true,
+        'type' => AlertBlock::TYPE_GROWL,
+        'alertSettings' => [
+          'success' => [
+            'title' => 'Control satisfactorio',
+            'icon' => 'glyphicon glyphicon-ok-sign',
+            'showSeparator' => true,
+            'type' => Growl::TYPE_SUCCESS,
+            'pluginOptions' => [
+              'showProgressbar' => true,
+              'placement' => [
+                  'from' => 'top',
+                  'align' => 'center',
+              ]
+            ]
+          ],
+          'error' => [
+            'title' => 'Error',
+            'icon' => 'glyphicon glyphicon-exclamation-sign',
+            'showSeparator' => true,
+            'type' => Growl::TYPE_DANGER,
+            'delay'=>0,
+            'pluginOptions' => [
+              'delay'=>0,
+              'showProgressbar' => true,
+              'placement' => [
+                  'from' => 'top',
+                  'align' => 'center',
+              ]
+            ]
+          ]
+        ]
+
+
+        ]);
+      
       $content1 =
 
       '<div class="col-lg-12">
@@ -66,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="col-lg-12" align="center">'.
                                 Html::button(FA::icon('check-square-o')->size(FA::SIZE_LARGE).' Nuevo control',
                                 [
-                                    'value' => Url::to(['']),
+                                    'value' => Url::to(['task/control','idAcuario'=>$acuario->idAcuario,'idTarea'=>-1]),
                                     'title' => 'Nuevo control',
                                     'class' => 'showModalButton btn btn-primary',
                                     'style'=>['width'=>'70%']
@@ -144,6 +184,7 @@ EOF;
   </div>
 
   <?php
+
   if(Yii::$app->user->can('administrarTareas')){
     echo '<div id="btnDetail" class="col-lg-2">'
       .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada', 

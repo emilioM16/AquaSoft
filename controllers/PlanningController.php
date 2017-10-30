@@ -70,38 +70,39 @@ class PlanningController extends Controller
       $model = new Planning();
       $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
 
-      if ($model->load(Yii::$app->request->post())) {
+      
+    if ($model->load(Yii::$app->request->post())) {
 
-            $formattedDate = date("Y-m-d",strtotime($model->anioMes));
+        $formattedDate = date("Y-m-d",strtotime($model->anioMes));
 
-            if ($model->validatePlanning($formattedDate,$model->ACUARIO_USUARIO_acuario_idAcuario)) {
+        if ($model->validatePlanning($formattedDate,$model->ACUARIO_USUARIO_acuario_idAcuario)) {
 
-              // $this->addError("La planificacion ya existe para este mes y con este acuario");
+            // $this->addError("La planificacion ya existe para este mes y con este acuario");
 
-              $model->anioMes = $formattedDate;
+            $model->anioMes = $formattedDate;
 
-                if($model->save()){
-                  return $this->render('calendar',['model' => $model]);
-                }
-
+            if($model->save()){
+                return $this->render('calendar',['model' => $model]);
             }
-            else{
-              return $this->render('create', [
-                  'model' => $model,
-                  'aquariums'=>$aquariums
 
-              ]);
+        }
+        else{
+            return $this->render('create', [
+                'model' => $model,
+                'aquariums'=>$aquariums
+
+            ]);
 
 
-            //muestra el mensaje y vuelve a cargar la pagina
-            }
-       }
-      else {
-          return $this->render('calendar', [
-              'model' => $model,
-              'aquariums'=>$aquariums
-          ]);
-      }
+        //muestra el mensaje y vuelve a cargar la pagina
+        }
+    }
+    else {
+        return $this->render('calendar', [
+            'model' => $model,
+            'aquariums'=>$aquariums
+        ]);
+    }
     }
 
     /**

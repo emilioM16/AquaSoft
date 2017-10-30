@@ -34,6 +34,8 @@ class EnviromentalConditions extends \yii\db\ActiveRecord
     public $minLux;
     public $maxCO2;
     public $minCO2;
+
+    public $supplies;
     /**
      * @inheritdoc
      */
@@ -54,7 +56,7 @@ class EnviromentalConditions extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ph', 'temperatura', 'salinidad', 'lux', 'CO2', 'acuario_idAcuario', 'tarea_idTarea'], 'required'],
+            [['ph', 'temperatura', 'salinidad', 'lux', 'CO2', 'acuario_idAcuario', 'tarea_idTarea'], 'required', 'message'=>'Campo obligatorio'],
             [['ph', 'temperatura', 'salinidad', 'lux', 'CO2'], 'number'],
             [['acuario_idAcuario', 'tarea_idTarea'], 'integer'],
             [['acuario_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['acuario_idAcuario' => 'idAcuario']],
@@ -73,7 +75,7 @@ class EnviromentalConditions extends \yii\db\ActiveRecord
             'temperatura' => 'Temperatura',
             'salinidad' => 'Salinidad',
             'lux' => 'Lux',
-            'CO2' => 'Co2',
+            'CO2' => 'CO2',
             'acuario_idAcuario' => 'Acuario Id Acuario',
             'tarea_idTarea' => 'Tarea Id Tarea',
         ];
