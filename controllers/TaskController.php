@@ -70,6 +70,7 @@ class TaskController extends Controller
     {
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
+          yii::error(\yii\helpers\VarDumper::dumpAsString($_POST));
 
         $taskTypes = TaskType::find()->all();
         if (($model->load(Yii::$app->request->post())) && $model->save()) {
@@ -85,7 +86,7 @@ class TaskController extends Controller
             // if (!$model->isPlanned()){
             //     // si es no planificada tengo que desplegar la ventana para que la realice
             //     Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
-            // }else 
+            // }else
                 // retorna a la página que la llamó
             // ************************************************************************************************************************************************************
                 return $this->redirect(Yii::$app->request->referrer);
@@ -152,64 +153,54 @@ class TaskController extends Controller
      */
     // public function actionExecute($idTarea = '')
     public function actionExecute()
-    {    
-        // if (isset($_POST['idTarea']))   
+    {
+        // if (isset($_POST['idTarea']))
         // {
-        // } 
-        
+        // }
+
         $idTarea = Yii::$app->request->post('idTarea');
         $modelTask = $this->findModel($idTarea);
         if (!$modelTask->wasExecuted())
         {
-            yii::error('MODELTASK: '.\yii\helpers\VarDumper::dumpAsString($modelTask));
-            yii::error('POST: '.Yii::$app->request->referrer);  
-            // obtengo la vista de acuerdo al tipo de tarea
-            $this->redirectViewTaskType($modelTask);
+            yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post()));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $this->redirect(Yii::$app->request->referrer);
+            }
+            else {
+                if (Yii::$app->request->isAjax){
+                    // if ($vista === 'control'){
+                    //    return $this->renderAjax($vista,[
+                    //     'model'=>$model->condicionAmbiental,
+                    //     ]);
+                    // }
+                    // else
+                    // {
+                    //    return $this->renderAjax($vista,[
+                    //     'model'=>$model->InsumoTareas,
+                    //     ]);
+                    // }
+                    return $this->renderAjax($vista,[
+                        'model'=>$model,
+                        ]);
 
-            // $modelSupply = new Supply(); // no sé si necesitaré esto
-            // if ($vista === 'control')
-            // {
-            //     // instancio las condiciones ambientales
-            //     $modelSend = new EnviromentalConditions();
-            // }     
-            // if ($modelTask->load(Yii::$app->request->post()) && $modelTask->save()) {
-            //     $this->redirect(Yii::$app->request->referrer);
-            // } 
-            // else {
-            //     if (Yii::$app->request->isAjax){
-            //         // if ($vista === 'control'){
-            //         //    return $this->renderAjax($vista,[
-            //         //     'modelTask'=>$modelTask->condicionAmbiental,
-            //         //     ]); 
-            //         // }
-            //         // else
-            //         // {
-            //         //    return $this->renderAjax($vista,[
-            //         //     'modelTask'=>$modelTask->InsumoTareas,
-            //         //     ]);  
-            //         // }
-            //         return $this->renderAjax($vista,[
-            //             'model'=> $modelSend,
-            //             ]);
-                    
-            //     }else{
-            //         // if ($vista === 'control'){
-            //         //    return $this->render($vista,[
-            //         //     'modelTask'=>$modelTask->condicionAmbiental,
-            //         //     ]); 
-            //         // }
-            //         // else
-            //         // {
-            //         //    return $this->render($vista,[
-            //         //     'modelTask'=>$modelTask->InsumoTareas,                        
-            //         //     ]);  
-            //         // }
-                    
-            //         return $this->render($vista,[
-            //             'model'=> $modelSend,
-            //         ]);
-            //     }
-            // }
+                }else{
+                    // if ($vista === 'control'){
+                    //    return $this->render($vista,[
+                    //     'model'=>$model->condicionAmbiental,
+                    //     ]);
+                    // }
+                    // else
+                    // {
+                    //    return $this->render($vista,[
+                    //     'model'=>$model->InsumoTareas,
+                    //     ]);
+                    // }
+
+                    return $this->render($vista,[
+                        'model'=>$model,
+                    ]);
+                }
+            }
         }
     }
     
@@ -232,7 +223,7 @@ class TaskController extends Controller
         }
     }
 
-    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación. 
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación.
 
         $model = new Task(['idTarea'=>$id]);
 
@@ -240,7 +231,7 @@ class TaskController extends Controller
         {
             Yii::$app->response->format = 'json';
             return ActiveForm::validate($model);
-        }        
+        }
     }
 
     private function redirectViewTaskType($task){

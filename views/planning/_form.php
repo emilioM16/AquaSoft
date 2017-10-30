@@ -25,7 +25,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="planning-create">
 
-  <?= Html::encode($this->title) ?>
 
   <div class="row">
   <div class="planning-form col-lg-12">
@@ -34,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   <?php
                   $form = ActiveForm::begin([
-                   'action' => ['planning/calendar'],
+                   //'action' => ['planning/calendar'],
                       'id'=>$model->formName(),
                       'type'=>ActiveForm::TYPE_VERTICAL]);
 

@@ -2,21 +2,23 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\planning\Planning */
 
-$this->title = $model->idPlanificacion;
+$this->title = $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="planning-view">
-
+<div class="planning-check">
 
 
   <?= $this->render('calendar', [
       'model' => $model,
   ]) ?>
+
+
 
 
 </div>

@@ -1,6 +1,7 @@
 <?php
 
-namespace app\models;
+namespace app\models\planning;
+use app\models\user\User;
 
 use Yii;
 
@@ -14,9 +15,9 @@ use Yii;
  * @property integer $PLANIFICACION_idPlanificacion
  * @property integer $USUARIO_idUsuario
  *
- * @property MOTIVORECHAZO $mOTIVORECHAZOIdMotivoRechazo
- * @property PLANIFICACION $pLANIFICACIONIdPlanificacion
- * @property USUARIO $uSUARIOIdUsuario
+ * @property RejectedMotive $mOTIVORECHAZOIdMotivoRechazo
+ * @property Planning $pLANIFICACIONIdPlanificacion
+ * @property User $uSUARIOIdUsuario
  */
 class Validation extends \yii\db\ActiveRecord
 {
@@ -35,13 +36,13 @@ class Validation extends \yii\db\ActiveRecord
     {
         return [
             [['FECHAHORA'], 'safe'],
-            [['MOTIVO_RECHAZO_idMotivoRechazo', 'PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario'], 'required'],
+            [['MOTIVO_RECHAZO_idMotivoRechazo'], 'required','message'=>'Por favor, seleccione un motivo'],
             [['PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario'], 'integer'],
             [['OBSERVACION'], 'string', 'max' => 200],
             [['MOTIVO_RECHAZO_idMotivoRechazo'], 'string', 'max' => 45],
-            [['MOTIVO_RECHAZO_idMotivoRechazo'], 'exist', 'skipOnError' => true, 'targetClass' => MOTIVORECHAZO::className(), 'targetAttribute' => ['MOTIVO_RECHAZO_idMotivoRechazo' => 'idMotivoRechazo']],
-            [['PLANIFICACION_idPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => PLANIFICACION::className(), 'targetAttribute' => ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']],
-            [['USUARIO_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => USUARIO::className(), 'targetAttribute' => ['USUARIO_idUsuario' => 'idUsuario']],
+            [['MOTIVO_RECHAZO_idMotivoRechazo'], 'exist', 'skipOnError' => true, 'targetClass' => RejectedMotive::className(), 'targetAttribute' => ['MOTIVO_RECHAZO_idMotivoRechazo' => 'idMotivoRechazo']],
+            [['PLANIFICACION_idPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Planning::className(), 'targetAttribute' => ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']],
+            [['USUARIO_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['USUARIO_idUsuario' => 'idUsuario']],
         ];
     }
 
@@ -54,7 +55,7 @@ class Validation extends \yii\db\ActiveRecord
             'idVALIDACION' => 'Id Validacion',
             'FECHAHORA' => 'Fechahora',
             'OBSERVACION' => 'Observacion',
-            'MOTIVO_RECHAZO_idMotivoRechazo' => 'Motivo  Rechazo Id Motivo Rechazo',
+            'MOTIVO_RECHAZO_idMotivoRechazo' => 'Motivo de rechazo',
             'PLANIFICACION_idPlanificacion' => 'Planificacion Id Planificacion',
             'USUARIO_idUsuario' => 'Usuario Id Usuario',
         ];
@@ -65,7 +66,7 @@ class Validation extends \yii\db\ActiveRecord
      */
     public function getMOTIVORECHAZOIdMotivoRechazo()
     {
-        return $this->hasOne(MOTIVORECHAZO::className(), ['idMotivoRechazo' => 'MOTIVO_RECHAZO_idMotivoRechazo']);
+        return $this->hasOne(RejectedMotive::className(), ['idMotivoRechazo' => 'MOTIVO_RECHAZO_idMotivoRechazo']);
     }
 
     /**
@@ -73,7 +74,7 @@ class Validation extends \yii\db\ActiveRecord
      */
     public function getPLANIFICACIONIdPlanificacion()
     {
-        return $this->hasOne(PLANIFICACION::className(), ['idPlanificacion' => 'PLANIFICACION_idPlanificacion']);
+        return $this->hasOne(Planning::className(), ['idPlanificacion' => 'PLANIFICACION_idPlanificacion']);
     }
 
     /**
@@ -81,6 +82,11 @@ class Validation extends \yii\db\ActiveRecord
      */
     public function getUSUARIOIdUsuario()
     {
-        return $this->hasOne(USUARIO::className(), ['idUsuario' => 'USUARIO_idUsuario']);
+        return $this->hasOne(User::className(), ['idUsuario' => 'USUARIO_idUsuario']);
     }
+
+
+
+
+
 }

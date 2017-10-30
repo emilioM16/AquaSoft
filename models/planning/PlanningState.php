@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\planning\models;
 
 use Yii;
 

@@ -63,6 +63,7 @@ class PlanningSearch extends Planning
             'anioMes' => $this->anioMes,
             'fechaHoraCreacion' => $this->fechaHoraCreacion,
             'activo' => $this->activo,
+            'activo' => 1,
             'ACUARIO_USUARIO_acuario_idAcuario' => $this->ACUARIO_USUARIO_acuario_idAcuario,
             'ACUARIO_USUARIO_usuario_idUsuario' => $this->ACUARIO_USUARIO_usuario_idUsuario,
         ]);

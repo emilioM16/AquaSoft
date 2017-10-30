@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\planning\Planning;
+use app\models\planning\Validation;
 use app\models\planning\PlanningSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -62,28 +63,51 @@ class PlanningController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+
     }
 
-    public function actionCalendar() //FUNCIONA, GUARDA LA PLANIFICION Y VA A LA PANTALLA DE CALENDARIO
+    public function actionCheck($id)
+    {
+    //  yii::error(\yii\helpers\VarDumper::dumpAsString('aaa'));
+        return $this->render('check', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionDown($id)
+        {
+          $model = $this->findModel($id);
+          $model = $model->giveLow();
+          return $this->redirect(['index']);
+
+        }
+
+    public function actionCalendar($idPlan) //FUNCIONA, GUARDA LA PLANIFICION Y VA A LA PANTALLA DE CALENDARIO
     {
 
-      $model = new Planning();
-      $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+      $model = $this->findModel($idPlan);
+      $model->loadEvents();
+      // $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+      //
+       if ($model->load(Yii::$app->request->post())&& $model->save()) {
+      //
+      //       $formattedDate = date("Y-m-d",strtotime($model->anioMes));
+      //
+      //       if ($model->validatePlanning($formattedDate,$model->ACUARIO_USUARIO_acuario_idAcuario)) {
+      //
+      //         // $this->addError("La planificacion ya existe para este mes y con este acuario");
+      //
+      //         $model->anioMes = $formattedDate;
 
-      
-    if ($model->load(Yii::$app->request->post())) {
+              //  if($model->save()){
+                  return $this->redirect([$view]);
+                //  return $this->render('calendar',['model' => $model]);
+            //    }
 
-        $formattedDate = date("Y-m-d",strtotime($model->anioMes));
-
-        if ($model->validatePlanning($formattedDate,$model->ACUARIO_USUARIO_acuario_idAcuario)) {
-
-            // $this->addError("La planificacion ya existe para este mes y con este acuario");
-
-            $model->anioMes = $formattedDate;
-
-            if($model->save()){
-                return $this->render('calendar',['model' => $model]);
             }
+            else{
+              return $this->render('calendar', [
+                  'model' => $model,
 
         }
         else{
@@ -93,9 +117,9 @@ class PlanningController extends Controller
 
             ]);
 
+            //muestra el mensaje y vuelve a cargar la pagina
+            }
 
-        //muestra el mensaje y vuelve a cargar la pagina
-        }
     }
     else {
         return $this->render('calendar', [
@@ -121,8 +145,24 @@ class PlanningController extends Controller
         $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
         // yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->user->identity->getAquariums()));
         // $aquariums = [2=>'A02',3=>'a04'];
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idPlanificacion]);
+      //  if ($model->load(Yii::$app->request->post()) && $model->save()) {
+      //$aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+
+      if ($model->load(Yii::$app->request->post())&& $model ->save()) {
+
+          //  $formattedDate = date("Y-m-d",strtotime($model->anioMes));
+           //
+          //   if ($model->validatePlanning($formattedDate,$model->ACUARIO_USUARIO_acuario_idAcuario)) {
+          //     // $this->addError("La planificacion ya existe para este mes y con este acuario");
+          //     $model->anioMes = $formattedDate;
+          //     if($model->save()){
+              //  return $this->render('calendar',['model' => $model]);
+              return $this->redirect(['calendar',
+              'idPlan' => $model->idPlanificacion]);
+            //  }
+
+
+
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -154,6 +194,60 @@ class PlanningController extends Controller
         }
     }
 
+    public function actionAutorized($id)
+    {
+          $modelVal = new Validation();
+
+          $modelVal->PLANIFICACION_idPlanificacion= $id;
+          $modelVal->USUARIO_idUsuario= Yii::$app->user->identity->idUsuario;
+          $modelVal->save(false);//trucho
+
+         $model = $this->findModel($id);
+         $model = $model->changeStatus('Aprobada');
+         $model->save(false);
+         return $this->redirect(['index']);
+
+    }
+
+    public function actionRefuse($id)
+    {
+         $modelValidacion= new Validation();
+         $model = $this->findModel($id);
+         $model = $model->changeStatus('Rechazada');
+      //   yii::error(\yii\helpers\VarDumper::dumpAsString($model));
+         $model->save(false);//llama previamente al before save
+         return $this->renderAjax('refuseMotive',[
+             'model'=>$model,
+             'modelV'=>$modelValidacion,
+         ]);
+    }
+
+    public function actionMotive($id)
+    {
+        $modelVal = new Validation();
+
+
+        $modelVal->MOTIVO_RECHAZO_idMotivoRechazo = 'Otro';
+        $modelVal->PLANIFICACION_idPlanificacion= $id;
+        $modelVal->USUARIO_idUsuario= Yii::$app->user->identity->idUsuario;
+        yii::error(\yii\helpers\VarDumper::dumpAsString($modelVal));
+        $modelVal->save(false);//trucho
+
+
+          if ($modelVal->load(Yii::$app->request->post())&& $modelVal->save()) {
+              return $this->redirect(['index']);
+
+        } else {
+                  return $this->redirect(['index']);
+              //  return $modelVal->redirect(['index']);
+
+            }
+
+
+    }
+
+
+
     /**
      * Deletes an existing Planning model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -163,7 +257,6 @@ class PlanningController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
@@ -199,7 +292,7 @@ class PlanningController extends Controller
       yii::error(\yii\helpers\VarDumper::dumpAsString('aaa'));
       $model = new Planning();
       $msg = null;
-      $model->validatePlanning(); // llama al metodo de validacion que tiene el modelo
+    //  $model->validatePlanning(); // llama al metodo de validacion que tiene el modelo
 
         // if ($model ->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
         //     Yii::$app->response->format = 'json';
@@ -220,6 +313,8 @@ class PlanningController extends Controller
 
 
     }
+
+
 
 
 
