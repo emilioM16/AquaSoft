@@ -297,18 +297,44 @@ class Task extends \yii\db\ActiveRecord
     }
 
 
-    private function checkConditions($idAquarium, $conditions,$taskId){
-        
+    private function checkEnviroment($idAquarium,$conditions,$taskId){ //comprueba las condiciones ambientales ingresadas con las especies que posee//
+        $aquarium = Aquarium::findOne(['idAcuario'=>$idAquarium]);
+        $aquariumSpecies = $aquarium->species;
+        $validConditions = true;
+        $i=0;
+        while ($validConditions && ($i<sizeof($aquariumSpecies))) {
+            $specie = $aquariumSpecies[$i];
+            $validConditions = $specie->validConditions($aquarium);
+            $i++;
+        }
+        return $validConditions;
     }
     
+
+    private function removeRepeated($supplies){
+        foreach ($supplies as $key => $supply) {
+            for ($i=$key+1; $i < sizeof($supplies) ; $i++) { 
+                if($supply->idInsumo == $supplies[$i]->idInsumo){
+                    $supply->quantity = $supply->quantity + $supplies[$i]->quantity;                                
+                    unset($supplies[$i]);
+   
+                    $supplies[$key] = $supply;
+                }
+            }
+            array_values($supplies);
+        }
+        return $supplies;
+    }
+
+
     public function saveControl($conditions, $supplies, $idAquarium){
         try{                
             $transaction = Yii::$app->db->beginTransaction();
             $task = $this->createAndPopulateTask('Controlar acuario', $idAquarium);
             if($task->save()){ //si guarda la tarea se actualiza el stock del insumo//
                 if(!empty($supplies)){
+                    $supplies = $this->removeRepeated($supplies);
                     foreach ($supplies as $key => $supply) {
-                        yii::error(\yii\helpers\VarDumper::dumpAsString($supply));
                         $updatedSupply = Supply::findOne($supply->idInsumo);
                         $updatedSupply->stock = $updatedSupply->stock - $supply->quantity;
 
@@ -329,9 +355,22 @@ class Task extends \yii\db\ActiveRecord
                 }
                 $conditions->acuario_idAcuario = $idAquarium;
                 $conditions->tarea_idTarea = $task->idTarea;
-                $this->checkConditions($idAquarium,$conditions,$task->idTarea);
                 if($conditions->save()){
-                    $transaction->commit();
+                    
+                    $validConditions = $this->checkEnviroment($idAquarium, $conditions,$task->idTarea);
+                    if(!$validConditions){
+                        $notification = new Notification();
+                        $notification->fechaHora = new Expression('NOW()');
+                        $notification->ORIGEN_NOTIFICACION_idOrigenNotificacion = 'Hábitat riesgoso';
+                        $notification->TAREA_idTarea = $task->idTarea;
+                        if($notification->save()){
+                            $transaction->commit();
+                        }else{
+                            throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                        }
+                    }else{
+                        $transaction->commit();    
+                    }
                     return Yii::$app->session->setFlash('success', "El nuevo control se registró correctamente.");              
                 }else{
                     throw new Exception('Ocurrió un error al guardar la información.');                                                      
@@ -342,7 +381,7 @@ class Task extends \yii\db\ActiveRecord
 
         }catch(Exception $e){
             $transaction->rollback();
-            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.");            
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.".$e);            
         }
     }
 }
