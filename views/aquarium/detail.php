@@ -133,16 +133,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 
-$JSEventClick = <<<EOF
+$JSEventClick = <<<EOT
 function(calEvent, jsEvent, view) {
   $.ajax({
     type: 'POST',
     url: "/task/execute", 
-    data: 'idTarea=' + calEvent.id,
+    data: {idTarea:calEvent.id,idAcuario:$acuario->idAcuario} ,
     dataType: 'html',
-    error: function(xhr){
-        alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
-        },
+    error: function(xhr,err){
+      alert("readyState: "+xhr.readyState+" status: "+xhr.status);
+      alert("responseText: "+xhr.responseText);
+  },
     success: function(response){
         $('#modalContent').html(response);
         $('#modalTitle').html('Realizar tarea');
@@ -151,7 +152,7 @@ function(calEvent, jsEvent, view) {
         }
     });
 }
-EOF;
+EOT;
 ?>
 
   <!-- Calendario -->

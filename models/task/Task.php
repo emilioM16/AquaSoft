@@ -282,18 +282,23 @@ class Task extends \yii\db\ActiveRecord
         return (isset($this->fechaHoraRealizacion));
     }
 
-    private function createAndPopulateTask($taskType,$idAquarium){
-        $task = new Task();                 
-        $task->titulo = 'Control';
-        $task->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
-        $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
-        $task->horaInicio = '00:00';
-        $task->fechaHoraInicio = new Expression('NOW()');
-        $task->fechaHoraFin = new Expression('NOW()');
-        $task->fechaHoraRealizacion = new Expression('NOW()');
-        $task->ACUARIO_idAcuario = $idAquarium;
-        $task->TIPO_TAREA_idTipoTarea = 'Controlar acuario'; 
-        return $task;
+    private function createAndPopulateTask($idAquarium){
+        // $task = new Task();
+        if($this->idTarea == -1){
+            $this->idTarea = null;              
+            $this->titulo = 'Control';
+            $this->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
+            $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+            $this->horaInicio = '00:00';
+            $this->fechaHoraInicio = new Expression('NOW()');
+            $this->fechaHoraFin = new Expression('NOW()');
+            $this->fechaHoraRealizacion = new Expression('NOW()');
+            $this->ACUARIO_idAcuario = $idAquarium;
+            $this->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
+        }else{
+            $this->fechaHoraRealizacion = new Expression('NOW()');   
+        } 
+        // return $task;
     }
 
 
@@ -330,8 +335,8 @@ class Task extends \yii\db\ActiveRecord
     public function saveControl($conditions, $supplies, $idAquarium){
         try{                
             $transaction = Yii::$app->db->beginTransaction();
-            $task = $this->createAndPopulateTask('Controlar acuario', $idAquarium);
-            if($task->save()){ //si guarda la tarea se actualiza el stock del insumo//
+            $this->createAndPopulateTask($idAquarium);
+            if($this->save()){ //si guarda la tarea se actualiza el stock del insumo//
                 if(!empty($supplies)){
                     $supplies = $this->removeRepeated($supplies);
                     foreach ($supplies as $key => $supply) {
@@ -341,7 +346,7 @@ class Task extends \yii\db\ActiveRecord
                         if($updatedSupply->save(false)){//si se actualiza el stock del insumo, se crea el registro en la tabla INSUMO_TAREA//
                             $taskSupply = new TasksSupply();
                             $taskSupply->INSUMO_idInsumo = $supply->idInsumo;
-                            $taskSupply->TAREA_idTarea = $task->idTarea;
+                            $taskSupply->TAREA_idTarea = $this->idTarea;
                             $taskSupply->cantidad = $supply->quantity;
                             if($taskSupply->save()){//si guarda el registro en INSUMO_TAREA, se guardan las condiciones ambientales//
 
@@ -354,15 +359,15 @@ class Task extends \yii\db\ActiveRecord
                     }
                 }
                 $conditions->acuario_idAcuario = $idAquarium;
-                $conditions->tarea_idTarea = $task->idTarea;
+                $conditions->tarea_idTarea = $this->idTarea;
                 if($conditions->save()){
                     
-                    $validConditions = $this->checkEnviroment($idAquarium, $conditions,$task->idTarea);
+                    $validConditions = $this->checkEnviroment($idAquarium, $conditions,$this->idTarea);
                     if(!$validConditions){
                         $notification = new Notification();
                         $notification->fechaHora = new Expression('NOW()');
                         $notification->ORIGEN_NOTIFICACION_idOrigenNotificacion = 'Hábitat riesgoso';
-                        $notification->TAREA_idTarea = $task->idTarea;
+                        $notification->TAREA_idTarea = $this->idTarea;
                         if($notification->save()){
                             $transaction->commit();
                         }else{

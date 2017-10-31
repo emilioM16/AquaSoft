@@ -68,7 +68,12 @@ $this->params['breadcrumbs'][] = $this->title;
                           'ACUARIO_USUARIO_acuario_idAcuario'=>[
                             'type'=>Form::INPUT_WIDGET,
                             'widgetClass'=>'kartik\select2\Select2',
-                            'options'=>['data'=>$aquariums],
+                            'options'=>[
+                                'data'=>$aquariums,
+                                'pluginOptions'=>[
+                                    'placeholder'=>'Seleccione un acuario...'
+                                ]
+                            ],
 
                            ],
                            'actions'=>[
