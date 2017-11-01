@@ -66,8 +66,11 @@ class PlanningController extends Controller
      */
     public function actionView($id)
     {
+
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+
+          'model' => $this->findModel($id),
         ]);
 
     }
@@ -75,7 +78,13 @@ class PlanningController extends Controller
     public function actionCheck($id)
     {
     //  yii::error(\yii\helpers\VarDumper::dumpAsString('aaa'));
+
+
+
+
+
         return $this->render('check', [
+
             'model' => $this->findModel($id),
         ]);
     }
@@ -92,6 +101,7 @@ class PlanningController extends Controller
     public function actionCalendar($idPlan) //FUNCIONA, GUARDA LA PLANIFICION Y VA A LA PANTALLA DE CALENDARIO
     {
 
+
       $model = $this->findModel($idPlan);
       $model->loadEvents();
       // $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
@@ -101,7 +111,10 @@ class PlanningController extends Controller
         }
             else{
               return $this->render('calendar', [
-                  'model' => $model]);
+
+                  'model' => $model,
+
+                ]);
             }
             // else{
             // return $this->render('create', [
