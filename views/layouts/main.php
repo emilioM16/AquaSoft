@@ -12,6 +12,8 @@ use app\assets\AppAsset;
 use rmrevin\yii\fontawesome\FA;
 use kartik\popover\PopoverX;
 use yii\bootstrap\Modal;
+use app\models\notification\Notification;
+use yii\helpers\VarDumper;
 
 AppAsset::register($this);
 rmrevin\yii\fontawesome\AssetBundle::register($this);
@@ -32,35 +34,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 <div class="wrap">
     <?php
 
-    $notifications =
-
-        '<div class="alert alert-menu text-justify " role="alert">
-        '. FA::icon("info")->size(FA::SIZE_LARGE).'  Se ha registrado una <strong>nueva planificación</strong> para el acuario A01 
-        </div>
-        <hr class="hrNotif">
-        <div class="alert text-justify alert-menu" role="alert">
-        '. FA::icon("warning")->size(FA::SIZE_LARGE).' <strong>¡Peligro!</strong> Las condiciones ambientales  del acuario AS03 se encuentran fuera de los umbrales.
-        </div>
-        <hr class="hrNotif">
-        <div class="alert alert-menu" role="alert">
-            ...
-        </div>
-        <hr class="hrNotif">
-        <div class="alert alert-menu " role="alert">
-            ...
-        </div>
-        <hr class="hrNotif">
-        <div class="alert alert-menu text-justify" role="alert">
-        '. FA::icon("warning")->size(FA::SIZE_LARGE).' <strong>¡Peligro!</strong> Las condiciones ambientales del acuario AS03 se encuentran fuera de los umbrales.
-        </div>
-        <hr class="hrNotif">
-        <div class="alert alert-menu " role="alert">
-            ...
-        </div>
-        <hr class="hrNotif">
-        <div class="alert alert-menu " role="alert">
-          ...
-        </div>';
+    $noti = new Notification();//instancia de notificacion, que es usada en el tooltip del navBar
 
     NavBar::begin([
         'brandLabel' => Html::img('@web/img/logoPez.png'),
@@ -166,8 +140,9 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             ['label'=>
                 PopoverX::widget([
                     'header' => 'Notificaciones',
+                    //'visible'=>Yii::$app->user->can(''),//no se como restringir para que el especialista no vea este label
                     'placement' => PopoverX::ALIGN_BOTTOM,
-                    'content' => $notifications,
+                    'content' => $noti->getNotificaciones(),//con este metodo se imprimen las notificaciones
                     'options'=>[
                         'class'=>'popover-notif'
                     ],
