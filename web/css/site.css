@@ -226,6 +226,13 @@ a.desc:after {
     padding: 3px;
 }
 
+.alert{
+    margin-bottom: 0;
+    border-radius: 0;
+    font-size: 12px;
+    padding: 3px;
+}
+
 .alert:hover{
     transition: 100ms;
     background-color: #74C0E9;
