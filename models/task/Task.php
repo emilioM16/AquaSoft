@@ -23,6 +23,7 @@ use yii\base\Exception;
  * @property string $fechaHoraInicio
  * @property string $fechaHoraFin
  * @property string $fechaHoraRealizacion
+ * @property string $observaciones
  * @property integer $PLANIFICACION_idPlanificacion
  * @property integer $USUARIO_idUsuario
  * @property integer $ACUARIO_idAcuario
@@ -76,7 +77,7 @@ class Task extends \yii\db\ActiveRecord
             [['fechaHoraInicio', 'fechaHoraFin', 'fechaHoraRealizacion'], 'safe'],
             [['PLANIFICACION_idPlanificacion', 'USUARIO_idUsuario', 'ACUARIO_idAcuario'], 'integer'],
             [['titulo', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
-            [['descripcion'], 'string', 'max' => 200],
+            [['descripcion','observaciones'], 'string', 'max' => 200],
             [['ACUARIO_idAcuario'], 'exist', 'skipOnError' => true, 'targetClass' => Aquarium::className(), 'targetAttribute' => ['ACUARIO_idAcuario' => 'idAcuario']],
             [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
             [['PLANIFICACION_idPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Planning::className(), 'targetAttribute' => ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']],
@@ -229,6 +230,7 @@ class Task extends \yii\db\ActiveRecord
 
     
     public function beforeSave($insert){
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
         // Primero verifico si se ha ingresado una hora de inicio. Si es así, debo actualizar la fechaHoraInicio con la hora ingresada
         if (!isset($this->fechaHoraInicio))
             $this->setearHoraInicio();

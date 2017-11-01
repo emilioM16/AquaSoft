@@ -136,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $JSEventClick = <<<EOT
 function(calEvent, jsEvent, view) {
   $.ajax({
-    type: 'POST',
+    type: 'GET',
     url: "/task/execute", 
     data: {idTarea:calEvent.id,idAcuario:$acuario->idAcuario} ,
     dataType: 'html',

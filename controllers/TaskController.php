@@ -150,17 +150,18 @@ class TaskController extends Controller
         $taskType = $task->TIPO_TAREA_idTipoTarea;
         switch ($taskType) {
             case 'Controlar acuario':
-                // return 'control';
                 return $this->actionControl($aquariumId,$task->idTarea); 
                 break;
             case 'Alimentación':
+                
+                break;
             case 'Limpieza':
             case 'Reparación':
                 // return 'maintenance';
                 return $this->redirect(['../taskSupply/addRemoveSupply', 'idTarea' => $task->idTarea]);   
                 break;
             case 'Incorporar ejemplares':
-                return ''; // ver si se puede reutilizar las pantalla de Melo
+                return Yii::$app->runAction('task-specimen/add-remove',['taskType'=>'Add']);
                 break;
             case 'Transferir ejemplares':
                 return ''; // ver si se puede reutilizar las pantalla de Melo
@@ -172,64 +173,15 @@ class TaskController extends Controller
     }
 
 
-    public function actionExecute()
+    public function actionExecute($idTarea,$idAcuario)
     {    
-        
-        $idTarea = Yii::$app->request->post('idTarea');
-        $aquariumId = Yii::$app->request->post('idAcuario');
         $modelTask = $this->findModel($idTarea);
         if (!$modelTask->wasExecuted())
         {
             // obtengo la vista de acuerdo al tipo de tarea
-            return $this->redirectViewTaskType($modelTask,$aquariumId);
-            // return $this->renderAjax('p',[
-            //     'idTarea'=>$idTarea,
-            //     'idAcuario'=>$aquariumId
-            // ]);
-            // $modelSupply = new Supply(); // no sé si necesitaré esto
-            // if ($vista === 'control')
-            // {
-            //     // instancio las condiciones ambientales
-            //     $modelSend = new EnviromentalConditions();
-            // }     
-            // if ($modelTask->load(Yii::$app->request->post()) && $modelTask->save()) {
-            //     $this->redirect(Yii::$app->request->referrer);
-            // } 
-            // else {
-            //     if (Yii::$app->request->isAjax){
-            //         // if ($vista === 'control'){
-            //         //    return $this->renderAjax($vista,[
-            //         //     'modelTask'=>$modelTask->condicionAmbiental,
-            //         //     ]); 
-            //         // }
-            //         // else
-            //         // {
-            //         //    return $this->renderAjax($vista,[
-            //         //     'modelTask'=>$modelTask->InsumoTareas,
-            //         //     ]);  
-            //         // }
-            //         return $this->renderAjax($vista,[
-            //             'model'=> $modelSend,
-            //             ]);
-                    
-            //     }else{
-            //         // if ($vista === 'control'){
-            //         //    return $this->render($vista,[
-            //         //     'modelTask'=>$modelTask->condicionAmbiental,
-            //         //     ]); 
-            //         // }
-            //         // else
-            //         // {
-            //         //    return $this->render($vista,[
-            //         //     'modelTask'=>$modelTask->InsumoTareas,                        
-            //         //     ]);  
-            //         // }
-                    
-            //         return $this->render($vista,[
-            //             'model'=> $modelSend,
-            //         ]);
-            //     }
-            // }
+            return $this->redirectViewTaskType($modelTask,$idAcuario);
+        }else{
+            
         }
     }
     
@@ -297,7 +249,9 @@ class TaskController extends Controller
                         return $this->renderAjax('_controlForm',[
                             'conditionsModel'=> $modelConditions,
                             'supplyModels'=>$supplyModels,
-                            'availableSupplies'=>$availableSupplies
+                            'availableSupplies'=>$availableSupplies,
+                            'idAcuario'=>$idAcuario,
+                            'idTarea'=>$idTarea
                             ]);
                         
                     }else{
@@ -308,33 +262,53 @@ class TaskController extends Controller
                         ]);
                     }
                 }
-        // }else{ //la tarea es planificada
-        //     $modelTask = $this->findModel($idTarea);
+    }
 
-        //     if (!$modelTask->wasExecuted())
-        //     {
-        //         // sólo si la tarea no se ha ejecutado Y ES DE LA FECHA, inicializo las condiciones
-        //         $modelConditions = new EnviromentalConditions();
-        //         $modelConditions->inicialice($idTarea, $modelTask->ACUARIO_idAcuario);
 
-        //         if ($modelConditions->load(Yii::$app->request->post()) && $modelConditions->save()) {
-        //         // yii::error('POST: '.Yii::$app->request->referrer);
-        //             $this->redirect(Yii::$app->request->referrer);
-        //         } 
-        //         else {
-        //             if (Yii::$app->request->isAjax){
-        //                 return $this->renderAjax('_controlForm',[
-        //                     'conditionsModel'=> $modelConditions,
-        //                     ]);
-                        
-        //             }else{
-        //                 return $this->render('_controlForm',[
-        //                     'conditionsModel'=> $modelConditions,
-        //                 ]);
-        //             }
-        //         }
-        //     }
-        // }
+    public function actionCommonTasksRealization(){
+        $task = new Task();
+        
+    // if($idTarea==-1){ //es no planificada//
+        $modelConditions = new EnviromentalConditions();
+    
+        $count = count(Yii::$app->request->post('Supply', []));
+        $supplyModels = [new Supply()];
+        for($i = 1; $i < $count; $i++) {
+            $supplyModels[] = new Supply();
+        }
+        if ($modelConditions->load(Yii::$app->request->post())) {
+                if(!Model::loadMultiple($supplyModels, Yii::$app->request->post())){
+                    $supplyModels = [];
+                }
+            if($idTarea!=-1){
+                $task = $this->findModel($idTarea);
+            }else{
+                $task->idTarea = $idTarea;
+            }
+            $task->saveControl($modelConditions,$supplyModels,$idAcuario);
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+        else {
+            $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);
+            $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
+            ksort($availableSupplies);
+                if (Yii::$app->request->isAjax){
+                    return $this->renderAjax('_controlForm',[
+                        'conditionsModel'=> $modelConditions,
+                        'supplyModels'=>$supplyModels,
+                        'availableSupplies'=>$availableSupplies,
+                        'idAcuario'=>$idAcuario,
+                        'idTarea'=>$idTarea
+                        ]);
+                    
+                }else{
+                    return $this->render('_controlForm',[
+                        'conditionsModel'=> $modelConditions,
+                        'supplyModels'=>$supplyModels,
+                        'availableSupplies'=>$availableSupplies
+                    ]);
+                }
+            }
     }
 
 
