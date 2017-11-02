@@ -68,20 +68,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ]);
       
+      if($acuario->descripcion==''){
+        $acuario->descripcion = 'No hay.';
+      }
+
       $content1 =
 
       '<div class="col-lg-12">
 
-          <label>Nombre del acuario: </label> <span>'.$acuario->nombre.'</span>
+          <label><u>Nombre del acuario</u> :</label> <span>'.$acuario->nombre.'</span>
           <br><br>
 
           <p class="text-justify">
-            <label>Descripción:</label>'
+            <label><u>Descripción</u>:</label> '
               .$acuario->descripcion.
           '</p>
           <br>
 
-          <label>Espacio disponible: </label> <span>'.$acuario->espacioDisponible.'</span>
+          <label><u>Espacio disponible</u>: </label> <span>'.$acuario->espacioDisponible.' de '.$acuario->capacidadMaxima.' unidades</span>
           <br><br>
 
       </div>' ;
@@ -93,7 +97,6 @@ $this->params['breadcrumbs'][] = $this->title;
           [
               'label'=>FA::icon('info')->size(FA::SIZE_LARGE).' Información',
               'content'=>$content1,
-            //   'active'=>true
           ],
           [
               'label'=>FA::icon('thermometer-3')->size(FA::SIZE_LARGE).' Condiciones ambientales',
@@ -133,25 +136,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 
-$JSEventClick = <<<EOF
+$JSEventClick = <<<EOT
 function(calEvent, jsEvent, view) {
   $.ajax({
-    type: 'POST',
-    url: "/task/execute",
-    data: 'idTarea=' + calEvent.id,
+    type: 'GET',
+    url: "/task/execute", 
+    data: {idTarea:calEvent.id,idAcuario:$acuario->idAcuario} ,
     dataType: 'html',
-    error: function(xhr){
-        alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
-        },
+    error: function(xhr,err){
+      alert("readyState: "+xhr.readyState+" status: "+xhr.status);
+      alert("responseText: "+xhr.responseText);
+  },
     success: function(response){
         $('#modalContent').html(response);
         $('#modalTitle').html('Realizar tarea');
-        // $('#modalHeader').html('Realizar tarea');
         $('#modal').modal('show');
         }
     });
 }
-EOF;
+EOT;
 ?>
 
   <!-- Calendario -->
