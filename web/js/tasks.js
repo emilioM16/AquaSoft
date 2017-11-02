@@ -11,7 +11,7 @@ $(document).on("hidden.bs.modal", "#modal", function () {
 $(document).on('change','#selectSpecieAdd',function(){
     var data_id = $(this).val();
     $.ajax({
-       url: "task-specimen/get-aquariums",
+       url: "../task-specimen/get-aquariums",
        type: "GET",
        data: {id : data_id,taskType:'add'},
        dataType: "html",
@@ -21,9 +21,10 @@ $(document).on('change','#selectSpecieAdd',function(){
           $("#alert").html('');          
           $("#modalContent").animate({"height":totalHeight+'px'},200,'linear');
        },
-       error:function(){
-           $("#inputs").html("Error. Contacte al administrador");
-       }
+       error: function(xhr,err){
+        alert("readyState: "+xhr.readyState+"\nstatus: "+xhr.status);
+        alert("responseText: "+xhr.responseText);
+    }
      });
 });
 
@@ -42,7 +43,7 @@ $(document).on('click','#addBtn',function(){
     });
     if(Object.keys(inputsData).length != 0){
         $.ajax({
-            url: "task-specimen/add-specimens",
+            url: "../task-specimen/add-specimens",
             type: "POST",
             data: {data : JSON.stringify({quantities: JSON.stringify(inputsData),specie: selectedSpecie})},
             dataType: "html",

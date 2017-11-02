@@ -3,10 +3,7 @@ $('document').on('ready pjax:success',function(){ //para la búsqueda de acuario
         $.pjax.reload({container:'#acuarios'}); 
     });
 });
-
-
-
-    
+  
 
 
 

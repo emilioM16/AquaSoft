@@ -123,3 +123,17 @@
  table.multiple-input-list{
     margin: auto !important;
  }
+
+ #taskDoneText{
+     font-size: 24px;
+ }
+
+ .btnTaskDone{
+     padding-right: 0 !important;
+     padding-left: 0 !important;
+ }
+
+ .fc-event{
+    height: 19px;
+    font-size: 15px;
+ }

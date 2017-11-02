@@ -154,6 +154,11 @@ class Aquarium extends \yii\db\ActiveRecord
             $event->title = '[' . $task->TIPO_TAREA_idTipoTarea . '] Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
             $event->start = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraInicio));
             $event->end = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraFin));
+            $event->textColor='black';
+            $event->borderColor = 'black';
+            if($task->fechaHoraRealizacion !== null){
+                $event->backgroundColor ='rgb(5.1%, 66.3%, 12.9%)'; 
+            }
             // $task->nonstandard = [
             //   'field1' => 'Something I want to be included in object #1',
             //   'field2' => 'Something I want to be included in object #2',

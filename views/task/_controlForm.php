@@ -174,7 +174,9 @@ use kartik\select2\Select2;
                         Html::submitButton(FA::icon('check')->size(FA::SIZE_LARGE).' Aceptar',
                             [
                                 'value'=>Url::to([
-                                    'task/control'
+                                    'task/control',
+                                    'idAcuario'=>$idAcuario,
+                                    'idTarea'=>$idTarea
                                     ]),
                                 'class' => 'btn btn-success btnModal'
                             ]).' '.
