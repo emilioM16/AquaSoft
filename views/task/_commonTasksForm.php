@@ -12,7 +12,6 @@ use kartik\select2\Select2;
 /* @var $this yii\web\View\Task */
 /* @var $modelTask app\models\task\Task */
 /* @var $modelTask->condicionAmbiental app\models\condition\EnviromentalConditions */
-
 ?>
 <div class="task-control"> 
     
@@ -22,16 +21,16 @@ use kartik\select2\Select2;
         $form = ActiveForm::begin([
             'id'=>$taskModel->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            'validationUrl'=> Url::toRoute(['task/control-validation','id'=>$conditionId]), 
+            'validationUrl'=> Url::toRoute(['task/common-tasks-validation']), 
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
-    
+
         echo Form::widget([
             'model'=>$taskModel,
             'form'=>$form,
             'columns'=>1,
             'attributes'=>[
-                'descripcion'=>[
+                'observaciones'=>[
                     'type'=>Form::INPUT_TEXTAREA,
                     'options'=>[
                         'placeholder'=>'Observaciones...',
@@ -90,7 +89,7 @@ use kartik\select2\Select2;
         ]);
         
         echo Form::widget([
-            'model'=>$conditionsModel,
+            'model'=>$taskModel,
             'form'=>$form,
             'columns'=>1,
             'attributes'=>[
@@ -100,8 +99,7 @@ use kartik\select2\Select2;
                         Html::submitButton(FA::icon('check')->size(FA::SIZE_LARGE).' Aceptar',
                             [
                                 'value'=>Url::to([
-                                    'task/control',
-                                    'idAcuario'=>$idAcuario,
+                                    'task/common-tasks-realization',
                                     'idTarea'=>$idTarea
                                     ]),
                                 'class' => 'btn btn-success btnModal'

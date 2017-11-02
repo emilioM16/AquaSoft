@@ -152,22 +152,8 @@ class TaskController extends Controller
             case 'Controlar acuario':
                 return $this->actionControl($aquariumId,$task->idTarea); 
                 break;
-            case 'Alimentación':
-                
-                break;
-            case 'Limpieza':
-            case 'Reparación':
-                // return 'maintenance';
-                return $this->redirect(['../taskSupply/addRemoveSupply', 'idTarea' => $task->idTarea]);   
-                break;
-            case 'Incorporar ejemplares':
-                return Yii::$app->runAction('task-specimen/add-remove',['taskType'=>'Add']);
-                break;
-            case 'Transferir ejemplares':
-                return ''; // ver si se puede reutilizar las pantalla de Melo
-                break;
             default:
-                # code...
+                return $this->actionCommonTasksRealization($task->idTarea,$taskType);
                 break;
         }        
     }
@@ -265,47 +251,42 @@ class TaskController extends Controller
     }
 
 
-    public function actionCommonTasksRealization(){
+    public function actionCommonTasksRealization($idTarea,$taskType){
+
         $task = new Task();
-        
-    // if($idTarea==-1){ //es no planificada//
-        $modelConditions = new EnviromentalConditions();
-    
         $count = count(Yii::$app->request->post('Supply', []));
         $supplyModels = [new Supply()];
+
         for($i = 1; $i < $count; $i++) {
             $supplyModels[] = new Supply();
         }
-        if ($modelConditions->load(Yii::$app->request->post())) {
+        if ($task->load(Yii::$app->request->post())) {
                 if(!Model::loadMultiple($supplyModels, Yii::$app->request->post())){
                     $supplyModels = [];
                 }
-            if($idTarea!=-1){
-                $task = $this->findModel($idTarea);
-            }else{
-                $task->idTarea = $idTarea;
-            }
-            $task->saveControl($modelConditions,$supplyModels,$idAcuario);
+            $existentTask = $this->findModel($idTarea);
+            $existentTask->observaciones = $task->observaciones;
+            $existentTask->saveCommonTask($supplyModels);
             return $this->redirect(Yii::$app->request->referrer);
         }
         else {
-            $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);
+            $taskType = new Tasktype(['idTipoTarea'=>$taskType]);
             $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
             ksort($availableSupplies);
                 if (Yii::$app->request->isAjax){
-                    return $this->renderAjax('_controlForm',[
-                        'conditionsModel'=> $modelConditions,
+                    return $this->renderAjax('_commonTasksForm',[
                         'supplyModels'=>$supplyModels,
                         'availableSupplies'=>$availableSupplies,
-                        'idAcuario'=>$idAcuario,
+                        'taskModel'=>$task,
                         'idTarea'=>$idTarea
                         ]);
                     
                 }else{
-                    return $this->render('_controlForm',[
-                        'conditionsModel'=> $modelConditions,
+                    return $this->render('_commonTasksForm',[
                         'supplyModels'=>$supplyModels,
-                        'availableSupplies'=>$availableSupplies
+                        'availableSupplies'=>$availableSupplies,
+                        'taskModel'=>$task,
+                        'idTarea'=>$idTarea
                     ]);
                 }
             }
@@ -323,14 +304,38 @@ class TaskController extends Controller
             foreach (array_keys($supplies) as $index) {
                 $models[$index] = new Supply();
             }
-            
-            // if(Model::loadMultiple($models, Yii::$app->request->post())){
+    
             Model::loadMultiple($models, Yii::$app->request->post());
 
             return ActiveForm::validateMultiple($models);
             }else{
             return ActiveForm::validate($model);
             }
+        }        
+    }
+
+
+    public function actionCommonTasksValidation(){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación. 
+        
+        Yii::$app->response->format = 'json';
+        if(Yii::$app->request->isAjax)
+        {
+            if(Yii::$app->request->post('Supply')!=null){
+                $supplies = Yii::$app->request->post('Supply',[]);
+                foreach (array_keys($supplies) as $index) {
+                    $models[$index] = new Supply();
+                }
+            
+                // if(Model::loadMultiple($models, Yii::$app->request->post())){
+                Model::loadMultiple($models, Yii::$app->request->post());
+
+                return ActiveForm::validateMultiple($models);
+            }else{
+                return true;
+            }
+            // }else{
+            //     return ActiveForm::validate($model);
+            // }
         }        
     }
 
