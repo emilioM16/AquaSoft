@@ -64,15 +64,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   );
               },
-              'down'=>function($url,$model){
+              'down'=>function($url,$model,$key){
                   return Html::a('<span class="btn-aquarium glyphicon glyphicon-trash"></span>',
                   ['planning/down','id'=>$model->idPlanificacion],
                   ['class' => 'btn btn-danger btnAquarium']
-              //    ['data'=>
-              //    ['confirm' => '¿Esta seguro que desea autorizar esta planificacion?'],
-              //    ['method' => 'post']
-              //    ]
-
+                ///  ['data-confirm' => Yii::t('yii', 'Are you sure you want to delete selected items?')]
                   );
               },
              'check'=>function($url,$model){

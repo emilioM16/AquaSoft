@@ -10,6 +10,7 @@ use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use app\models\planning;
+use yii\web\session;
 
 
 /* @var $this yii\web\View */
@@ -139,41 +140,52 @@ EOF;
 <!-- //////////////////////////////////////////////////////////////////////////////////////// -->
 
         <br>
-                <?= Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
-                  'class' => 'btn btn-success',
-                  'data' => [
-                      'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
-                      'method' => 'post',
-                    ],
-                  ])
-                  ?>
+        <?php
+        $session = Yii::$app->session;
 
+        if ($session->get('var')=='check'){
+        echo '<div>'
+          .Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
+                    'class' => 'btn btn-success',
+                    'data' => [
+                        'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                        'method' => 'post',
+                      ],
+                    ]).'  '.
 
-                <?= Html::button('<span class="glyphicon glyphicon-remove"></span>',
+          Html::button('<span class="glyphicon glyphicon-remove"></span>',
                         [
                          'value' => Url::to(['refuse','id'=>$model->idPlanificacion]),
                           'title' => 'Rechazar planificacion ',
                           'class' => 'showModalButton btn btn-danger'
-                        ]);
-                ?>
+                        ])
+          .'</div>';
+        }
 
-                <?= Html::a('Finalizar', ['planning/home', 'id' => $model->idPlanificacion], [
+          elseif($session->get('var')=='update'){
+            echo '<div>'
+            .Html::a('Finalizar', ['planning/home', 'id' => $model->idPlanificacion], [
                   'class' => 'btn btn-success',
                   'data' => [
                     //  'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
                     //  'method' => 'post',
                     ],
-                  ])
-                  ?>
+                  ]).
+            '</div>';
+          }
 
-
-                <?= Html::a('Volver al inicio', ['planning/index'], [
+         elseif($session->get('var')=='view'){
+            echo '<div>'
+           .Html::a('Volver al inicio', ['planning/index'], [
                     'class' => 'btn btn-primary',
                     'data' => [
                     //    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
                         'method' => 'post',
                       ],
-                ]) ?>
+                ]).
+              '</div>';
+              }
+            ?>
 
 
   <?php

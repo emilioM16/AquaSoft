@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\web\response;
+use yii\web\Session;
 
 use app\models\aquarium\Aquarium;
 use yii\helpers\ArrayHelper;
@@ -66,7 +67,8 @@ class PlanningController extends Controller
      */
     public function actionView($id)
     {
-
+      $session = Yii::$app->session;
+      $session->set('var','view');
 
         return $this->render('view', [
 
@@ -77,15 +79,15 @@ class PlanningController extends Controller
 
     public function actionCheck($id)
     {
-    //  yii::error(\yii\helpers\VarDumper::dumpAsString('aaa'));
 
-
-
-
+      $session = Yii::$app->session;
+      $session->set('var','check');
+      //cargo el array de sesiones
 
         return $this->render('check', [
 
             'model' => $this->findModel($id),
+
         ]);
     }
 
@@ -101,11 +103,13 @@ class PlanningController extends Controller
     public function actionCalendar($idPlan) //FUNCIONA, GUARDA LA PLANIFICION Y VA A LA PANTALLA DE CALENDARIO
     {
 
-
       $model = $this->findModel($idPlan);
       $model->loadEvents();
-      // $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
-      //
+
+    //  $session = Yii::$app->session;
+    //  $varSesion =($session->get('var'));
+
+
        if ($model->load(Yii::$app->request->post()) && $model->save()) {
                   return $this->redirect([$view]);
         }
@@ -113,14 +117,9 @@ class PlanningController extends Controller
               return $this->render('calendar', [
 
                   'model' => $model,
-
                 ]);
             }
-            // else{
-            // return $this->render('create', [
-            //     'model' => $model,
-            //     'aquariums'=>$aquariums]);
-            // }
+
     }
 
     /**
@@ -176,6 +175,8 @@ class PlanningController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $session = Yii::$app->session;
+        $session->set('var','update');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idPlanificacion]);
