@@ -32,7 +32,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Planificacion', 'url' => ['index']
 var idAcua = "<?php echo $model->ACUARIO_USUARIO_acuario_idAcuario; ?>";
 var idPlan = "<?php echo $model->idPlanificacion ; ?>";
 
-
 </script>
 
 <?php
@@ -74,14 +73,15 @@ EOF;
             'format' => ['date','php:d-m-Y'] // dar formato hora
             ],
             //[
-            //'ACUARIO_USUARIO_acuario_idAcuario',
-            //'aCUARIOUSUARIOAcuarioIdAcuario.nombre',
+            'aCUARIOUSUARIOAcuarioIdAcuario.nombre',
             //agregar nombre acuario
           //  ],
-            [
-              'attribute'=>'ESTADO_PLANIFICACION_idEstadoPlanificacion',
-              'value'=>'vALIDACIONs.OBSERVACION'
-            ],
+          //  [
+          'ESTADO_PLANIFICACION_idEstadoPlanificacion',
+          //    'attribute'=>'ESTADO_PLANIFICACION_idEstadoPlanificacion',
+              //'value'=>'
+              'vALIDACIONs.MOTIVO_RECHAZO_idMotivoRechazo',
+        //    ],
 
 
           ]

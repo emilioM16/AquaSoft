@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -9,38 +9,38 @@ use rmrevin\yii\fontawesome\FA;
       <img src="/img/itemAcuario.jpg">
       <div class="caption">
         <h3><?=$model->nombre?></h3>
-        <?php 
-          if (!isset($model->id_condiciones_ambientales)){ //CORREGIR! 
+        <?php
+          if (!isset($model->id_condiciones_ambientales)){ //CORREGIR!
            echo "<p><span class='label label-danger'>Habitat no cargado</span></p>";
           };
         ?>
         <p>
             <?php
-              echo  Html::button('<span class="glyphicon glyphicon-eye-open"></span>', 
+              echo  Html::button('<span class="glyphicon glyphicon-eye-open"></span>',
                     [
-                      'value' => Url::to(['aquarium/view','idAcuario'=>$model->idAcuario]), 
-                      'title' => 'Información del acuario '.$model->nombre, 
+                      'value' => Url::to(['aquarium/view','idAcuario'=>$model->idAcuario]),
+                      'title' => 'Información del acuario '.$model->nombre,
                       'class' => 'showModalButton btn btn-success btnAquarium'
                     ]);
 
               if (Yii::$app->user->can('modificarAcuario')){
-              
-                  echo  Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
+
+                  echo  Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
                         [
-                          'value' => Url::to(['aquarium/update','idAcuario'=>$model->idAcuario]), 
-                          'title' => 'Modificar acuario '.$model->nombre, 
+                          'value' => Url::to(['aquarium/update','idAcuario'=>$model->idAcuario]),
+                          'title' => 'Modificar acuario '.$model->nombre,
                           'class' => 'showModalButton btn btn-primary btnAquarium',
                         ]);
               }
 
               if(Yii::$app->user->can('bajaAcuario')){
 
-                  echo Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', 
-                  [ 
-                    'delete', 
-                  ], 
-                  [ 
-                    'class' => 'btn btn-danger btnAquarium', 
+                  echo Html::a('<span class="glyphicon glyphicon-arrow-down"></span>',
+                  [
+                    'delete',
+                  ],
+                  [
+                    'class' => 'btn btn-danger btnAquarium',
                     'data-pjax' => '0',
                     'data'=>[
                       'method'=>'POST',
@@ -49,11 +49,11 @@ use rmrevin\yii\fontawesome\FA;
                       ],
                       'confirm'=>'¿Está seguro de querer dar de baja el acuario '.$model->nombre.'?',
                     ]
-                    
-                ]); 
+
+                ]);
             }
-            
-              echo Html::a('Detalle', 
+
+              echo Html::a('Detalle',
                             [
                               'detail',
                               'nombreacuario' => $model->nombre,
