@@ -4,6 +4,10 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
+use rmrevin\yii\fontawesome\FA;
+use kartik\alert\AlertBlock;
+use kartik\alert\Alert;
+use kartik\growl\Growl;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\planning\PlanningSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -22,58 +26,102 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </p>
 
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+<?php Pjax::begin(); ?>
+ <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-          //  'idPlanificacion',
             'titulo',
             [
             'attribute'=>'anioMes',
             'format' => ['date','php:m-Y']
             ],
             [
-            'attribute'=>'fechaHoraCreacion',
-            'format' => ['date','php:d-m-Y']
-            ],
-            [
             'attribute' => 'ACUARIO_USUARIO_acuario_idAcuario',
             'value' => 'aCUARIOUSUARIOAcuarioIdAcuario.nombre',
             ],
-            //'activo',
-            // 'ACUARIO_USUARIO_usuario_idUsuario',
             'ESTADO_PLANIFICACION_idEstadoPlanificacion',
 
             [
-      'class' => 'yii\grid\ActionColumn',
-      'template' => '{check} {down}{view} {update} ',
-      'buttons' => [
-          'check' => function ($url) {
-              return Html::a(
-                  '<span class="glyphicon glyphicon-check"></span>',
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{view}{update}{down}{check}',
 
-                  $url,
-                  [ 'planning/check'
-                  ]
-              );
-          },
-          'down' => function ($url) {
-               return Html::a(
-                 '<span class="glyphicon glyphicon-trash"></span>',
-                  //agregar confirm
+            'buttons' => [
 
-                $url,
-                ['planning/down'
-                ]
-             );
-           }
-      ],
+              'view'=>function($url,$model){
+                  return Html::a('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>',
+                  ['planning/view','id'=>$model->idPlanificacion],
+                  ['class' => 'btn btn-info btnAquarium']
+                );
+
+              },
+              'update'=>function($url,$model){
+                  return Html::a('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
+                  ['planning/update','id'=>$model->idPlanificacion],
+                  ['class' => 'btn btn-primary btnAquarium']
+
+                  );
+              },
+              'down'=>function($url,$model,$key){
+                  return Html::a('<span class="btn-aquarium glyphicon glyphicon-trash"></span>',
+                  ['planning/down','id'=>$model->idPlanificacion],
+                  ['class' => 'btn btn-danger btnAquarium']
+                ///  ['data-confirm' => Yii::t('yii', 'Are you sure you want to delete selected items?')]
+                  );
+              },
+             'check'=>function($url,$model){
+                  return Html::a('<span class="btn-aquarium glyphicon glyphicon-ok"></span>',
+                  ['planning/check','id'=>$model->idPlanificacion],
+                  ['class' => 'btn btn-success btnAquarium']
+                  );
+              },
+          ],
   ],
 
 
 
         ],
-    ]); ?>
+    ]);
+
+
+      echo AlertBlock::widget([
+        'useSessionFlash' => true,
+        'type' => AlertBlock::TYPE_GROWL,
+        'alertSettings' => [
+          'success' => [
+            'title' => 'Planificacion',
+            'icon' => 'glyphicon glyphicon-ok-sign',
+            'showSeparator' => true,
+            'type' => Growl::TYPE_SUCCESS,
+            'pluginOptions' => [
+              'showProgressbar' => true,
+              'placement' => [
+                  'from' => 'top',
+                  'align' => 'center',
+              ]
+            ]
+          ],
+          'error' => [
+            'title' => 'Error',
+            'icon' => 'glyphicon glyphicon-exclamation-sign',
+            'showSeparator' => true,
+            'type' => Growl::TYPE_DANGER,
+            'delay'=>0,
+            'pluginOptions' => [
+              'delay'=>0,
+              'showProgressbar' => true,
+              'placement' => [
+                  'from' => 'top',
+                  'align' => 'center',
+              ]
+            ]
+          ]
+        ]
+
+
+        ]);
+    ?>
+
 <?php Pjax::end(); ?></div>

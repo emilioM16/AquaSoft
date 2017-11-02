@@ -48,13 +48,13 @@ class Task extends \yii\db\ActiveRecord
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
-        $this->descripcion=$idAcuario.'--'.$idPlanificacion.'--'.$fechaInicio;
         $this->ACUARIO_idAcuario = $idAcuario;
         if ($idPlanificacion !== -1)
         {
             $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
             $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
         }
+        $this->descripcion=$idAcuario.'--'.$idPlanificacion.'--'.$fechaInicio . '--' . $this->isPlanned();
 
     }
 
@@ -115,15 +115,16 @@ class Task extends \yii\db\ActiveRecord
         if ($this->isPlanned()){
             // armo la fecha de inicio en base a la fecha que seleccionó del calendario y hora de inicio que ha ingresado
             $fechaInicioTemp = date_create_from_format("Y-m-d H:i:s",$this->fechaHoraInicio);
-            $h = intval(substr($attribute, 0,2));
-            $m = intval(substr($attribute, 3,2));
+            $h = intval(substr($this->horaInicio, 0,2));
+            $m = intval(substr($this->horaInicio, 3,2));
             date_time_set($fechaInicioTemp,$h,$m);
             // valido la superposicion de tareas
             $valida = $this->validarSuperposicionFI($fechaInicioTemp); // LIA *********************************************
+            // $valida = false;
             if ($valida){
                 $this->fechaHoraInicio = date_format($fechaInicioTemp,"Y-m-d H:i:s");
             } else{
-                $this->addError($attribute, 'La hora se superpone con otra tarea');
+                $this->addError($attribute, 'La hora se superpone con otra tarea' . ' >> ' . $this->horaInicio . ' > ' . $h . ' > ' . $m . ' << ' . date_format($fechaInicioTemp,"Y-m-d H:i:s"));
             }
         }
     }
@@ -140,6 +141,7 @@ class Task extends \yii\db\ActiveRecord
             date_time_set($fechaFinTemp, date_format($fechaFinTemp,"H") + $h, date_format($fechaFinTemp,"i") + $m);
             // valido la superposicion de tareas
             $valida = $this->validarSuperposicionFF($fechaFinTemp); // LIA *********************************************
+            // $valida = true;
             if ($valida){
                 $this->fechaHoraInicio = date_format($fechaFinTemp,"Y-m-d H:i:s");
             } else{
@@ -233,14 +235,16 @@ class Task extends \yii\db\ActiveRecord
     public function beforeSave($insert){
         date_default_timezone_set('America/Argentina/Buenos_Aires');
         // Primero verifico si se ha ingresado una hora de inicio. Si es así, debo actualizar la fechaHoraInicio con la hora ingresada
-        if (!isset($this->fechaHoraInicio))
+        if (!isset($this->fechaHoraInicio)){
             $this->fechaHoraInicio = date_format(date_create(),"Y-m-d H:i:s");
-        $this->setearHoraInicio();
+            $this->setearHoraInicio();
         // Luego calculo la fecha de fin
-        if (!isset($this->fechaHoraFin))
+      }
+        if (!isset($this->fechaHoraFin)){
           $this->fechaHoraFin = date_create($this->fechaHoraInicio);
             $this->calcularFechaFin();
         $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+      }
         return parent::beforeSave($insert);
     }
 
@@ -292,14 +296,15 @@ class Task extends \yii\db\ActiveRecord
     public function wasExecuted(){
         return (isset($this->fechaHoraRealizacion));
     }
+
     public function validarSuperposicionFI($fechaHI){
       $tareaSuperpuesta = Task::find()
                       ->asArray()
-                      //->select(['idTask'])
+                      ->select(['idTarea'])
                       ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
-                    //  ->andWhere(['>',$fechaHI,$this->fechaHoraInicio])
-                      //->andWhere(['<',$fechaHI,$this->fechaHoraFin])
-                      //->orWhere([$this->fechaHoraInicio=>$fechaHI])
+                     ->andWhere(['>','fechaHoraInicio',date_format($fechaHI,"Y-m-d H:i:s")])
+                      ->andWhere(['<','fechaHoraFin',date_format($fechaHI,"Y-m-d H:i:s")])
+                      ->orWhere(['fechaHoraInicio'=>date_format($fechaHI,"Y-m-d H:i:s")])
                       //si esto ocurre existe superposicion
                       ->one();
       if ($tareaSuperpuesta !== null) {
@@ -311,6 +316,21 @@ class Task extends \yii\db\ActiveRecord
 
     //////////////////////////////////////////////////////////////////////////////////////////
     public function validarSuperposicionFF($fechaHoraFin){
+        // $tareaSuperpuesta = Task::find()
+        //               ->asArray()
+        //               ->select(['idTarea'])
+        //               ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
+        //              ->andWhere(['<','fechaHoraInicio',date_format($fechaHoraFin,"Y-m-d H:i:s")])
+        //               ->andWhere(['>','fechaHoraFin',date_format($fechaHoraFin,"Y-m-d H:i:s")])
+        //               ->orWhere(['fechaHoraInicio'=>date_format($fechaHoraFin,"Y-m-d H:i:s")])
+        //               //si esto ocurre existe superposicion
+        //               ->one();
+        // if ($tareaSuperpuesta !== null) {
+        //     return false;
+        // }
+        // else {
+        //     return true;
+        // }
 
       return true;
     private function createAndPopulateTask($idAquarium){
@@ -345,15 +365,43 @@ class Task extends \yii\db\ActiveRecord
         }
         return $validConditions;
     }
-    
+
+    private function createAndPopulateTask($taskType,$idAquarium){
+        $task = new Task();
+        $task->titulo = 'Control';
+        $task->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
+        $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+        $task->horaInicio = '00:00';
+        $task->fechaHoraInicio = new Expression('NOW()');
+        $task->fechaHoraFin = new Expression('NOW()');
+        $task->fechaHoraRealizacion = new Expression('NOW()');
+        $task->ACUARIO_idAcuario = $idAquarium;
+        $task->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
+        return $task;
+    }
+
+
+    private function checkEnviroment($idAquarium,$conditions,$taskId){ //comprueba las condiciones ambientales ingresadas con las especies que posee//
+        $aquarium = Aquarium::findOne(['idAcuario'=>$idAquarium]);
+        $aquariumSpecies = $aquarium->species;
+        $validConditions = true;
+        $i=0;
+        while ($validConditions && ($i<sizeof($aquariumSpecies))) {
+            $specie = $aquariumSpecies[$i];
+            $validConditions = $specie->validConditions($aquarium);
+            $i++;
+        }
+        return $validConditions;
+    }
+
 
     private function removeRepeated($supplies){
         foreach ($supplies as $key => $supply) {
-            for ($i=$key+1; $i < sizeof($supplies) ; $i++) { 
+            for ($i=$key+1; $i < sizeof($supplies) ; $i++) {
                 if($supply->idInsumo == $supplies[$i]->idInsumo){
-                    $supply->quantity = $supply->quantity + $supplies[$i]->quantity;                                
+                    $supply->quantity = $supply->quantity + $supplies[$i]->quantity;
                     unset($supplies[$i]);
-   
+
                     $supplies[$key] = $supply;
                 }
             }
@@ -364,10 +412,10 @@ class Task extends \yii\db\ActiveRecord
 
 
     public function saveControl($conditions, $supplies, $idAquarium){
-        try{                
+        try{
             $transaction = Yii::$app->db->beginTransaction();
-            $this->createAndPopulateTask($idAquarium);
-            if($this->save()){ //si guarda la tarea se actualiza el stock del insumo//
+            $task = $this->createAndPopulateTask('Controlar acuario', $idAquarium);
+            if($task->save()){ //si guarda la tarea se actualiza el stock del insumo//
                 if(!empty($supplies)){
                     $supplies = $this->removeRepeated($supplies);
                     foreach ($supplies as $key => $supply) {
@@ -377,86 +425,47 @@ class Task extends \yii\db\ActiveRecord
                         if($updatedSupply->save(false)){//si se actualiza el stock del insumo, se crea el registro en la tabla INSUMO_TAREA//
                             $taskSupply = new TasksSupply();
                             $taskSupply->INSUMO_idInsumo = $supply->idInsumo;
-                            $taskSupply->TAREA_idTarea = $this->idTarea;
+                            $taskSupply->TAREA_idTarea = $task->idTarea;
                             $taskSupply->cantidad = $supply->quantity;
                             if($taskSupply->save()){//si guarda el registro en INSUMO_TAREA, se guardan las condiciones ambientales//
 
                             }else{
-                                throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                                throw new Exception('Ocurrió un error al guardar la información.');
                             }
                         }else{
-                            throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                            throw new Exception('Ocurrió un error al guardar la información.');
                         }
                     }
                 }
                 $conditions->acuario_idAcuario = $idAquarium;
-                $conditions->tarea_idTarea = $this->idTarea;
+                $conditions->tarea_idTarea = $task->idTarea;
                 if($conditions->save()){
-                    
-                    $validConditions = $this->checkEnviroment($idAquarium, $conditions,$this->idTarea);
+
+                    $validConditions = $this->checkEnviroment($idAquarium, $conditions,$task->idTarea);
                     if(!$validConditions){
                         $notification = new Notification();
                         $notification->fechaHora = new Expression('NOW()');
                         $notification->ORIGEN_NOTIFICACION_idOrigenNotificacion = 'Hábitat riesgoso';
-                        $notification->TAREA_idTarea = $this->idTarea;
+                        $notification->TAREA_idTarea = $task->idTarea;
                         if($notification->save()){
                             $transaction->commit();
                         }else{
-                            throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                            throw new Exception('Ocurrió un error al guardar la información.');
                         }
                     }else{
-                        $transaction->commit();    
+                        $transaction->commit();
                     }
-                    return Yii::$app->session->setFlash('success', "El nuevo control se registró correctamente.");              
+                    return Yii::$app->session->setFlash('success', "El nuevo control se registró correctamente.");
                 }else{
-                    throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                    throw new Exception('Ocurrió un error al guardar la información.');
                 }
             }else{
-                throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                throw new Exception('Ocurrió un error al guardar la información.');
             }
 
         }catch(Exception $e){
             $transaction->rollback();
-            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.".$e);            
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.");
         }
     }
-
-
-    public function saveCommonTask($supplies){
-        try{                
-            $transaction = Yii::$app->db->beginTransaction();
-            $this->fechaHoraRealizacion = new Expression('NOW()');
-            if($this->save(false)){ //si guarda la tarea se actualiza el stock del insumo//
-                if(!empty($supplies)){
-                    $supplies = $this->removeRepeated($supplies);
-                    foreach ($supplies as $key => $supply) {
-                        $updatedSupply = Supply::findOne($supply->idInsumo);
-                        $updatedSupply->stock = $updatedSupply->stock - $supply->quantity;
-
-                        if($updatedSupply->save(false)){//si se actualiza el stock del insumo, se crea el registro en la tabla INSUMO_TAREA//
-                            $taskSupply = new TasksSupply();
-                            $taskSupply->INSUMO_idInsumo = $supply->idInsumo;
-                            $taskSupply->TAREA_idTarea = $this->idTarea;
-                            $taskSupply->cantidad = $supply->quantity;
-                            if($taskSupply->save()){//si guarda el registro en INSUMO_TAREA, se guardan las condiciones ambientales//
-
-                            }else{
-                                throw new Exception('Ocurrió un error al guardar la información.');                                                      
-                            }
-                        }else{
-                            throw new Exception('Ocurrió un error al guardar la información.');                                                      
-                        }
-                    }
-                }
-                $transaction->commit();
-                return Yii::$app->session->setFlash('success', "La nueva tarea se registró correctamente.");                  
-            }else{
-                throw new Exception('Ocurrió un error al guardar la información.');                                                      
-            }
-        }catch(Exception $e){
-            $transaction->rollback();
-            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar la realización de la tarea.".$e);            
-        }
-    }
-
 }

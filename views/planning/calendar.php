@@ -10,16 +10,15 @@ use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use app\models\planning;
+use yii\web\session;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
-
 //$this->title = $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Planificacion', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = $this->title;
-
 
 
 ?>
@@ -74,18 +73,20 @@ EOF;
             'attribute'=>'fechaHoraCreacion',
             'format' => ['date','php:d-m-Y'] // dar formato hora
             ],
-            [
-            'attribute' => 'ACUARIO_USUARIO_acuario_idAcuario',
-            'value' => 'aCUARIOUSUARIOAcuarioIdAcuario',
+            //[
+            //'ACUARIO_USUARIO_acuario_idAcuario',
+            //'aCUARIOUSUARIOAcuarioIdAcuario.nombre',
             //agregar nombre acuario
+          //  ],
+            [
+              'attribute'=>'ESTADO_PLANIFICACION_idEstadoPlanificacion',
+              'value'=>'vALIDACIONs.OBSERVACION'
             ],
-            'ESTADO_PLANIFICACION_idEstadoPlanificacion',
-            '',
-            '',
-            '',
-            '',
-          ],
-    ])
+
+
+          ]
+
+    ]);
 
     ?>
     </div>
@@ -136,62 +137,103 @@ EOF;
       </div>
     </div>
   </div>
-  <div>
+<!-- //////////////////////////////////////////////////////////////////////////////////////// -->
+
         <br>
-                <?= Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
-                  'class' => 'glyphicon glyphicon-ok',
-                  'data' => [
-                      'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
-                      'method' => 'post',
-                    ],
-                  ]) ?>
+        <?php
+        $session = Yii::$app->session;
 
-                  <?= Html::button('<span class="glyphicon glyphicon-ok"></span>',
-                          [
-                           'value' => Url::to(['autorized','id'=>$model->idPlanificacion]),
-                            'title' => 'Rechazar planificacion ',
-                            'class' => 'button btn btn-success'
+        if ($session->get('var')=='check'){
+        echo '<div>'
+          .Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
+                    'class' => 'btn btn-success',
+                    'data' => [
+                        'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                        'method' => 'post',
+                      ],
+                    ]).'  '.
 
-                          ]);
-
-                  ?>
-
-                <?= Html::button('<span class="glyphicon glyphicon-remove"></span>',
+          Html::button('<span class="glyphicon glyphicon-remove"></span>',
                         [
                          'value' => Url::to(['refuse','id'=>$model->idPlanificacion]),
                           'title' => 'Rechazar planificacion ',
-                          'class' => 'showModalButton btn btn-success'
-                        ]);
+                          'class' => 'showModalButton btn btn-danger'
+                        ])
+          .'</div>';
+        }
 
-                ?>
-  </div>
-  <div>
-          <br>
-                <?= Html::a('Finalizar', ['planning/index'], [
+          elseif($session->get('var')=='update'){
+            echo '<div>'
+            .Html::a('Finalizar', ['planning/home', 'id' => $model->idPlanificacion], [
+                  'class' => 'btn btn-success',
+                  'data' => [
+                    //  'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                    //  'method' => 'post',
+                    ],
+                  ]).
+            '</div>';
+          }
+
+         elseif($session->get('var')=='view'){
+            echo '<div>'
+           .Html::a('Volver al inicio', ['planning/index'], [
                     'class' => 'btn btn-primary',
                     'data' => [
                     //    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
                         'method' => 'post',
                       ],
-                ]) ?>
-  </div>
-  <div>
-          <br>
-                <?= Html::a('Volver al inicio', ['planning/index'], [
-                    'class' => 'btn btn-primary',
-                    'data' => [
-                    //    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
-                        'method' => 'post',
-                      ],
-                ]) ?>
-  </div>
-  <button type="button" class="btn btn-primary btn" action="planning/autorized">
-    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Autorizar
-  </button>
+                ]).
+              '</div>';
+              }
+            ?>
 
-</div>
 
   <?php
+
+//  if(Yii::$app->user->can('administrarTareas')){
+
+//    echo '<div>'
+//      .Html::button(FA::icon('check')->size(FA::SIZE_LARGE).' Rechazar',
+//                [
+//                   'value' => Url::to([
+//                      'planning/autorized',
+//                      'idPlanificacion'=>$model->idPlanificacion,
+//                      // 'idPlanificacion'=>-1, // esto significa que es no planificada
+//                      // 'fecha'=>date("Y-m-d") // hoy
+//                    ]),
+//                  'title' => 'Agregar tarea no planificada',
+//                  'class' => 'btn btn-danger'
+//                ]).
+//    '</div>';
+
+//    echo '<div>'
+//      .Html::button(FA::icon('check')->size(FA::SIZE_LARGE).' Finalizar',
+//                [
+//                   'value' => Url::to([
+//                      'planning/index',
+//                      'idPlanificacion'=>$model->idPlanificacion,
+//                      // 'idPlanificacion'=>-1, // esto significa que es no planificada
+//                      // 'fecha'=>date("Y-m-d") // hoy
+//                    ]),
+//                  'title' => 'Agregar tarea no planificada',
+//                  'class' => 'btn btn-primary'
+//                ]).
+//    '</div>';
+
+//    echo '<div>'
+//      .Html::button(FA::icon('home')->size(FA::SIZE_LARGE).' Volver al inicio',
+//                [
+//                   'value' => Url::to([
+//                      'planning/index',
+//                      'idPlanificacion'=>$model->idPlanificacion,
+                      // 'idPlanificacion'=>-1, // esto significa que es no planificada
+                      // 'fecha'=>date("Y-m-d") // hoy
+//                    ]),
+//                  'title' => 'Agregar tarea no planificada',
+//                  'class' => 'btn btn-primary'
+//                ]).
+//    '</div>';
+  //}
 
 
 //  yii::error(\yii\helpers\VarDumper::dumpAsString(calEvent.id));
