@@ -71,24 +71,13 @@ class TaskController extends Controller
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
 
-        $taskTypes = TaskType::find()->all();
+        $taskTypes = TaskType::find()
+                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
+                    ->all();
         if (($model->load(Yii::$app->request->post())) && $model->save()) {
-            // return $this->redirect(Yii::$app->request->referrer);
-            // return $this->renderAjax('//..task/execute',[
-            //         'model'=>$model,
-            //         'taskTypes'=>$taskTypes
-            //     ]);
-
-            // DESCOMENTAR DE ACÁ EN ADELANTE PARA ENLAZAR LA CREACIÓN DE LA TAREA NO PLANIFICADA CON LA EJECUCIÓN DE LA MISMA **********************************************************************
-            // unset($_POST);
-            // $_POST['idTarea'] = $model->idTarea;
-            // if (!$model->isPlanned()){
-            //     // si es no planificada tengo que desplegar la ventana para que la realice
-            //     Yii::$app->runAction('task/execute', ['idTarea'=>$model->idTarea]);
-            // }else 
-                // retorna a la página que la llamó
-            // ************************************************************************************************************************************************************
-                return $this->redirect(Yii::$app->request->referrer);
+            return $this->redirect(Yii::$app->request->referrer);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('create',[
@@ -167,7 +156,7 @@ class TaskController extends Controller
             // obtengo la vista de acuerdo al tipo de tarea
             return $this->redirectViewTaskType($modelTask,$idAcuario);
         }else{
-            
+            return $this->renderAjax('_taskDone');
         }
     }
     

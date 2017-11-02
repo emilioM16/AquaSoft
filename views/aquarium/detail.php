@@ -68,20 +68,24 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ]);
       
+      if($acuario->descripcion==''){
+        $acuario->descripcion = 'No hay.';
+      }
+
       $content1 =
 
       '<div class="col-lg-12">
 
-          <label>Nombre del acuario: </label> <span>'.$acuario->nombre.'</span>
+          <label><u>Nombre del acuario</u> :</label> <span>'.$acuario->nombre.'</span>
           <br><br>
 
           <p class="text-justify">
-            <label>Descripción:</label>'
+            <label><u>Descripción</u>:</label> '
               .$acuario->descripcion.
           '</p>
           <br>
 
-          <label>Espacio disponible: </label> <span>'.$acuario->espacioDisponible.'</span>
+          <label><u>Espacio disponible</u>: </label> <span>'.$acuario->espacioDisponible.' de '.$acuario->capacidadMaxima.' unidades</span>
           <br><br>
 
       </div>' ;
@@ -93,7 +97,6 @@ $this->params['breadcrumbs'][] = $this->title;
           [
               'label'=>FA::icon('info')->size(FA::SIZE_LARGE).' Información',
               'content'=>$content1,
-            //   'active'=>true
           ],
           [
               'label'=>FA::icon('thermometer-3')->size(FA::SIZE_LARGE).' Condiciones ambientales',
@@ -147,7 +150,6 @@ function(calEvent, jsEvent, view) {
     success: function(response){
         $('#modalContent').html(response);
         $('#modalTitle').html('Realizar tarea');
-        // $('#modalHeader').html('Realizar tarea');
         $('#modal').modal('show');
         }
     });

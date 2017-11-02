@@ -52,7 +52,7 @@ use yii\helpers\ArrayHelper;
                 'descripcion'=>[
                     'type'=>Form::INPUT_TEXTAREA,
                     'options'=>[
-                        'placeholder'=>'Ingrese una descripción',
+                        'placeholder'=>'Ingrese una descripción...',
                         'maxlength'=>true,
                     ]
                 ]
@@ -69,7 +69,7 @@ use yii\helpers\ArrayHelper;
                     'widgetClass'=>'kartik\select2\Select2',
                     'options'=>[
                             'data'=>ArrayHelper::map($taskTypes,'idTipoTarea','idTipoTarea'),
-                            'options'=>['placeholder' => 'Seleccione una especie...']
+                            'options'=>['placeholder' => 'Seleccione un tipo de tarea...']
                         ]
                 ]
             ]
