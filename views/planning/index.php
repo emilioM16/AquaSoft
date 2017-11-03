@@ -115,11 +115,14 @@ $this->params['breadcrumbs'][] = $this->title;
                       );
                   },
                   'down'=>function($url,$model,$key){
-                      return Html::a('<span class="btn-aquarium glyphicon glyphicon-trash"></span>',
-                      ['planning/down','id'=>$model->idPlanificacion],
-                      ['class' => 'btn btn-danger btnAquarium']
-                    ///  ['data-confirm' => Yii::t('yii', 'Are you sure you want to delete selected items?')]
-                      );
+                      return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['planning/down', 'id' => $model->idPlanificacion], [
+                          'class' => 'btn btn-success btnAquarium',
+                          'data' => [
+                              'data-pjax' => '0',
+                              'confirm' => '¿Está seguro de eliminar la planificacion ?',
+                              'method' => 'post',
+                          ],
+                      ]);
                   },
               ],
       ],
