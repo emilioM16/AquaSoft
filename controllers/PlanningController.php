@@ -243,18 +243,6 @@ class PlanningController extends Controller
 
 
     /**
-     * Deletes an existing Planning model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-        return $this->redirect(['index']);
-    }
-
-    /**
      * Finds the Planning model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
@@ -268,16 +256,6 @@ class PlanningController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    public function actionGetinfo()
-    {
-        if(!isset($_POST['country_code']) || empty($_POST['country_code']))
-            return;
-
-        $code = $_POST['country_code'];
-
-        return $this->renderAjax('resultwidget', ['code' => $code]);
     }
 
 

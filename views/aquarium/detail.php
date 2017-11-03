@@ -135,9 +135,11 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 <?php
-
+$var = true;
 $JSEventClick = <<<EOT
 function(calEvent, jsEvent, view) {
+  if ({$var})
+  {
   $.ajax({
     type: 'GET',
     url: "/task/execute", 
@@ -153,6 +155,7 @@ function(calEvent, jsEvent, view) {
         $('#modal').modal('show');
         }
     });
+  }
 }
 EOT;
 ?>

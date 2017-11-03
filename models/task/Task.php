@@ -345,6 +345,7 @@ class Task extends \yii\db\ActiveRecord
         // else {
         //     return true;
         // }
+    }
 
 
     private function createAndPopulateTask($idAquarium){
@@ -362,34 +363,6 @@ class Task extends \yii\db\ActiveRecord
         }else{
             $this->fechaHoraRealizacion = new Expression('NOW()');   
         } 
-    }
-
-
-    private function checkEnviroment($idAquarium,$conditions,$taskId){ //comprueba las condiciones ambientales ingresadas con las especies que posee//
-        $aquarium = Aquarium::findOne(['idAcuario'=>$idAquarium]);
-        $aquariumSpecies = $aquarium->species;
-        $validConditions = true;
-        $i=0;
-        while ($validConditions && ($i<sizeof($aquariumSpecies))) {
-            $specie = $aquariumSpecies[$i];
-            $validConditions = $specie->validConditions($aquarium);
-            $i++;
-        }
-        return $validConditions;
-    }
-
-    private function createAndPopulateTask($taskType,$idAquarium){
-        $task = new Task();
-        $task->titulo = 'Control';
-        $task->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
-        $task->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
-        $task->horaInicio = '00:00';
-        $task->fechaHoraInicio = new Expression('NOW()');
-        $task->fechaHoraFin = new Expression('NOW()');
-        $task->fechaHoraRealizacion = new Expression('NOW()');
-        $task->ACUARIO_idAcuario = $idAquarium;
-        $task->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
-        return $task;
     }
 
 
