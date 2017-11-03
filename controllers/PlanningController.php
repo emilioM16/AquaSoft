@@ -115,12 +115,9 @@ class PlanningController extends Controller
         }
             else{
               return $this->render('calendar', [
-
                   'model' => $model,
-                ]);
-            }
-
-    
+              ]);
+        }
     }
 
     /**

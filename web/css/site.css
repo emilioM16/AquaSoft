@@ -226,14 +226,14 @@ a.desc:after {
     padding: 3px;
 }
 
-.alert{
+.alert-notif{
     margin-bottom: 0;
     border-radius: 0;
     font-size: 12px;
     padding: 3px;
 }
 
-.alert:hover{
+.alert-notif:hover{
     transition: 100ms;
     background-color: #74C0E9;
 }

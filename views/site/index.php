@@ -13,7 +13,7 @@ $this->title= 'Sistema de gestión AquaSoft';
 
     <div class="col-lg-12" align="center">
 
-      <div class="jumbotron col-lg-12">
+      <div class="jumbotron col-lg-12 img-responsive">
         <?= Html::img('@web/img/logo.png', ['class'=>'img-responsive form-center']) ?>
       </div>
 
@@ -62,7 +62,12 @@ $this->title= 'Sistema de gestión AquaSoft';
       </div>
     </div>
 
+<<<<<<< Updated upstream
     <!-- <div class="col-lg-3">
+=======
+<<<<<<< Updated upstream
+    <div class="col-lg-3">
+>>>>>>> Stashed changes
       <div id="panelNotif" class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title text-center">Notificaciones</h3>
@@ -87,7 +92,15 @@ $this->title= 'Sistema de gestión AquaSoft';
 
         </div>
       </div>
+<<<<<<< Updated upstream
     </div> -->
     
+=======
+    </div>
+
+=======
+    
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
   </div>
 </div>
