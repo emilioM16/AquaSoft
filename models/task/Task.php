@@ -240,8 +240,9 @@ class Task extends \yii\db\ActiveRecord
         if (!isset($this->fechaHoraFin)){
           $this->fechaHoraFin = date_create($this->fechaHoraInicio);
             $this->calcularFechaFin();
-        $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+
       }
+        $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
         return parent::beforeSave($insert);
     }
 

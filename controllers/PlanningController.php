@@ -82,11 +82,13 @@ class PlanningController extends Controller
 
       $session = Yii::$app->session;
       $session->set('var','check');
+
       //cargo el array de sesiones
 
         return $this->render('check', [
 
             'model' => $this->findModel($id),
+
 
         ]);
     }
@@ -105,6 +107,7 @@ class PlanningController extends Controller
 
       $model = $this->findModel($idPlan);
       $model->loadEvents();
+      //  $vali = Validation::findOne(418);
 
     //  $session = Yii::$app->session;
     //  $varSesion =($session->get('var'));
@@ -117,6 +120,7 @@ class PlanningController extends Controller
               return $this->render('calendar', [
 
                   'model' => $model,
+
                 ]);
             }
 
@@ -250,11 +254,6 @@ class PlanningController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-        return $this->redirect(['index']);
-    }
 
     /**
      * Finds the Planning model based on its primary key value.
@@ -272,16 +271,7 @@ class PlanningController extends Controller
         }
     }
 
-    public function actionGetinfo()
-    {
-        if(!isset($_POST['country_code']) || empty($_POST['country_code']))
-            return;
-
-        $code = $_POST['country_code'];
-
-        return $this->renderAjax('resultwidget', ['code' => $code]);
-    }
-
+  
 
     public function actionValidatePlanning()
     {

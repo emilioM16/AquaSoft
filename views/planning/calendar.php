@@ -10,18 +10,26 @@ use rmrevin\yii\fontawesome\FA;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 use app\models\planning;
+use app\models\aquarium\Aquarium;
+use app\models\user\User;
+use app\models\planning\Validation;
 use yii\web\session;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 
-//$this->title = $model->titulo;
+$this->title = $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Planificacion', 'url' => ['index']];
+
 //$this->params['breadcrumbs'][] = $this->title;
 
 
 ?>
+<div id="jumboIdAcuario" class="jumbotron">
+  <h2 id="tituloJumboAcuario"><?= $model->titulo ?></h2>
+</div>
+
 <div class="planning-calendar">
 
 
@@ -63,32 +71,6 @@ EOF;
 <div class="planning-check">
 
 
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'titulo',
-            [
-            'attribute'=>'fechaHoraCreacion',
-            'format' => ['date','php:d-m-Y'] // dar formato hora
-            ],
-            //[
-            'aCUARIOUSUARIOAcuarioIdAcuario.nombre',
-            //agregar nombre acuario
-          //  ],
-          //  [
-          'ESTADO_PLANIFICACION_idEstadoPlanificacion',
-          //    'attribute'=>'ESTADO_PLANIFICACION_idEstadoPlanificacion',
-              //'value'=>'
-              'vALIDACIONs.MOTIVO_RECHAZO_idMotivoRechazo',
-        //    ],
-
-
-          ]
-
-    ]);
-
-    ?>
     </div>
 
 <script type="text/javascript"> //Este es el código que permite que se muestre el calendario seteandole la fecha//
@@ -105,6 +87,95 @@ EOF;
   <!-- Calendario -->
   <div id="pCalendar" class="row">
   <div class="col-lg-12">
+    <div class="col-lg-3" style="z-index:-10000;position:absolute;">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+      <body>
+      <div>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>
+                <?php echo 'Información'; ?>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                  <?php echo'<b>'.'Fecha: '.'</b>'. date_format(date_create($model->anioMes),"m / Y");?>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                  <?php echo '<b>'.'Fecha creación: '.'</b>'.date_format(date_create($model->fechaHoraCreacion),"d / m / Y"); ?>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                  <?php
+                  $acua = Aquarium::find()->where(['idAcuario' => $model->ACUARIO_USUARIO_acuario_idAcuario])->one();
+                   echo '<b>'.'Acuario: '.'</b>'.$acua->nombre;
+                   ?>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                  <?php echo '<b>'.'Estado: '.'</b>'.$model->ESTADO_PLANIFICACION_idEstadoPlanificacion; ?>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <?php
+                  $vali = Validation::find()->where(['PLANIFICACION_idPlanificacion' => $model->idPlanificacion])->one();
+                  if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion =='Rechazada') {
+                  echo '<b>'.'Motivo rechazo: '.'</b>'.$vali->MOTIVO_RECHAZO_idMotivoRechazo;
+                  echo
+                  '</td>'.
+            '</tr>'.
+
+            '<tr>'.
+              '<td>'.
+                '<b>'.'Observación: '.'</b>'.$vali->OBSERVACION;
+                '</td>'.
+            '</tr>';
+            $us = User::find()->where(['idUsuario' => $vali->USUARIO_idUsuario])->one();
+            echo
+            '<tr>'.
+              '<td>'.
+                '<b>'.'Encargado: '.'</b>'.$us->nombre;
+              '</td>'.
+            '</tr>';
+            echo
+            '<tr>'.
+              '<td>'.
+                '<b>'.'Fecha hora autorización: '.'</b>'.date_format(date_create($vali->FECHAHORA),"d / m / Y h:m").' hs';
+              '</td>'.
+            '</tr>';
+
+
+                  }
+
+
+
+                ?>
+
+
+
+
+
+
+
+          </tbody>
+        </table>
+      </div>
+    </body>
+    </div>
+
+
       <div class="col-lg-6 form-center">
 
 

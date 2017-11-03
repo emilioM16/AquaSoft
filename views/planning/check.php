@@ -9,6 +9,7 @@ use yii\helpers\Url;
 
 $this->title = $model->titulo;
 $this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
+
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="planning-check">
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
 
   <?= $this->render('calendar', [
       'model' => $model,
+
   ]) ?>
 
 
