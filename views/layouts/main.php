@@ -201,11 +201,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             'url' => Yii::$app->getHomeUrl()],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-
-<!-- ESTA LINEA ES EL CONTADOR -->
-<iframe src="http://free.timeanddate.com/countdown/i5yop7nc/n51/cf12/cm0/cu4/ct0/cs0/ca0/co1/cr0/ss0/cacf00/cpc000/pcfff/tcfff/fs100/szw320/szh135/tatTiempo%20restante%20para%20la%20presentaci%C3%B3n/tac000/tptTime%20since%20Event%20started%20in/tpc000/iso2017-11-10T16:30:00/bac09f" allowTransparency="true" frameborder="0" width="336" height="52"></iframe>
-    
-        
+            
         <div class="col-lg-12">
         <?= $content ?>
         </div>

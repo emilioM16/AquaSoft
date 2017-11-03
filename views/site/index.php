@@ -11,7 +11,7 @@ $this->title= 'Sistema de gestión AquaSoft';
 
   <div class="row">
 
-    <div class="col-lg-9" align="center">
+    <div class="col-lg-12" align="center">
 
       <div class="jumbotron col-lg-12">
         <?= Html::img('@web/img/logo.png', ['class'=>'img-responsive form-center']) ?>
