@@ -108,25 +108,8 @@ class PlanningController extends Controller
             else{
               return $this->render('calendar', [
                   'model' => $model,
-
+              ]);
         }
-        else{
-            return $this->render('create', [
-                'model' => $model,
-                'aquariums'=>$aquariums
-
-            ]);
-
-            //muestra el mensaje y vuelve a cargar la pagina
-            }
-
-    }
-    else {
-        return $this->render('calendar', [
-            'model' => $model,
-            'aquariums'=>$aquariums
-        ]);
-    }
     }
 
     /**

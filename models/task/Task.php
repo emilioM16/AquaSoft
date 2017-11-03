@@ -231,15 +231,29 @@ class Task extends \yii\db\ActiveRecord
 
 
     public function beforeSave($insert){
-        date_default_timezone_set('America/Argentina/Buenos_Aires');
         // Primero verifico si se ha ingresado una hora de inicio. Si es así, debo actualizar la fechaHoraInicio con la hora ingresada
+
         if (!isset($this->fechaHoraInicio))
             $this->fechaHoraInicio = date_format(date_create(),"Y-m-d H:i:s");
         $this->setearHoraInicio();
         // Luego calculo la fecha de fin
         if (!isset($this->fechaHoraFin))
+
           $this->fechaHoraFin = date_create($this->fechaHoraInicio);
             $this->calcularFechaFin();
+
+            $this->calcularFechaFin();      
+
+        if (!isset($this->fechaHoraInicio)){
+            $this->fechaHoraInicio = date_format(date_create(),"Y-m-d H:i:s");
+            $this->setearHoraInicio();
+        }
+        // Luego calculo la fecha de fin
+        if (!isset($this->fechaHoraFin)){
+            $this->fechaHoraFin = date_create($this->fechaHoraInicio);
+            $this->calcularFechaFin();
+        }
+
         $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
         return parent::beforeSave($insert);
     }
@@ -292,6 +306,8 @@ class Task extends \yii\db\ActiveRecord
     public function wasExecuted(){
         return (isset($this->fechaHoraRealizacion));
     }
+
+
     public function validarSuperposicionFI($fechaHI){
       $tareaSuperpuesta = Task::find()
                       ->asArray()
@@ -308,28 +324,30 @@ class Task extends \yii\db\ActiveRecord
       else {
         return true;
       }
+    }
+
 
     //////////////////////////////////////////////////////////////////////////////////////////
     public function validarSuperposicionFF($fechaHoraFin){
-
       return true;
+    }
+
+
     private function createAndPopulateTask($idAquarium){
-        // $task = new Task();
         if($this->idTarea == -1){
             $this->idTarea = null;              
             $this->titulo = 'Control';
             $this->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
             $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
-            $this->horaInicio = '00:00';
-            $this->fechaHoraInicio = new Expression('NOW()');
-            $this->fechaHoraFin = new Expression('NOW()');
+            $this->horaInicio = date("H:i:s");
+            $this->fechaHoraInicio = null;
+            $this->fechaHoraFin = null;
             $this->fechaHoraRealizacion = new Expression('NOW()');
             $this->ACUARIO_idAcuario = $idAquarium;
             $this->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
         }else{
             $this->fechaHoraRealizacion = new Expression('NOW()');   
         } 
-        // return $task;
     }
 
 
@@ -417,7 +435,7 @@ class Task extends \yii\db\ActiveRecord
 
         }catch(Exception $e){
             $transaction->rollback();
-            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.".$e);            
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.");            
         }
     }
 
