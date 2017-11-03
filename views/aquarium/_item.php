@@ -10,9 +10,11 @@ use rmrevin\yii\fontawesome\FA;
       <div class="caption">
         <h3><?=$model->nombre?></h3>
         <?php 
-          if (!isset($model->id_condiciones_ambientales)){ //CORREGIR! 
+          if (empty($model->enviromentalConditions)){
            echo "<p><span class='label label-danger'>Habitat no cargado</span></p>";
-          };
+          }else{
+            echo "<p><span class='label label-success'>Habitat cargado</span></p>";
+          }
         ?>
         <p>
             <?php
@@ -35,22 +37,27 @@ use rmrevin\yii\fontawesome\FA;
 
               if(Yii::$app->user->can('bajaAcuario')){
 
-                  echo Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', 
-                  [ 
-                    'delete', 
-                  ], 
-                  [ 
-                    'class' => 'btn btn-danger btnAquarium', 
-                    'data-pjax' => '0',
-                    'data'=>[
-                      'method'=>'POST',
-                      'params'=>[
-                        'idAcuario'=>$model->idAcuario,
+                if($model->activo==0){
+                  echo Html::a('<span class="glyphicon glyphicon-arrow-up"></span>', ['change-state', 'id' => $model->idAcuario], [
+                      'class' => 'btn btn-success btnAquarium',
+                      'title'=>'Dar de alta',
+                      'data' => [
+                          'data-pjax' => '0',
+                          'confirm' => '¿Está seguro de querer dar de alta el acuario "'.$model->nombre.'"?',
+                          'method' => 'post',
                       ],
-                      'confirm'=>'¿Está seguro de querer dar de baja el acuario '.$model->nombre.'?',
-                    ]
-                    
-                ]); 
+                  ]);
+                }else{
+                    echo Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', ['change-state', 'id' => $model->idAcuario], [
+                        'class' => 'btn btn-danger btnAquarium',
+                        'title'=>'Dar de baja',
+                        'data' => [
+                            'data-pjax' => '0',
+                            'confirm' => '¿Está seguro de querer dar de baja el acuario "'.$model->nombre.'"?',
+                            'method' => 'post',
+                        ],
+                    ]);
+                }
             }
             
               echo Html::a('Detalle', 

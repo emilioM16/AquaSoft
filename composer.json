@@ -42,7 +42,8 @@
         "2amigos/yii2-date-picker-widget": "~1.0",
         "kartik-v/yii2-widget-timepicker": "*",
         "unclead/yii2-multiple-input": "~2.0",
-        "kartik-v/yii2-widget-growl": "*"
+        "kartik-v/yii2-widget-growl": "*",
+        "kartik-v/yii2-widget-switchinput": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
