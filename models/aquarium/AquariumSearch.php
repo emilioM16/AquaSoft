@@ -49,8 +49,7 @@ class AquariumSearch extends Aquarium
                     ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario])
                     ->andWhere(['activo'=>1]);
         }else{
-            $query = Aquarium::find()
-                    ->andWhere(['activo'=>1]);
+            $query = Aquarium::find();
         }
         // add conditions that should always apply here
 
