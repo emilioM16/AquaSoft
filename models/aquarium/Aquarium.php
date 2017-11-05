@@ -155,18 +155,21 @@ class Aquarium extends \yii\db\ActiveRecord
 
         foreach ($tasks as $task)
         {
-            $event = new \yii2fullcalendar\models\Event();
-            $event->id = $task->idTarea;
-            $event->title = '[' . $task->TIPO_TAREA_idTipoTarea . '] Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
-            $event->start = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraInicio));
-            $event->end = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraFin));
-            $event->textColor='black';
-            $event->borderColor = 'black';
-            if($task->fechaHoraRealizacion !== null){
-                $event->backgroundColor ='rgb(5.1%, 66.3%, 12.9%)'; 
+            $planState = $task->planificacion['ESTADO_PLANIFICACION_idEstadoPlanificacion'];
+            if(($planState =='Aprobado')||($planState == null)){
+                $event = new \yii2fullcalendar\models\Event();
+                $event->id = $task->idTarea;
+                $event->title = '[' . $task->TIPO_TAREA_idTipoTarea . '] Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
+                $event->start = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraInicio));
+                $event->end = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraFin));
+                $event->textColor='black';
+                $event->borderColor = 'black';
+                if($task->fechaHoraRealizacion !== null){
+                    $event->backgroundColor ='rgb(5.1%, 66.3%, 12.9%)'; 
+                }
+                $event->editable = true;
+                $this->events[] = $event;
             }
-            $event->editable = true;
-            $this->events[] = $event;
         }
         return $this->events;
     }
