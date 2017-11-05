@@ -35,27 +35,33 @@ $this->params['breadcrumbs'][] = $this->title;
             'template'=>'{view}{update}{delete}',
             'buttons' => [
                 'view'=>function($url,$model){
-                    return Html::button('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>',
+                    return Html::a('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>',
                     [
-                      'value' => Url::to(['supply/view','id'=>$model->idInsumo]),
+                      'view',
+                      'id'=>$model->idInsumo
+                    ],
+                    [
                       'title' => 'Información del insumo: ',
                       'class' => 'btn btn-warning btnAquarium'
                     ]);
                 },
                 'update'=>function($url,$model){
-                    return Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
+                    return Html::a('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
                     [
-                      'value' => Url::to(['supply/update','id'=>$model->idInsumo]),
+                      'update',
+                      'id'=>$model->idInsumo
+                    ],
+                    [
                       'title' => 'Modificar insumo: ',
                       'class' => 'btn btn-primary btnAquarium'
                     ]);
                 },
                 'delete' => function($url, $model){
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['supply'], [
-                            'class' => 'btn btn-success btnAquarium',
+                            'class' => 'btn btn-danger btnAquarium',
                             'data' => [
                                 'data-pjax' => '0',
-                                'confirm' => '¿Está seguro de querer dar de alta el usuario"?',
+                                'confirm' => '¿Está seguro de querer eliminar el insumo?',
                                 'method' => 'post',
                             ],
                         ]);

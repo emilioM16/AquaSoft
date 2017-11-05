@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'stock')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'TIPO_TAREA_idTipoTarea')->dropDownList(['Alimentación' => 'Alimentación', 'Controlar acuario' => 'Controlar acuario', 'Incorporar ejemplares' => 'Incorporar ejemplares', 'Limpieza' => 'Limpieza','Reparación' => 'Reparación','Transferir ejemplares' => 'Transferir ejemplares']); ?>
+    <?= $form->field($model, 'TIPO_TAREA_idTipoTarea')->dropDownList(['Alimentación' => 'Alimentación', 'Controlar acuario' => 'Controlar acuario', 'Limpieza' => 'Limpieza','Reparación' => 'Reparación']); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Crear ' : 'Modificar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

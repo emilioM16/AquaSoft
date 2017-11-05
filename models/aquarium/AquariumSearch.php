@@ -43,7 +43,7 @@ class AquariumSearch extends Aquarium
     public function search($params)
     {
         $rol = Yii::$app->user->identity->getRole();
-        if($rol != 'administrador'){
+        if($rol == 'especialista'){
             $query = Aquarium::find()
                     ->joinWith('userAquariums')
                     ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario])
