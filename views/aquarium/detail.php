@@ -91,6 +91,11 @@ $this->params['breadcrumbs'][] = $this->title;
       </div>' ;
 
 
+      if(Yii::$app->user->can('administrarTareas')){
+        $visibility = 'visible';
+      }else{
+        $visibility='hidden';
+      }
 
 
         $items = [
@@ -112,7 +117,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'value' => Url::to(['task/control','idAcuario'=>$acuario->idAcuario,'idTarea'=>-1]),
                                     'title' => 'Nuevo control',
                                     'class' => 'showModalButton btn btn-primary',
-                                    'style'=>['width'=>'70%']
+                                    'style'=>['width'=>'70%','visibility'=>$visibility],
                                 ])
                             .'</div>
                           </div>',
@@ -136,25 +141,32 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 
+if(Yii::$app->user->can('administrarTareas')){
 $JSEventClick = <<<EOT
 function(calEvent, jsEvent, view) {
-  $.ajax({
-    type: 'GET',
-    url: "/task/execute", 
-    data: {idTarea:calEvent.id,idAcuario:$acuario->idAcuario} ,
-    dataType: 'html',
-    error: function(xhr,err){
-      alert("readyState: "+xhr.readyState+" status: "+xhr.status);
-      alert("responseText: "+xhr.responseText);
-  },
-    success: function(response){
-        $('#modalContent').html(response);
-        $('#modalTitle').html('Realizar tarea');
-        $('#modal').modal('show');
-        }
-    });
+    $.ajax({
+      type: 'GET',
+      url: "/task/execute", 
+      data: {idTarea:calEvent.id,idAcuario:$acuario->idAcuario} ,
+      dataType: 'html',
+      error: function(xhr,err){
+        alert("readyState: "+xhr.readyState+" status: "+xhr.status);
+        alert("responseText: "+xhr.responseText);
+    },
+      success: function(response){
+          $('#modalContent').html(response);
+          $('#modalTitle').html('Realizar tarea');
+          $('#modal').modal('show');
+          }
+      });
 }
 EOT;
+}else{
+$JSEventClick = <<<EOT
+function(){
+}
+EOT;
+}
 ?>
 
   <!-- Calendario -->
@@ -165,9 +177,9 @@ EOT;
             'id'=>'calendar',
             'defaultView'=>'basicDay',
             'header'=>[
-                'left'=>'prev,next today',
+                'left'=>'',
                 'center'=>'title',
-                'right'=>'basicDay,agendaWeek,month'
+                'right'=>''
             ],
             'options' => [
                 'lang' => 'es',

@@ -233,17 +233,6 @@ class Task extends \yii\db\ActiveRecord
     public function beforeSave($insert){
         // Primero verifico si se ha ingresado una hora de inicio. Si es así, debo actualizar la fechaHoraInicio con la hora ingresada
 
-        if (!isset($this->fechaHoraInicio))
-            $this->fechaHoraInicio = date_format(date_create(),"Y-m-d H:i:s");
-        $this->setearHoraInicio();
-        // Luego calculo la fecha de fin
-        if (!isset($this->fechaHoraFin))
-
-          $this->fechaHoraFin = date_create($this->fechaHoraInicio);
-            $this->calcularFechaFin();
-
-            $this->calcularFechaFin();      
-
         if (!isset($this->fechaHoraInicio)){
             $this->fechaHoraInicio = date_format(date_create(),"Y-m-d H:i:s");
             $this->setearHoraInicio();
