@@ -9,6 +9,9 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="specie-form">
+  <div class="planning-form col-lg-10">
+    <div class="col-lg-9 form-center">
+              <div class="well text-left">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -16,34 +19,37 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'minPH')->textInput() ?>
+    <?= $form->field($model, 'minPH')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'maxPH')->textInput() ?>
+    <?= $form->field($model, 'maxPH')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'minTemp')->textInput() ?>
+    <?= $form->field($model, 'minTemp')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'maxTemp')->textInput() ?>
+    <?= $form->field($model, 'maxTemp')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'minSalinidad')->textInput() ?>
+    <?= $form->field($model, 'minSalinidad')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'maxSalinidad')->textInput() ?>
+    <?= $form->field($model, 'maxSalinidad')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'minLux')->textInput() ?>
+    <?= $form->field($model, 'minLux')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'maxLux')->textInput() ?>
+    <?= $form->field($model, 'maxLux')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'minEspacio')->textInput() ?>
+    <?= $form->field($model, 'minEspacio')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'minCO2')->textInput() ?>
+    <?= $form->field($model, 'minCO2')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'maxCO2')->textInput() ?>
+    <?= $form->field($model, 'maxCO2')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'activo')->textInput() ?>
+
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Finalizar' : 'Volver al inicio', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+  </div>
+    </div>
+      </div>
 
 </div>

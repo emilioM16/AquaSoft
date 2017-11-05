@@ -6,31 +6,30 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\specie\Specie */
 
-$this->title = $model->idEspecie;
-$this->params['breadcrumbs'][] = ['label' => 'Species', 'url' => ['index']];
+$this->title = $model->nombre;
+$this->params['breadcrumbs'][] = ['label' => 'Especie', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="specie-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+<br><br>
+    <div class="col-lg-10 form-left">
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->idEspecie], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->idEspecie], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'idEspecie',
+    //        'idEspecie',
             'nombre',
             'descripcion',
+        ],
+    ]) ?>
+    <br><br>
+  <div class="planning-form col-lg-6">
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
             'minPH',
             'maxPH',
             'minTemp',
@@ -42,8 +41,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'minEspacio',
             'minCO2',
             'maxCO2',
-            'activo',
+        //    'activo',
         ],
     ]) ?>
+<br><br>
+
+    <?php
+
+    echo '<div>'
+   .Html::a('Volver al inicio', ['specie/index'], [
+            'class' => 'btn btn-primary',
+            'data' => [
+                'method' => 'post',
+              ],
+        ]).
+      '</div>';
+
+    ?>
+      </div>
+</div>
+
 
 </div>

@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\specie\SpecieSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Species';
+$this->title = 'Especies';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="specie-index">
@@ -16,31 +16,46 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Specie', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Agregar especie', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'idEspecie',
             'nombre',
             'descripcion',
-            'minPH',
-            'maxPH',
-            // 'minTemp',
-            // 'maxTemp',
-            // 'minSalinidad',
-            // 'maxSalinidad',
-            // 'minLux',
-            // 'maxLux',
-            // 'minEspacio',
-            // 'minCO2',
-            // 'maxCO2',
-            // 'activo',
+            'minEspacio',
+            [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{view}{update}{delete}',
+            'buttons' => [
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
+                        'view'=>function($url,$model){
+                            return Html::a('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>',
+                            ['specie/view','id'=>$model->idEspecie],
+                            ['class' => 'btn btn-info btnAquarium']
+                          );
+
+                        },
+                       'update'=>function($url,$model){
+                            return Html::a('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
+                            ['specie/update','id'=>$model->idEspecie],
+                            ['class' => 'btn btn-success btnAquarium']
+                            );
+                          },
+                          'delete'=>function($url,$model){
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['specie/delete', 'id' => $model->idEspecie], [
+                                'class' => 'btn btn-danger btnAquarium',
+                                'data' => [
+                                    'data-pjax' => '0',
+                                    'confirm' => '¿Está seguro de eliminar esta especie ?',
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        },
+                      ],
+                  ],
+          ],
     ]); ?>
 <?php Pjax::end(); ?></div>
