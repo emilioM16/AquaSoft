@@ -235,10 +235,10 @@ class PlanningController extends Controller
 
       //  $modelVal->MOTIVO_RECHAZO_idMotivoRechazo = 'Otro';//////////////////
       //  $modelVal->OBSERVACION = 'Otro';
-        $modelVal->PLANIFICACION_idPlanificacion= $id;
-        $modelVal->USUARIO_idUsuario= Yii::$app->user->identity->idUsuario;
+      //  $modelVal->PLANIFICACION_idPlanificacion= $id;
+      //  $modelVal->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
         yii::error(\yii\helpers\VarDumper::dumpAsString($modelVal));
-      //  $modelVal->save(false);//trucho
+        $modelVal->save(false);//trucho
 
 
           if ($modelVal->load(Yii::$app->request->post())&& $modelVal->save(false)) {
