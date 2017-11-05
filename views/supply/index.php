@@ -28,8 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'nombre',
             'descripcion',
             'stock',
-            'activo',
-            // 'TIPO_TAREA_idTipoTarea',
+             'TIPO_TAREA_idTipoTarea',
 
             ['class' => 'yii\grid\ActionColumn',
 
@@ -38,17 +37,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'view'=>function($url,$model){
                     return Html::button('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>',
                     [
-                      'value' => Url::to(['supply/view']),
-                      'title' => 'Información del especialista: ',
-                      'class' => 'showModalButton btn btn-warning btnAquarium'
+                      'value' => Url::to(['supply/view','id'=>$model->idInsumo]),
+                      'title' => 'Información del insumo: ',
+                      'class' => 'btn btn-warning btnAquarium'
                     ]);
                 },
                 'update'=>function($url,$model){
                     return Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
                     [
-                      'value' => Url::to(['supply/update']),
-                      'title' => 'Modificar especialista: ',
-                      'class' => 'showModalButton btn btn-primary btnAquarium'
+                      'value' => Url::to(['supply/update','id'=>$model->idInsumo]),
+                      'title' => 'Modificar insumo: ',
+                      'class' => 'btn btn-primary btnAquarium'
                     ]);
                 },
                 'delete' => function($url, $model){

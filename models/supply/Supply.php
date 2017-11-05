@@ -61,7 +61,7 @@ class Supply extends \yii\db\ActiveRecord
             'descripcion' => 'Descripcion',
             'stock' => 'Stock',
             'activo' => 'Activo',
-            'TIPO_TAREA_idTipoTarea' => 'Tipo  Tarea Id Tipo Tarea',
+            'TIPO_TAREA_idTipoTarea' => 'Tipo de tarea',
         ];
     }
 

@@ -68,7 +68,7 @@ class SupplyController extends Controller
     {
         $model = new Supply();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['view', 'id' => $model->idInsumo]);
         } else {
             return $this->render('create', [
@@ -87,11 +87,11 @@ class SupplyController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
             return $this->redirect(['view', 'id' => $model->idInsumo]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'model' =>  $this->findModel($id),
             ]);
         }
     }
@@ -126,7 +126,7 @@ class SupplyController extends Controller
     }
 
     public function actionGetStock($supplyId)
-    {        
+    {
        $supplyStock = Supply::findOne(['idInsumo'=>$supplyId])->stock;
        Yii::$app->response->format = 'json';
        return $supplyStock;

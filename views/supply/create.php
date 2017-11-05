@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\supply\Supply */
 
-$this->title = 'Create Supply';
-$this->params['breadcrumbs'][] = ['label' => 'Supplies', 'url' => ['index']];
+$this->title = 'Agregar insumo';
+$this->params['breadcrumbs'][] = ['label' => 'Insumos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="supply-create">

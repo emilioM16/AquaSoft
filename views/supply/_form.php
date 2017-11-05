@@ -12,20 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'idInsumo')->textInput() ?>
 
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'stock')->textInput() ?>
+    <?= $form->field($model, 'stock')->textInput(['type' => 'number']) ?>
 
-    <?= $form->field($model, 'activo')->textInput() ?>
-
-    <?= $form->field($model, 'TIPO_TAREA_idTipoTarea')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'TIPO_TAREA_idTipoTarea')->dropDownList(['Alimentación' => 'Alimentación', 'Controlar acuario' => 'Controlar acuario', 'Incorporar ejemplares' => 'Incorporar ejemplares', 'Limpieza' => 'Limpieza','Reparación' => 'Reparación','Transferir ejemplares' => 'Transferir ejemplares']); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Crear ' : 'Modificar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

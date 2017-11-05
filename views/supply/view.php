@@ -6,35 +6,44 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\supply\Supply */
 
-$this->title = $model->idInsumo;
-$this->params['breadcrumbs'][] = ['label' => 'Supplies', 'url' => ['index']];
+$this->title = $model->nombre;
+$this->params['breadcrumbs'][] = ['label' => 'Insumos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="supply-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <br><br>
+        <div class="col-lg-10 form-left">
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->idInsumo], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->idInsumo], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idInsumo',
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+
             'nombre',
             'descripcion',
             'stock',
-            'activo',
             'TIPO_TAREA_idTipoTarea',
-        ],
-    ]) ?>
+            ],
+        ]) ?>
+        <br><br>
 
+        <?php
+
+        echo '<div>'
+       .Html::a('Volver al inicio', ['supply/index'], [
+                'class' => 'btn btn-primary',
+                'data' => [
+                    'method' => 'post',
+                  ],
+            ]).
+          '</div>';
+
+        ?>
+
+    </div>
+
+
+    </div>
 </div>
