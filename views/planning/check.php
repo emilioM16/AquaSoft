@@ -8,9 +8,9 @@ use yii\helpers\Url;
 /* @var $model app\models\planning\Planning */
 
 $this->title = $model->titulo;
-$this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Planificaciones', 'url' => ['index']];
 
-//$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="planning-check">
 

@@ -17,14 +17,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="planning-index">
 
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+<h1><?= Html::encode($this->title) ?></h1>
     <p>
-
-        <?= Html::a('Nueva planificacion', ['create'], ['class' => 'btn btn-success']) ?>
-
+    <?php if(Yii::$app->user->can('crearPlani')){
+    echo  Html::a('Nueva planificacion', ['create'], ['class' => 'btn btn-success']);
+    }?>
     </p>
+
 
 <?php Pjax::begin(); ?>
 
@@ -61,23 +60,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
               },
              'check'=>function($url,$model){
+               if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
                   return Html::a('<span class="btn-aquarium glyphicon glyphicon-ok"></span>',
                   ['planning/check','id'=>$model->idPlanificacion],
                   ['class' => 'btn btn-success btnAquarium']
                   );
+                }else {
+
+                }
+
               },
+            ],
           ],
-  ],
 
         ],
     ]);
+  }
 
-          }
-
-       else{
-        //  var_dump('a');
-
-      echo GridView::widget([
+  else{
+        echo GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'columns' => [
@@ -108,28 +109,34 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   },
                   'update'=>function($url,$model){
+                    if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
                       return Html::a('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
                       ['planning/update','id'=>$model->idPlanificacion],
                       ['class' => 'btn btn-primary btnAquarium']
 
                       );
+                    }
                   },
                   'down'=>function($url,$model,$key){
+                     if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
                       return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['planning/down', 'id' => $model->idPlanificacion], [
-                          'class' => 'btn btn-success btnAquarium',
+                          'class' => 'btn btn-danger btnAquarium',
                           'data' => [
                               'data-pjax' => '0',
                               'confirm' => '¿Está seguro de eliminar la planificacion ?',
                               'method' => 'post',
                           ],
                       ]);
+                    }
+                    else{
+
+                    }
                   },
               ],
-      ],
-
             ],
+          ],
         ]);
-
+      }
 
           echo AlertBlock::widget([
             'useSessionFlash' => true,
@@ -164,14 +171,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
               ]
             ]
-
-
-            ]);
-
-              }
+          ]);
         ?>
-
-
 
 
 <?php Pjax::end(); ?></div>

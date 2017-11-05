@@ -35,7 +35,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
     $notifications =
 
         '<div class="alert alert-menu text-justify " role="alert">
-        '. FA::icon("info")->size(FA::SIZE_LARGE).'  Se ha registrado una <strong>nueva planificación</strong> para el acuario A01 
+        '. FA::icon("info")->size(FA::SIZE_LARGE).'  Se ha registrado una <strong>nueva planificación</strong> para el acuario A01
         </div>
         <hr class="hrNotif">
         <div class="alert text-justify alert-menu" role="alert">
@@ -222,6 +222,9 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
     <div class="container col-lg-12">
         <?= Breadcrumbs::widget([
+            'homeLink'=>['label' => 'Inicio',
+            'url' => Yii::$app->getHomeUrl()
+          ],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <div class="col-lg-12">

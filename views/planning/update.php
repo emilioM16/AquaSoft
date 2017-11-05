@@ -6,9 +6,9 @@ use yii\helpers\Html;
 /* @var $model app\models\planning\Planning */
 
 $this->title = 'Update Planning: ' . $model->idPlanificacion;
-$this->params['breadcrumbs'][] = ['label' => 'Plannings', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->idPlanificacion, 'url' => ['view', 'id' => $model->idPlanificacion]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'Planificaciones', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => $model->idPlanificacion, 'url' => ['view', 'id' => $model->idPlanificacion]];
+$this->params['breadcrumbs'][] = 'Modificación';
 ?>
 <div class="planning-update">
 

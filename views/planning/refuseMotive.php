@@ -18,13 +18,14 @@ use  kartik\datecontrol\DateControl ;
 $this->title = $model->titulo;
 //$this->title = $modelValidacion->titulo;
 $this->params['breadcrumbs'][] = $this->title;
+$modelV->PLANIFICACION_idPlanificacion = $model->idPlanificacion;
 
 ?>
 <div class="planning-view">
   <?php
   $form = ActiveForm::begin([
-      'id'=>$model->formName(),
-      'action' => ['planning/motive'],
+      'id'=>$modelV->formName(),
+      //'action' => ['planning/motive'],
       'type'=>ActiveForm::TYPE_VERTICAL]);
 
   echo Form::widget([
@@ -64,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                'value'=>'<div class="form-group" align="center">'.
                Html::button('<span class="glyphicon glyphicon-ok"></span>',
                       [
-                       'value' => Url::to(['planning/motive','id'=>$model->idPlanificacion]),
+                       'value' => Url::to(['planning/motive','id'=>$modelV->PLANIFICACION_idPlanificacion]),
                         'title' => 'Continuar ',
                         'class' => 'showModalButton btn btn-success'
                       ])

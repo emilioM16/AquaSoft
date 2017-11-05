@@ -67,19 +67,22 @@ class PlanningController extends Controller
      */
     public function actionView($id)
     {
+      $model = $this->findModel($id);
+      $model->loadEvents();
       $session = Yii::$app->session;
       $session->set('var','view');
 
         return $this->render('view', [
 
-          'model' => $this->findModel($id),
+          'model' => $model,
         ]);
 
     }
 
     public function actionCheck($id)
     {
-
+      $model = $this->findModel($id);
+      $model->loadEvents();
       $session = Yii::$app->session;
       $session->set('var','check');
 
@@ -87,7 +90,7 @@ class PlanningController extends Controller
 
         return $this->render('check', [
 
-            'model' => $this->findModel($id),
+            'model' => $model,
 
 
         ]);
@@ -179,6 +182,7 @@ class PlanningController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->loadEvents();
         $session = Yii::$app->session;
         $session->set('var','update');
 
@@ -224,17 +228,20 @@ class PlanningController extends Controller
 
     public function actionMotive($id)
     {
-        $modelVal = new Validation();
+        //  $modelVal= new Validation();
+        //  $modelVal = $this->findModel($id);
+          $modelVal = Validation::find()->where(['PLANIFICACION_idPlanificacion' => $id])->one();
+      //  $modelVal = new Validation();
 
-
-        $modelVal->MOTIVO_RECHAZO_idMotivoRechazo = 'Otro';
+      //  $modelVal->MOTIVO_RECHAZO_idMotivoRechazo = 'Otro';//////////////////
+      //  $modelVal->OBSERVACION = 'Otro';
         $modelVal->PLANIFICACION_idPlanificacion= $id;
         $modelVal->USUARIO_idUsuario= Yii::$app->user->identity->idUsuario;
         yii::error(\yii\helpers\VarDumper::dumpAsString($modelVal));
-        $modelVal->save(false);//trucho
+      //  $modelVal->save(false);//trucho
 
 
-          if ($modelVal->load(Yii::$app->request->post())&& $modelVal->save()) {
+          if ($modelVal->load(Yii::$app->request->post())&& $modelVal->save(false)) {
               return $this->redirect(['index']);
 
         } else {
@@ -271,7 +278,7 @@ class PlanningController extends Controller
         }
     }
 
-  
+
 
     public function actionValidatePlanning()
     {

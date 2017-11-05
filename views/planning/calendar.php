@@ -20,7 +20,7 @@ use yii\web\session;
 /* @var $model app\models\Acuario */
 
 $this->title = $model->titulo;
-$this->params['breadcrumbs'][] = ['label' => 'Planificacion', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => 'Planificacion', 'url' => ['index']];
 
 //$this->params['breadcrumbs'][] = $this->title;
 
@@ -232,19 +232,6 @@ EOF;
                         ])
           .'</div>';
         }
-
-          elseif($session->get('var')=='update'){
-            echo '<div>'
-            .Html::a('Finalizar', ['planning/home', 'id' => $model->idPlanificacion], [
-                  'class' => 'btn btn-success',
-                  'data' => [
-                    //  'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
-                    //  'method' => 'post',
-                    ],
-                  ]).
-            '</div>';
-          }
-
          elseif($session->get('var')=='view'){
             echo '<div>'
            .Html::a('Volver al inicio', ['planning/index'], [
@@ -256,71 +243,18 @@ EOF;
                 ]).
               '</div>';
               }
+              else{
+                echo '<div>'
+                .Html::a('Finalizar', ['planning/home', 'id' => $model->idPlanificacion], [
+                      'class' => 'btn btn-success',
+                      'data' => [
+                        //  'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                        //  'method' => 'post',
+                        ],
+                      ]).
+                '</div>';
+              }
             ?>
 
 
   <?php
-
-//  if(Yii::$app->user->can('administrarTareas')){
-
-//    echo '<div>'
-//      .Html::button(FA::icon('check')->size(FA::SIZE_LARGE).' Rechazar',
-//                [
-//                   'value' => Url::to([
-//                      'planning/autorized',
-//                      'idPlanificacion'=>$model->idPlanificacion,
-//                      // 'idPlanificacion'=>-1, // esto significa que es no planificada
-//                      // 'fecha'=>date("Y-m-d") // hoy
-//                    ]),
-//                  'title' => 'Agregar tarea no planificada',
-//                  'class' => 'btn btn-danger'
-//                ]).
-//    '</div>';
-
-//    echo '<div>'
-//      .Html::button(FA::icon('check')->size(FA::SIZE_LARGE).' Finalizar',
-//                [
-//                   'value' => Url::to([
-//                      'planning/index',
-//                      'idPlanificacion'=>$model->idPlanificacion,
-//                      // 'idPlanificacion'=>-1, // esto significa que es no planificada
-//                      // 'fecha'=>date("Y-m-d") // hoy
-//                    ]),
-//                  'title' => 'Agregar tarea no planificada',
-//                  'class' => 'btn btn-primary'
-//                ]).
-//    '</div>';
-
-//    echo '<div>'
-//      .Html::button(FA::icon('home')->size(FA::SIZE_LARGE).' Volver al inicio',
-//                [
-//                   'value' => Url::to([
-//                      'planning/index',
-//                      'idPlanificacion'=>$model->idPlanificacion,
-                      // 'idPlanificacion'=>-1, // esto significa que es no planificada
-                      // 'fecha'=>date("Y-m-d") // hoy
-//                    ]),
-//                  'title' => 'Agregar tarea no planificada',
-//                  'class' => 'btn btn-primary'
-//                ]).
-//    '</div>';
-  //}
-
-
-//  yii::error(\yii\helpers\VarDumper::dumpAsString(calEvent.id));
-
-  // if(Yii::$app->user->can('administrarTareas')){
-  //   echo '<div id="btnDetail" class="col-lg-2">'
-  //     .Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar tarea no planificada',
-  //               [
-  //                  'value' => Url::to([
-  //                     'task/create',
-  //                   //  'idAcuario'=>$acuario->idAcuario,
-  //                     // 'idPlanificacion'=>-1, // esto significa que es no planificada
-  //                     // 'fecha'=>date("Y-m-d") // hoy
-  //                   ]),
-  //                 'title' => 'Agregar tarea no planificada',
-  //                 'class' => 'showModalButton btn btn-success'
-  //               ]).
-  //   '</div>';
-  // }
