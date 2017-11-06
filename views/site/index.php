@@ -61,46 +61,7 @@ $this->title= 'Sistema de gestión AquaSoft';
         <div  class="imgFooter text-center"> Planificaciones </div>
       </div>
     </div>
-
-<<<<<<< Updated upstream
-    <!-- <div class="col-lg-3">
-=======
-<<<<<<< Updated upstream
-    <div class="col-lg-3">
->>>>>>> Stashed changes
-      <div id="panelNotif" class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title text-center">Notificaciones</h3>
-        </div>
-        <div class="panel-body">
-
-        <div class="alert alert-info" role="alert">
-          Se ha registrado una <a href="#" class="alert-link"><strong>nueva planificación</strong></a> para el acuario A01
-        </div>
-        <div class="alert alert-danger" role="alert">
-          <strong>¡Peligro!</strong> Las <a href="#" class="alert-link">condiciones ambientales </a> del acuario AS03 se encuentran fuera de los umbrales.
-        </div>
-        <div class="alert alert-warning" role="alert">
-          <a href="#" class="alert-link">...</a>
-        </div>
-        <div class="alert alert-danger" role="alert">
-          <a href="#" class="alert-link">...</a>
-        </div>
-
-
-
-
-        </div>
-      </div>
-<<<<<<< Updated upstream
-    </div> -->
-    
-=======
     </div>
 
-=======
-    
->>>>>>> Stashed changes
->>>>>>> Stashed changes
   </div>
 </div>
