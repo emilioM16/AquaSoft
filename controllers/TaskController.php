@@ -172,17 +172,18 @@ class TaskController extends Controller
     protected function findModel($id)
     {
         if (($model = Task::findOne($id)) !== null) {
-            $model->ActualizarDuracion(); 
-            $model->ActualizarHoraInicio(); 
+            $model->actualizarDuracion();
+            $model->actualizarHoraInicio();
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
-    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación.
+    public function actionValidation($id, $idAqua = 0, $idPlan = -1, $fechaInicio = 0){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación.
 
         $model = new Task(['idTarea'=>$id]);
+        $model->inicialice($idAqua, $idPlan, $fechaInicio);
 
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
         {

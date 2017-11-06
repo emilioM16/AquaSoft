@@ -48,13 +48,13 @@ class Task extends \yii\db\ActiveRecord
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
-        $this->descripcion=$idAcuario.'--'.$idPlanificacion.'--'.$fechaInicio;
         $this->ACUARIO_idAcuario = $idAcuario;
         if ($idPlanificacion !== -1)
         {
             $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
             $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
         }
+        $this->descripcion=$idAcuario.'--'.$idPlanificacion.'--'.$fechaInicio . '--' . $this->isPlanned();
 
     }
 
@@ -115,15 +115,16 @@ class Task extends \yii\db\ActiveRecord
         if ($this->isPlanned()){
             // armo la fecha de inicio en base a la fecha que seleccionó del calendario y hora de inicio que ha ingresado
             $fechaInicioTemp = date_create_from_format("Y-m-d H:i:s",$this->fechaHoraInicio);
-            $h = intval(substr($attribute, 0,2));
-            $m = intval(substr($attribute, 3,2));
+            $h = intval(substr($this->horaInicio, 0,2));
+            $m = intval(substr($this->horaInicio, 3,2));
             date_time_set($fechaInicioTemp,$h,$m);
             // valido la superposicion de tareas
             $valida = $this->validarSuperposicionFI($fechaInicioTemp); // LIA *********************************************
+            // $valida = false;
             if ($valida){
                 $this->fechaHoraInicio = date_format($fechaInicioTemp,"Y-m-d H:i:s");
             } else{
-                $this->addError($attribute, 'La hora se superpone con otra tarea');
+                $this->addError($attribute, 'La hora se superpone con otra tarea' );
             }
         }
     }
@@ -135,13 +136,19 @@ class Task extends \yii\db\ActiveRecord
         if ($this->isPlanned()){
             // armo la fecha de fin en base a la fecha que seleccionó del calendario y duración que ha ingresado
             $fechaFinTemp = date_create_from_format("Y-m-d H:i:s",$this->fechaHoraInicio);
-            $h = intval(substr($attribute, 0,2));
-            $m = intval(substr($attribute, 3,2));
+            $h = intval(substr($this->duracion, 0,2));
+            $m = intval(substr($this->duracion, 3,2));
             date_time_set($fechaFinTemp, date_format($fechaFinTemp,"H") + $h, date_format($fechaFinTemp,"i") + $m);
             // valido la superposicion de tareas
+            yii::error(\yii\helpers\VarDumper::dumpAsString($fechaFinTemp));
+
+
             $valida = $this->validarSuperposicionFF($fechaFinTemp); // LIA *********************************************
+            // $valida = true;
+
+
             if ($valida){
-                $this->fechaHoraInicio = date_format($fechaFinTemp,"Y-m-d H:i:s");
+                $this->fechaHoraFin = date_format($fechaFinTemp,"Y-m-d H:i:s");
             } else{
                 $this->addError($attribute, 'La hora se superpone con otra tarea');
             }
@@ -300,11 +307,11 @@ class Task extends \yii\db\ActiveRecord
     public function validarSuperposicionFI($fechaHI){
       $tareaSuperpuesta = Task::find()
                       ->asArray()
-                      //->select(['idTask'])
+                      ->select(['idTarea'])
                       ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
-                    //  ->andWhere(['>',$fechaHI,$this->fechaHoraInicio])
-                      //->andWhere(['<',$fechaHI,$this->fechaHoraFin])
-                      //->orWhere([$this->fechaHoraInicio=>$fechaHI])
+                      ->andWhere(['>','fechaHoraFin',date_format($fechaHI,"Y-m-d H:i:s")] )
+                     ->andWhere(['<','fechaHoraInicio',date_format($fechaHI,"Y-m-d H:i:s")])
+                    //  ->orWhere(['fechaHoraInicio'=>date_format($fechaHI,"Y-m-d H:i:s")])
                       //si esto ocurre existe superposicion
                       ->one();
       if ($tareaSuperpuesta !== null) {
@@ -317,9 +324,23 @@ class Task extends \yii\db\ActiveRecord
 
 
     //////////////////////////////////////////////////////////////////////////////////////////
-    public function validarSuperposicionFF($fechaHoraFin){
-      return true;
-    }
+    public function validarSuperposicionFF($fechaHF){
+         $tareaSuperpuesta = Task::find()
+                      ->asArray()
+                       ->select(['idTarea'])
+                       ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
+                       ->andWhere(['>','fechaHoraFin',date_format($fechaHF,"Y-m-d H:i:s")])
+                       ->andWhere(['<','fechaHoraInicio',date_format($fechaHF,"Y-m-d H:i:s")])
+                    //   ->orWhere(['fechaHoraFin'=>date_format($fechaHF,"Y-m-d H:i:s")])
+                       //si esto ocurre existe superposicion
+                       ->one();
+         if ($tareaSuperpuesta !== null) {
+             return false;
+         }
+         else {
+             return true;
+         }
+
 
 
     private function createAndPopulateTask($idAquarium){

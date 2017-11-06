@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -18,19 +18,19 @@ use rmrevin\yii\fontawesome\FA;
         ?>
         <p>
             <?php
-              echo  Html::button('<span class="glyphicon glyphicon-eye-open"></span>', 
+              echo  Html::button('<span class="glyphicon glyphicon-eye-open"></span>',
                     [
-                      'value' => Url::to(['aquarium/view','idAcuario'=>$model->idAcuario]), 
-                      'title' => 'Información del acuario '.$model->nombre, 
+                      'value' => Url::to(['aquarium/view','idAcuario'=>$model->idAcuario]),
+                      'title' => 'Información del acuario '.$model->nombre,
                       'class' => 'showModalButton btn btn-success btnAquarium'
                     ]);
 
               if (Yii::$app->user->can('modificarAcuario')){
-              
-                  echo  Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
+
+                  echo  Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
                         [
-                          'value' => Url::to(['aquarium/update','idAcuario'=>$model->idAcuario]), 
-                          'title' => 'Modificar acuario '.$model->nombre, 
+                          'value' => Url::to(['aquarium/update','idAcuario'=>$model->idAcuario]),
+                          'title' => 'Modificar acuario '.$model->nombre,
                           'class' => 'showModalButton btn btn-primary btnAquarium',
                         ]);
               }
@@ -59,8 +59,8 @@ use rmrevin\yii\fontawesome\FA;
                     ]);
                 }
             }
-            
-              echo Html::a('Detalle', 
+
+              echo Html::a('Detalle',
                             [
                               'detail',
                               'nombreacuario' => $model->nombre,

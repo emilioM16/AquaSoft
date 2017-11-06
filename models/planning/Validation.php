@@ -41,7 +41,7 @@ class Validation extends \yii\db\ActiveRecord
             [['OBSERVACION'], 'string', 'max' => 200],
             [['MOTIVO_RECHAZO_idMotivoRechazo'], 'string', 'max' => 45],
             [['MOTIVO_RECHAZO_idMotivoRechazo'], 'exist', 'skipOnError' => true, 'targetClass' => RejectedMotive::className(), 'targetAttribute' => ['MOTIVO_RECHAZO_idMotivoRechazo' => 'idMotivoRechazo']],
-            [['PLANIFICACION_idPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Planning::className(), 'targetAttribute' => ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']],
+          //  [['PLANIFICACION_idPlanificacion'], 'exist', 'skipOnError' => true, 'targetClass' => Planning::className(), 'targetAttribute' => ['PLANIFICACION_idPlanificacion' => 'idPlanificacion']],
             [['USUARIO_idUsuario'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['USUARIO_idUsuario' => 'idUsuario']],
         ];
     }
@@ -54,7 +54,7 @@ class Validation extends \yii\db\ActiveRecord
         return [
             'idVALIDACION' => 'Id Validacion',
             'FECHAHORA' => 'Fechahora',
-            'OBSERVACION' => 'Observacion',
+            'OBSERVACION' => 'Observación',
             'MOTIVO_RECHAZO_idMotivoRechazo' => 'Motivo de rechazo',
             'PLANIFICACION_idPlanificacion' => 'Planificacion Id Planificacion',
             'USUARIO_idUsuario' => 'Usuario Id Usuario',

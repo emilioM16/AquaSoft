@@ -24,7 +24,12 @@ use yii\helpers\ArrayHelper;
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            'validationUrl'=> Url::toRoute(['task/validation','id'=>$taskId]), 
+            // 'validationUrl'=> Url::toRoute(['task/validation','id'=>$taskId]), 
+            'validationUrl'=> Url::toRoute(['task/validation',
+                                    'id'=>$taskId, 
+                                    'idAqua'=>$model->ACUARIO_idAcuario, 
+                                    'idPlan'=>$model->PLANIFICACION_idPlanificacion, 
+                                    'fechaInicio'=>$model->fechaHoraInicio]),
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
         // echo field($model, 'fechaHoraInicio', ['readonly' => true]);
