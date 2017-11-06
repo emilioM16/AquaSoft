@@ -111,7 +111,7 @@ class Planning extends \yii\db\ActiveRecord
       // yii::error(\yii\helpers\VarDumper::dumpAsString($fechaActual));
         foreach ($planificaciones as $plani) {
 
-                 if ($plani->anioMes == $unMes or $unMes < $fechaActual) {
+                 if (($plani->anioMes == $unMes) || ($unMes < $fechaActual)) {
                    $marca = false;
                 }
                 //  yii::error(\yii\helpers\VarDumper::dumpAsString($unMes));

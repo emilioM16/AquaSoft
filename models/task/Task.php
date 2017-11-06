@@ -122,7 +122,7 @@ class Task extends \yii\db\ActiveRecord
             if ($valida){
                 $this->fechaHoraInicio = date_format($fechaInicioTemp,"Y-m-d H:i:s");
             } else{
-                $this->addError($attribute, 'La hora se superpone con otra tarea' . ' >> ' . $this->horaInicio . ' > ' . $h . ' > ' . $m . ' << ' . date_format($fechaInicioTemp,"Y-m-d H:i:s"));
+                $this->addError($attribute, 'La hora se superpone con otra tarea' );
             }
         }
     }
@@ -138,9 +138,12 @@ class Task extends \yii\db\ActiveRecord
             $m = intval(substr($this->duracion, 3,2));
             date_time_set($fechaFinTemp, date_format($fechaFinTemp,"H") + $h, date_format($fechaFinTemp,"i") + $m);
             // valido la superposicion de tareas
+            yii::error(\yii\helpers\VarDumper::dumpAsString($fechaFinTemp));
+
+
             $valida = $this->validarSuperposicionFF($fechaFinTemp); // LIA *********************************************
             // $valida = true;
-            yii::error(\yii\helpers\VarDumper::dumpAsString($fechaFinTemp));
+
 
             if ($valida){
                 $this->fechaHoraFin = date_format($fechaFinTemp,"Y-m-d H:i:s");
@@ -302,9 +305,9 @@ class Task extends \yii\db\ActiveRecord
                       ->asArray()
                       ->select(['idTarea'])
                       ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
-                      ->andWhere(['<','fechaHoraFin',date_format($fechaHI,"Y-m-d H:i:s")] )
-                     ->andWhere(['>','fechaHoraInicio',date_format($fechaHI,"Y-m-d H:i:s")])
-                      ->orWhere(['fechaHoraInicio'=>date_format($fechaHI,"Y-m-d H:i:s")])
+                      ->andWhere(['>','fechaHoraFin',date_format($fechaHI,"Y-m-d H:i:s")] )
+                     ->andWhere(['<','fechaHoraInicio',date_format($fechaHI,"Y-m-d H:i:s")])
+                    //  ->orWhere(['fechaHoraInicio'=>date_format($fechaHI,"Y-m-d H:i:s")])
                       //si esto ocurre existe superposicion
                       ->one();
       if ($tareaSuperpuesta !== null) {
@@ -321,8 +324,8 @@ class Task extends \yii\db\ActiveRecord
                       ->asArray()
                        ->select(['idTarea'])
                        ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
-                       ->andWhere(['<','fechaHoraFin',date_format($fechaHF,"Y-m-d H:i:s")])
-                       ->andWhere(['>','fechaHoraInicio',date_format($fechaHF,"Y-m-d H:i:s")])
+                       ->andWhere(['>','fechaHoraFin',date_format($fechaHF,"Y-m-d H:i:s")])
+                       ->andWhere(['<','fechaHoraInicio',date_format($fechaHF,"Y-m-d H:i:s")])
                     //   ->orWhere(['fechaHoraFin'=>date_format($fechaHF,"Y-m-d H:i:s")])
                        //si esto ocurre existe superposicion
                        ->one();
