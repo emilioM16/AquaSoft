@@ -4,6 +4,7 @@ $params = require(__DIR__ . '/params.php');
 $db = require(__DIR__ . '/db.php');
 
 $config = [
+    'language' => 'es-ES',
     'id' => 'basic',
     'language'=>'es-ES',
     'basePath' => dirname(__DIR__),

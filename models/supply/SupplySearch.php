@@ -1,17 +1,16 @@
 <?php
 
-namespace app\models\aquarium;
+namespace app\models\supply;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\aquarium\Aquarium;
-use app\models\aquarium\UserAquariums;
+use app\models\supply\Supply;
 
 /**
- * AquariumSearch represents the model behind the search form about `app\models\Aquarium`.
+ * SupplySearch represents the model behind the search form about `app\models\supply\Supply`.
  */
-class AquariumSearch extends Aquarium
+class SupplySearch extends Supply
 {
     /**
      * @inheritdoc
@@ -19,8 +18,8 @@ class AquariumSearch extends Aquarium
     public function rules()
     {
         return [
-            [['idAcuario', 'espacioDisponible', 'activo'], 'integer'],
-            [['nombre', 'descripcion'], 'safe'],
+            [['idInsumo', 'stock', 'activo'], 'integer'],
+            [['nombre', 'descripcion', 'TIPO_TAREA_idTipoTarea'], 'safe'],
         ];
     }
 
@@ -42,15 +41,8 @@ class AquariumSearch extends Aquarium
      */
     public function search($params)
     {
-        $rol = Yii::$app->user->identity->getRole();
-        if($rol == 'especialista'){
-            $query = Aquarium::find()
-                    ->joinWith('userAquariums')
-                    ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario])
-                    ->andWhere(['activo'=>1]);
-        }else{
-            $query = Aquarium::find();
-        }
+        $query = Supply::find();
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -67,13 +59,14 @@ class AquariumSearch extends Aquarium
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idAcuario' => $this->idAcuario,
-            'espacioDisponible' => $this->espacioDisponible,
+            'idInsumo' => $this->idInsumo,
+            'stock' => $this->stock,
             'activo' => $this->activo,
         ]);
 
         $query->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'TIPO_TAREA_idTipoTarea', $this->TIPO_TAREA_idTipoTarea]);
 
         return $dataProvider;
     }

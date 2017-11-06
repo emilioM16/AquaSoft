@@ -58,10 +58,10 @@ class Supply extends \yii\db\ActiveRecord
         return [
             'idInsumo' => 'Id Insumo',
             'nombre' => 'Nombre',
-            'descripcion' => 'Descripcion',
+            'descripcion' => 'Descripción',
             'stock' => 'Stock',
             'activo' => 'Activo',
-            'TIPO_TAREA_idTipoTarea' => 'Tipo  Tarea Id Tipo Tarea',
+            'TIPO_TAREA_idTipoTarea' => 'Tipo de tarea al que pertenece',
         ];
     }
 

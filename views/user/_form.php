@@ -17,7 +17,7 @@ use rmrevin\yii\fontawesome\FA;
 
 <div class="usuario-form">
 
-<?php 
+<?php
 
     $userId =-1;
 
@@ -78,10 +78,10 @@ use rmrevin\yii\fontawesome\FA;
                             'options'=>[
                                 'placeholder'=>'Repita la contraseña'
                             ]
-                        ],                        
+                        ],
                     ]
                 ],
-              
+
             ]
         ]);
 
@@ -123,11 +123,11 @@ use rmrevin\yii\fontawesome\FA;
                                 .'</div>'
                         ]
                     ]
-                ]   
+                ]
             ]
         ]);
 
- 
+
     ActiveForm::end();
     ?>
 

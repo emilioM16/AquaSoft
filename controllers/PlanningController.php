@@ -18,7 +18,7 @@ use app\models\aquarium\Aquarium;
 use yii\helpers\ArrayHelper;
 
 
-file:///home/lia/DESARROLLO/aquasoft-final/controllers/PlanningController.php
+///home/lia/DESARROLLO/aquasoft-final/controllers/PlanningController.php
 //$session = Yii::$app->session;
 /**
  * PlanningController implements the CRUD actions for Planning model.
@@ -122,7 +122,6 @@ class PlanningController extends Controller
         }
             else{
               return $this->render('calendar', [
-
                   'model' => $model,
               ]);
         }
@@ -256,13 +255,6 @@ class PlanningController extends Controller
     }
 
 
-
-    /**
-     * Deletes an existing Planning model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
 
     /**
      * Finds the Planning model based on its primary key value.

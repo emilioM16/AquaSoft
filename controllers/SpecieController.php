@@ -3,20 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\supply\Supply;
-use app\models\supply\SupplySearch;
+use app\models\specie\Specie;
+use app\models\specie\SpecieSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\data\ArrayDataProvider;
-use yii\helpers\Json;
 
 /**
- * SupplyController implements the CRUD actions for Supply model.
+ * SpecieController implements the CRUD actions for Specie model.
  */
-class SupplyController extends Controller
+class SpecieController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -33,12 +30,12 @@ class SupplyController extends Controller
     }
 
     /**
-     * Lists all Supply models.
+     * Lists all Specie models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new SupplySearch();
+        $searchModel = new SpecieSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +45,7 @@ class SupplyController extends Controller
     }
 
     /**
-     * Displays a single Supply model.
+     * Displays a single Specie model.
      * @param integer $id
      * @return mixed
      */
@@ -60,16 +57,16 @@ class SupplyController extends Controller
     }
 
     /**
-     * Creates a new Supply model.
+     * Creates a new Specie model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Supply();
+        $model = new Specie();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['view', 'id' => $model->idInsumo]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idEspecie]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -78,7 +75,7 @@ class SupplyController extends Controller
     }
 
     /**
-     * Updates an existing Supply model.
+     * Updates an existing Specie model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -87,17 +84,17 @@ class SupplyController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['view', 'id' => $model->idInsumo]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->idEspecie]);
         } else {
             return $this->render('update', [
-                'model' =>  $this->findModel($id),
+                'model' => $model,
             ]);
         }
     }
 
     /**
-     * Deletes an existing Supply model.
+     * Deletes an existing Specie model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,25 +107,18 @@ class SupplyController extends Controller
     }
 
     /**
-     * Finds the Supply model based on its primary key value.
+     * Finds the Specie model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Supply the loaded model
+     * @return Specie the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Supply::findOne($id)) !== null) {
+        if (($model = Specie::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
-    }
-
-    public function actionGetStock($supplyId)
-    {
-       $supplyStock = Supply::findOne(['idInsumo'=>$supplyId])->stock;
-       Yii::$app->response->format = 'json';
-       return $supplyStock;
     }
 }

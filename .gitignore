@@ -31,3 +31,5 @@ tests/_support/_generated
 composer\.lock
 
 config/db\.php
+
+*.lock

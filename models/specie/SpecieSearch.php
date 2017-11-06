@@ -1,17 +1,16 @@
 <?php
 
-namespace app\models\aquarium;
+namespace app\models\specie;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\aquarium\Aquarium;
-use app\models\aquarium\UserAquariums;
+use app\models\specie\Specie;
 
 /**
- * AquariumSearch represents the model behind the search form about `app\models\Aquarium`.
+ * SpecieSearch represents the model behind the search form about `app\models\specie\Specie`.
  */
-class AquariumSearch extends Aquarium
+class SpecieSearch extends Specie
 {
     /**
      * @inheritdoc
@@ -19,8 +18,9 @@ class AquariumSearch extends Aquarium
     public function rules()
     {
         return [
-            [['idAcuario', 'espacioDisponible', 'activo'], 'integer'],
+            [['idEspecie', 'minEspacio', 'activo'], 'integer'],
             [['nombre', 'descripcion'], 'safe'],
+            [['minPH', 'maxPH', 'minTemp', 'maxTemp', 'minSalinidad', 'maxSalinidad', 'minLux', 'maxLux', 'minCO2', 'maxCO2'], 'number'],
         ];
     }
 
@@ -42,15 +42,8 @@ class AquariumSearch extends Aquarium
      */
     public function search($params)
     {
-        $rol = Yii::$app->user->identity->getRole();
-        if($rol == 'especialista'){
-            $query = Aquarium::find()
-                    ->joinWith('userAquariums')
-                    ->where(['usuario_idUsuario'=>Yii::$app->user->identity->idUsuario])
-                    ->andWhere(['activo'=>1]);
-        }else{
-            $query = Aquarium::find();
-        }
+        $query = Specie::find();
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -67,8 +60,18 @@ class AquariumSearch extends Aquarium
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idAcuario' => $this->idAcuario,
-            'espacioDisponible' => $this->espacioDisponible,
+            'idEspecie' => $this->idEspecie,
+            'minPH' => $this->minPH,
+            'maxPH' => $this->maxPH,
+            'minTemp' => $this->minTemp,
+            'maxTemp' => $this->maxTemp,
+            'minSalinidad' => $this->minSalinidad,
+            'maxSalinidad' => $this->maxSalinidad,
+            'minLux' => $this->minLux,
+            'maxLux' => $this->maxLux,
+            'minEspacio' => $this->minEspacio,
+            'minCO2' => $this->minCO2,
+            'maxCO2' => $this->maxCO2,
             'activo' => $this->activo,
         ]);
 
