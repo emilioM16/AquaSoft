@@ -28,7 +28,7 @@ use rmrevin\yii\fontawesome\FA;
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            'validationUrl'=> Url::toRoute(['user/validation','id'=>$userId]), 
+            'validationUrl'=> Url::toRoute(['user/validation','id'=>$userId]),
             'type'=>ActiveForm::TYPE_VERTICAL]);
 
         echo FormGrid::widget([

@@ -130,8 +130,6 @@ class Aquarium extends \yii\db\ActiveRecord
     public function beforeSave($insert){
          if(($this->scenario=='create')||($this->scenario=='update')){
             $this->espacioDisponible = $this->capacidadMaxima;
-            if($this->scenario=='create')
-                $this->activo = !$this->activo; // esto es porqeu el check, si no marcás nada, te devuelve un cero.
         }
         return parent::beforeSave($insert);
     }
@@ -142,6 +140,14 @@ class Aquarium extends \yii\db\ActiveRecord
         return $items;
     }
 
+    public function changeActiveState(){//cambia el estado del acuario según corresponda//
+        if ($this->activo==0){
+            $this->activo = 1;
+        }else{
+            $this->activo = 0;
+        }
+        $this->save(false);
+    }
 
     public function loadEvents(){
 
@@ -149,18 +155,21 @@ class Aquarium extends \yii\db\ActiveRecord
 
         foreach ($tasks as $task)
         {
-            $event = new \yii2fullcalendar\models\Event();
-            $event->id = $task->idTarea;
-            $event->title = '[' . $task->TIPO_TAREA_idTipoTarea . '] Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
-            $event->start = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraInicio));
-            $event->end = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraFin));
-            $event->textColor='black';
-            $event->borderColor = 'black';
-            if($task->fechaHoraRealizacion !== null){
-                $event->backgroundColor ='rgb(5.1%, 66.3%, 12.9%)'; 
+            $planState = $task->planificacion['ESTADO_PLANIFICACION_idEstadoPlanificacion'];
+            if(($planState =='Aprobado')||($planState == null)){
+                $event = new \yii2fullcalendar\models\Event();
+                $event->id = $task->idTarea;
+                $event->title = '[' . $task->TIPO_TAREA_idTipoTarea . '] Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
+                $event->start = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraInicio));
+                $event->end = date('Y-m-d\TH:i\Z',strtotime($task->fechaHoraFin));
+                $event->textColor='black';
+                $event->borderColor = 'black';
+                if($task->fechaHoraRealizacion !== null){
+                    $event->backgroundColor ='rgb(5.1%, 66.3%, 12.9%)'; 
+                }
+                $event->editable = true;
+                $this->events[] = $event;
             }
-            $event->editable = true;
-            $this->events[] = $event;
         }
         return $this->events;
     }

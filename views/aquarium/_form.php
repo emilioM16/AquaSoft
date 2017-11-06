@@ -5,6 +5,7 @@ use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use yii\helpers\Url;
 use rmrevin\yii\fontawesome\FA;
+use kartik\switchinput\SwitchInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
@@ -14,7 +15,6 @@ use rmrevin\yii\fontawesome\FA;
 <div class="acuario-form">
 
     <?php 
-
     $aquariumId =-1;
 
     if ($model->idAcuario!==null){
@@ -66,13 +66,28 @@ use rmrevin\yii\fontawesome\FA;
             'columns'=>2,
             'attributes'=>[
                 'activo'=>[
-                    'label'=>'Inactivo',
-                    'type'=>Form::INPUT_CHECKBOX,
-                    'items'=>[0=>'Inactivo'],
-                    // 'options'=>[
-                    //     'float'=>'right'
-                    // ]
+                    'label'=>'Estado',
+                    'type'=>Form::INPUT_WIDGET,
+                    'widgetClass'=>'kartik\switchinput\SwitchInput',
+                    'options'=>[
+                        'type'=>SwitchInput::CHECKBOX,
+                        'pluginOptions'=>[
+                            'size'=>'mini',
+                            'onText'=>'Activo',
+                            'offText'=>'Inactivo',
+                            'onColor'=>'success',
+                            'offColor'=>'danger'
+                        ]
+                    ]
                 ],
+                // 'activo'=>[
+                //     'label'=>'Inactivo',
+                //     'type'=>Form::INPUT_CHECKBOX,
+                //     'items'=>[0=>'Inactivo'],
+                //     // 'options'=>[
+                //     //     'float'=>'right'
+                //     // ]
+                // ],
                 'actions'=>[
                     'type'=>Form::INPUT_RAW,
                     'value'=>'<div class="form-group" align="center">'.

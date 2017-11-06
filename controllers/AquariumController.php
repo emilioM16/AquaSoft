@@ -80,6 +80,7 @@ class AquariumController extends Controller
             return $this->redirect(['index', 'id' => $model->idAcuario]);
         } else {
             if (Yii::$app->request->isAjax){
+                $model->activo = 1;
                 return $this->renderAjax('create',[
                     'model'=>$model,
                 ]);
@@ -125,6 +126,14 @@ class AquariumController extends Controller
         $model = $this->findModel($idAcuario);
         $model->activo = 0;
         $model->save();
+        return $this->redirect(['index']);
+    }
+
+
+    public function actionChangeState($id)
+    {
+        $model = $this->findModel($id);
+        $model->changeActiveState();
         return $this->redirect(['index']);
     }
 

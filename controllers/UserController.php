@@ -95,6 +95,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->contrasenia = '';
         $model->scenario = 'update';
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
