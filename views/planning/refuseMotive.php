@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       'OBSERVACION'=>[
                             'type'=>Form::INPUT_TEXTAREA,
                             'options'=>[
-                                'placeholder'=>'Ingrese una observacion',
+                                'placeholder'=>'Ingrese una observación',
                                 'maxlength'=>true,
                             ]
                         ],

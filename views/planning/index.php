@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <h1><?= Html::encode($this->title) ?></h1>
     <p>
     <?php if(Yii::$app->user->can('crearPlani')){
-    echo  Html::a('Nueva planificacion', ['create'], ['class' => 'btn btn-success']);
+    echo  Html::a(FA::icon("plus")->size(FA::SIZE_LARGE).' Nueva planificación', ['create'], ['class' => 'btn btn-success']);
     }?>
     </p>
 
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
               },
              'check'=>function($url,$model){
                if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
-                  return Html::a('<span class="btn-aquarium glyphicon glyphicon-ok"></span>',
+                  return Html::a(FA::icon("calendar-check-o")->size(FA::SIZE_LARGE),
                   ['planning/check','id'=>$model->idPlanificacion],
                   ['class' => 'btn btn-success btnAquarium']
                   );

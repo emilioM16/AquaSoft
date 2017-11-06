@@ -156,19 +156,8 @@ EOF;
               '</td>'.
             '</tr>';
 
-
                   }
-
-
-
                 ?>
-
-
-
-
-
-
-
           </tbody>
         </table>
       </div>
@@ -177,8 +166,6 @@ EOF;
 
 
       <div class="col-lg-6 form-center">
-
-
 
         <?= yii2fullcalendar\yii2fullcalendar::widget([
             'id'=>'calendar',
@@ -216,7 +203,7 @@ EOF;
 
         if ($session->get('var')=='check'){
         echo '<div>'
-          .Html::a('Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
+          .Html::a(FA::icon("calendar-check-o")->size(FA::SIZE_LARGE).' Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
                     'class' => 'btn btn-success',
                     'data' => [
                         'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
@@ -224,10 +211,10 @@ EOF;
                       ],
                     ]).'  '.
 
-          Html::button('<span class="glyphicon glyphicon-remove"></span>',
+          Html::button(FA::icon("times")->size(FA::SIZE_LARGE).' Rechazar',
                         [
                          'value' => Url::to(['refuse','id'=>$model->idPlanificacion]),
-                          'title' => 'Rechazar planificacion ',
+                          'title' => 'Rechazar planificación ',
                           'class' => 'showModalButton btn btn-danger'
                         ])
           .'</div>';
@@ -255,6 +242,5 @@ EOF;
                 '</div>';
               }
             ?>
-
 
   <?php

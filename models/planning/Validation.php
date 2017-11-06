@@ -54,7 +54,7 @@ class Validation extends \yii\db\ActiveRecord
         return [
             'idVALIDACION' => 'Id Validacion',
             'FECHAHORA' => 'Fechahora',
-            'OBSERVACION' => 'Observacion',
+            'OBSERVACION' => 'Observación',
             'MOTIVO_RECHAZO_idMotivoRechazo' => 'Motivo de rechazo',
             'PLANIFICACION_idPlanificacion' => 'Planificacion Id Planificacion',
             'USUARIO_idUsuario' => 'Usuario Id Usuario',
