@@ -54,10 +54,10 @@ class TaskController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($idTarea)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($idTarea),
         ]);
     }
 
@@ -100,7 +100,7 @@ class TaskController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($view, $idTarea)
+    public function actionUpdate($idTarea)
     {
         $model = $this->findModel($idTarea);
         $taskTypes = TaskType::find()->all();

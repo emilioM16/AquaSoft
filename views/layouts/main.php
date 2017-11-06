@@ -81,7 +81,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             ],
 
             ['label'=>file_get_contents("img/fishes.svg"),
-                'url'=>['species/'],
+                'url'=>['specie/'],
                 'visible'=>Yii::$app->user->can('verEspecies'),
                 'options'=>[
                     'data-toggle'=>'tooltip',
