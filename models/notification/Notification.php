@@ -85,12 +85,12 @@ class Notification extends \yii\db\ActiveRecord
 
             if ($key->ORIGEN_NOTIFICACION_idOrigenNotificacion == 'Tarea no realizada')
             {
-                $row .= '<p class="alert alert-info alert-notif" role="alert">'.FA::icon("info")->size(FA::SIZE_LARGE).' <strong>¡Atención! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.' de tipo '.$tarea->TIPO_TAREA_idTipoTarea.' en el acuario '.$acu->nombre;
+                $row .= '<p class="alert alert-info alert-notif" role="alert">'.FA::icon("info")->size(FA::SIZE_LARGE).' <strong>¡Atención! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.' de tipo <strong>'.$tarea->TIPO_TAREA_idTipoTarea.'</strong> en '.$acu->nombre;
                     '</p>'.'<hr class="hrNotif">';
             }
             else
             {
-                 $row .= '<p class="alert alert-danger alert-notif text-justify " role="alert">'.FA::icon("warning")->size(FA::SIZE_LARGE).'<strong>¡Peligro! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.' en el registro de una tarea de '.$tarea->titulo.' en el acuario '.$acu->nombre;
+                 $row .= '<p class="alert alert-danger alert-notif text-justify " role="alert">'.FA::icon("warning")->size(FA::SIZE_LARGE).'<strong>¡Peligro! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.' en el registro de una tarea de tipo <strong>'.$tarea->TIPO_TAREA_idTipoTarea.' </strong>en '.$acu->nombre;
                           '</p>'.'<hr class="hrNotif">';
             } 
          }
