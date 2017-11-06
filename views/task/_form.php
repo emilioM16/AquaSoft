@@ -121,7 +121,38 @@ $session = Yii::$app->session;
                           ]
             ]
         ]);
-        echo Form::widget([
+        if (!$model->isNewRecord){
+            echo Form::widget([
+                'model'=>$model,
+                'form'=>$form,
+                'columns'=>1,
+                'attributes'=>[
+                    'actions'=>[
+                        'type'=>Form::INPUT_RAW,
+                        'value'=>'<div class="form-group" align="center">'.
+
+                            Html::submitButton(
+                                $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar',
+                                [
+                                    'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-success btnModal'
+                                ]).' '.
+
+                            Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',
+                            ['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'
+                                ]).' '.    
+                             Html::a(FA::icon("trash")->size(FA::SIZE_LARGE).' Eliminar', ['task/delete', 'id' => $model->idTarea], [
+                                       'class' => 'btn btn-primary btnModal',
+                                       'data' => [
+                                           'confirm' => '¿Esta seguro que desea eliminar esta tarea?',
+                                           'method' => 'post',
+                                         ],
+                                       ])
+                    ]
+                ]
+            ]);
+        } else
+        {
+            echo Form::widget([
             'model'=>$model,
             'form'=>$form,
             'columns'=>1,
@@ -138,18 +169,11 @@ $session = Yii::$app->session;
 
                         Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',
                         ['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'
-                            ]).' '.
-
-                         Html::a(FA::icon("trash")->size(FA::SIZE_LARGE).' Eliminar', ['task/delete', 'id' => $model->idTarea], [
-                                   'class' => 'btn btn-primary btnModal',
-                                   'data' => [
-                                       'confirm' => '¿Esta seguro que desea eliminar esta tarea?',
-                                       'method' => 'post',
-                                     ],
-                                   ])
+                            ])
                 ]
             ]
         ]);
+        }
     $form->field($model, 'fechaHoraInicio')->textInput(['hidden' => true]);
     $form->field($model, 'fechaHoraFin')->textInput(['hidden' => true]);
     // $form->field($model, 'PLANIFICACION_idPlanificacion')->textInput(['hidden' => true]);

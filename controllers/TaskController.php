@@ -71,31 +71,8 @@ class TaskController extends Controller
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
         //  yii::error(\yii\helpers\VarDumper::dumpAsString($_POST));
-        $filtrarTareaAlimentacion = false;
+        $taskTypes = self::filterTaskTypes($model->acuario);
 
-        if (!$model->isPlanned()){
-            $acuario = $model->acuario;
-            if($acuario !== null){
-                $conditions = $acuario->actualConditions;
-                // si no tiene condiciones ambientales le quito la tarea elimnetación
-                $filtrarTareaAlimentacion = ($conditions === null);    
-            } 
-        }
-
-        if ($filtrarTareaAlimentacion){
-                $taskTypes = TaskType::find()
-                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Alimentación'])
-                    ->all();    
-            } else {
-                $taskTypes = TaskType::find()
-                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
-                    ->all(); 
-            } 
         if (($model->load(Yii::$app->request->post())) && $model->save()) {
             return $this->redirect(Yii::$app->request->referrer);
         } else {
@@ -122,7 +99,8 @@ class TaskController extends Controller
     public function actionUpdate($idTarea)
     {
         $model = $this->findModel($idTarea);
-        $taskTypes = TaskType::find()->all();
+        // $taskTypes = TaskType::find()->all();
+        $taskTypes = self::filterTaskTypes($model->acuario);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(Yii::$app->request->referrer);
@@ -139,6 +117,32 @@ class TaskController extends Controller
                 ]);
             }
         }
+    }
+
+    private function filterTaskTypes($acuario){
+        $filtrarTareaAlimentacion = false;
+
+        if ($acuario !== null){
+                $conditions = $acuario->actualConditions;
+                // si no tiene condiciones ambientales le quito la tarea elimnetación
+                $filtrarTareaAlimentacion = ($conditions === null);    
+            } 
+
+        if ($filtrarTareaAlimentacion){
+                $taskTypes = TaskType::find()
+                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Alimentación'])
+                    ->all();    
+            } else {
+                $taskTypes = TaskType::find()
+                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
+                    ->all(); 
+            } 
+        return $taskTypes;
     }
 
     /**
