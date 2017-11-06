@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use rmrevin\yii\fontawesome\FA;
 
 $this->title = 'Sistema gestión AquaSoft';
 ?>
@@ -33,8 +34,12 @@ $this->title = 'Sistema gestión AquaSoft';
                       ]
                   ]);?>
                 <div class="col-lg-12 form-center">
-                  <?= $form->field($model, 'username')->textInput(['autofocus'=>true,]); ?>
-                  <?= $form->field($model, 'password')->passwordInput([]); ?>
+                  <?= $form->field($model, 'username',[
+                    'inputTemplate'=>'<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>{input}</div>'
+                  ])->textInput(['autofocus'=>true]); ?>
+                  <?= $form->field($model, 'password',[
+                    'inputTemplate'=>'<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-asterisk"></i></span>{input}</div>'
+                  ])->passwordInput([]); ?>
                 </div>
               </div>
         </div>
