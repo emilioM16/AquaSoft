@@ -4,10 +4,12 @@ use yii\helpers\Html;
 use rmrevin\yii\fontawesome\FA;
 use app\models\planning\Planning;
 use app\models\planning\Validation;
+use app\models\planning\RejectedMotive;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model app\models\Planning */
 
@@ -18,14 +20,16 @@ use  kartik\datecontrol\DateControl ;
 $this->title = $model->titulo;
 //$this->title = $modelValidacion->titulo;
 $this->params['breadcrumbs'][] = $this->title;
-$modelV->PLANIFICACION_idPlanificacion = $model->idPlanificacion;
+
+
+
 
 ?>
 <div class="planning-view">
   <?php
   $form = ActiveForm::begin([
       'id'=>$modelV->formName(),
-      'action' => ['planning/motive','id'=>$modelV->PLANIFICACION_idPlanificacion],
+      'action' => ['planning/motive','id'=>$model->idPlanificacion],
       'type'=>ActiveForm::TYPE_VERTICAL]);
 
                 echo Form::widget([
@@ -36,20 +40,7 @@ $modelV->PLANIFICACION_idPlanificacion = $model->idPlanificacion;
                       'MOTIVO_RECHAZO_idMotivoRechazo'=>[
                         'type'=>Form::INPUT_WIDGET,
                         'widgetClass'=>'kartik\select2\Select2',
-
-                        'options'=>[
-                          'pluginOptions'=>[
-                            'placeholder'=>'Seleccione el motivo',
-                          ],
-                          'data'=>
-                            [
-                              'Escasez de tareas',
-                              'Incorrecta distribución de tareas',
-                              'Incumplimiento de politicas',
-                              'Otro'
-                            ]
-                        ],
-
+                        'options'=>['data'=>ArrayHelper::map($motivos,'idMotivoRechazo','idMotivoRechazo')],
                        ],
 
                       'OBSERVACION'=>[
@@ -59,18 +50,16 @@ $modelV->PLANIFICACION_idPlanificacion = $model->idPlanificacion;
                                 'maxlength'=>true,
                             ]
                         ],
-
                          'actions'=>[
                              'type'=>Form::INPUT_RAW,
                              'value'=>'<div class="form-group" align="center">'.
                              Html::submitButton(
-                                 $model->isNewRecord ? 'Aceptar' : FA::icon('save')->size(FA::SIZE_LARGE).' Aceptar',
+                                 $modelV->isNewRecord ? 'Aceptar' : FA::icon('save')->size(FA::SIZE_LARGE).' Aceptar',
                                  [
-                                     'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
+                                     'class' => $modelV->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                                  ])
                          ]
                     ]
-
   ]);
 
 ActiveForm::end();

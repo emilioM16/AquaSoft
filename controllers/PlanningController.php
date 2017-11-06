@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\planning\Planning;
 use app\models\planning\Validation;
+use app\models\planning\RejectedMotive;
 use app\models\planning\PlanningSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -214,8 +215,12 @@ class PlanningController extends Controller
     public function actionRefuse($id)
     {
          $modelValidacion= new Validation();
+
          $model = $this->findModel($id);
          $model = $model->changeStatus('Rechazada');
+
+         $motivosRechazo = RejectedMotive::find()->all();
+
       //   yii::error(\yii\helpers\VarDumper::dumpAsString($model));
          $model->save(false);//llama previamente al before save
          Yii::$app->session->setFlash('success', "Planificación rechazada con éxito");
@@ -223,21 +228,20 @@ class PlanningController extends Controller
          return $this->renderAjax('refuseMotive',[
              'model'=>$model,
              'modelV'=>$modelValidacion,
+             'motivos'=>$motivosRechazo,
          ]);
     }
 
     public function actionMotive($id)
     {
-        //  $modelVal= new Validation();
-        //  $modelVal = $this->findModel($id);
-          $modelVal = Validation::find()->where(['PLANIFICACION_idPlanificacion' => $id])->one();
-      //  $modelVal = new Validation();
+          $modelVal= new Validation();
+         $modelVal->load(Yii::$app->request->post());
 
-      //  $modelVal->MOTIVO_RECHAZO_idMotivoRechazo = 'Otro';//////////////////
-      //  $modelVal->OBSERVACION = 'Otro';
-      //  $modelVal->PLANIFICACION_idPlanificacion= $id;
-      //  $modelVal->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
-        yii::error(\yii\helpers\VarDumper::dumpAsString($modelVal));
+          $modelVal->PLANIFICACION_idPlanificacion= $id;
+          $modelVal->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
+
+
+       yii::error(\yii\helpers\VarDumper::dumpAsString($modelVal));
         $modelVal->save(false);//trucho
 
 
