@@ -50,3 +50,17 @@ yii.confirm = function (message, okCallback, cancelCallback) {
         allowOutsideClick: true,
     }, okCallback);
 };
+
+$('#notificationButton').on('click', function(){
+     $.ajax({
+       url: "site/search-notification",
+       type: "GET",
+       dataType: "html",
+       success: function(response){
+          $("#notifix").html(response);
+       },
+       error:function(){
+           $("#notifix").html("No hay notificaciones");
+       }
+     });
+});

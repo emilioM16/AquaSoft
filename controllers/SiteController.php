@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\Login;
 use app\models\user\User;
+use app\models\notification\Notification;
 
 class SiteController extends Controller
 {
@@ -86,5 +87,11 @@ class SiteController extends Controller
         $this->goHome();
     }
 
+    public function actionSearchNotification()
+    {
+        $noti =  new Notification();
+        $resu = $noti->getNotificaciones();
+        return $resu;
+    }
 
 }

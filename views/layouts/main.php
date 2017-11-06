@@ -12,7 +12,6 @@ use app\assets\AppAsset;
 use rmrevin\yii\fontawesome\FA;
 use kartik\popover\PopoverX;
 use yii\bootstrap\Modal;
-use app\models\notification\Notification;
 use yii\helpers\VarDumper;
 
 AppAsset::register($this);
@@ -33,8 +32,6 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
 
 <div class="wrap">
     <?php
-
-    $noti = new Notification();//instancia de notificacion, que es usada en el tooltip del navBar
 
     NavBar::begin([
         'brandLabel' => Html::img('@web/img/logoPez.png'),
@@ -136,13 +133,12 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                     'title'=>'Ir al inicio'
                 ]
             ],
-
+            //SOLO PARA ENCARGADO
             ['label'=>
                 PopoverX::widget([
                     'header' => 'Notificaciones',
-                    //'visible'=>Yii::$app->user->can(''),//no se como restringir para que el especialista no vea este label
                     'placement' => PopoverX::ALIGN_BOTTOM,
-                    'content' => $noti->getNotificaciones(),//con este metodo se imprimen las notificaciones
+                    'content' => '<span id="notifix"></span>',
                     'options'=>[
                         'class'=>'popover-notif'
                     ],
@@ -153,6 +149,7 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
                         ],
                 ]),
             'url'=>null,
+            'visible'=>Yii::$app->user->can('verNotificaciones'),
             'options'=>[
                 'id'=>'notificationButton',
                 'data-toggle'=>'tooltip',
