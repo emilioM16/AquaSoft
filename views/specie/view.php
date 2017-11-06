@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\specie\Specie */
 
 $this->title = $model->nombre;
-$this->params['breadcrumbs'][] = ['label' => 'Especie', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Especies', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="specie-view">
