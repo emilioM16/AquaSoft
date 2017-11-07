@@ -340,6 +340,7 @@ class Task extends \yii\db\ActiveRecord
          else {
              return true;
          }
+    }
 
 
 

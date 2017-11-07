@@ -6,10 +6,12 @@ use kartik\builder\Form;
 use yii\helpers\Url;
 use rmrevin\yii\fontawesome\FA;
 use kartik\switchinput\SwitchInput;
-
+use kartik\switchinput\SwitchInputAsset;
 /* @var $this yii\web\View */
 /* @var $model app\models\Acuario */
 /* @var $form yii\widgets\ActiveForm */
+
+SwitchInputAsset::register($this); 
 ?>
 
 <div class="acuario-form">

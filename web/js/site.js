@@ -59,8 +59,8 @@ $('#notificationButton').on('click', function(){
        success: function(response){
           $("#notifix").html(response);
        },
-       error:function(){
-           $("#notifix").html("No hay notificaciones");
+       error: function(xhr,err){
+        alert("Ocurrió un error al obtener las notificaciones");
        }
      });
 });

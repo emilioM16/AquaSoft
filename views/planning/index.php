@@ -28,7 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php Pjax::begin(); ?>
 
 <?php
- if (Yii::$app->user->can('autorizar-rechazar')) {
+
+if (Yii::$app->user->can('autorizar-rechazar')) {
+  $template = '{view}{check}';
+}else{
+  $template = '{view}{check}{down}';
+}
+
+
   echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -38,17 +45,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'titulo',
             [
             'attribute'=>'anioMes',
-            'format' => ['date','php:m-Y']
+            'format' => ['date','php:m-Y'],
             ],
             [
             'attribute' => 'ACUARIO_USUARIO_acuario_idAcuario',
             'value' => 'aCUARIOUSUARIOAcuarioIdAcuario.nombre',
             ],
-            'ESTADO_PLANIFICACION_idEstadoPlanificacion',
-
+            [
+            'attribute'=>'ESTADO_PLANIFICACION_idEstadoPlanificacion',
+            'filter'=>['Aprobado'=>'Aprobada','Rechazado'=>'Rechazada','SinVerificar'=>'Sin verificar'],
+            ],
             [
             'class' => 'yii\grid\ActionColumn',
-            'template' => '{view}{check}',
+            'template' => $template,
 
             'buttons' => [
 
@@ -60,83 +69,51 @@ $this->params['breadcrumbs'][] = $this->title;
 
               },
              'check'=>function($url,$model){
-               if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
-                  return Html::a(FA::icon("calendar-check-o")->size(FA::SIZE_LARGE),
-                  ['planning/check','id'=>$model->idPlanificacion],
-                  ['class' => 'btn btn-success btnAquarium']
-                  );
-                }else {
+              if (Yii::$app->user->can('autorizar-rechazar')) {
+                if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
+                    return Html::a(FA::icon("calendar-check-o")->size(FA::SIZE_LARGE),
+                    ['planning/check','id'=>$model->idPlanificacion],
+                    ['class' => 'btn btn-success btnAquarium']
+                    );
+                  }else {
+                    //NO SE CREA EL BOTÓN
+                  }
+                }else{
+                  if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
+                    return Html::a('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
+                    ['planning/update','id'=>$model->idPlanificacion],
+                    ['class' => 'btn btn-primary btnAquarium']
 
+                    );
+                  }
                 }
 
               },
+              'down'=>function($url,$model,$key){
+                if (!Yii::$app->user->can('autorizar-rechazar')) {
+                  if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
+                  return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['planning/down', 'id' => $model->idPlanificacion], [
+                      'class' => 'btn btn-danger btnAquarium',
+                      'data' => [
+                          'data-pjax' => '0',
+                          'confirm' => '¿Está seguro de eliminar la planificacion ?',
+                          'method' => 'post',
+                      ],
+                  ]);
+                  }
+                  else{
+                    //NO SE CREA EL BOTÓN
+                  }
+                }else{
+
+                }
+             },
             ],
           ],
 
         ],
     ]);
-  }
 
-  else{
-        echo GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-
-                'titulo',
-                [
-                'attribute'=>'anioMes',
-                'format' => ['date','php:m-Y']
-                ],
-                [
-                'attribute' => 'ACUARIO_USUARIO_acuario_idAcuario',
-                'value' => 'aCUARIOUSUARIOAcuarioIdAcuario.nombre',
-                ],
-                'ESTADO_PLANIFICACION_idEstadoPlanificacion',
-
-                [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}{update}{down}',
-
-                'buttons' => [
-
-                  'view'=>function($url,$model){
-                      return Html::a('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>',
-                      ['planning/view','id'=>$model->idPlanificacion],
-                      ['class' => 'btn btn-info btnAquarium']
-                    );
-
-                  },
-                  'update'=>function($url,$model){
-                    if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
-                      return Html::a('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
-                      ['planning/update','id'=>$model->idPlanificacion],
-                      ['class' => 'btn btn-primary btnAquarium']
-
-                      );
-                    }
-                  },
-                  'down'=>function($url,$model,$key){
-                     if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion=='SinVerificar') {
-                      return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['planning/down', 'id' => $model->idPlanificacion], [
-                          'class' => 'btn btn-danger btnAquarium',
-                          'data' => [
-                              'data-pjax' => '0',
-                              'confirm' => '¿Está seguro de eliminar la planificacion ?',
-                              'method' => 'post',
-                          ],
-                      ]);
-                    }
-                    else{
-
-                    }
-                  },
-              ],
-            ],
-          ],
-        ]);
-      }
 
           echo AlertBlock::widget([
             'useSessionFlash' => true,
