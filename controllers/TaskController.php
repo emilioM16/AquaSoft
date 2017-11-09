@@ -70,7 +70,29 @@ class TaskController extends Controller
     {
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
-          yii::error(\yii\helpers\VarDumper::dumpAsString($_POST));
+        //  yii::error(\yii\helpers\VarDumper::dumpAsString($_POST));
+        $filtrarTareaAlimentacion = false;
+        $acuario = $model->acuario;
+        if($acuario != null){
+            $conditions = $acuario->actualConditions;
+            // si no tiene condiciones ambientales le quito la tarea elimnetación
+            $filtrarTareaAlimentacion = ($conditions != null);       
+        } 
+
+        if ($filtrarTareaAlimentacion){
+                $taskTypes = TaskType::find()
+                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Alimentación'])
+                    ->all();    
+            } else {
+                $taskTypes = TaskType::find()
+                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
+                    ->all(); 
+            } 
 
         $taskTypes = TaskType::find()
                     ->where(['!=','idTipoTarea','Incorporar ejemplares'])

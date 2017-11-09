@@ -340,7 +340,7 @@ class Task extends \yii\db\ActiveRecord
          else {
              return true;
          }
-
+    }
 
 
     private function createAndPopulateTask($idAquarium){
