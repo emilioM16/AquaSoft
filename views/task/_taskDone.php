@@ -3,9 +3,7 @@ use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use kartik\builder\FormGrid;
-// print_r($task);
 ?>
-
 
 <div class="row">
     <div class="col-lg-2 form-center">
@@ -87,7 +85,7 @@ use kartik\builder\FormGrid;
     </div>
 </div>
 
-<?= $this->render('_taskDoneControl',['task'=>$task]); ?>
+<?= $this->render('_taskDoneControl',['conditions'=>$task->condicionAmbiental]); ?>
 
     <div class='col-lg-2 form-center btnTaskDone'>
         <?= Html::button('Cerrar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'])?>
