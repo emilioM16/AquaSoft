@@ -120,9 +120,9 @@ use kartik\select2\Select2;
     echo TabularInput::widget([
             'id'=>'id',
             'models' => $supplyModels,
-            'max'=>6,
-            'allowEmptyList' => true,
+            'max'=>6,            
             'min'=>0,
+            'allowEmptyList' => true,
             'attributeOptions' => [
                 'enableAjaxValidation'      => true,
                 'enableClientValidation'    => false,

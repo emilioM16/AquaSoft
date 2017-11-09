@@ -85,7 +85,8 @@ $config = [
             'rules' => [
                 'login'=>'site/login',
                 'logout'=>'site/logout',
-                'specimens'=>'task-specimen/specimens-tasks', 
+                'specimens'=>'task-specimen/specimens-tasks',
+                'acuario/detalle'=> 'aquarium/detail'
             ],
         ],
     ],

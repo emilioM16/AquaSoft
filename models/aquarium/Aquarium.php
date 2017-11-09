@@ -156,7 +156,7 @@ class Aquarium extends \yii\db\ActiveRecord
         foreach ($tasks as $task)
         {
             $planState = $task->planificacion['ESTADO_PLANIFICACION_idEstadoPlanificacion'];
-            if(($planState =='Aprobado')||($planState == null)){
+            if(($planState =='Aprobada')||($planState == null)){
                 $event = new \yii2fullcalendar\models\Event();
                 $event->id = $task->idTarea;
                 $event->title = '[' . $task->TIPO_TAREA_idTipoTarea . '] Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
