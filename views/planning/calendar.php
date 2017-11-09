@@ -241,6 +241,16 @@ EOF;
                       ]).
                 '</div>';
               }
+
+              echo '<div><br>'
+                .Html::a(FA::icon("home")->size(FA::SIZE_LARGE).' Inicio', ['planning/index'], [
+                          'class' => 'btn btn-primary',
+                          'data' => [
+                              //'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                              'method' => 'post',
+                            ],
+                          ])
+                .'</div>';
             ?>
 
   <?php

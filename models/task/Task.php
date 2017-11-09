@@ -297,7 +297,7 @@ class Task extends \yii\db\ActiveRecord
     public function isPlanned(){
         return (isset($this->PLANIFICACION_idPlanificacion));
     }
- 
+
 
     public function wasExecuted(){
         return (isset($this->fechaHoraRealizacion));
@@ -310,7 +310,7 @@ class Task extends \yii\db\ActiveRecord
                       ->select(['idTarea'])
                       ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
                       ->andWhere(['>','fechaHoraFin',date_format($fechaHI,"Y-m-d H:i:s")] )
-                     ->andWhere(['<','fechaHoraInicio',date_format($fechaHI,"Y-m-d H:i:s")])
+                     ->andWhere(['<=','fechaHoraInicio',date_format($fechaHI,"Y-m-d H:i:s")])
                     //  ->orWhere(['fechaHoraInicio'=>date_format($fechaHI,"Y-m-d H:i:s")])
                       //si esto ocurre existe superposicion
                       ->one();
@@ -329,7 +329,7 @@ class Task extends \yii\db\ActiveRecord
                       ->asArray()
                        ->select(['idTarea'])
                        ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
-                       ->andWhere(['>','fechaHoraFin',date_format($fechaHF,"Y-m-d H:i:s")])
+                       ->andWhere(['>=','fechaHoraFin',date_format($fechaHF,"Y-m-d H:i:s")])
                        ->andWhere(['<','fechaHoraInicio',date_format($fechaHF,"Y-m-d H:i:s")])
                     //   ->orWhere(['fechaHoraFin'=>date_format($fechaHF,"Y-m-d H:i:s")])
                        //si esto ocurre existe superposicion
@@ -341,11 +341,11 @@ class Task extends \yii\db\ActiveRecord
              return true;
          }
 
-
+}
 
     private function createAndPopulateTask($idAquarium){
         if($this->idTarea == -1){
-            $this->idTarea = null;              
+            $this->idTarea = null;
             $this->titulo = 'Control';
             $this->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
             $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
@@ -356,8 +356,8 @@ class Task extends \yii\db\ActiveRecord
             $this->ACUARIO_idAcuario = $idAquarium;
             $this->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
         }else{
-            $this->fechaHoraRealizacion = new Expression('NOW()');   
-        } 
+            $this->fechaHoraRealizacion = new Expression('NOW()');
+        }
     }
 
 
@@ -373,15 +373,15 @@ class Task extends \yii\db\ActiveRecord
         }
         return $validConditions;
     }
-    
+
 
     private function removeRepeated($supplies){
         foreach ($supplies as $key => $supply) {
-            for ($i=$key+1; $i < sizeof($supplies) ; $i++) { 
+            for ($i=$key+1; $i < sizeof($supplies) ; $i++) {
                 if($supply->idInsumo == $supplies[$i]->idInsumo){
-                    $supply->quantity = $supply->quantity + $supplies[$i]->quantity;                                
+                    $supply->quantity = $supply->quantity + $supplies[$i]->quantity;
                     unset($supplies[$i]);
-   
+
                     $supplies[$key] = $supply;
                 }
             }
@@ -392,7 +392,7 @@ class Task extends \yii\db\ActiveRecord
 
 
     public function saveControl($conditions, $supplies, $idAquarium){
-        try{                
+        try{
             $transaction = Yii::$app->db->beginTransaction();
             $this->createAndPopulateTask($idAquarium);
             if($this->save()){ //si guarda la tarea se actualiza el stock del insumo//
@@ -410,17 +410,17 @@ class Task extends \yii\db\ActiveRecord
                             if($taskSupply->save()){//si guarda el registro en INSUMO_TAREA, se guardan las condiciones ambientales//
 
                             }else{
-                                throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                                throw new Exception('Ocurrió un error al guardar la información.');
                             }
                         }else{
-                            throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                            throw new Exception('Ocurrió un error al guardar la información.');
                         }
                     }
                 }
                 $conditions->acuario_idAcuario = $idAquarium;
                 $conditions->tarea_idTarea = $this->idTarea;
                 if($conditions->save()){
-                    
+
                     $validConditions = $this->checkEnviroment($idAquarium, $conditions,$this->idTarea);
                     if(!$validConditions){
                         $notification = new Notification();
@@ -430,28 +430,28 @@ class Task extends \yii\db\ActiveRecord
                         if($notification->save()){
                             $transaction->commit();
                         }else{
-                            throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                            throw new Exception('Ocurrió un error al guardar la información.');
                         }
                     }else{
-                        $transaction->commit();    
+                        $transaction->commit();
                     }
-                    return Yii::$app->session->setFlash('success', "El nuevo control se registró correctamente.");              
+                    return Yii::$app->session->setFlash('success', "El nuevo control se registró correctamente.");
                 }else{
-                    throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                    throw new Exception('Ocurrió un error al guardar la información.');
                 }
             }else{
-                throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                throw new Exception('Ocurrió un error al guardar la información.');
             }
 
         }catch(Exception $e){
             $transaction->rollback();
-            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.");            
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.");
         }
     }
 
 
     public function saveCommonTask($supplies){
-        try{                
+        try{
             $transaction = Yii::$app->db->beginTransaction();
             $this->fechaHoraRealizacion = new Expression('NOW()');
             if($this->save(false)){ //si guarda la tarea se actualiza el stock del insumo//
@@ -469,21 +469,21 @@ class Task extends \yii\db\ActiveRecord
                             if($taskSupply->save()){//si guarda el registro en INSUMO_TAREA, se guardan las condiciones ambientales//
 
                             }else{
-                                throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                                throw new Exception('Ocurrió un error al guardar la información.');
                             }
                         }else{
-                            throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                            throw new Exception('Ocurrió un error al guardar la información.');
                         }
                     }
                 }
                 $transaction->commit();
-                return Yii::$app->session->setFlash('success', "La nueva tarea se registró correctamente.");                  
+                return Yii::$app->session->setFlash('success', "La nueva tarea se registró correctamente.");
             }else{
-                throw new Exception('Ocurrió un error al guardar la información.');                                                      
+                throw new Exception('Ocurrió un error al guardar la información.');
             }
         }catch(Exception $e){
             $transaction->rollback();
-            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar la realización de la tarea.".$e);            
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar la realización de la tarea.".$e);
         }
     }
 
