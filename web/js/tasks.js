@@ -140,7 +140,7 @@ $(document).on('change','#selectDestinationAquarium',function(){
        dataType: "html",
        success: function(response){
         $("#inputs").html(response);
-        var totalHeight = $("#inputs").height() + 208;
+        var totalHeight = $("#inputs").height() + 230;
         $("#alert").html('');          
         $("#modalContent").animate({"height":totalHeight+'px'},200,'linear');
        },
@@ -182,7 +182,7 @@ $(document).on('click','#transferBtn',function(){
       });    
     }else{
         $("#alert").html('<div class="alert alert-warning" role="alert">Por favor ingrese la cantidad de ejemplares a transferir</div>');
-        var totalHeight = $("#alert").height() + $("#inputs").height() + 210; 
+        var totalHeight = $("#alert").height() + $("#inputs").height() + 243; 
         $("#modalContent").animate({"height":totalHeight+'px'},200,'linear');
     }
 });

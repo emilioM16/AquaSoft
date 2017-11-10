@@ -6,7 +6,7 @@ use kartik\builder\FormGrid;
 ?>
 
 <div class="row">
-    <div class="col-lg-2 form-center">
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 form-center">
         <?= Html::img('@web/img/clipboard.svg',['class'=>' img-responsive'])?>
     </div>
     <div class='col-lg-8 form-center'>
@@ -61,32 +61,72 @@ use kartik\builder\FormGrid;
     </div>
 </div>
 
-<div class="row" align="center">
-    <div class="col-lg-12 form-center">
-        <h5 class="text-center"><b>Insumos utilizados</b></h5>
-        <table class="table table-striped table-bordered">
-            <tr class="info">
-                <th>Nombre</th>
-                <th>Cantidad</th> 
-            </tr>
-            <?php
-                $insumos = $task->insumoTareas;
-                if(!empty($insumos)){
-                    foreach ($insumos as $key => $insumo) {
-                     echo '<tr>
-                        <td>'.$insumo->insumo['nombre'].'</td> 
-                        <td>'.$insumo->cantidad.'</td>
-                    </tr>';
+<h5 class="text-center"><b>Insumos utilizados</b></h5>
+<?php
+    $insumos = $task->insumoTareas;
+    if(!empty($insumos)){
+?>
+    <div class="row" align="center">
+        <div class="col-lg-12 form-center">
+            <table class="table table-striped table-bordered">
+                <tr class="info">
+                    <th>Nombre</th>
+                    <th>Cantidad</th> 
+                </tr>
+                <?php
+
+                    if(!empty($insumos)){
+                        foreach ($insumos as $key => $insumo) {
+                        echo '<tr>
+                            <td>'.$insumo->insumo['nombre'].'</td> 
+                            <td>'.$insumo->cantidad.'</td>
+                        </tr>';
+                        }
                     }
-                }
 
-            ?>
-        </table>
+                ?>
+            </table>
+        </div>
     </div>
-</div>
+<?php }else{ ?>
+    <h5 class="text-center">No se utilizaron insumos</h5>
+<?php } ?>
 
-<?= $this->render('_taskDoneControl',['conditions'=>$task->condicionAmbiental]); ?>
 
-    <div class='col-lg-2 form-center btnTaskDone'>
+<?php
+    switch ($task->TIPO_TAREA_idTipoTarea) {
+        case 'Controlar acuario':
+            echo $this->render('_taskDoneControl',['conditions'=>$task->condicionAmbiental]);
+        break;
+        case 'Transferir ejemplares':
+            echo $this->render('_taskDoneTransfer',['movements'=>$task->movimientos]);
+        break;
+        case 'Incorporar ejemplares':
+            $movimiento = $task->movimientos[0];
+            if($movimiento['cantidad']  == 1){
+                echo '<br>
+                <h4 class="text-center"><b>Se incorporó '.$movimiento['cantidad'].' ejemplar de la especie "'.$movimiento->ejemplar->especie["nombre"].'"</b></h4>';
+            }else{
+                echo '<br>
+                <h4 class="text-center"><b>Se incorporaron '.$movimiento['cantidad'].' ejemplares de la especie "'.$movimiento->ejemplar->especie["nombre"].'"</b></h4>';          
+            }    
+        break;
+        case 'Quitar ejemplares':
+            $movimiento = $task->movimientos[0];
+            if(abs($movimiento['cantidad']) == 1){
+                echo '<br>
+                <h4 class="text-center"><b>Se quitó '.abs($movimiento['cantidad']).' ejemplar de la especie "'.$movimiento->ejemplar->especie["nombre"].'"</b></h4>';    
+            }else{
+                echo '<br>
+                <h4 class="text-center"><b>Se quitaron '.abs($movimiento['cantidad']).' ejemplares de la especie "'.$movimiento->ejemplar->especie["nombre"].'"</b></h4>';
+            }
+        break;
+        default:
+        break;
+    }
+ 
+?>
+
+    <div class='col-lg-2 col-md-2 col-sm-2 col-xs-2 form-center btnTaskDone'>
         <?= Html::button('Cerrar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'])?>
     </div>

@@ -20,7 +20,7 @@ use yii\helpers\Url;
 
                 <div class="form-group col-lg-6 form-center" align="center">
                 <?php
-                echo '<label class="control-label">Especies</label>';
+                echo '<label class="control-label">Especie</label>';
                 echo Select2::widget([
                     'id'=>'selectSpecie'.$taskType, 
                     'name' => 'selectSpecie',

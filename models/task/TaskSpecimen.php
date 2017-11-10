@@ -62,7 +62,7 @@ class TaskSpecimen extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEspecie()
+    public function getEjemplar()
     {
         return $this->hasOne(Specimen::className(), ['especie_idEspecie' => 'EJEMPLAR_especie_idEspecie', 'acuario_idAcuario' => 'EJEMPLAR_acuario_idAcuario']);
     }
