@@ -54,7 +54,7 @@ class Task extends \yii\db\ActiveRecord
             $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
             $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
         }
-        $this->descripcion=$idAcuario.'--'.$idPlanificacion.'--'.$fechaInicio . '--' . $this->isPlanned();
+        // $this->descripcion=$idAcuario.'--'.$idPlanificacion.'--'.$fechaInicio . '--' . $this->isPlanned();
 
     }
 

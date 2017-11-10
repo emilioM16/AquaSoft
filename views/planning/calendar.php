@@ -36,13 +36,39 @@ $this->title = $model->titulo;
 <div class="row content">
   <div class="col-lg-12">
 
-<script type="text/javascript">
-var idAcua = "<?php echo $model->ACUARIO_USUARIO_acuario_idAcuario; ?>";
-var idPlan = "<?php echo $model->idPlanificacion ; ?>";
-
-</script>
 
 <?php
+
+$session = Yii::$app->session;
+$puedeAdminPlan = Yii::$app->user->can('administrarPlanificaciones');
+$estaCreandoActualizando = (($session->get('var') == 'create') || ($session->get('var') == 'update'));
+$condicionClickEvent = ($estaCreandoActualizando && $puedeAdminPlan);
+if($condicionClickEvent){
+// Evento que se ejecuta al presionar sobre una tarea
+$JSEventClick = <<<EOF
+function(calEvent, jsEvent, view) {
+    $.ajax({
+      type: 'GET',
+      url: "/task/update", 
+      data: {idTarea:calEvent.id} ,
+      dataType: 'html',
+      error: function(xhr,err){
+        alert("readyState: "+xhr.readyState+" status: "+xhr.status);
+    },
+      success: function(response){
+          $('#modalContent').html(response);
+          $('#modalTitle').html('Modificar tarea');
+          $('#modal').modal('show');
+          }
+      });
+}
+EOF;
+}else{
+$JSEventClick = <<<EOF
+function(calEvent, jsEvent, view) {}
+EOF;
+}
+
 
 $JSDayClick = <<<EOF
 function(date, jsEvent, view) {
@@ -186,8 +212,8 @@ EOF;
                 'fixedWeekCount' => false,
                  //'dayClick'=>new \yii\web\JsExpression($JSEventClick),
                 //  'select' => new JsExpression($JSCode),
-                 'dayClick'=>new \yii\web\JsExpression($JSDayClick),
-              //  'eventClick'=>new \yii\web\JsExpression($JSEventClick),
+                'dayClick'=>new \yii\web\JsExpression($JSDayClick),
+                'eventClick'=>new \yii\web\JsExpression($JSEventClick),
 
             ],
         ]);

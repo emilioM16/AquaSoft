@@ -38,16 +38,16 @@ class TaskController extends Controller
      * Lists all Task models.
      * @return mixed
      */
-    public function actionIndex()
-    {
-        $searchModel = new TaskSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    // public function actionIndex()
+    // {
+    //     $searchModel = new TaskSearch();
+    //     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+    //     return $this->render('index', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
 
     /**
      * Displays a single Task model.
@@ -56,7 +56,7 @@ class TaskController extends Controller
      */
     public function actionView($idTarea)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($idTarea),
         ]);
     }
@@ -73,10 +73,11 @@ class TaskController extends Controller
         //  yii::error(\yii\helpers\VarDumper::dumpAsString($_POST));
         $filtrarTareaAlimentacion = false;
         $acuario = $model->acuario;
-        if($acuario != null){
+        $model->descripcion = ($acuario !== null);
+        if($acuario !== null){
             $conditions = $acuario->actualConditions;
             // si no tiene condiciones ambientales le quito la tarea elimnetación
-            $filtrarTareaAlimentacion = ($conditions != null);       
+            $filtrarTareaAlimentacion = ($conditions === null);    
         } 
 
         if ($filtrarTareaAlimentacion){
@@ -93,12 +94,6 @@ class TaskController extends Controller
                     ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
                     ->all(); 
             } 
-
-        $taskTypes = TaskType::find()
-                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
-                    ->all();
         if (($model->load(Yii::$app->request->post())) && $model->save()) {
             return $this->redirect(Yii::$app->request->referrer);
         } else {
@@ -128,7 +123,7 @@ class TaskController extends Controller
         $taskTypes = TaskType::find()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect([$view, 'id' => $model->idTarea]);
+            return $this->redirect(Yii::$app->request->referrer);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('update',[
@@ -154,7 +149,8 @@ class TaskController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        // return $this->redirect(['index']);
+            return $this->redirect(Yii::$app->request->referrer);
     }
 
 
