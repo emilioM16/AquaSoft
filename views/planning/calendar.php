@@ -26,6 +26,7 @@ $this->title = $model->titulo;
 
 
 ?>
+
 <div id="jumboIdAcuario" class="jumbotron">
   <h2 id="tituloJumboAcuario"><?= $model->titulo ?></h2>
 </div>
@@ -162,6 +163,69 @@ EOF;
         </table>
       </div>
     </body>
+
+    <?php
+    $session = Yii::$app->session;
+
+    if ($session->get('var')=='check'){
+    echo '<div>'
+      .Html::a(FA::icon("calendar-check-o")->size(FA::SIZE_LARGE).' Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
+                'class' => 'btn btn-success',
+                'data' => [
+                    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                    'method' => 'post',
+                  ],
+                ]).'  '.
+
+      Html::button(FA::icon("times")->size(FA::SIZE_LARGE).' Rechazar',
+                    [
+                     'value' => Url::to(['refuse','id'=>$model->idPlanificacion]),
+                      'title' => 'Rechazar planificación ',
+                      'class' => 'showModalButton btn btn-danger'
+                    ])
+      .'</div>';
+      echo '<div><br>'
+        .Html::a(FA::icon("arrow-left")->size(FA::SIZE_LARGE).' Atras', ['planning/index'], [
+                  'class' => 'btn btn-primary',
+                  'data' => [
+                      //'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                      'method' => 'post',
+                    ],
+                  ])
+        .'</div>';
+    }
+     elseif($session->get('var')=='view'){
+       echo '<div><br>'
+         .Html::a(FA::icon("arrow-left")->size(FA::SIZE_LARGE).' Atras', ['planning/index'], [
+                   'class' => 'btn btn-primary',
+                   'data' => [
+                       //'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                       'method' => 'post',
+                     ],
+                   ])
+         .'</div>';
+          }
+          else{
+            echo '<div>'
+            .Html::a('Finalizar', ['planning/home', 'id' => $model->idPlanificacion], [
+                  'class' => 'btn btn-success',
+                  'data' => [
+                    //  'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
+                    //  'method' => 'post',
+                    ],
+                  ]).
+            '</div>';
+          }
+
+
+        ?>
+
+
+
+
+
+
+
     </div>
 
 
@@ -198,59 +262,6 @@ EOF;
 <!-- //////////////////////////////////////////////////////////////////////////////////////// -->
 
         <br>
-        <?php
-        $session = Yii::$app->session;
 
-        if ($session->get('var')=='check'){
-        echo '<div>'
-          .Html::a(FA::icon("calendar-check-o")->size(FA::SIZE_LARGE).' Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
-                    'class' => 'btn btn-success',
-                    'data' => [
-                        'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
-                        'method' => 'post',
-                      ],
-                    ]).'  '.
-
-          Html::button(FA::icon("times")->size(FA::SIZE_LARGE).' Rechazar',
-                        [
-                         'value' => Url::to(['refuse','id'=>$model->idPlanificacion]),
-                          'title' => 'Rechazar planificación ',
-                          'class' => 'showModalButton btn btn-danger'
-                        ])
-          .'</div>';
-        }
-         elseif($session->get('var')=='view'){
-            echo '<div>'
-           .Html::a('Volver al inicio', ['planning/index'], [
-                    'class' => 'btn btn-primary',
-                    'data' => [
-                    //    'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
-                        'method' => 'post',
-                      ],
-                ]).
-              '</div>';
-              }
-              else{
-                echo '<div>'
-                .Html::a('Finalizar', ['planning/home', 'id' => $model->idPlanificacion], [
-                      'class' => 'btn btn-success',
-                      'data' => [
-                        //  'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
-                        //  'method' => 'post',
-                        ],
-                      ]).
-                '</div>';
-              }
-
-              echo '<div><br>'
-                .Html::a(FA::icon("home")->size(FA::SIZE_LARGE).' Inicio', ['planning/index'], [
-                          'class' => 'btn btn-primary',
-                          'data' => [
-                              //'confirm' => '¿Esta seguro que desea autorizar esta planificacion?',
-                              'method' => 'post',
-                            ],
-                          ])
-                .'</div>';
-            ?>
 
   <?php

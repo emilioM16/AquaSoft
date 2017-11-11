@@ -57,7 +57,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                  $modelV->isNewRecord ? 'Aceptar' : FA::icon('save')->size(FA::SIZE_LARGE).' Aceptar',
                                  [
                                      'class' => $modelV->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
-                                 ])
+                                 ]).
+                            Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',
+                            ['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'])
                          ]
                     ]
   ]);
