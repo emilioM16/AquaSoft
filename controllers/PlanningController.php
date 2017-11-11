@@ -139,6 +139,9 @@ class PlanningController extends Controller
     {
         $model = new Planning();
         $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+
+      $session = Yii::$app->session;
+      $session->set('var','create');
         // yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->user->identity->getAquariums()));
         // $aquariums = [2=>'A02',3=>'a04'];
       //  if ($model->load(Yii::$app->request->post()) && $model->save()) {

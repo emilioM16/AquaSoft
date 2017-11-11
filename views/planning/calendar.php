@@ -42,8 +42,8 @@ $this->title = $model->titulo;
 $session = Yii::$app->session;
 $puedeAdminPlan = Yii::$app->user->can('administrarPlanificaciones');
 $estaCreandoActualizando = (($session->get('var') == 'create') || ($session->get('var') == 'update'));
-$condicionClickEvent = ($estaCreandoActualizando && $puedeAdminPlan);
-if($condicionClickEvent){
+
+if($estaCreandoActualizando && $puedeAdminPlan){
 // Evento que se ejecuta al presionar sobre una tarea
 $JSEventClick = <<<EOF
 function(calEvent, jsEvent, view) {
@@ -65,11 +65,29 @@ function(calEvent, jsEvent, view) {
 EOF;
 }else{
 $JSEventClick = <<<EOF
-function(calEvent, jsEvent, view) {}
+function(calEvent, jsEvent, view) {
+    $.ajax({
+      type: 'GET',
+      url: "/task/view", 
+      data: {idTarea:calEvent.id} ,
+      dataType: 'html',
+      error: function(xhr,err){
+        alert("readyState: "+xhr.readyState+" status: "+xhr.status);
+    },
+      success: function(response){
+          $('#modalContent').html(response);
+          $('#modalTitle').html('Modificar tarea');
+          $('#modal').modal('show');
+          }
+      });
+}
 EOF;
 }
 
-
+$estaCreandoActualizando = (($session->get('var') == 'create') || ($session->get('var') == 'update'));
+$condicionClickEvent = ($estaCreandoActualizando && $puedeAdminPlan);
+if($condicionClickEvent){
+// Evento que se ejecuta al presionar sobre una tarea
 $JSDayClick = <<<EOF
 function(date, jsEvent, view) {
   $.ajax({
@@ -93,6 +111,12 @@ function(date, jsEvent, view) {
 
 }
 EOF;
+}else{
+$JSDayClick = <<<EOF
+function(date, jsEvent, view) {}
+EOF;
+}
+
 ?>
 <div class="planning-check">
 

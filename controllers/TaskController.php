@@ -72,13 +72,15 @@ class TaskController extends Controller
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
         //  yii::error(\yii\helpers\VarDumper::dumpAsString($_POST));
         $filtrarTareaAlimentacion = false;
-        $acuario = $model->acuario;
-        $model->descripcion = ($acuario !== null);
-        if($acuario !== null){
-            $conditions = $acuario->actualConditions;
-            // si no tiene condiciones ambientales le quito la tarea elimnetación
-            $filtrarTareaAlimentacion = ($conditions === null);    
-        } 
+
+        if (!$model->isPlanned()){
+            $acuario = $model->acuario;
+            if($acuario !== null){
+                $conditions = $acuario->actualConditions;
+                // si no tiene condiciones ambientales le quito la tarea elimnetación
+                $filtrarTareaAlimentacion = ($conditions === null);    
+            } 
+        }
 
         if ($filtrarTareaAlimentacion){
                 $taskTypes = TaskType::find()
