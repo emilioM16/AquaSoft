@@ -214,59 +214,51 @@ class TaskController extends Controller
     {
         $task = new Task();
 
-        // if($idTarea==-1){ //es no planificada//
-            $modelConditions = new EnviromentalConditions();
-            $supplyModels = [];
-            // $count = count(Yii::$app->request->post('Supply', []));
+        $modelConditions = new EnviromentalConditions();
+        $supplyModels = [];
 
-            // for($i = 1; $i < $count; $i++) {
-            //     $supplyModels[] = new Supply();
-            // }
-            if ($modelConditions->load(Yii::$app->request->post())) {
-                    // if(!Model::loadMultiple($supplyModels, Yii::$app->request->post())){
-                    //     $supplyModels = [];
-                    // }
+        if ($modelConditions->load(Yii::$app->request->post())) {
 
-
-
+            if(isset($_POST['Supply'])){
                 foreach ($_POST['Supply'] as $key => $data) {
                     $supply = new Supply();
                     $supply->idInsumo = $data['idInsumo'];
                     $supply->quantity = $data['quantity'];
                     $supplyModels[]=$supply;
                 }
-                if($idTarea!=-1){
-                    $task = $this->findModel($idTarea);
-                }else{
-                    $task->idTarea = $idTarea;
-                }
-                // array_values($supplyModels);
-                // $s = $task->removeRepeated($supplyModels);
-                $task->saveControl($modelConditions,$supplyModels,$idAcuario);
-                return $this->redirect(Yii::$app->request->referrer);
             }
-            else {
-                $supplyModels = [new Supply()];
-                $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);
-                $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
-                ksort($availableSupplies);
-                    if (Yii::$app->request->isAjax){
-                        return $this->renderAjax('_controlForm',[
-                            'conditionsModel'=> $modelConditions,
-                            'supplyModels'=>$supplyModels,
-                            'availableSupplies'=>$availableSupplies,
-                            'idAcuario'=>$idAcuario,
-                            'idTarea'=>$idTarea
-                            ]);
-                        
-                    }else{
-                        return $this->render('_controlForm',[
-                            'conditionsModel'=> $modelConditions,
-                            'supplyModels'=>$supplyModels,
-                            'availableSupplies'=>$availableSupplies
+            if($idTarea!=-1){
+                $task = $this->findModel($idTarea);
+            }else{
+                $task->idTarea = $idTarea;
+            }
+            // array_values($supplyModels);
+            // $s = $task->removeRepeated($supplyModels);
+            $task->saveControl($modelConditions,$supplyModels,$idAcuario);
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+        else {
+            $supplyModels = [new Supply()];
+            $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);
+            $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
+            ksort($availableSupplies);
+                if (Yii::$app->request->isAjax){
+                    return $this->renderAjax('_controlForm',[
+                        'conditionsModel'=> $modelConditions,
+                        'supplyModels'=>$supplyModels,
+                        'availableSupplies'=>$availableSupplies,
+                        'idAcuario'=>$idAcuario,
+                        'idTarea'=>$idTarea
                         ]);
-                    }
+                    
+                }else{
+                    return $this->render('_controlForm',[
+                        'conditionsModel'=> $modelConditions,
+                        'supplyModels'=>$supplyModels,
+                        'availableSupplies'=>$availableSupplies
+                    ]);
                 }
+        }
     }
 
 

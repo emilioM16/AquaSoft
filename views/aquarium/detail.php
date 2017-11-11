@@ -177,19 +177,19 @@ EOT;
             'id'=>'calendar',
             'defaultView'=>'basicDay',
             'header'=>[
-                'left'=>'',
+                'left'=>'prev,next today',
                 'center'=>'title',
-                'right'=>''
+                'right'=>'basicDay,month'
             ],
             'options' => [
                 'lang' => 'es',
             ],
             'events' => $acuario->events,
             'clientOptions' => [
-                'language' => 'fa',
+                'language' => 'es',
                 'eventLimit' => TRUE,
                 'fixedWeekCount' => false,
-                // 'dayClick'=>new \yii\web\JsExpression('function () {console.log("hola");}') Esto es para capturar el click sobre el día
+                'defaultTimedEventDuration' => '00:01:00',
                 'eventClick'=>new \yii\web\JsExpression($JSEventClick)
             ],
         ]);

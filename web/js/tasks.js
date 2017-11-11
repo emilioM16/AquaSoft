@@ -170,7 +170,7 @@ $(document).on('click','#transferBtn',function(){
         data: {data : JSON.stringify({quantities: JSON.stringify(inputsData),specie: selectedSpecie, originId: originAquariumId})},
         dataType: "html",
         success: function(response){
-            var totalHeight = $("#alert").height() + 330;
+            var totalHeight = $("#alert").height() + 340;
             $("#inputs").html('');
             $("#alert").html(response);
             $("#modalContent").animate({"height":totalHeight+'px'},200,'linear');
