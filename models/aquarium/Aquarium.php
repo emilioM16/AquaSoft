@@ -167,7 +167,20 @@ class Aquarium extends \yii\db\ActiveRecord
                 if($task->fechaHoraRealizacion !== null){
                     $event->backgroundColor ='rgb(5.1%, 66.3%, 12.9%)'; 
                 }
-                $event->editable = true;
+                
+                $condicionDiaAnterior = (strtotime($task->fechaHoraInicio) < strtotime("today")) && (strtotime($task->fechaHoraFin) < strtotime("today"));
+                $condicionDiaPosterior = (strtotime($task->fechaHoraInicio) > strtotime("tomorrow")) && (strtotime($task->fechaHoraFin) > strtotime("tomorrow"));
+                
+                if($task->fechaHoraRealizacion == null){
+                    if($condicionDiaAnterior || $condicionDiaPosterior){
+                        $event->editable = false;
+                    }else{
+                        $event->editable = true;                         
+                    }
+                }else{
+                    $event->editable = true; 
+                }
+
                 $this->events[] = $event;
             }
         }

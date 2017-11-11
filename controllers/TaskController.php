@@ -162,15 +162,6 @@ class TaskController extends Controller
             $modelTask->fechaHoraFin = date_format($date,'d-m-Y H:i');
             $date = date_create($modelTask->fechaHoraRealizacion);
             $modelTask->fechaHoraRealizacion = date_format($date,'d-m-Y H:i');
-            switch ($modelTask->TIPO_TAREA_idTipoTarea) {
-                case 'Controlar acuario':
-    
-                    break;
-                
-                default:
-
-                break;
-            }
             return $this->renderAjax('_taskDone',[
                 'task'=>$modelTask,
             ]);
