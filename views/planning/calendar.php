@@ -76,7 +76,7 @@ function(calEvent, jsEvent, view) {
     },
       success: function(response){
           $('#modalContent').html(response);
-          $('#modalTitle').html('Modificar tarea');
+          $('#modalTitle').html('Visualizar tarea');
           $('#modal').modal('show');
           }
       });
@@ -84,9 +84,7 @@ function(calEvent, jsEvent, view) {
 EOF;
 }
 
-$estaCreandoActualizando = (($session->get('var') == 'create') || ($session->get('var') == 'update'));
-$condicionClickEvent = ($estaCreandoActualizando && $puedeAdminPlan);
-if($condicionClickEvent){
+if ($estaCreandoActualizando && $puedeAdminPlan){
 // Evento que se ejecuta al presionar sobre una tarea
 $JSDayClick = <<<EOF
 function(date, jsEvent, view) {
@@ -249,7 +247,7 @@ EOF;
 
         <br>
         <?php
-        $session = Yii::$app->session;
+        // $session = Yii::$app->session;  linea 42
 
         if ($session->get('var')=='check'){
         echo '<div>'

@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model app\models\task\Task */
 /* @var $form yii\widgets\ActiveForm */
+$session = Yii::$app->session;
 ?>
 
 <div class="task-form">
@@ -133,12 +134,22 @@ use yii\helpers\ArrayHelper;
                             [
                                 'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                             ]).' '.
-                        Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'])
+                        Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'
+                            ]).' '
+                        // .Html::a('Eliminar', ['delete', 'id' => $model->idTarea], 
+                        //         [
+                        //         'class' => 'btn btn-danger',
+                        //         'data' => [
+                        //             'confirm' => 'Are you sure you want to delete this item?',
+                        //             'method' => 'post',
+                        //             ],
+                        //         ])
                         .'</div>'
                 ]
             ]
         ]);
     $form->field($model, 'fechaHoraInicio')->textInput(['hidden' => true]);
+    $form->field($model, 'fechaHoraFin')->textInput(['hidden' => true]);
     // $form->field($model, 'PLANIFICACION_idPlanificacion')->textInput(['hidden' => true]);
     // $form->field($model, 'ACUARIO_idAcuario')->textInput(['hidden' => true]);
     ActiveForm::end();
