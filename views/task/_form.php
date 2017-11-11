@@ -109,7 +109,7 @@ $session = Yii::$app->session;
                            'options'=>[
                                'name' => 'DTPduracion',
                                'pluginOptions' => [
-                                    'defaultTime'=> '00:00 PM',
+                                    'defaultTime'=> '00:15 PM',
                                     'showMeridian' => false,
                                     'showSeconds' => false
                                     ],

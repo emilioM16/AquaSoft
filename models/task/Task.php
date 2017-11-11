@@ -43,8 +43,9 @@ use yii\base\Exception;
  */
 class Task extends \yii\db\ActiveRecord
 {
-    public $duracion = 0;
+    public $duracion = '00:15'; // aunque el tiempo mínimo es de 5 minutos
     public $horaInicio;
+    const DURACION_MINIMA = 5;
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
@@ -133,24 +134,31 @@ class Task extends \yii\db\ActiveRecord
      * valida la duración
      **/
     public function validarFechaHoraFin($attribute, $params){
-        if ($this->isPlanned()){
-            // armo la fecha de fin en base a la fecha que seleccionó del calendario y duración que ha ingresado
-            $fechaFinTemp = date_create_from_format("Y-m-d H:i:s",$this->fechaHoraInicio);
-            $h = intval(substr($this->duracion, 0,2));
-            $m = intval(substr($this->duracion, 3,2));
-            date_time_set($fechaFinTemp, date_format($fechaFinTemp,"H") + $h, date_format($fechaFinTemp,"i") + $m);
-            // valido la superposicion de tareas
-            yii::error(\yii\helpers\VarDumper::dumpAsString($fechaFinTemp));
+        $h = intval(substr($this->duracion, 0,2));
+        $m = intval(substr($this->duracion, 3,2));
+        if (($h == 0) && ($m < self::DURACION_MINIMA)){
+            $this->addError($attribute, 'La duración mínima es de 5 minutos' );
+        } 
+        else {
+            if ($this->isPlanned()){
+                // armo la fecha de fin en base a la fecha que seleccionó del calendario y duración que ha ingresado
+                $fechaFinTemp = date_create_from_format("Y-m-d H:i:s",$this->fechaHoraInicio);
+                $h = intval(substr($this->duracion, 0,2));
+                $m = intval(substr($this->duracion, 3,2));
+                date_time_set($fechaFinTemp, date_format($fechaFinTemp,"H") + $h, date_format($fechaFinTemp,"i") + $m);
+                // valido la superposicion de tareas
+                yii::error(\yii\helpers\VarDumper::dumpAsString($fechaFinTemp));
 
 
-            $valida = $this->validarSuperposicionFF($fechaFinTemp); // LIA *********************************************
-            // $valida = true;
+                $valida = $this->validarSuperposicionFF($fechaFinTemp); // LIA *********************************************
+                // $valida = true;
 
 
-            if ($valida){
-                $this->fechaHoraFin = date_format($fechaFinTemp,"Y-m-d H:i:s");
-            } else{
-                $this->addError($attribute, 'La hora se superpone con otra tarea');
+                if ($valida){
+                    $this->fechaHoraFin = date_format($fechaFinTemp,"Y-m-d H:i:s");
+                } else{
+                    $this->addError($attribute, 'La hora se superpone con otra tarea');
+                }
             }
         }
      }
