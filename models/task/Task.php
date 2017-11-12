@@ -353,8 +353,8 @@ class Task extends \yii\db\ActiveRecord
             $this->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
             $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
             $this->horaInicio = date("H:i:s");
-            $this->fechaHoraInicio = null;
-            $this->fechaHoraFin = null;
+            $this->fechaHoraInicio = new Expression('NOW()');
+            $this->fechaHoraFin = new Expression('NOW()');
             $this->fechaHoraRealizacion = new Expression('NOW()');
             $this->ACUARIO_idAcuario = $idAquarium;
             $this->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
