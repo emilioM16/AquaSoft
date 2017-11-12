@@ -187,6 +187,7 @@ EOT;
                 'eventLimit' => TRUE,
                 'fixedWeekCount' => false,
                 'defaultTimedEventDuration' => '00:01:00',
+                'timeFormat'=>'hh:mm',
                 'eventClick'=>new \yii\web\JsExpression($JSEventClick)
             ],
         ]);

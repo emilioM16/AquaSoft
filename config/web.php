@@ -92,7 +92,11 @@ $config = [
                 'especialistas'=>'user',
                 'insumos'=>'supply',
                 'censo'=>'census',
-                'acuarios'=>'aquarium'
+                'acuarios'=>'aquarium',
+                'planificaciones/crear'=>'planning/create',
+                'planificaciones/ver'=>'planning/view',
+                'planificaciones/modificar'=>'planning/update',
+                'especies'=>'specie',
             ],
         ],
     ],

@@ -63,12 +63,16 @@ use rmrevin\yii\fontawesome\FA;
               echo Html::a('Detalle',
                             [
                               'detail',
-                              'nombreacuario' => $model->nombre,
-                              'idAcuario'=>$model->idAcuario,
                             ],
                             [
                               'class'=>'btn btn-md btn-primary pull-right',
-                              'method'=>'get',
+                              'method'=>'post',
+                              'data'=>[
+                                'method'=>'post',
+                                'params'=>[
+                                  'idAcuario'=>$model->idAcuario,
+                                ],
+                              ]
                             ]);
             ?>
         </p>
