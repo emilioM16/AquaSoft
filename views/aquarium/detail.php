@@ -141,7 +141,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 
-if(Yii::$app->user->can('administrarTareas')){
 $JSEventClick = <<<EOT
 function(calEvent, jsEvent, view) {
 
@@ -165,12 +164,6 @@ function(calEvent, jsEvent, view) {
 
 }
 EOT;
-}else{
-$JSEventClick = <<<EOT
-function(){
-}
-EOT;
-}
 ?>
 
   <!-- Calendario -->

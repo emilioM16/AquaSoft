@@ -171,11 +171,16 @@ class Aquarium extends \yii\db\ActiveRecord
                 $condicionDiaAnterior = (strtotime($task->fechaHoraInicio) < strtotime("today")) && (strtotime($task->fechaHoraFin) < strtotime("today"));
                 $condicionDiaPosterior = (strtotime($task->fechaHoraInicio) > strtotime("tomorrow")) && (strtotime($task->fechaHoraFin) > strtotime("tomorrow"));
                 
+
                 if($task->fechaHoraRealizacion == null){
-                    if($condicionDiaAnterior || $condicionDiaPosterior){
-                        $event->editable = false;
+                    if(Yii::$app->user->can('administrarTareas')){
+                        if($condicionDiaAnterior || $condicionDiaPosterior){
+                            $event->editable = false;
+                        }else{
+                            $event->editable = true;                         
+                        }
                     }else{
-                        $event->editable = true;                         
+                        $event->editable = false;
                     }
                 }else{
                     $event->editable = true; 

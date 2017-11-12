@@ -77,21 +77,29 @@ class Notification extends \yii\db\ActiveRecord
     public static function getNotificaciones()
     {   
         $row='';
-        $noti = Notification::find()->all();
+        $noti = Notification::find()->orderBy(['fechaHora'=>SORT_DESC])->all();
         foreach ($noti as $key)
          {
             $tarea = Task::findOne($key->TAREA_idTarea);
             $acu = Aquarium::findOne($tarea->ACUARIO_idAcuario);
+            $date = date_create($key->fechaHora);
+            $dateFormatted = date_format($date,'d/m/Y H:i');
 
             if ($key->ORIGEN_NOTIFICACION_idOrigenNotificacion == 'Tarea no realizada')
             {
-                $row .= '<p class="alert alert-info alert-notif" role="alert">'.FA::icon("info")->size(FA::SIZE_LARGE).' <strong>¡Atención! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.' de tipo <strong>'.$tarea->TIPO_TAREA_idTipoTarea.'</strong> en '.$acu->nombre;
-                    '</p>'.'<hr class="hrNotif">';
+                $row .= '<p class="alert alert-info alert-notif" role="alert">'.FA::icon("info")->size(FA::SIZE_LARGE).
+                        ' <strong>¡Atención! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.
+                        ' de tipo <strong>'.$tarea->TIPO_TAREA_idTipoTarea.
+                        '</strong> en <strong>'.$acu->nombre.'</strong>
+                        <span style="font-weight:lighter;"> - '.$dateFormatted.'</span> </p><hr class="hrNotif">';
             }
             else
             {
-                 $row .= '<p class="alert alert-danger alert-notif text-justify " role="alert">'.FA::icon("warning")->size(FA::SIZE_LARGE).'<strong>¡Peligro! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.' en el registro de una tarea de tipo <strong>'.$tarea->TIPO_TAREA_idTipoTarea.' </strong>en '.$acu->nombre;
-                          '</p>'.'<hr class="hrNotif">';
+                $row .= '<p class="alert alert-danger alert-notif text-justify " role="alert">'.FA::icon("warning")->size(FA::SIZE_LARGE).
+                        '<strong>¡Peligro! </strong>'.$key->ORIGEN_NOTIFICACION_idOrigenNotificacion.
+                        ' en el registro de una tarea de tipo <strong>'.$tarea->TIPO_TAREA_idTipoTarea.
+                        '</strong> en <strong>'.$acu->nombre.'</strong>
+                        <span style="font-weight:lighter;"> - '.$dateFormatted.'</span> </p><hr class="hrNotif">';
             } 
          }
         return $row;
