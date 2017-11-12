@@ -57,7 +57,7 @@ $('#notificationButton').on('click', function(){
        type: "GET",
        dataType: "html",
        success: function(response){
-          $("#notifix").html(response);
+          $('#notifix').html(response);
        },
        error: function(xhr,err){
         alert("Ocurrió un error al obtener las notificaciones");

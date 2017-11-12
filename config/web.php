@@ -86,7 +86,13 @@ $config = [
                 'login'=>'site/login',
                 'logout'=>'site/logout',
                 'specimens'=>'task-specimen/specimens-tasks',
-                'acuario/detalle'=> 'aquarium/detail'
+                'acuario/detalle'=> 'aquarium/detail',
+                'ayuda'=>'site/help',
+                'planificaciones'=>'planning',
+                'especialistas'=>'user',
+                'insumos'=>'supply',
+                'censo'=>'census',
+                'acuarios'=>'aquarium'
             ],
         ],
     ],
