@@ -129,22 +129,24 @@ $session = Yii::$app->session;
                 'actions'=>[
                     'type'=>Form::INPUT_RAW,
                     'value'=>'<div class="form-group" align="center">'.
+
                         Html::submitButton(
                             $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar',
                             [
-                                'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
+                                'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-success btnModal'
                             ]).' '.
-                        Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'
-                            ]).' '
-                        // .Html::a('Eliminar', ['delete', 'id' => $model->idTarea], 
-                        //         [
-                        //         'class' => 'btn btn-danger',
-                        //         'data' => [
-                        //             'confirm' => 'Are you sure you want to delete this item?',
-                        //             'method' => 'post',
-                        //             ],
-                        //         ])
-                        .'</div>'
+
+                        Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',
+                        ['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'
+                            ]).' '.
+
+                         Html::a(FA::icon("trash")->size(FA::SIZE_LARGE).' Eliminar', ['task/delete', 'id' => $model->idTarea], [
+                                   'class' => 'btn btn-primary btnModal',
+                                   'data' => [
+                                       'confirm' => '¿Esta seguro que desea eliminar esta tarea?',
+                                       'method' => 'post',
+                                     ],
+                                   ])
                 ]
             ]
         ]);
