@@ -97,9 +97,9 @@ class SiteController extends Controller
     public function actionHelp(){
         $storagePath = Yii::getAlias('@app/manuals');
         if(User::getRole() == 'encargado'){
-            return Yii::$app->response->sendFile($storagePath.'/manualEspecialista.pdf',"Manual", ['inline'=>true]);
-        }else{
             return Yii::$app->response->sendFile($storagePath.'/manualEncargado.pdf',"Manual", ['inline'=>true]);
+        }else{
+            return Yii::$app->response->sendFile($storagePath.'/manualEspecialista.pdf',"Manual", ['inline'=>true]);
         }
     }
 
