@@ -37,37 +37,92 @@ $this->title = $model->titulo;
 <div class="row content">
   <div class="col-lg-12">
 
-<script type="text/javascript">
-var idAcua = "<?php echo $model->ACUARIO_USUARIO_acuario_idAcuario; ?>";
-var idPlan = "<?php echo $model->idPlanificacion ; ?>";
-
-</script>
 
 <?php
 
-$JSDayClick = <<<EOF
-function(date, jsEvent, view) {
-  $.ajax({
-    type: 'GET',
-    url: "/task/create",
-    data: 'idAcuario='+{$model->ACUARIO_USUARIO_acuario_idAcuario}
-          +'&idPlanificacion='+{$model->idPlanificacion}
-          +'&fechaInicio='+date.format(),
-    dataType: 'html',
-    error: function(xhr){
-        alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
-        alert("responseText: "+xhr.responseText);
-        },
-    success: function(response){
-        $('#modalContent').html(response);
-        $('#modalTitle').html('Registrar tarea');
-        // $('#modalHeader').html('Registrar tarea');
-        $('#modal').modal('show');
-        }
-    });
+$session = Yii::$app->session;
+$puedeAdminPlan = Yii::$app->user->can('administrarPlanificaciones');
+$estaCreandoActualizando = (($session->get('var') == 'create') || ($session->get('var') == 'update'));
 
+if($estaCreandoActualizando && $puedeAdminPlan){
+// Evento que se ejecuta al presionar sobre una tarea
+$JSEventClick = <<<EOF
+function(calEvent, jsEvent, view) {
+    // var fechaActualSinHora = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
+    // if (new Date(calEvent.end.format())>= new Date(fechaActualSinHora)){
+        $.ajax({
+          type: 'GET',
+          url: "/task/update", 
+          data: {idTarea:calEvent.id} ,
+          dataType: 'html',
+          error: function(xhr,err){
+            alert("readyState: "+xhr.readyState+" status: "+xhr.status);
+        },
+          success: function(response){
+              $('#modalContent').html(response);
+              $('#modalTitle').html('Modificar tarea');
+              $('#modal').modal('show');
+              }
+          });
+    // } else
+    // alert('No se pueden editar tareas de fechas pasadas');
 }
 EOF;
+}else{
+$JSEventClick = <<<EOF
+function(calEvent, jsEvent, view) {
+    $.ajax({
+      type: 'GET',
+      url: "/task/view", 
+      data: {idTarea:calEvent.id} ,
+      dataType: 'html',
+      error: function(xhr,err){
+        alert("readyState: "+xhr.readyState+" status: "+xhr.status);
+    },
+      success: function(response){
+          $('#modalContent').html(response);
+          $('#modalTitle').html('Visualizar tarea');
+          $('#modal').modal('show');
+          }
+      });
+}
+EOF;
+}
+
+if ($estaCreandoActualizando && $puedeAdminPlan){
+// Evento que se ejecuta al presionar sobre un día del calendario
+$JSDayClick = <<<EOF
+function(date, jsEvent, view) {
+    var fechaActualSinHora = new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate();
+    if (new Date(date.format())>= new Date(fechaActualSinHora)){
+        $.ajax({
+        type: 'GET',
+        url: "/task/create",
+        data: 'idAcuario='+{$model->ACUARIO_USUARIO_acuario_idAcuario}
+              +'&idPlanificacion='+{$model->idPlanificacion}
+              +'&fechaInicio='+date.format(),
+        dataType: 'html',
+        error: function(xhr){
+            alert("Ha ocurrido un error. [: " + xhr.status + "] Detalle: " + xhr.statusText);
+            alert("responseText: "+xhr.responseText);
+            },
+        success: function(response){
+            $('#modalContent').html(response);
+            $('#modalTitle').html('Registrar tarea');
+            // $('#modalHeader').html('Registrar tarea');
+            $('#modal').modal('show');
+            }
+        });
+    }else
+    alert('No se pueden crear tareas en fechas pasadas');
+}
+EOF;
+}else{
+$JSDayClick = <<<EOF
+function(date, jsEvent, view) {}
+EOF;
+}
+
 ?>
 <div class="planning-check">
 
@@ -245,6 +300,7 @@ EOF;
                 'eventLimit' => true,
                 'fixedWeekCount' => false,
                 'dayClick'=>new \yii\web\JsExpression($JSDayClick),
+                'eventClick'=>new \yii\web\JsExpression($JSEventClick),
                 'firstDay'=>1,
             ],
         ]);

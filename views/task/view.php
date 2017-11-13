@@ -11,16 +11,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Tarea', 'url' => ['index']];
 ?>
 <div class="task-view">
 
-    <p>
-        <?= Html::a('Modificar', ['update', 'id' => $model->idTarea], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Eliminar', ['delete', 'id' => $model->idTarea], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -37,5 +27,4 @@ $this->params['breadcrumbs'][] = ['label' => 'Tarea', 'url' => ['index']];
             'TIPO_TAREA_idTipoTarea',
         ],
     ]) ?>
-
 </div>

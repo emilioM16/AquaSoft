@@ -38,16 +38,16 @@ class TaskController extends Controller
      * Lists all Task models.
      * @return mixed
      */
-    public function actionIndex()
-    {
-        $searchModel = new TaskSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    // public function actionIndex()
+    // {
+    //     $searchModel = new TaskSearch();
+    //     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+    //     return $this->render('index', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
 
     /**
      * Displays a single Task model.
@@ -56,7 +56,7 @@ class TaskController extends Controller
      */
     public function actionView($idTarea)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($idTarea),
         ]);
     }
@@ -70,12 +70,8 @@ class TaskController extends Controller
     {
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
+        $taskTypes = self::filterTaskTypes($model->acuario);
 
-        $taskTypes = TaskType::find()
-                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
-                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
-                    ->all();
         if (($model->load(Yii::$app->request->post())) && $model->save()) {
             return $this->redirect(Yii::$app->request->referrer);
         } else {
@@ -102,10 +98,11 @@ class TaskController extends Controller
     public function actionUpdate($idTarea)
     {
         $model = $this->findModel($idTarea);
-        $taskTypes = TaskType::find()->all();
+        // $taskTypes = TaskType::find()->all();
+        $taskTypes = self::filterTaskTypes($model->acuario);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect([$view, 'id' => $model->idTarea]);
+            return $this->redirect(Yii::$app->request->referrer);
         } else {
             if (Yii::$app->request->isAjax){
                 return $this->renderAjax('update',[
@@ -121,6 +118,32 @@ class TaskController extends Controller
         }
     }
 
+    private function filterTaskTypes($acuario){
+        $filtrarTareaAlimentacion = false;
+
+        if ($acuario !== null){
+                $conditions = $acuario->actualConditions;
+                // si no tiene condiciones ambientales le quito la tarea elimnetación
+                $filtrarTareaAlimentacion = ($conditions === null);    
+            } 
+
+        if ($filtrarTareaAlimentacion){
+                $taskTypes = TaskType::find()
+                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Alimentación'])
+                    ->all();    
+            } else {
+                $taskTypes = TaskType::find()
+                    ->where(['!=','idTipoTarea','Incorporar ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
+                    ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
+                    ->all(); 
+            } 
+        return $taskTypes;
+    }
+
     /**
      * Deletes an existing Task model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -131,7 +154,8 @@ class TaskController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        // return $this->redirect(['index']);
+            return $this->redirect(Yii::$app->request->referrer);
     }
 
 
