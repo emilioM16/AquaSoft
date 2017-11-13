@@ -60,7 +60,7 @@ $('#notificationButton').on('click', function(){
           $('#notifix').html(response);
        },
        error: function(xhr,err){
-        alert("Ocurrió un error al obtener las notificaciones");
+        $('#notifix').html("Ocurrió un error al obtener las notificaciones");
        }
      });
 });

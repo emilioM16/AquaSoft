@@ -219,7 +219,6 @@ EOF;
       </div>
 
           <?php
-          $session = Yii::$app->session;
 
           if ($session->get('var')=='check'){
           echo '<div><br>'
