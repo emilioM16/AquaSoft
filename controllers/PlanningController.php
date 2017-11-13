@@ -214,13 +214,13 @@ class PlanningController extends Controller
          $modelValidacion= new Validation();
 
          $model = $this->findModel($id);
-         $model = $model->changeStatus('Rechazada');
+      //   $model = $model->changeStatus('Rechazada');
 
          $motivosRechazo = RejectedMotive::find()->all();
 
       //   yii::error(\yii\helpers\VarDumper::dumpAsString($model));
-         $model->save(false);//llama previamente al before save
-         Yii::$app->session->setFlash('success', "Planificación rechazada con éxito");
+        //llama previamente al before save
+
 
          return $this->renderAjax('refuseMotive',[
              'model'=>$model,
@@ -231,14 +231,19 @@ class PlanningController extends Controller
 
     public function actionMotive($id)
     {
+          $modelPlan = $this->findModel($id);
+          $modelPlan = $modelPlan->changeStatus('Rechazada');
+           $modelPlan->save(false);
+
           $modelVal= new Validation();
-         $modelVal->load(Yii::$app->request->post());
+          $modelVal->load(Yii::$app->request->post());
+
 
           $modelVal->PLANIFICACION_idPlanificacion= $id;
           $modelVal->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
 
+          Yii::$app->session->setFlash('success', "Planificación rechazada con éxito");
 
-       yii::error(\yii\helpers\VarDumper::dumpAsString($modelVal));
         $modelVal->save(false);//trucho
 
 
@@ -250,6 +255,7 @@ class PlanningController extends Controller
               //  return $modelVal->redirect(['index']);
 
             }
+
 
 
     }

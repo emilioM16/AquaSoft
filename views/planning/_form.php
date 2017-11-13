@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                        [
                                            'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                                        ])
-                           ]
+                           ],
                       ]
                   ]);
                   ?>

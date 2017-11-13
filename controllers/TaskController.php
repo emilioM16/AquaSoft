@@ -10,7 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
-use yii\base\Model; 
+use yii\base\Model;
 use app\models\conditions\EnviromentalConditions;
 use app\models\supply\Supply;
 use yii\helpers\ArrayHelper;
@@ -139,17 +139,17 @@ class TaskController extends Controller
         $taskType = $task->TIPO_TAREA_idTipoTarea;
         switch ($taskType) {
             case 'Controlar acuario':
-                return $this->actionControl($aquariumId,$task->idTarea); 
+                return $this->actionControl($aquariumId,$task->idTarea);
                 break;
             default:
                 return $this->actionCommonTasksRealization($task->idTarea,$taskType);
                 break;
-        }        
+        }
     }
 
 
     public function actionExecute($idTarea,$idAcuario)
-    {    
+    {
         $modelTask = $this->findModel($idTarea);
         if (!$modelTask->wasExecuted())
         {
@@ -167,7 +167,7 @@ class TaskController extends Controller
             ]);
         }
     }
-    
+
 
     /**
      * Finds the Task model based on its primary key value.
@@ -282,7 +282,7 @@ class TaskController extends Controller
                         'taskModel'=>$task,
                         'idTarea'=>$idTarea
                         ]);
-                    
+
                 }else{
                     return $this->render('_commonTasksForm',[
                         'supplyModels'=>$supplyModels,
@@ -295,8 +295,8 @@ class TaskController extends Controller
     }
 
 
-    public function actionControlValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación. 
-        
+    public function actionControlValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación.
+
         $model = new EnviromentalConditions(['idCondicionAmbiental'=>$id]);
         Yii::$app->response->format = 'json';
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
@@ -313,12 +313,12 @@ class TaskController extends Controller
             }else{
             return ActiveForm::validate($model);
             }
-        }        
+        }
     }
 
 
-    public function actionCommonTasksValidation(){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación. 
-        
+    public function actionCommonTasksValidation(){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo Task para su validación.
+
         Yii::$app->response->format = 'json';
         if(Yii::$app->request->isAjax)
         {
@@ -327,7 +327,7 @@ class TaskController extends Controller
                 foreach (array_keys($supplies) as $index) {
                     $models[$index] = new Supply();
                 }
-            
+
                 // if(Model::loadMultiple($models, Yii::$app->request->post())){
                 Model::loadMultiple($models, Yii::$app->request->post());
 
@@ -338,7 +338,7 @@ class TaskController extends Controller
             // }else{
             //     return ActiveForm::validate($model);
             // }
-        }        
+        }
     }
 
 
