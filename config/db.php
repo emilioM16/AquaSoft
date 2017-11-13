@@ -4,6 +4,6 @@ return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=AQUASOFT_FINAL',
     'username' => 'root',
-    'password' => '',
+    'password' => 'emilio1892',
     'charset' => 'utf8',
 ];

@@ -28,8 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'nombre',
             'descripcion',
             'stock',
-             'TIPO_TAREA_idTipoTarea',
-
+            [
+                'attribute'=>'TIPO_TAREA_idTipoTarea',
+                'filter'=>[
+                    'Alimentación'=>'Alimentación',
+                    'Controlar acuario'=>'Controlar acuario',
+                    'Limpieza'=>'Limpieza',
+                    'Reparación'=>'Reparación',
+                    ]
+            ],
             ['class' => 'yii\grid\ActionColumn',
 
             'template'=>'{view}{update}{delete}',

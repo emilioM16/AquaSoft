@@ -70,7 +70,6 @@ class TaskController extends Controller
     {
         $model = new Task();
         $model->inicialice($idAcuario, $idPlanificacion, $fechaInicio);
-          yii::error(\yii\helpers\VarDumper::dumpAsString($_POST));
 
         $taskTypes = TaskType::find()
                     ->where(['!=','idTipoTarea','Incorporar ejemplares'])
@@ -157,7 +156,15 @@ class TaskController extends Controller
             // obtengo la vista de acuerdo al tipo de tarea
             return $this->redirectViewTaskType($modelTask,$idAcuario);
         }else{
-            return $this->renderAjax('_taskDone');
+            $date = date_create($modelTask->fechaHoraInicio);
+            $modelTask->fechaHoraInicio = date_format($date,'d-m-Y H:i');
+            $date = date_create($modelTask->fechaHoraFin);
+            $modelTask->fechaHoraFin = date_format($date,'d-m-Y H:i');
+            $date = date_create($modelTask->fechaHoraRealizacion);
+            $modelTask->fechaHoraRealizacion = date_format($date,'d-m-Y H:i');
+            return $this->renderAjax('_taskDone',[
+                'task'=>$modelTask,
+            ]);
         }
     }
     
@@ -198,47 +205,51 @@ class TaskController extends Controller
     {
         $task = new Task();
 
-        // if($idTarea==-1){ //es no planificada//
-            $modelConditions = new EnviromentalConditions();
-     
-            $count = count(Yii::$app->request->post('Supply', []));
+        $modelConditions = new EnviromentalConditions();
+        $supplyModels = [];
+
+        if ($modelConditions->load(Yii::$app->request->post())) {
+
+            if(isset($_POST['Supply'])){
+                foreach ($_POST['Supply'] as $key => $data) {
+                    $supply = new Supply();
+                    $supply->idInsumo = $data['idInsumo'];
+                    $supply->quantity = $data['quantity'];
+                    $supplyModels[]=$supply;
+                }
+            }
+            if($idTarea!=-1){
+                $task = $this->findModel($idTarea);
+            }else{
+                $task->idTarea = $idTarea;
+            }
+            // array_values($supplyModels);
+            // $s = $task->removeRepeated($supplyModels);
+            $task->saveControl($modelConditions,$supplyModels,$idAcuario);
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+        else {
             $supplyModels = [new Supply()];
-            for($i = 1; $i < $count; $i++) {
-                $supplyModels[] = new Supply();
-            }
-            if ($modelConditions->load(Yii::$app->request->post())) {
-                    if(!Model::loadMultiple($supplyModels, Yii::$app->request->post())){
-                        $supplyModels = [];
-                    }
-                if($idTarea!=-1){
-                    $task = $this->findModel($idTarea);
-                }else{
-                    $task->idTarea = $idTarea;
-                }
-                $task->saveControl($modelConditions,$supplyModels,$idAcuario);
-                return $this->redirect(Yii::$app->request->referrer);
-            }
-            else {
-                $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);
-                $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
-                ksort($availableSupplies);
-                    if (Yii::$app->request->isAjax){
-                        return $this->renderAjax('_controlForm',[
-                            'conditionsModel'=> $modelConditions,
-                            'supplyModels'=>$supplyModels,
-                            'availableSupplies'=>$availableSupplies,
-                            'idAcuario'=>$idAcuario,
-                            'idTarea'=>$idTarea
-                            ]);
-                        
-                    }else{
-                        return $this->render('_controlForm',[
-                            'conditionsModel'=> $modelConditions,
-                            'supplyModels'=>$supplyModels,
-                            'availableSupplies'=>$availableSupplies
+            $taskType = new Tasktype(['idTipoTarea'=>'Controlar acuario']);
+            $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
+            ksort($availableSupplies);
+                if (Yii::$app->request->isAjax){
+                    return $this->renderAjax('_controlForm',[
+                        'conditionsModel'=> $modelConditions,
+                        'supplyModels'=>$supplyModels,
+                        'availableSupplies'=>$availableSupplies,
+                        'idAcuario'=>$idAcuario,
+                        'idTarea'=>$idTarea
                         ]);
-                    }
+                    
+                }else{
+                    return $this->render('_controlForm',[
+                        'conditionsModel'=> $modelConditions,
+                        'supplyModels'=>$supplyModels,
+                        'availableSupplies'=>$availableSupplies
+                    ]);
                 }
+        }
     }
 
 
@@ -291,14 +302,14 @@ class TaskController extends Controller
         if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
         {
             if(Yii::$app->request->post('Supply')!=null){
-            $supplies = Yii::$app->request->post('Supply',[]);
-            foreach (array_keys($supplies) as $index) {
-                $models[$index] = new Supply();
-            }
-    
-            Model::loadMultiple($models, Yii::$app->request->post());
+                $supplies = Yii::$app->request->post('Supply',[]);
+                foreach (array_keys($supplies) as $index) {
+                    $models[$index] = new Supply();
+                }
+        
+                Model::loadMultiple($models, Yii::$app->request->post());
 
-            return ActiveForm::validateMultiple($models);
+                return ActiveForm::validateMultiple($models);
             }else{
             return ActiveForm::validate($model);
             }

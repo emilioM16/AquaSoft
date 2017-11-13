@@ -57,7 +57,7 @@ class Specimen extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAcuarioIdAcuario()
+    public function getAcuario()
     {
         return $this->hasOne(Aquarium::className(), ['idAcuario' => 'acuario_idAcuario']);
     }
@@ -65,7 +65,7 @@ class Specimen extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEspecieIdEspecie()
+    public function getEspecie()
     {
         return $this->hasOne(Specie::className(), ['idEspecie' => 'especie_idEspecie']);
     }

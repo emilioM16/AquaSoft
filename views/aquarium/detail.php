@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'type' => AlertBlock::TYPE_GROWL,
         'alertSettings' => [
           'success' => [
-            'title' => 'Control satisfactorio',
+            'title' => 'Realización de tarea satisfactoria',
             'icon' => 'glyphicon glyphicon-ok-sign',
             'showSeparator' => true,
             'type' => Growl::TYPE_SUCCESS,
@@ -141,9 +141,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 
-if(Yii::$app->user->can('administrarTareas')){
 $JSEventClick = <<<EOT
 function(calEvent, jsEvent, view) {
+
+  if(calEvent.editable == true){
     $.ajax({
       type: 'GET',
       url: "/task/execute", 
@@ -158,15 +159,11 @@ function(calEvent, jsEvent, view) {
           $('#modalTitle').html('Realizar tarea');
           $('#modal').modal('show');
           }
-      });
+    });
+  }
+
 }
 EOT;
-}else{
-$JSEventClick = <<<EOT
-function(){
-}
-EOT;
-}
 ?>
 
   <!-- Calendario -->
@@ -177,19 +174,20 @@ EOT;
             'id'=>'calendar',
             'defaultView'=>'basicDay',
             'header'=>[
-                'left'=>'',
+                'left'=>'prev,next today',
                 'center'=>'title',
-                'right'=>''
+                'right'=>'basicDay,month'
             ],
             'options' => [
                 'lang' => 'es',
             ],
             'events' => $acuario->events,
             'clientOptions' => [
-                'language' => 'fa',
+                'language' => 'es',
                 'eventLimit' => TRUE,
                 'fixedWeekCount' => false,
-                // 'dayClick'=>new \yii\web\JsExpression('function () {console.log("hola");}') Esto es para capturar el click sobre el día
+                'defaultTimedEventDuration' => '00:01:00',
+                'timeFormat'=>'hh:mm',
                 'eventClick'=>new \yii\web\JsExpression($JSEventClick)
             ],
         ]);

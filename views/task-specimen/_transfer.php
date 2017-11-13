@@ -22,7 +22,7 @@ use kartik\depdrop\DepDrop;
             <div class="form-group col-lg-6 form-center" align="center">
                 <?php
                 //Select de especies//
-                echo '<label class="control-label">Especies</label>';
+                echo '<label class="control-label">Especie</label>';
                 echo Select2::widget([
                     'id'=>'selectSpecie', 
                     'name' => 'selectSpecie',
@@ -33,7 +33,7 @@ use kartik\depdrop\DepDrop;
 
                 ]);
                 //Select de acuario de origen//
-                echo '<label class="control-label">Acuario de origen </label>';
+                echo '<br><label class="control-label">Acuario de origen </label>';
                 echo DepDrop::widget([
                     'name' => 'originAquarium',
                     'type'=>DepDrop::TYPE_SELECT2,
@@ -47,7 +47,7 @@ use kartik\depdrop\DepDrop;
                     ]
                 ]);
                 //Select de acuario de destino//
-                echo '<label class="control-label">Acuario de destino </label>';
+                echo '<br><label class="control-label">Acuario de destino </label>';
                 echo DepDrop::widget([
                     'name' => 'destinationAquarium',
                     'type'=>DepDrop::TYPE_SELECT2,

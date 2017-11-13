@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             [
                 'attribute'=>'activo',
+                'filter'=>[1=>'Si',0=>'No'],
                 'value'=>function($model, $key, $index, $widget){
                     if($model->activo==1){
                         return 'Si';

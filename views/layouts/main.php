@@ -165,12 +165,13 @@ rmrevin\yii\fontawesome\AssetBundle::register($this);
             ],
 
             ['label'=>FA::icon('question-circle')->size(FA::SIZE_LARGE),
-            'url'=>['site/help'],
-            'options'=>[
-                'data-toggle'=>'tooltip',
-                'data-placement'=>'bottom',
-                'title'=>'Ayuda'
-                ]
+                'url'=>['site/help'],
+                'linkOptions'=>['target'=>'_blank'],
+                'options'=>[
+                    'data-toggle'=>'tooltip',
+                    'data-placement'=>'bottom',
+                    'title'=>'Ayuda',
+                ],
             ],
 
 

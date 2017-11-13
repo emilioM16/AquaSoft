@@ -156,7 +156,7 @@ class Aquarium extends \yii\db\ActiveRecord
         foreach ($tasks as $task)
         {
             $planState = $task->planificacion['ESTADO_PLANIFICACION_idEstadoPlanificacion'];
-            if(($planState =='Aprobado')||($planState == null)){
+            if(($planState =='Aprobada')||($planState == null)){
                 $event = new \yii2fullcalendar\models\Event();
                 $event->id = $task->idTarea;
                 $event->title = '[' . $task->TIPO_TAREA_idTipoTarea . '] Titulo: ' . $task->titulo . ' - Descripción: ' . $task->descripcion;
@@ -167,7 +167,25 @@ class Aquarium extends \yii\db\ActiveRecord
                 if($task->fechaHoraRealizacion !== null){
                     $event->backgroundColor ='rgb(5.1%, 66.3%, 12.9%)'; 
                 }
-                $event->editable = true;
+                
+                $condicionDiaAnterior = (strtotime($task->fechaHoraInicio) < strtotime("today")) && (strtotime($task->fechaHoraFin) < strtotime("today"));
+                $condicionDiaPosterior = (strtotime($task->fechaHoraInicio) > strtotime("tomorrow")) && (strtotime($task->fechaHoraFin) > strtotime("tomorrow"));
+                
+
+                if($task->fechaHoraRealizacion == null){
+                    if(Yii::$app->user->can('administrarTareas')){
+                        if($condicionDiaAnterior || $condicionDiaPosterior){
+                            $event->editable = false;
+                        }else{
+                            $event->editable = true;                         
+                        }
+                    }else{
+                        $event->editable = false;
+                    }
+                }else{
+                    $event->editable = true; 
+                }
+
                 $this->events[] = $event;
             }
         }

@@ -137,8 +137,9 @@ class AquariumController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionDetail($idAcuario)
-    {
+    public function actionDetail()
+    {   
+        $idAcuario = Yii::$app->request->post('idAcuario');
         $model = $this->findModel($idAcuario);
         $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
         $actualConditions = $model->getActualConditions();

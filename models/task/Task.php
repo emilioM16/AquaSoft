@@ -45,6 +45,8 @@ class Task extends \yii\db\ActiveRecord
 {
     public $duracion = 0;
     public $horaInicio;
+    public $planificacionAsociada;
+    public $realizador;
 
     public function inicialice($idAcuario, $idPlanificacion, $fechaInicio)
     {
@@ -54,8 +56,6 @@ class Task extends \yii\db\ActiveRecord
             $this->PLANIFICACION_idPlanificacion = $idPlanificacion;
             $this->fechaHoraInicio = date('Y-m-d H:i:s',strtotime($fechaInicio));
         }
-        $this->descripcion=$idAcuario.'--'.$idPlanificacion.'--'.$fechaInicio . '--' . $this->isPlanned();
-
     }
 
     /**
@@ -95,16 +95,18 @@ class Task extends \yii\db\ActiveRecord
             'idTarea' => 'Id Tarea',
             'titulo' => 'Título',
             'descripcion' => 'Descripción',
-            'fechaHoraInicio' => 'Fecha Hora Inicio',
-            'fechaHoraFin' => 'Fecha Hora Fin',
-            'fechaHoraRealizacion' => 'Fecha Hora Realizacion',
+            'fechaHoraInicio' => 'Fecha y hora de inicio',
+            'fechaHoraFin' => 'Fecha y hora de finalización',
+            'fechaHoraRealizacion' => 'Fecha y hora de realización',
             'PLANIFICACION_idPlanificacion' => 'Planificacion Id Planificacion',
             'USUARIO_idUsuario' => 'Usuario Id Usuario',
             'ACUARIO_idAcuario' => 'Acuario Id Acuario',
             'TIPO_TAREA_idTipoTarea' => 'Tipo de tarea',
             'duracion' => 'Duración',
             'horaInicio' => 'Hora de inicio',
-            'observaciones'=>'Observaciones'
+            'observaciones'=>'Observaciones',
+            'realizador'=>'Realizada por',
+            'planificacionAsociada'=>'Planificación asociada'
         ];
     }
 
@@ -169,7 +171,7 @@ class Task extends \yii\db\ActiveRecord
      */
     public function getInsumoTareas()
     {
-        return $this->hasMany(TaskSupply::className(), ['TAREA_idTarea' => 'idTarea']);
+        return $this->hasMany(TasksSupply::className(), ['TAREA_idTarea' => 'idTarea']);
     }
 
     /**
@@ -340,6 +342,7 @@ class Task extends \yii\db\ActiveRecord
          else {
              return true;
          }
+    }
 
 
 
@@ -350,8 +353,8 @@ class Task extends \yii\db\ActiveRecord
             $this->descripcion = 'Esta tarea fue creada a través de la sección de detalle de acuario';
             $this->USUARIO_idUsuario = Yii::$app->user->identity->idUsuario;
             $this->horaInicio = date("H:i:s");
-            $this->fechaHoraInicio = null;
-            $this->fechaHoraFin = null;
+            $this->fechaHoraInicio = new Expression('NOW()');
+            $this->fechaHoraFin = new Expression('NOW()');
             $this->fechaHoraRealizacion = new Expression('NOW()');
             $this->ACUARIO_idAcuario = $idAquarium;
             $this->TIPO_TAREA_idTipoTarea = 'Controlar acuario';
@@ -375,7 +378,7 @@ class Task extends \yii\db\ActiveRecord
     }
     
 
-    private function removeRepeated($supplies){
+    public function removeRepeated($supplies){
         foreach ($supplies as $key => $supply) {
             for ($i=$key+1; $i < sizeof($supplies) ; $i++) { 
                 if($supply->idInsumo == $supplies[$i]->idInsumo){
@@ -401,7 +404,7 @@ class Task extends \yii\db\ActiveRecord
                     foreach ($supplies as $key => $supply) {
                         $updatedSupply = Supply::findOne($supply->idInsumo);
                         $updatedSupply->stock = $updatedSupply->stock - $supply->quantity;
-
+                        
                         if($updatedSupply->save(false)){//si se actualiza el stock del insumo, se crea el registro en la tabla INSUMO_TAREA//
                             $taskSupply = new TasksSupply();
                             $taskSupply->INSUMO_idInsumo = $supply->idInsumo;
@@ -445,7 +448,7 @@ class Task extends \yii\db\ActiveRecord
 
         }catch(Exception $e){
             $transaction->rollback();
-            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.");            
+            return Yii::$app->session->setFlash('error', "Ocurrió un error al registrar el control.".$e);            
         }
     }
 

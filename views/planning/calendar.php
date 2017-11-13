@@ -180,15 +180,12 @@ EOF;
             ],
             'events' => $model->events,
             'clientOptions' => [
-
-                'language' => 'fa',
-                'eventLimit' => TRUE,
+                'fixedWeekCount'=>false, 
+                'showNonCurrentDates'=>false, 
+                'eventLimit' => true,
                 'fixedWeekCount' => false,
-                 //'dayClick'=>new \yii\web\JsExpression($JSEventClick),
-                //  'select' => new JsExpression($JSCode),
-                 'dayClick'=>new \yii\web\JsExpression($JSDayClick),
-              //  'eventClick'=>new \yii\web\JsExpression($JSEventClick),
-
+                'dayClick'=>new \yii\web\JsExpression($JSDayClick),
+                'firstDay'=>1,
             ],
         ]);
         ?>
