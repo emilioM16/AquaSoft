@@ -167,7 +167,7 @@ EOF;
           $session = Yii::$app->session;
 
           if ($session->get('var')=='check'){
-          echo '<div>'
+          echo '<div><br>'
             .Html::a(FA::icon("calendar-check-o")->size(FA::SIZE_LARGE).' Autorizar', ['planning/autorized', 'id' => $model->idPlanificacion], [
                       'class' => 'btn btn-success',
                       'data' => [
@@ -205,7 +205,7 @@ EOF;
                .'</div>';
                 }
                 else{
-                  echo '<div>'
+                  echo '<div><br>'
                   .Html::a('Finalizar', ['planning/home', 'id' => $model->idPlanificacion], [
                         'class' => 'btn btn-success',
                         'data' => [
