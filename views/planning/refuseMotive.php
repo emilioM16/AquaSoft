@@ -53,8 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                          'actions'=>[
                              'type'=>Form::INPUT_RAW,
                              'value'=>'<div class="form-group" align="center">'.
-                             Html::submitButton(
-                                 $modelV->isNewRecord ? 'Aceptar' : FA::icon('save')->size(FA::SIZE_LARGE).' Aceptar',
+                             Html::submitButton(FA::icon('save')->size(FA::SIZE_LARGE).' Aceptar',
                                  [
                                      'class' => $modelV->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                                  ]).
