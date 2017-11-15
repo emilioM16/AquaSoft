@@ -107,14 +107,11 @@ class Planning extends \yii\db\ActiveRecord
     {
        $marca = true;
        $planificaciones = Planning::find()->where(['ACUARIO_USUARIO_acuario_idAcuario' => $idAcua])->all();
-      // $fechaActual = date('Y-m-01');
-      // yii::error(\yii\helpers\VarDumper::dumpAsString($fechaActual));
         foreach ($planificaciones as $plani) {
 
                  if (($plani->anioMes == $unMes)) {
                    $marca = false;
                 }
-                //  yii::error(\yii\helpers\VarDumper::dumpAsString($unMes));
        }
        return $marca;
     }

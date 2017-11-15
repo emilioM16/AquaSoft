@@ -8,6 +8,7 @@ use app\models\specie\SpecieSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
 
 /**
  * SpecieController implements the CRUD actions for Specie model.
@@ -51,7 +52,7 @@ class SpecieController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -68,7 +69,7 @@ class SpecieController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idEspecie]);
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
             ]);
         }
@@ -87,7 +88,7 @@ class SpecieController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idEspecie]);
         } else {
-            return $this->render('update', [
+            return $this->renderAjax('update', [
                 'model' => $model,
             ]);
         }
@@ -121,4 +122,21 @@ class SpecieController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación.
+        
+                if($id!=-1){ 
+                    $scenario = 'update';
+                }else{
+                    $scenario = 'create';
+                }
+        
+                $model = new Specie(['scenario'=>$scenario,'idEspecie'=>$id]);
+        
+                if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+                {
+                    Yii::$app->response->format = 'json';
+                    return ActiveForm::validate($model);
+                }
+            }
 }

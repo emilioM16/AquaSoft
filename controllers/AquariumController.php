@@ -7,10 +7,12 @@ use app\models\aquarium\Aquarium;
 use app\models\aquarium\AquariumSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use app\models\specie\Specie;
 use app\models\user\User;
+use yii\helpers\ArrayHelper;
 
 /**
  * AquariumController implements the CRUD actions for Aquarium model.
@@ -137,20 +139,34 @@ class AquariumController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionDetail()
+
+    public function isAssigned($idAcuario){
+        $assigned = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+        if(array_key_exists($idAcuario,$assigned)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    public function actionDetail($idAcuario)
     {   
-        $idAcuario = Yii::$app->request->post('idAcuario');
-        $model = $this->findModel($idAcuario);
-        $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
-        $actualConditions = $model->getActualConditions();
-        $species = $model->getQuantityBySpecie();
-        $speciesPorcentages = Specie::calculatePorcentageBySpecie($species);
-        return $this->render('detail', [
-            'acuario'=>$model,
-            'condiciones'=>$actualConditions,
-            'especies'=>$species,
-            'porcentajes'=>$speciesPorcentages
-            ]);
+        if($this->isAssigned($idAcuario)){
+            $model = $this->findModel($idAcuario);
+            $model->loadEvents(); //carga los eventos del calendario para el acuario seleccionado//
+            $actualConditions = $model->getActualConditions();
+            $species = $model->getQuantityBySpecie();
+            $speciesPorcentages = Specie::calculatePorcentageBySpecie($species);
+            return $this->render('detail', [
+                'acuario'=>$model,
+                'condiciones'=>$actualConditions,
+                'especies'=>$species,
+                'porcentajes'=>$speciesPorcentages
+                ]);
+        }else{
+            throw new ForbiddenHttpException('No tiene permiso para acceder a este acuario'); 
+        }
     }
 
     /**

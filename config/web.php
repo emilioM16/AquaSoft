@@ -6,7 +6,6 @@ $db = require(__DIR__ . '/db.php');
 $config = [
     'language' => 'es-ES',
     'id' => 'basic',
-    'language'=>'es-ES',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'modules'=>[
@@ -97,6 +96,7 @@ $config = [
                 'planificaciones/ver'=>'planning/view',
                 'planificaciones/modificar'=>'planning/update',
                 'especies'=>'specie',
+                'planificaciones'=>'planning/index'
             ],
         ],
     ],
