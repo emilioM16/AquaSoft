@@ -40,13 +40,21 @@ class Supply extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['stock', 'TIPO_TAREA_idTipoTarea'], 'required'],
+            [['stock','nombre'], 'required'],
+            [['TIPO_TAREA_idTipoTarea'],'required', 'message'=>'Por favor, seleccione un tipo de tarea'],
             [['stock', 'activo','idInsumo'], 'integer'],
             [['nombre', 'TIPO_TAREA_idTipoTarea'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 200],
-            [['TIPO_TAREA_idTipoTarea'], 'exist', 'skipOnError' => true, 'targetClass' => TaskType::className(), 'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea']],
-            [['quantity'],'required','message'=>'Ingrese una cantidad válida'],
-            [['idInsumo'],'required','message'=>'Seleccione el insumo'],
+            [['TIPO_TAREA_idTipoTarea'], 
+                'exist', 'skipOnError' => true, 
+                'targetClass' => TaskType::className(), 
+                'targetAttribute' => ['TIPO_TAREA_idTipoTarea' => 'idTipoTarea'],
+            ],
+            [ ['nombre'], 'unique', 'when' => function ($model, $attribute) {
+                return $model->{$attribute} !== static::findOne($model->idInsumo)->$attribute; },
+                'on' => 'update',
+                'message'=>'El insumo ingresado ya existe'], //en caso de ser una modificación de datos
+            [['nombre'], 'unique', 'on' => 'create', 'message'=>'El insumo ingresado ya existe'], //en caso de crear una nueva especie
         ];
     }
 

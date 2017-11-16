@@ -51,6 +51,11 @@ class Specie extends \yii\db\ActiveRecord
             [['minEspacio', 'activo'], 'integer'],
             [['nombre'], 'string', 'max' => 45],
             [['descripcion'], 'string', 'max' => 400],
+            [ ['nombre'], 'unique', 'when' => function ($model, $attribute) {
+                return $model->{$attribute} !== static::findOne($model->idEspecie)->$attribute; },
+                'on' => 'update',
+                'message'=>'El nombre ingresado ya existe'], //en caso de ser una modificación de datos
+            [['nombre'], 'unique', 'on' => 'create', 'message'=>'El nombre ingresado ya existe'], //en caso de crear una nueva especie
         ];
     }
 

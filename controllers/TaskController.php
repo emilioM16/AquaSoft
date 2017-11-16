@@ -247,8 +247,6 @@ class TaskController extends Controller
             }else{
                 $task->idTarea = $idTarea;
             }
-            // array_values($supplyModels);
-            // $s = $task->removeRepeated($supplyModels);
             $task->saveControl($modelConditions,$supplyModels,$idAcuario);
             return $this->redirect(Yii::$app->request->referrer);
         }

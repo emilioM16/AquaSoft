@@ -9,6 +9,7 @@ use app\models\planning\RejectedMotive;
 use app\models\planning\PlanningSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\web\response;
@@ -18,8 +19,6 @@ use app\models\aquarium\Aquarium;
 use yii\helpers\ArrayHelper;
 
 
-///home/lia/DESARROLLO/aquasoft-final/controllers/PlanningController.php
-//$session = Yii::$app->session;
 /**
  * PlanningController implements the CRUD actions for Planning model.
  */
@@ -50,11 +49,20 @@ class PlanningController extends Controller
       return $this->redirect(['index']);
     }
 
+    // public function isAssigned($idAcuario){
+    //     $assigned = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+    //     if(array_key_exists($idAcuario,$assigned)){
+    //         return true;
+    //     }else{
+    //         return false;
+    //     }
+    // }
+
+
     public function actionIndex()
     {
         $searchModel = new PlanningSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -69,53 +77,70 @@ class PlanningController extends Controller
     public function actionView($id)
     {
       $model = $this->findModel($id);
-      $model->loadEvents();
-      $session = Yii::$app->session;
-      $session->set('var','view');
+      $rol = Yii::$app->user->identity->getRole();
+      if($rol == 'especialista'){
+        if(($model->activo == 1) && ($model->ACUARIO_USUARIO_usuario_idUsuario == Yii::$app->user->identity->idUsuario)){
+            $model->loadEvents();
+            $session = Yii::$app->session;
+            $session->set('var','view');
+    
+            return $this->render('view', [
+    
+                'model' => $model,
+            ]);
+        }else{
+            throw new NotFoundHttpException('No tiene permiso para acceder a la página solicitada'); 
+        }
+    }else{
+        $model->loadEvents();
+        $session = Yii::$app->session;
+        $session->set('var','view');
 
         return $this->render('view', [
 
-          'model' => $model,
+            'model' => $model,
         ]);
+    }
+
 
     }
 
     public function actionCheck($id)
     {
       $model = $this->findModel($id);
-      $model->loadEvents();
-      $session = Yii::$app->session;
-      $session->set('var','check');
+      if(($model->activo != 0) && ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion == 'SinVerificar')){
+        $model->loadEvents();
+        $session = Yii::$app->session;
+        $session->set('var','check');
 
-      //cargo el array de sesiones
+        //cargo el array de sesiones
 
-        return $this->render('check', [
-
-            'model' => $model,
-
-
-        ]);
+            return $this->render('check', [
+                'model' => $model,
+            ]);
+      }else{
+        throw new NotFoundHttpException('No tiene permiso para acceder a la página solicitada');  
+      }
     }
 
-    public function actionDown($id)
-        {
-          $model = $this->findModel($id);
-          $model = $model->giveLow();
-          Yii::$app->session->setFlash('success', "Planificación eliminada con éxito");
-          return $this->redirect(['index']);
 
+    public function actionDown($id)
+    {
+        $model = $this->findModel($id);
+        if(($model->activo == 1) && ($model->ACUARIO_USUARIO_usuario_idUsuario == Yii::$app->user->identity->idUsuario) && ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion == 'SinVerificar')){
+            $model = $model->giveLow();
+            Yii::$app->session->setFlash('success', "Planificación eliminada con éxito");
+            return $this->redirect(['index']);
+        }else{
+            throw new NotFoundHttpException('No tiene permiso para acceder a la página solicitada'); 
         }
+    }
 
     public function actionCalendar($idPlan) //FUNCIONA, GUARDA LA PLANIFICION Y VA A LA PANTALLA DE CALENDARIO
     {
 
       $model = $this->findModel($idPlan);
       $model->loadEvents();
-      //  $vali = Validation::findOne(418);
-
-    //  $session = Yii::$app->session;
-    //  $varSesion =($session->get('var'));
-
 
        if ($model->load(Yii::$app->request->post()) && $model->save()) {
                   return $this->redirect([$view]);
@@ -140,35 +165,18 @@ class PlanningController extends Controller
         $model = new Planning();
         $aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
 
-      $session = Yii::$app->session;
-      $session->set('var','create');
-        // yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->user->identity->getAquariums()));
-        // $aquariums = [2=>'A02',3=>'a04'];
-      //  if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      //$aquariums = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+        $session = Yii::$app->session;
+        $session->set('var','create');
 
-      if ($model->load(Yii::$app->request->post())&& $model ->save()) {
+        if ($model->load(Yii::$app->request->post())&& $model ->save()) {
+                return $this->redirect(['calendar',
+                'idPlan' => $model->idPlanificacion]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                    'aquariums'=>$aquariums
 
-          //  $formattedDate = date("Y-m-d",strtotime($model->anioMes));
-           //
-          //   if ($model->validatePlanning($formattedDate,$model->ACUARIO_USUARIO_acuario_idAcuario)) {
-          //     // $this->addError("La planificacion ya existe para este mes y con este acuario");
-          //     $model->anioMes = $formattedDate;
-          //     if($model->save()){
-              //  return $this->render('calendar',['model' => $model]);
-              return $this->redirect(['calendar',
-              'idPlan' => $model->idPlanificacion]);
-            //  }
-
-
-
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'aquariums'=>$aquariums
-
-            ]);
-
+                ]);
         }
 
     }
@@ -183,16 +191,25 @@ class PlanningController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->loadEvents();
-        $session = Yii::$app->session;
-        $session->set('var','update');
+        $rol = Yii::$app->user->identity->getRole();
+        if($rol == 'especialista'){
+            if(($model->activo == 1) && ($model->ACUARIO_USUARIO_usuario_idUsuario == Yii::$app->user->identity->idUsuario) && ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion == 'SinVerificar')){
+                $model->loadEvents();
+                $session = Yii::$app->session;
+                $session->set('var','update');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idPlanificacion]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->idPlanificacion]);
+                } else {
+                    return $this->render('update', [
+                        'model' => $model,
+                    ]);
+                }
+            }else{
+                throw new NotFoundHttpException('No tiene permiso para acceder a la página solicitada');                 
+            }
+        }else{
+
         }
     }
 
@@ -202,7 +219,7 @@ class PlanningController extends Controller
 
           $modelVal->PLANIFICACION_idPlanificacion= $id;
           $modelVal->USUARIO_idUsuario= Yii::$app->user->identity->idUsuario;
-          $modelVal->save(false);//trucho
+          $modelVal->save(false);
 
          $model = $this->findModel($id);
          $model = $model->changeStatus('Aprobada');
@@ -217,11 +234,8 @@ class PlanningController extends Controller
          $modelValidacion= new Validation();
 
          $model = $this->findModel($id);
-      //   $model = $model->changeStatus('Rechazada');
-
          $motivosRechazo = RejectedMotive::find()->all();
 
-      //   yii::error(\yii\helpers\VarDumper::dumpAsString($model));
         //llama previamente al before save
 
 
@@ -247,16 +261,13 @@ class PlanningController extends Controller
 
           Yii::$app->session->setFlash('success', "Planificación rechazada con éxito");
 
-        $modelVal->save(false);//trucho
+        $modelVal->save(false);
 
 
-          if ($modelVal->load(Yii::$app->request->post())&& $modelVal->save(false)) {
-              return $this->redirect(['index']);
-
-        } else {
-                  return $this->redirect(['index']);
-              //  return $modelVal->redirect(['index']);
-
+            if ($modelVal->load(Yii::$app->request->post())&& $modelVal->save(false)) {
+                return $this->redirect(['index']);
+            } else {
+                    return $this->redirect(['index']);
             }
 
 
@@ -280,44 +291,4 @@ class PlanningController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
-
-
-    public function actionValidatePlanning()
-    {
-      yii::error(\yii\helpers\VarDumper::dumpAsString('aaa'));
-      $model = new Planning();
-      $msg = null;
-    //  $model->validatePlanning(); // llama al metodo de validacion que tiene el modelo
-
-        // if ($model ->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
-        //     Yii::$app->response->format = 'json';
-        //     return ActiveForm::render("create");
-        // }
-
-    //     if ($model->load(Yii::$app->request->post)) {
-     //
-    //         if ($model->validate()) {
-    //           //hacer consulta a bd
-    //         $msg="Planificacion correcta";
-    //         }
-    //         else {
-    //           $model->getErrors();
-    //         }
-     //
-    //  }
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
 }

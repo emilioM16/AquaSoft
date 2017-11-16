@@ -2,7 +2,9 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use rmrevin\yii\fontawesome\FA;
 use yii\widgets\Pjax;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\specie\SpecieSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -10,13 +12,19 @@ use yii\widgets\Pjax;
 $this->title = 'Especies';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="specie-index">
+<div class="specie-index" align="center">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <hr>
     <p>
-        <?= Html::a('Agregar especie', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php
+            echo  Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar especie', 
+                    [
+                    'value' => Url::to(['specie/create']), 
+                    'title' => 'Agregar especie', 
+                    'class' => 'showModalButton btn btn-success'
+                    ]);
+        ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -32,17 +40,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'buttons' => [
 
                         'view'=>function($url,$model){
-                            return Html::a('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>',
-                            ['specie/view','id'=>$model->idEspecie],
-                            ['class' => 'btn btn-info btnAquarium']
-                          );
+                            return Html::button('<span class="btn-aquarium glyphicon glyphicon-eye-open"></span>', 
+                            [
+                              'value' => Url::to(['specie/view','id'=>$model->idEspecie]), 
+                              'title' => 'Información de la especie: '.$model->nombre, 
+                              'class' => 'showModalButton btn btn-warning btnAquarium'
+                            ]);
 
                         },
                        'update'=>function($url,$model){
-                            return Html::a('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>',
-                            ['specie/update','id'=>$model->idEspecie],
-                            ['class' => 'btn btn-success btnAquarium']
-                            );
+                        return Html::button('<span class="btn-aquarium glyphicon glyphicon-pencil"></span>', 
+                        [
+                          'value' => Url::to(['specie/update','id'=>$model->idEspecie]), 
+                          'title' => 'Modificar especie: '.$model->nombre, 
+                          'class' => 'showModalButton btn btn-primary btnAquarium'
+                        ]);
                           },
                           'delete'=>function($url,$model){
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['specie/delete', 'id' => $model->idEspecie], [

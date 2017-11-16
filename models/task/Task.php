@@ -352,7 +352,7 @@ class Task extends \yii\db\ActiveRecord
          }
     }
 
-}
+
 
     private function createAndPopulateTask($idAquarium){
         if($this->idTarea == -1){

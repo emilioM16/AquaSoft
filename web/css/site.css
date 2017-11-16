@@ -301,3 +301,7 @@ textarea{
     max-height: 200px;
     min-height: 100px;
 }
+
+.action-column{
+    width: 9%;
+}

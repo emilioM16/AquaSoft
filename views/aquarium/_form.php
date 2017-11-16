@@ -82,14 +82,6 @@ SwitchInputAsset::register($this);
                         ]
                     ]
                 ],
-                // 'activo'=>[
-                //     'label'=>'Inactivo',
-                //     'type'=>Form::INPUT_CHECKBOX,
-                //     'items'=>[0=>'Inactivo'],
-                //     // 'options'=>[
-                //     //     'float'=>'right'
-                //     // ]
-                // ],
                 'actions'=>[
                     'type'=>Form::INPUT_RAW,
                     'value'=>'<div class="form-group" align="center">'.

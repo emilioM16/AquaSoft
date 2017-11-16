@@ -154,8 +154,8 @@ EOF;
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>
-                <?php echo 'Información'; ?>
+              <th class="info">
+                <?php echo '<div class="text-center" style="font-size:16px;">Información</div>'; ?>
               </th>
             </tr>
           </thead>
@@ -184,11 +184,10 @@ EOF;
               </td>
             </tr>
             <tr>
-              <td>
                 <?php
                   $vali = Validation::find()->where(['PLANIFICACION_idPlanificacion' => $model->idPlanificacion])->one();
                   if ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion =='Rechazada') {
-                  echo '<b>'.'Motivo rechazo: '.'</b>'.$vali->MOTIVO_RECHAZO_idMotivoRechazo;
+                  echo '<td><b>'.'Motivo rechazo: '.'</b>'.$vali->MOTIVO_RECHAZO_idMotivoRechazo;
                   echo
                   '</td>'.
             '</tr>'.
@@ -219,7 +218,6 @@ EOF;
       </div>
 
           <?php
-          $session = Yii::$app->session;
 
           if ($session->get('var')=='check'){
           echo '<div><br>'

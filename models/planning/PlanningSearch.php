@@ -41,7 +41,15 @@ class PlanningSearch extends Planning
      */
     public function search($params)
     {
-        $query = Planning::find();
+        $rol = Yii::$app->user->identity->getRole();
+        if($rol == 'especialista'){
+            $query = Planning::find()
+                    ->where(['ACUARIO_USUARIO_usuario_idUsuario'=>Yii::$app->user->identity->idUsuario])
+                    ->andWhere(['activo'=>1]);
+        }else{
+            $query = Planning::find()
+                    ->andWhere(['activo'=>1]);
+        }
 
         // add conditions that should always apply here
 
