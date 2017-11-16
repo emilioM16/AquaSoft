@@ -15,9 +15,10 @@ use kartik\growl\Growl;
 $this->title = 'Planificaciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="planning-index">
+<div class="planning-index" align="center">
 
 <h1><?= Html::encode($this->title) ?></h1>
+<hr>
     <p>
     <?php if(Yii::$app->user->can('crearPlani')){
     echo  Html::a(FA::icon("plus")->size(FA::SIZE_LARGE).' Nueva planificación', ['create'], ['class' => 'btn btn-success']);
@@ -39,6 +40,7 @@ if (Yii::$app->user->can('autorizar-rechazar')) {
   echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'tableOptions' => ['class' => 'table table-hover table-bordered table-striped'],    
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

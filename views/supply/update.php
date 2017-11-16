@@ -12,10 +12,10 @@ $this->params['breadcrumbs'][] = 'Modificar';
 ?>
 <div class="supply-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
+        'taskTypes'=>$taskTypes
     ]) ?>
 
 </div>

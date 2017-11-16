@@ -76,7 +76,7 @@ $session = Yii::$app->session;
                     'options'=>[
                             'data'=>ArrayHelper::map($taskTypes,'idTipoTarea','idTipoTarea'),
                             'options'=>['placeholder' => 'Seleccione un tipo de tarea...']
-                        ]
+                    ]
                 ]
             ]
         ]);

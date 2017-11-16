@@ -12,10 +12,10 @@ use yii\helpers\Url;
 $this->title = 'Especies';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="specie-index">
+<div class="specie-index" align="center">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <hr>
     <p>
         <?php
             echo  Html::button(FA::icon('plus')->size(FA::SIZE_LARGE).' Agregar especie', 

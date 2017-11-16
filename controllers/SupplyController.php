@@ -10,7 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
-
+use app\models\task\TaskType;
+use yii\widgets\ActiveForm;
 /**
  * SupplyController implements the CRUD actions for Supply model.
  */
@@ -47,6 +48,14 @@ class SupplyController extends Controller
         ]);
     }
 
+    private function getTaskTypes(){
+        return TaskType::find()
+        ->where(['!=','idTipoTarea','Incorporar ejemplares'])
+        ->andWhere(['!=','idTipoTarea','Transferir ejemplares'])
+        ->andWhere(['!=','idTipoTarea','Quitar ejemplares'])
+        ->all(); 
+    }
+
     /**
      * Displays a single Supply model.
      * @param integer $id
@@ -54,7 +63,7 @@ class SupplyController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -69,10 +78,11 @@ class SupplyController extends Controller
         $model = new Supply();
 
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['view', 'id' => $model->idInsumo]);
+            return $this->redirect(['index', 'id' => $model->idInsumo]);
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
+                'taskTypes'=>$this->getTaskTypes()
             ]);
         }
     }
@@ -88,9 +98,10 @@ class SupplyController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-            return $this->redirect(['view', 'id' => $model->idInsumo]);
+            return $this->redirect(['index', 'id' => $model->idInsumo]);
         } else {
-            return $this->render('update', [
+            return $this->renderAjax('update', [
+                'taskTypes'=>$this->getTaskTypes(),
                 'model' =>  $this->findModel($id),
             ]);
         }
@@ -130,5 +141,22 @@ class SupplyController extends Controller
        $supplyStock = Supply::findOne(['idInsumo'=>$supplyId])->stock;
        Yii::$app->response->format = 'json';
        return $supplyStock;
+    }
+
+    public function actionValidation($id){ //utilizado para la validación con ajax, toma los datos ingresados y los manda al modelo User para su validación.
+        
+        if($id!=-1){ 
+            $scenario = 'update';
+        }else{
+            $scenario = 'create';
+        }
+
+        $model = new Supply(['scenario'=>$scenario,'idInsumo'=>$id]);
+
+        if(Yii::$app->request->isAjax && $model->load(Yii::$app->request->post()))
+        {
+            Yii::$app->response->format = 'json';
+            return ActiveForm::validate($model);
+        }
     }
 }

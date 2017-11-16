@@ -67,7 +67,7 @@ class SpecieController extends Controller
         $model = new Specie();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idEspecie]);
+            return $this->redirect(['index', 'id' => $model->idEspecie]);
         } else {
             return $this->renderAjax('create', [
                 'model' => $model,
@@ -86,7 +86,7 @@ class SpecieController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idEspecie]);
+            return $this->redirect(['index', 'id' => $model->idEspecie]);
         } else {
             return $this->renderAjax('update', [
                 'model' => $model,

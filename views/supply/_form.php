@@ -1,8 +1,11 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
+use rmrevin\yii\fontawesome\FA;
+use kartik\form\ActiveForm;
+use kartik\builder\Form;
+use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model app\models\supply\Supply */
 /* @var $form yii\widgets\ActiveForm */
@@ -10,21 +13,101 @@ use yii\widgets\ActiveForm;
 
 <div class="supply-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+<?php 
+    $supplyId =-1;
+    
+    if ($model->idInsumo!==null){
+        $supplyId = $model->idInsumo;
+    }
 
+    $form = ActiveForm::begin([
+                'id'=>$model->formName(),
+                'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
+                'validationUrl'=> Url::toRoute(['supply/validation','id'=>$supplyId]), 
+                'type'=>ActiveForm::TYPE_VERTICAL]);
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    echo Form::widget([
+        'model'=>$model,
+        'form'=>$form,
+        'columns'=>2,
+        'attributes'=>[
+            'nombre'=>[
+                'type'=>Form::INPUT_TEXT,
+                'options'=>[
+                    'placeholder'=>'Ingrese el nombre',
+                    'maxlength'=>true,
+                ]
+            ],
+            'stock'=>[
+                'type'=>Form::INPUT_WIDGET,
+                'widgetClass'=>'kartik\touchspin\TouchSpin',
+                'options'=>[
+                    'class'=>'input-sm',
+                    'pluginOptions' => [
+                        'min'=>1,
+                        'verticalbuttons' => true,
+                        'verticalupclass' => 'glyphicon glyphicon-plus',
+                        'verticaldownclass' => 'glyphicon glyphicon-minus',
+                    ],
+                ]
+            ],
+        ]
+        ]);
 
-    <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
+        echo Form::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'options'=>[
+                'class'=>'col-lg-6 form-center'
+            ],
+            'columns'=>1,
+            'attributes'=>[
+                'TIPO_TAREA_idTipoTarea'=>[
+                    'type'=>Form::INPUT_WIDGET,
+                    'widgetClass'=>'kartik\select2\Select2',
+                    'options'=>[
+                            'data'=>ArrayHelper::map($taskTypes,'idTipoTarea','idTipoTarea'),
+                            'options'=>['placeholder' => 'Seleccione un tipo de tarea...']
+                    ]
+                ],
+            ]
+        ]);
 
-    <?= $form->field($model, 'stock')->textInput(['type' => 'number']) ?>
+        echo Form::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'columns'=>2,
+            'attributes'=>[
+                'descripcion'=>[
+                    'type'=>Form::INPUT_TEXTAREA,
+                    'options'=>[
+                        'placeholder'=>'Ingrese una descripción',
+                        'maxlength'=>true,
+                    ]
+                ],
+            ]
+          ]);
 
-    <?= $form->field($model, 'TIPO_TAREA_idTipoTarea')->dropDownList(['Alimentación' => 'Alimentación', 'Controlar acuario' => 'Controlar acuario', 'Limpieza' => 'Limpieza','Reparación' => 'Reparación']); ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Crear ' : 'Modificar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+          echo Form::widget([
+            'model'=>$model,
+            'form'=>$form,
+            'columns'=>1,
+            'attributes'=>[
+                'actions'=>[
+                    'type'=>Form::INPUT_RAW,
+                    'value'=>'<div class="form-group" align="center">'.
+                        Html::submitButton(
+                            $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar',
+                            [
+                                'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
+                            ]).' '.
+                        Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'])
+                        .'</div>'
+                ]
+            ]
+          ]);
+                 
+        ActiveForm::end();
+?>
 
 </div>
