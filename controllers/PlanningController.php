@@ -9,6 +9,7 @@ use app\models\planning\RejectedMotive;
 use app\models\planning\PlanningSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 use yii\widgets\ActiveForm;
 use yii\web\response;
@@ -48,11 +49,20 @@ class PlanningController extends Controller
       return $this->redirect(['index']);
     }
 
+    // public function isAssigned($idAcuario){
+    //     $assigned = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
+    //     if(array_key_exists($idAcuario,$assigned)){
+    //         return true;
+    //     }else{
+    //         return false;
+    //     }
+    // }
+
+
     public function actionIndex()
     {
         $searchModel = new PlanningSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -67,53 +77,70 @@ class PlanningController extends Controller
     public function actionView($id)
     {
       $model = $this->findModel($id);
-      $model->loadEvents();
-      $session = Yii::$app->session;
-      $session->set('var','view');
+      $rol = Yii::$app->user->identity->getRole();
+      if($rol == 'especialista'){
+        if(($model->activo == 1) && ($model->ACUARIO_USUARIO_usuario_idUsuario == Yii::$app->user->identity->idUsuario)){
+            $model->loadEvents();
+            $session = Yii::$app->session;
+            $session->set('var','view');
+    
+            return $this->render('view', [
+    
+                'model' => $model,
+            ]);
+        }else{
+            throw new NotFoundHttpException('No tiene permiso para acceder a la página solicitada'); 
+        }
+    }else{
+        $model->loadEvents();
+        $session = Yii::$app->session;
+        $session->set('var','view');
 
         return $this->render('view', [
 
-          'model' => $model,
+            'model' => $model,
         ]);
+    }
+
 
     }
 
     public function actionCheck($id)
     {
       $model = $this->findModel($id);
-      $model->loadEvents();
-      $session = Yii::$app->session;
-      $session->set('var','check');
+      if(($model->activo != 0) && ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion == 'SinVerificar')){
+        $model->loadEvents();
+        $session = Yii::$app->session;
+        $session->set('var','check');
 
-      //cargo el array de sesiones
+        //cargo el array de sesiones
 
-        return $this->render('check', [
-
-            'model' => $model,
-
-
-        ]);
+            return $this->render('check', [
+                'model' => $model,
+            ]);
+      }else{
+        throw new NotFoundHttpException('No tiene permiso para acceder a la página solicitada');  
+      }
     }
 
-    public function actionDown($id)
-        {
-          $model = $this->findModel($id);
-          $model = $model->giveLow();
-          Yii::$app->session->setFlash('success', "Planificación eliminada con éxito");
-          return $this->redirect(['index']);
 
+    public function actionDown($id)
+    {
+        $model = $this->findModel($id);
+        if(($model->activo == 1) && ($model->ACUARIO_USUARIO_usuario_idUsuario == Yii::$app->user->identity->idUsuario) && ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion == 'SinVerificar')){
+            $model = $model->giveLow();
+            Yii::$app->session->setFlash('success', "Planificación eliminada con éxito");
+            return $this->redirect(['index']);
+        }else{
+            throw new NotFoundHttpException('No tiene permiso para acceder a la página solicitada'); 
         }
+    }
 
     public function actionCalendar($idPlan) //FUNCIONA, GUARDA LA PLANIFICION Y VA A LA PANTALLA DE CALENDARIO
     {
 
       $model = $this->findModel($idPlan);
       $model->loadEvents();
-      //  $vali = Validation::findOne(418);
-
-    //  $session = Yii::$app->session;
-    //  $varSesion =($session->get('var'));
-
 
        if ($model->load(Yii::$app->request->post()) && $model->save()) {
                   return $this->redirect([$view]);
@@ -164,16 +191,25 @@ class PlanningController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->loadEvents();
-        $session = Yii::$app->session;
-        $session->set('var','update');
+        $rol = Yii::$app->user->identity->getRole();
+        if($rol == 'especialista'){
+            if(($model->activo == 1) && ($model->ACUARIO_USUARIO_usuario_idUsuario == Yii::$app->user->identity->idUsuario) && ($model->ESTADO_PLANIFICACION_idEstadoPlanificacion == 'SinVerificar')){
+                $model->loadEvents();
+                $session = Yii::$app->session;
+                $session->set('var','update');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idPlanificacion]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->idPlanificacion]);
+                } else {
+                    return $this->render('update', [
+                        'model' => $model,
+                    ]);
+                }
+            }else{
+                throw new NotFoundHttpException('No tiene permiso para acceder a la página solicitada');                 
+            }
+        }else{
+
         }
     }
 
