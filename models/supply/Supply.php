@@ -55,6 +55,8 @@ class Supply extends \yii\db\ActiveRecord
                 'on' => 'update',
                 'message'=>'El insumo ingresado ya existe'], //en caso de ser una modificación de datos
             [['nombre'], 'unique', 'on' => 'create', 'message'=>'El insumo ingresado ya existe'], //en caso de crear una nueva especie
+            [['quantity'],'required','message'=>'Ingrese una cantidad válida'],
+            [['idInsumo'],'required','message'=>'Seleccione el insumo'],
         ];
     }
 
