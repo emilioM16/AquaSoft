@@ -300,6 +300,7 @@ EOF;
                 'dayClick'=>new \yii\web\JsExpression($JSDayClick),
                 'eventClick'=>new \yii\web\JsExpression($JSEventClick),
                 'firstDay'=>1,
+                'eventStartEditable'=>false,
             ],
         ]);
         ?>

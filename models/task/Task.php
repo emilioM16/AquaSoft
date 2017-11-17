@@ -266,8 +266,10 @@ class Task extends \yii\db\ActiveRecord
 
     /// Este método es llamado cuando se traen los datos de la base
     public function actualizarDuracion(){
-        // tener en cuenta que la H tiene que estar en mayúsculas para permitirle ingresar entre 1 y 23 horas. Si está en h permite sólo de 1 a 12
-        $this->duracion = date('H:i' ,strtotime($this->fechaHoraFin)-strtotime($this->fechaHoraInicio));
+        $date1=date_create($this->fechaHoraInicio);
+        $date2=date_create($this->fechaHoraFin);
+        $diff=date_diff($date1,$date2);
+        $this->duracion = $diff->format('%H:%i');
     }
 
     /// Este método es llamado cuando se traen los datos de la base
