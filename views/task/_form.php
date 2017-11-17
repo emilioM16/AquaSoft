@@ -133,7 +133,7 @@ $session = Yii::$app->session;
                             Html::submitButton(
                                 $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar',
                                 [
-                                    'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-success btnModal'
+                                    'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                                 ]).' '.
 
                             Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',
@@ -175,7 +175,7 @@ $session = Yii::$app->session;
 
     if (!$model->isNewRecord){
         echo '<div  align="right">'
-            .Html::a(FA::icon("trash")->size(FA::SIZE_LARGE).' Eliminar', ['task/delete', 'id' => $model->idTarea], [
+            .Html::a(FA::icon("trash")->size(FA::SIZE_LARGE), ['task/delete', 'id' => $model->idTarea], [
                 'class' => 'btn btn-danger btnModal btnDeleteTask',
                 'title'=>'Eliminar',
                 'data' => [

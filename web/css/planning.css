@@ -21,5 +21,7 @@
 
 
 .btnDeleteTask{
-    
+    position: absolute;
+    bottom: 6.6%;
+    right: 3%;
 }
