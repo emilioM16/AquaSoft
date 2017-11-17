@@ -4,10 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-<<<<<<< Temporary merge branch 1
-=======
     "hash": "4cdb5b13875f188d65cfa7e460e08634",
->>>>>>> Temporary merge branch 2
     "content-hash": "4c1753b9fc83d0ba328c6f49655b06a4",
     "packages": [
         {
@@ -209,12 +206,7 @@
             },
             "license": [
                 "Apache-2.0"
-<<<<<<< Temporary merge branch 1
             ]
-=======
-            ],
-            "time": "2017-06-17 12:43:57"
->>>>>>> Temporary merge branch 2
         },
         {
             "name": "bower-asset/bootstrap3-dialog",
@@ -427,12 +419,7 @@
                 "jquery",
                 "mask",
                 "plugins"
-<<<<<<< Temporary merge branch 1
             ]
-=======
-            ],
-            "time": "2017-10-10 12:47:01"
->>>>>>> Temporary merge branch 2
         },
         {
             "name": "bower-asset/moment",
@@ -1253,11 +1240,7 @@
                 "widget",
                 "yii2"
             ],
-<<<<<<< Temporary merge branch 1
             "time": "2017-10-19T04:23:23+00:00"
-=======
-            "time": "2017-10-19 04:23:23"
->>>>>>> Temporary merge branch 2
         },
         {
             "name": "kartik-v/yii2-datecontrol",
@@ -1361,11 +1344,7 @@
                 "modal",
                 "yii2"
             ],
-<<<<<<< Temporary merge branch 1
-            "time": "2017-10-20T11:01:19+00:00"
-=======
             "time": "2017-10-20 11:01:19"
->>>>>>> Temporary merge branch 2
         },
         {
             "name": "kartik-v/yii2-grid",
@@ -1418,11 +1397,7 @@
                 "widget",
                 "yii2"
             ],
-<<<<<<< Temporary merge branch 1
             "time": "2017-10-22T17:25:19+00:00"
-=======
-            "time": "2017-10-22 17:25:19"
->>>>>>> Temporary merge branch 2
         },
         {
             "name": "kartik-v/yii2-helpers",
@@ -2489,11 +2464,7 @@
                 "font",
                 "yii"
             ],
-<<<<<<< Temporary merge branch 1
             "time": "2017-01-11T14:05:47+00:00"
-=======
-            "time": "2017-01-11 14:05:47"
->>>>>>> Temporary merge branch 2
         },
         {
             "name": "softark/yii2-dual-listbox",
@@ -3504,11 +3475,7 @@
                 "object",
                 "object graph"
             ],
-<<<<<<< Temporary merge branch 1
             "time": "2017-10-19T19:58:43+00:00"
-=======
-            "time": "2017-10-19 19:58:43"
->>>>>>> Temporary merge branch 2
         },
         {
             "name": "phar-io/manifest",
