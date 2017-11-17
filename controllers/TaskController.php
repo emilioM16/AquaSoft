@@ -350,16 +350,12 @@ class TaskController extends Controller
                     $models[$index] = new Supply();
                 }
 
-                // if(Model::loadMultiple($models, Yii::$app->request->post())){
-                Model::loadMultiple($models, Yii::$app->request->post());
+               Model::loadMultiple($models, Yii::$app->request->post());
 
                 return ActiveForm::validateMultiple($models);
             }else{
                 return true;
             }
-            // }else{
-            //     return ActiveForm::validate($model);
-            // }
         }
     }
 

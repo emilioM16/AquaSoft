@@ -321,6 +321,7 @@ class Task extends \yii\db\ActiveRecord
                       ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
                       ->andWhere(['>','fechaHoraFin',date_format($fechaHI,"Y-m-d H:i:s")] )
                      ->andWhere(['<=','fechaHoraInicio',date_format($fechaHI,"Y-m-d H:i:s")])
+                     ->andWhere(['!=','idTarea',$this->idTarea])
                     //  ->orWhere(['fechaHoraInicio'=>date_format($fechaHI,"Y-m-d H:i:s")])
                       //si esto ocurre existe superposicion
                       ->one();
@@ -341,6 +342,7 @@ class Task extends \yii\db\ActiveRecord
                        ->where(['PLANIFICACION_idPlanificacion'=>$this->PLANIFICACION_idPlanificacion])
                        ->andWhere(['>=','fechaHoraFin',date_format($fechaHF,"Y-m-d H:i:s")])
                        ->andWhere(['<','fechaHoraInicio',date_format($fechaHF,"Y-m-d H:i:s")])
+                       ->andWhere(['!=','idTarea',$this->idTarea])
                     //   ->orWhere(['fechaHoraFin'=>date_format($fechaHF,"Y-m-d H:i:s")])
                        //si esto ocurre existe superposicion
                        ->one();

@@ -25,7 +25,6 @@ $session = Yii::$app->session;
         $form = ActiveForm::begin([
             'id'=>$model->formName(),
             'enableAjaxValidation'=>true, //importante, valida si el nombre ya está en uso
-            // 'validationUrl'=> Url::toRoute(['task/validation','id'=>$taskId]), 
             'validationUrl'=> Url::toRoute(['task/validation',
                                     'id'=>$taskId, 
                                     'idAqua'=>$model->ACUARIO_idAcuario, 
@@ -125,7 +124,7 @@ $session = Yii::$app->session;
             echo Form::widget([
                 'model'=>$model,
                 'form'=>$form,
-                'columns'=>1,
+                'columns'=>2,
                 'attributes'=>[
                     'actions'=>[
                         'type'=>Form::INPUT_RAW,
@@ -138,15 +137,9 @@ $session = Yii::$app->session;
                                 ]).' '.
 
                             Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',
-                            ['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'
-                                ]).' '.    
-                             Html::a(FA::icon("trash")->size(FA::SIZE_LARGE).' Eliminar', ['task/delete', 'id' => $model->idTarea], [
-                                       'class' => 'btn btn-primary btnModal',
-                                       'data' => [
-                                           'confirm' => '¿Esta seguro que desea eliminar esta tarea?',
-                                           'method' => 'post',
-                                         ],
-                                       ])
+                            ['class' => 'btn btn-warning btnModal','data-dismiss'=>'modal'
+                                ]),   
+
                     ]
                 ]
             ]);
@@ -155,7 +148,7 @@ $session = Yii::$app->session;
             echo Form::widget([
             'model'=>$model,
             'form'=>$form,
-            'columns'=>1,
+            'columns'=>2,
             'attributes'=>[
                 'actions'=>[
                     'type'=>Form::INPUT_RAW,
@@ -164,11 +157,11 @@ $session = Yii::$app->session;
                         Html::submitButton(
                             $model->isNewRecord ? FA::icon('save')->size(FA::SIZE_LARGE).' Agregar' : FA::icon('save')->size(FA::SIZE_LARGE).' Modificar',
                             [
-                                'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-success btnModal'
+                                'class' => $model->isNewRecord ? 'btn btn-success btnModal' : 'btn btn-primary btnModal'
                             ]).' '.
 
                         Html::button(FA::icon('remove')->size(FA::SIZE_LARGE).' Cancelar',
-                        ['class' => 'btn btn-danger btnModal','data-dismiss'=>'modal'
+                        ['class' => 'btn btn-warning btnModal','data-dismiss'=>'modal'
                             ])
                 ]
             ]
@@ -179,6 +172,19 @@ $session = Yii::$app->session;
     // $form->field($model, 'PLANIFICACION_idPlanificacion')->textInput(['hidden' => true]);
     // $form->field($model, 'ACUARIO_idAcuario')->textInput(['hidden' => true]);
     ActiveForm::end();
+
+    if (!$model->isNewRecord){
+        echo '<div  align="right">'
+            .Html::a(FA::icon("trash")->size(FA::SIZE_LARGE).' Eliminar', ['task/delete', 'id' => $model->idTarea], [
+                'class' => 'btn btn-danger btnModal btnDeleteTask',
+                'title'=>'Eliminar',
+                'data' => [
+                    'confirm' => '¿Esta seguro que desea eliminar esta tarea?',
+                    'method' => 'post',
+                ],
+            ])
+        .'</div>';
+    }
     ?>
 
 </div>
