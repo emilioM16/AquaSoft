@@ -279,21 +279,27 @@ class TaskController extends Controller
 
         $task = new Task();
         $count = count(Yii::$app->request->post('Supply', []));
-        $supplyModels = [new Supply()];
+        $supplyModels = [];
 
         for($i = 1; $i < $count; $i++) {
             $supplyModels[] = new Supply();
         }
         if ($task->load(Yii::$app->request->post())) {
-                if(!Model::loadMultiple($supplyModels, Yii::$app->request->post())){
-                    $supplyModels = [];
+            if(isset($_POST['Supply'])){
+                foreach ($_POST['Supply'] as $key => $data) {
+                    $supply = new Supply();
+                    $supply->idInsumo = $data['idInsumo'];
+                    $supply->quantity = $data['quantity'];
+                    $supplyModels[]=$supply;
                 }
+            }
             $existentTask = $this->findModel($idTarea);
             $existentTask->observaciones = $task->observaciones;
             $existentTask->saveCommonTask($supplyModels);
             return $this->redirect(Yii::$app->request->referrer);
         }
         else {
+            $supplyModels = [new Supply()];
             $taskType = new Tasktype(['idTipoTarea'=>$taskType]);
             $availableSupplies = ArrayHelper::map($taskType->insumos,'idInsumo','nombre');
             ksort($availableSupplies);
