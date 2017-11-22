@@ -78,6 +78,7 @@ function(calEvent, jsEvent, view) {
       dataType: 'html',
       error: function(xhr,err){
         alert("readyState: "+xhr.readyState+" status: "+xhr.status);
+        alert("responseText: "+xhr.responseText);
     },
       success: function(response){
           $('#modalContent').html(response);

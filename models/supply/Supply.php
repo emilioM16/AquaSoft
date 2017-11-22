@@ -6,7 +6,7 @@ use Yii;
 use app\models\supply\TaskSupply;
 use app\models\task\TaskType;
 use app\models\task\Task;
-
+use yii\helpers\ArrayHelper;
 /**
  * This is the model class for table "INSUMO".
  *
@@ -57,6 +57,27 @@ class Supply extends \yii\db\ActiveRecord
             [['nombre'], 'unique', 'on' => 'create', 'message'=>'El insumo ingresado ya existe'], //en caso de crear una nueva especie
             [['quantity'],'required','message'=>'Ingrese una cantidad válida'],
             [['idInsumo'],'required','message'=>'Seleccione el insumo'],
+            [['idInsumo'],'unique','when'=>function($model,$attribute){
+                $supplies = Yii::$app->request->post('Supply');
+                foreach ($supplies as $key => $supply) {
+                    $reorderedSupplies[] = $supply;
+                }
+                $found = false;
+                $i = 0;
+                while (!$found && ($i<sizeof($reorderedSupplies))) {
+                    if($reorderedSupplies[$i]['idInsumo'] == $model->{$attribute}){
+                        unset($reorderedSupplies[$i]);
+                        $found = true;
+                    }else{
+                        $i++;
+                    }
+                }
+                array_values($reorderedSupplies);
+                $suppliesMapped = ArrayHelper::map($reorderedSupplies, 'idInsumo','quantity');
+                yii::error(\yii\helpers\VarDumper::dumpAsString(Yii::$app->request->post('Supply')));
+                return array_key_exists($model->{$attribute}, $suppliesMapped);
+            },
+            'message'=>'El insumo ya fue seleccionado.']
         ];
     }
 
