@@ -107,11 +107,15 @@ class Planning extends \yii\db\ActiveRecord
     {
        $marca = true;
        $planificaciones = Planning::find()->where(['ACUARIO_USUARIO_acuario_idAcuario' => $idAcua])->all();
-        foreach ($planificaciones as $plani) {
 
+        foreach ($planificaciones as $plani) {
+          if($plani->activo=='1'){
+              if($plani->ESTADO_PLANIFICACION_idEstadoPlanificacion<>'Rechazada'){
                  if (($plani->anioMes == $unMes)) {
                    $marca = false;
                 }
+              }
+            }
        }
        return $marca;
     }
