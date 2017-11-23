@@ -124,7 +124,6 @@ class AquariumController extends Controller
     public function actionDelete()
     {
         $idAcuario = Yii::$app->request->post('idAcuario');
-
         $model = $this->findModel($idAcuario);
         $model->activo = 0;
         $model->save();

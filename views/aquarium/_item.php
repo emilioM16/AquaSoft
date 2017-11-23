@@ -15,6 +15,14 @@ use rmrevin\yii\fontawesome\FA;
           }else{
             echo "<p><span class='label label-success'>Habitat cargado</span></p>";
           }
+          $aqSpecimens = $model->specimens;
+          $model->canBeDeleted = true;
+          $i = 0;
+          while($model->canBeDeleted && ($i<sizeof($aqSpecimens))){
+              if($aqSpecimens[$i]['cantidad'] > 0){
+                  $model->canBeDeleted = false;
+              }
+          }
         ?>
         <p>
             <?php
@@ -48,8 +56,13 @@ use rmrevin\yii\fontawesome\FA;
                       ],
                   ]);
                 }else{
+                  if(!$model->canBeDeleted){
+                    $class = 'disabled';
+                  }else{
+                    $class = '';
+                  }
                     echo Html::a('<span class="glyphicon glyphicon-arrow-down"></span>', ['change-state', 'id' => $model->idAcuario], [
-                        'class' => 'btn btn-danger btnAquarium',
+                        'class' => 'btn btn-danger btnAquarium'.' '.$class,
                         'title'=>'Dar de baja',
                         'data' => [
                             'data-pjax' => '0',
