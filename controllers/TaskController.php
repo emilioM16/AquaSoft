@@ -56,8 +56,13 @@ class TaskController extends Controller
      */
     public function actionView($idTarea)
     {
-        return $this->renderAjax('view', [
-            'model' => $this->findModel($idTarea),
+        $modelTask = $this->findModel($idTarea);
+        $date = date_create($modelTask->fechaHoraInicio);
+        $modelTask->fechaHoraInicio = date_format($date,'d-m-Y H:i');
+        $date = date_create($modelTask->fechaHoraFin);
+        $modelTask->fechaHoraFin = date_format($date,'d-m-Y H:i');
+        return $this->renderAjax('view',[
+            'task'=>$modelTask,
         ]);
     }
 

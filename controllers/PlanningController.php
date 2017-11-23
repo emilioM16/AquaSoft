@@ -49,14 +49,6 @@ class PlanningController extends Controller
       return $this->redirect(['index']);
     }
 
-    // public function isAssigned($idAcuario){
-    //     $assigned = ArrayHelper::map(Yii::$app->user->identity->getAquariums(),'idAcuario','nombre');
-    //     if(array_key_exists($idAcuario,$assigned)){
-    //         return true;
-    //     }else{
-    //         return false;
-    //     }
-    // }
 
 
     public function actionIndex()

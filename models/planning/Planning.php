@@ -196,10 +196,9 @@ class Planning extends \yii\db\ActiveRecord
       if (!isset($this->ESTADO_PLANIFICACION_idEstadoPlanificacion)) {
         $this->ESTADO_PLANIFICACION_idEstadoPlanificacion ='SinVerificar';
       }
-
-      $this->ACUARIO_USUARIO_usuario_idUsuario= Yii::$app->user->identity->idUsuario;
-    //  $this->validatePlanning('anioMes','ACUARIO_USUARIO_acuario_idAcuario');
-
+      if(!isset($this->ACUARIO_USUARIO_usuario_idUsuario)){
+        $this->ACUARIO_USUARIO_usuario_idUsuario= Yii::$app->user->identity->idUsuario;
+      }
       return parent::beforeSave($insert);
     }
 
