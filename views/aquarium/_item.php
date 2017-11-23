@@ -22,6 +22,7 @@ use rmrevin\yii\fontawesome\FA;
               if($aqSpecimens[$i]['cantidad'] > 0){
                   $model->canBeDeleted = false;
               }
+              $i++;
           }
         ?>
         <p>

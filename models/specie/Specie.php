@@ -32,6 +32,9 @@ use app\models\aquarium\AquariumSearch;
  */
 class Specie extends \yii\db\ActiveRecord
 {
+
+    public $canBeDeleted = true;
+
     /**
      * @inheritdoc
      */

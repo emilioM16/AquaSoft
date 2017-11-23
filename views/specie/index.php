@@ -57,8 +57,22 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                           },
                           'delete'=>function($url,$model){
+                            $specieSpecimens = $model->specimens;
+                            $model->canBeDeleted = true;
+                            $i = 0;
+                            while($model->canBeDeleted && ($i<sizeof($specieSpecimens))){
+                                if($specieSpecimens[$i]['cantidad'] > 0){
+                                    $model->canBeDeleted = false;
+                                }
+                                $i++;
+                            }
+                            if(!$model->canBeDeleted){
+                                $class = 'disabled';
+                              }else{
+                                $class = '';
+                              }
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['specie/delete', 'id' => $model->idEspecie], [
-                                'class' => 'btn btn-danger btnAquarium',
+                                'class' => 'btn btn-danger btnAquarium'.' '.$class,
                                 'data' => [
                                     'data-pjax' => '0',
                                     'confirm' => '¿Está seguro de eliminar esta especie ?',
