@@ -41,9 +41,16 @@ SwitchInputAsset::register($this);
                     ]
                 ],
                 'capacidadMaxima'=>[
-                    'type'=>Form::INPUT_TEXT,
+                    'type'=>Form::INPUT_WIDGET,
+                    'widgetClass'=>'kartik\touchspin\TouchSpin',
                     'options'=>[
-                        'placeholder'=>'Ingrese la capacidad',
+                        'class'=>'input-sm',
+                        'pluginOptions' => [
+                            'buttonup_class' => 'btn btn-primary', 
+                            'buttondown_class' => 'btn btn-danger', 
+                            'buttonup_txt' => '<i class="glyphicon glyphicon-plus-sign"></i>', 
+                            'buttondown_txt' => '<i class="glyphicon glyphicon-minus-sign"></i>'
+                        ],
                     ]
                 ]
             ]
