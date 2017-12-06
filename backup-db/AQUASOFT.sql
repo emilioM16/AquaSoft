@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 06-12-2017 a las 15:55:19
+-- Tiempo de generación: 06-12-2017 a las 17:13:27
 -- Versión del servidor: 5.7.20-0ubuntu0.17.04.1
 -- Versión de PHP: 7.0.22-0ubuntu0.17.04.1
 
@@ -792,23 +792,23 @@ CREATE TABLE `PLANIFICACION` (
 --
 
 INSERT INTO `PLANIFICACION` (`idPlanificacion`, `titulo`, `anioMes`, `fechaHoraCreacion`, `activo`, `ACUARIO_USUARIO_acuario_idAcuario`, `ACUARIO_USUARIO_usuario_idUsuario`, `ESTADO_PLANIFICACION_idEstadoPlanificacion`) VALUES
-(1, 'Planificación Diciembre', '2017-12-01', '2017-11-04 19:29:53', 1, 6, 2, 'SinVerificar'),
-(2, 'Planificación Especial', '2017-11-01', '2017-11-04 19:32:28', 1, 6, 2, 'SinVerificar'),
+(1, 'Planificación Diciembre', '2017-12-01', '2017-11-04 19:29:53', 1, 6, 16, 'SinVerificar'),
+(2, 'Planificación Especial', '2017-11-01', '2017-11-04 19:32:28', 1, 6, 16, 'SinVerificar'),
 (3, 'Planificación Verano - Enero', '2018-01-01', '2017-11-04 19:33:12', 1, 7, 16, 'SinVerificar'),
-(4, 'Planificación Verano - Febrero', '2018-02-01', '2017-11-04 19:34:23', 1, 7, 2, 'SinVerificar'),
-(5, 'Planificación Marzo 18', '2018-03-01', '2017-11-04 19:35:46', 1, 9, 17, 'SinVerificar'),
-(6, 'Planificación Abril 18', '2018-02-01', '2017-11-04 22:54:33', 1, 9, 17, 'SinVerificar'),
-(7, 'Planificación DIC', '2017-12-01', '2017-11-05 00:06:42', 1, 8, 17, 'SinVerificar'),
-(8, 'Planificación ENERO', '2018-01-01', '2017-11-05 00:15:34', 1, 8, 17, 'SinVerificar'),
-(9, 'Planificación FEB', '2018-02-01', '2017-11-05 00:34:32', 1, 8, 17, 'SinVerificar'),
-(10, 'Planificación DIC', '2017-12-01', '2017-11-05 00:41:49', 1, 7, 17, 'SinVerificar'),
+(4, 'Planificación Verano - Febrero', '2018-02-01', '2017-11-04 19:34:23', 1, 7, 16, 'SinVerificar'),
+(5, 'Planificación Marzo 18', '2018-03-01', '2017-11-04 19:35:46', 1, 9, 19, 'SinVerificar'),
+(6, 'Planificación Abril 18', '2018-02-01', '2017-11-04 22:54:33', 1, 9, 16, 'SinVerificar'),
+(7, 'Planificación DIC', '2017-12-01', '2017-11-05 00:06:42', 1, 8, 19, 'SinVerificar'),
+(8, 'Planificación ENERO', '2018-01-01', '2017-11-05 00:15:34', 1, 8, 19, 'SinVerificar'),
+(10, 'Planificación DIC', '2017-12-01', '2017-11-05 00:41:49', 1, 7, 19, 'SinVerificar'),
 (11, 'planificación abril', '2018-04-01', '2017-11-07 15:03:00', 1, 6, 16, 'Rechazada'),
 (12, 'planificación abril', '2018-04-01', '2017-11-28 15:10:29', 1, 6, 16, 'SinVerificar'),
 (13, 'Planificación especial diciembre', '2017-12-01', '2017-12-05 18:17:12', 0, 9, 16, 'SinVerificar'),
 (14, 'Plan febrero', '2018-02-01', '2017-12-06 12:48:25', 1, 6, 16, 'SinVerificar'),
 (15, 'planificacion diciembre', '2017-12-01', '2017-12-06 15:41:34', 0, 9, 16, 'SinVerificar'),
 (16, 'planificación diciembre', '2017-12-01', '2017-12-06 15:42:12', 1, 9, 16, 'SinVerificar'),
-(17, 'planificación', '2018-04-01', '2017-12-06 15:53:05', 1, 9, 16, 'SinVerificar');
+(17, 'planificación', '2018-04-01', '2017-12-06 15:53:05', 1, 9, 16, 'Rechazada'),
+(18, 'planificación abril', '2018-04-01', '2017-12-06 16:10:50', 1, 9, 16, 'SinVerificar');
 
 -- --------------------------------------------------------
 
@@ -1141,7 +1141,8 @@ CREATE TABLE `VALIDACION` (
 --
 
 INSERT INTO `VALIDACION` (`idVALIDACION`, `FECHAHORA`, `OBSERVACION`, `MOTIVO_RECHAZO_idMotivoRechazo`, `PLANIFICACION_idPlanificacion`, `USUARIO_idUsuario`) VALUES
-(2, '2017-11-23 18:08:58', '', 'Escasez de tareas', 11, 2);
+(2, '2017-11-23 18:08:58', '', 'Escasez de tareas', 11, 2),
+(3, '2017-12-06 16:10:34', '', 'Escasez de tareas', 17, 2);
 
 --
 -- Índices para tablas volcadas
@@ -1361,7 +1362,7 @@ ALTER TABLE `NOTIFICACION`
 -- AUTO_INCREMENT de la tabla `PLANIFICACION`
 --
 ALTER TABLE `PLANIFICACION`
-  MODIFY `idPlanificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `idPlanificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT de la tabla `TAREA`
 --
@@ -1386,7 +1387,7 @@ ALTER TABLE `USUARIO`
 -- AUTO_INCREMENT de la tabla `VALIDACION`
 --
 ALTER TABLE `VALIDACION`
-  MODIFY `idVALIDACION` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idVALIDACION` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 DELIMITER $$
 --
 -- Eventos
