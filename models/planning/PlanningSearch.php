@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\planning\Planning;
+use app\models\aquarium\Aquarium;
 
 /**
  * PlanningSearch represents the model behind the search form about `app\models\planning\Planning`.
@@ -47,8 +48,11 @@ class PlanningSearch extends Planning
                     ->where(['ACUARIO_USUARIO_usuario_idUsuario'=>Yii::$app->user->identity->idUsuario])
                     ->andWhere(['activo'=>1]);
         }else{
+            $aquariumTable = Aquarium::tableName();
             $query = Planning::find()
+                    // ->innerJoin($aquariumTable, 'ACUARIO_USUARIO_acuario_idAcuario=idAcuario')
                     ->andWhere(['activo'=>1]);
+                    // ->andFilterWhere(['like',$aquariumTable.''])
         }
 
         // add conditions that should always apply here

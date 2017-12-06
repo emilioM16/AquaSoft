@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 05-12-2017 a las 19:39:11
+-- Tiempo de generación: 06-12-2017 a las 15:55:19
 -- Versión del servidor: 5.7.20-0ubuntu0.17.04.1
 -- Versión de PHP: 7.0.22-0ubuntu0.17.04.1
 
@@ -374,8 +374,6 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('especialista', '/aquarium/view'),
 ('encargado', '/census/*'),
 ('especialista', '/census/*'),
-('encargado', '/debug/*'),
-('especialista', '/debug/*'),
 ('encargado', '/planning/autorized'),
 ('encargado', '/planning/calendar'),
 ('especialista', '/planning/calendar'),
@@ -806,7 +804,11 @@ INSERT INTO `PLANIFICACION` (`idPlanificacion`, `titulo`, `anioMes`, `fechaHoraC
 (10, 'Planificación DIC', '2017-12-01', '2017-11-05 00:41:49', 1, 7, 17, 'SinVerificar'),
 (11, 'planificación abril', '2018-04-01', '2017-11-07 15:03:00', 1, 6, 16, 'Rechazada'),
 (12, 'planificación abril', '2018-04-01', '2017-11-28 15:10:29', 1, 6, 16, 'SinVerificar'),
-(13, 'Planificación especial diciembre', '2017-12-01', '2017-12-05 18:17:12', 1, 9, 16, 'SinVerificar');
+(13, 'Planificación especial diciembre', '2017-12-01', '2017-12-05 18:17:12', 0, 9, 16, 'SinVerificar'),
+(14, 'Plan febrero', '2018-02-01', '2017-12-06 12:48:25', 1, 6, 16, 'SinVerificar'),
+(15, 'planificacion diciembre', '2017-12-01', '2017-12-06 15:41:34', 0, 9, 16, 'SinVerificar'),
+(16, 'planificación diciembre', '2017-12-01', '2017-12-06 15:42:12', 1, 9, 16, 'SinVerificar'),
+(17, 'planificación', '2018-04-01', '2017-12-06 15:53:05', 1, 9, 16, 'SinVerificar');
 
 -- --------------------------------------------------------
 
@@ -1000,7 +1002,9 @@ INSERT INTO `TAREA` (`idTarea`, `titulo`, `descripcion`, `fechaHoraInicio`, `fec
 (289, 'Control', '', '2018-01-10 18:50:00', '2018-01-10 19:05:00', NULL, NULL, 3, 16, 7, 'Controlar acuario'),
 (290, 'Limpieza ', '', '2018-01-10 20:50:00', '2018-01-10 21:05:00', NULL, NULL, 3, 16, 7, 'Limpieza'),
 (291, 'Limpieza ', '', '2017-12-07 19:10:00', '2017-12-07 19:25:00', NULL, NULL, 13, 16, 9, 'Limpieza'),
-(292, 'Reparación rápida', '', '2017-12-07 20:00:00', '2017-12-07 20:15:00', NULL, NULL, 13, 16, 9, 'Reparación');
+(292, 'Reparación rápida', '', '2017-12-07 20:00:00', '2017-12-07 20:15:00', NULL, NULL, 13, 16, 9, 'Reparación'),
+(293, 'Control', '', '2017-12-08 12:40:00', '2017-12-08 12:55:00', NULL, NULL, 13, 16, 9, 'Controlar acuario'),
+(294, 'Limpieza ', '', '2018-02-14 12:50:00', '2018-02-14 13:05:00', NULL, NULL, 14, 16, 6, 'Limpieza');
 
 -- --------------------------------------------------------
 
@@ -1357,12 +1361,12 @@ ALTER TABLE `NOTIFICACION`
 -- AUTO_INCREMENT de la tabla `PLANIFICACION`
 --
 ALTER TABLE `PLANIFICACION`
-  MODIFY `idPlanificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idPlanificacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT de la tabla `TAREA`
 --
 ALTER TABLE `TAREA`
-  MODIFY `idTarea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=293;
+  MODIFY `idTarea` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=295;
 --
 -- AUTO_INCREMENT de la tabla `TAREA_EJEMPLAR`
 --
@@ -1387,7 +1391,7 @@ DELIMITER $$
 --
 -- Eventos
 --
-DROP EVENT `job_Notification`$$
+DROP EVENT IF EXISTS `job_Notification`$$
 CREATE DEFINER=`root`@`localhost` EVENT `job_Notification` ON SCHEDULE EVERY 1 MINUTE STARTS '2017-11-07 23:59:00' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'evento que se ejecuta 1 vez al dia, para generar notificaciones' DO CALL obtenerTareasVencidas()$$
 
 DELIMITER ;

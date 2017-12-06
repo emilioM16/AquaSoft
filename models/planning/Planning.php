@@ -29,6 +29,8 @@ use Yii;
 class Planning extends \yii\db\ActiveRecord
 {
 
+    public $aquariumName = '';
+
   public $events = [];
     /**
      * @inheritdoc
@@ -133,17 +135,13 @@ class Planning extends \yii\db\ActiveRecord
         $fechaActual = date('Y-m-01');
 
         if (!$this->validatePlanning($formattedDate,$this->ACUARIO_USUARIO_acuario_idAcuario)){
-          //  $this->addError("La planificacion ya existe para este mes y con este acuario");
               $this->addError($attribute, 'Ya existe una planificacion para este acuario y mes');
 
-          }
-          if($formattedDate < $fechaActual){
+        }elseif($formattedDate < $fechaActual){
             $this->addError($attribute, 'No se puede realizar planificacion para meses previos');
-          }
-          else{
+        }else{
             $this->anioMes = $formattedDate;
-            //  yii::error(\yii\helpers\VarDumper::dumpAsString("llega"));
-          }
+        }
 
       }
 
