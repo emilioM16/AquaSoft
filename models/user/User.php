@@ -64,6 +64,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
                 'exist', 'targetClass' => Aquarium::className(), 'targetAttribute' => 'idAcuario'
                 ]
             ],
+            [['nombre','apellido'],'validateNoNumbers']
         ];
     }
 
@@ -84,6 +85,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'assignedAquariumsIds'=>'',
             'assignedAquariumsNames'=>'Aquarios asignados'
         ];
+    }
+
+    public function validateNoNumbers($attribute,$params){
+        if(strpbrk($this->$attribute, '1234567890')){
+          $this->addError($attribute,'El '.$attribute.' no puede contener números');
+        }
     }
 
     /**
